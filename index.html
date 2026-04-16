@@ -287,6 +287,17 @@
             display: inline-block;
             margin-left: 8px;
         }
+
+        .error-message { /* Added style for better error visibility */
+            color: var(--danger);
+            background: #4a1e27;
+            border: 1px solid var(--danger);
+            padding: 10px;
+            border-radius: 12px;
+            margin-top: 15px;
+            font-size: 12px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -507,7 +518,7 @@
     </div>
 
     <script>
-        // ===== CONFIGURATION SUPABASE (TES IDENTIFIANTS CORRECTS) =====
+        // ===== CONFIGURATION SUPABASE (TES IDENTIFIANTS) =====
         const SUPABASE_URL = 'https://kvzemwoinlrisauioonq.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_6lDejMl6JmtRiTH0XhwMSQ_NQcuhoyy';
         
@@ -522,15 +533,20 @@
             document.getElementById('connection-status').innerHTML = '🟢 Cloud Supabase (synchronisé entre tous vos appareils)';
         } catch(e) {
             console.warn("Erreur Supabase:", e);
-            document.getElementById('connection-status').innerHTML = '🟡 Mode local uniquement';
+            document.getElementById('connection-status').innerHTML = '🟡 Mode local uniquement (Erreur Supabase)';
+            // Hide dashboard elements that rely on Supabase if not connected
+            document.getElementById('auth-screen').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
         }
         
-        // ===== MOTEUR IA SPORTIF (version simplifiée mais fonctionnelle) =====
+        // ===== MOTEUR IA SPORTIF =====
         const MARKETS_PRO = [
-            "1", "2", "X", "Over 1.5", "Over 2.5", "Under 2.5"
+            "1", "2", "X", "1MT +1.5", "1MT +2", "1MT -2", "1MT -1.5", "1MT Dom gagne", "1MT Ext gagne", "1MT Nul",
+            "+ de buts en 1MT", "+ de buts en 2MT", "2MT Dom gagne", "2MT Ext gagne", "Les deux MT égalité",
+            "Over 1.5", "Over 2", "Over 2.5", "Over 3", "Under 2", "All teams win YES", "All teams win NO"
         ];
         
-        const SCORES_FAVORIS = ["2-1","1-2","3-1","2-0","1-0","1-1","2-2"];
+        const SCORES_FAVORIS = ["2-1","1-2","3-1","2-3","0-2","4-1","2-0","1-0","1-1","2-2","4-0"];
         
         function getRapportForce(teamH, teamA) {
             const strengthH = getTeamStrength(teamH);
@@ -541,9 +557,9 @@
         }
         
         function getScoresPossibles(rapport) {
-            if(rapport === 'favori_vs_faible') return ["3-1","2-0","3-0"];
+            if(rapport === 'favori_vs_faible') return ["3-1","4-1","2-0","4-0","3-0"];
             if(rapport === 'surprise') return ["0-2","1-2","0-1"];
-            return ["1-1","2-1","1-2","1-0","0-1"];
+            return ["1-1","2-1","1-2","2-2","1-0","0-1"];
         }
         
         function validerScoreAvecMarche(scoreFinal, marche) {
@@ -553,8 +569,12 @@
             if(marche === "2") return a > h;
             if(marche === "X") return h === a;
             if(marche === "Over 1.5") return total > 1.5;
+            if(marche === "Over 2") return total > 2;
             if(marche === "Over 2.5") return total > 2.5;
-            if(marche === "Under 2.5") return total < 2.5;
+            if(marche === "Over 3") return total > 3;
+            if(marche === "Under 2") return total < 2;
+            if(marche === "All teams win YES") return (h > 0 && a > 0);
+            if(marche === "All teams win NO") return (h === 0 || a === 0);
             return true;
         }
         
@@ -565,15 +585,17 @@
             let scoreFinal = scoresCompatibles.length ? scoresCompatibles[Math.floor(Math.random() * scoresCompatibles.length)] : scoresPossibles[Math.floor(Math.random() * scoresPossibles.length)];
             let marche = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
             let tries = 0;
-            while(!validerScoreAvecMarche(scoreFinal, marche) && tries < 10) {
+            while(!validerScoreAvecMarche(scoreFinal, marche) && tries < 15) {
                 marche = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
                 tries++;
             }
             const [fh, fa] = scoreFinal.split('-').map(Number);
-            let ht_h = Math.floor(fh / 2);
-            let ht_a = Math.floor(fa / 2);
+            let ht_h = Math.floor(fh / 2) + (Math.random() > 0.7 ? 1 : 0);
+            let ht_a = Math.floor(fa / 2) + (Math.random() > 0.7 ? 1 : 0);
+            if(ht_h > fh) ht_h = fh;
+            if(ht_a > fa) ht_a = fa;
             const miTemps = `${ht_h}-${ht_a}`;
-            const logique = `Vérification : ${scoreFinal} valide le marché "${marche}"`;
+            const logique = `Vérification : ${scoreFinal} valide le marché "${marche}" → ${validerScoreAvecMarche(scoreFinal, marche) ? 'OK' : 'NON'}`;
             return { scoreFinal, marche, miTemps, logique };
         }
 
@@ -608,23 +630,105 @@
 
         // === LISTES DES CLUBS ===
         const EUROPE_CLUBS = [
-            'Real Madrid', 'FC Barcelona', 'Atlético Madrid', 'Sevilla FC', 'Valencia CF', 'Manchester United', 'Manchester City', 'Liverpool FC', 'Chelsea FC', 'Arsenal FC',
-            'Paris Saint-Germain', 'Olympique de Marseille', 'Bayern Munich', 'Borussia Dortmund', 'Juventus FC', 'AC Milan', 'Inter Milan', 'Ajax Amsterdam', 'FC Porto', 'Benfica Lisbonne'
+            'Real Madrid', 'FC Barcelona', 'Atlético Madrid', 'Sevilla FC', 'Valencia CF', 'Real Betis', 'Villarreal CF', 'Athletic Bilbao', 'Real Sociedad', 'Getafe CF',
+            'Manchester United', 'Manchester City', 'Liverpool FC', 'Chelsea FC', 'Arsenal FC', 'Tottenham Hotspur', 'Newcastle United', 'West Ham United', 'Aston Villa', 'Everton FC',
+            'Paris Saint-Germain', 'Olympique de Marseille', 'Olympique Lyonnais', 'AS Monaco', 'Lille OSC', 'OGC Nice', 'Stade Rennais', 'RC Lens', 'FC Nantes', 'Montpellier HSC',
+            'Bayern Munich', 'Borussia Dortmund', 'RB Leipzig', 'Bayer Leverkusen', 'Schalke 04', 'VfL Wolfsburg', 'Eintracht Frankfurt', 'Borussia Mönchengladbach', 'Hertha Berlin', 'Werder Bremen',
+            'Juventus FC', 'AC Milan', 'Inter Milan', 'AS Roma', 'SSC Napoli', 'Lazio Rome', 'Atalanta Bergame', 'Fiorentina', 'Torino FC', 'Sampdoria',
+            'Ajax Amsterdam', 'PSV Eindhoven', 'Feyenoord Rotterdam', 'AZ Alkmaar', 'FC Utrecht', 'Vitesse Arnhem', 'FC Groningen', 'SC Heerenveen', 'Sparta Rotterdam', 'Twente',
+            'FC Porto', 'Benfica Lisbonne', 'Sporting CP', 'Braga', 'Boavista FC', 'Marítimo', 'Rio Ave', 'Vitória Guimarães', 'Nacional', 'Belenenses',
+            'Celtic FC', 'Rangers FC', 'Aberdeen FC', 'Hearts', 'Hibernian FC', 'Dundee United', 'Motherwell FC', 'St Mirren', 'Kilmarnock', 'Ross County',
+            'Galatasaray', 'Fenerbahçe', 'Beşiktaş', 'Trabzonspor', 'Istanbul Başakşehir', 'Bursaspor', 'Antalyaspor', 'Konyaspor', 'Sivasspor', 'Alanyaspor',
+            'Zenit Saint-Pétersbourg', 'CSKA Moscou', 'Spartak Moscou', 'Lokomotiv Moscou', 'Dynamo Moscou', 'Rubin Kazan', 'Krasnodar', 'Rostov', 'Akhmat Grozny', 'Ural',
+            'Shakhtar Donetsk', 'Dynamo Kiev', 'Dnipro', 'Zorya Louhansk', 'Metalist Kharkiv', 'Vorskla Poltava', 'Desna Chernihiv', 'Olexandriya', 'Karpaty Lviv', 'Chornomorets Odessa',
+            'Club Bruges', 'Anderlecht', 'Standard Liège', 'Genk', 'Gent', 'Antwerp', 'Charleroi', 'Cercle Bruges', 'KV Mechelen', 'Oostende',
+            'FC Bâle', 'Young Boys', 'FC Zurich', 'Servette FC', 'Lugano', 'St Gallen', 'Sion', 'Grasshopper Club', 'Lausanne Sport', 'Thun',
+            'Red Bull Salzburg', 'Rapid Vienne', 'Austria Vienne', 'LASK', 'Sturm Graz', 'Wolfsberger AC', 'Hartberg', 'Altach', 'Ried', 'Admira Wacker',
+            'Olympiakos', 'Panathinaikos', 'AEK Athènes', 'PAOK Salonique', 'Aris Salonique', 'OFI Crète', 'Atromitos', 'Panetolikos', 'Volos', 'Lamia',
+            'Copenhague', 'Brøndby IF', 'Midtjylland', 'Aalborg BK', 'Odense BK', 'Randers FC', 'Silkeborg IF', 'Horsens', 'Vejle BK', 'Nordsjælland',
+            'Malmö FF', 'AIK Stockholm', 'IFK Göteborg', 'Djurgårdens IF', 'Hammarby IF', 'Elfsborg', 'Häcken', 'Norrköping', 'Kalmar FF', 'Örebro SK',
+            'Rosenborg BK', 'Molde FK', 'Bodø/Glimt', 'Viking FK', 'Brann', 'Stabæk', 'Valerenga', 'Sarpsborg 08', 'Odd Grenland', 'Kristiansund BK',
+            'Lech Poznań', 'Legia Varsovie', 'Wisła Cracovie', 'Lechia Gdańsk', 'Jagiellonia Białystok', 'Pogoń Szczecin', 'Zagłębie Lubin', 'Śląsk Wrocław', 'Raków Częstochowa', 'Piast Gliwice',
+            'Sparta Prague', 'Slavia Prague', 'Viktoria Plzeň', 'Baník Ostrava', 'Slovan Liberec', 'Sigma Olomouc', 'Jablonec', 'Zbrojovka Brno', 'Karviná', 'Teplice',
+            'Ferencváros', 'Mol Fehérvár', 'Debrecen', 'Honvéd', 'Puskás Akadémia', 'Zalaegerszeg', 'Kisvárda', 'Mezőkövesd', 'Újpest FC', 'Gyirmót',
+            'Steaua Bucarest', 'CFR Cluj', 'Universitatea Craiova', 'Dinamo Bucarest', 'Viitorul Constanța', 'Botoșani', 'Sepsi OSK', 'Gaz Metan Mediaș', 'Voluntari', 'Chindia Târgoviște',
+            'Étoile Rouge Belgrade', 'Partizan Belgrade', 'Vojvodina', 'Radnički Niš', 'Čukarički', 'Napredak Kruševac', 'Mladost Lučani', 'Spartak Subotica', 'Rad Beograd', 'Proleter Novi Sad',
+            'Dinamo Zagreb', 'Hajduk Split', 'Rijeka', 'Osijek', 'Slaven Belupo', 'Lokomotiva Zagreb', 'Gorica', 'Istra 1961', 'Šibenik', 'Varaždin',
+            'Ludogorets Razgrad', 'CSKA Sofia', 'Levski Sofia', 'Lokomotiv Plovdiv', 'Beroe Stara Zagora', 'Slavia Sofia', 'Cherno More', 'Etar', 'Arda Kardzhali', 'Montana',
+            'Slovan Bratislava', 'Spartak Trnava', 'DAC Dunajská Streda', 'Žilina', 'Ružomberok', 'Trenčín', 'Senica', 'Zemplín Michalovce', 'Pohronie', 'Nitra'
         ];
 
         const AFRICA_CLUBS = [
-            'Al Ahly', 'Zamalek SC', 'Espérance de Tunis', 'Wydad Casablanca', 'Raja Casablanca', 'TP Mazembe', 'Mamelodi Sundowns', 'Simba SC', 'Young Africans', 'Kaizer Chiefs'
+            'Al Ahly', 'Zamalek SC', 'Pyramids FC', 'Future FC', 'Ismaily SC', 'Al Masry',
+            'Espérance de Tunis', 'Club Africain', 'Étoile du Sahel', 'CS Sfaxien', 'US Monastir',
+            'Wydad Casablanca', 'Raja Casablanca', 'RS Berkane', 'FUS Rabat', 'MAS Fès', 'Moghreb Tétouan',
+            'JS Kabylie', 'MC Alger', 'CR Belouizdad', 'ES Sétif', 'USM Alger', 'Paradou AC',
+            'TP Mazembe', 'AS Vita Club', 'DC Motema Pembe', 'FC Lupopo', 'Sanga Balende',
+            'Simba SC', 'Young Africans', 'Azam FC', 'Namungo FC',
+            'APR FC', 'Rayon Sports', 'Police FC Rwanda',
+            'Gor Mahia', 'AFC Leopards', 'Tusker FC',
+            'Al Hilal Omdurman', 'Al Merrikh SC', 'Al Hilal Benghazi', 'Al Ittihad Tripoli',
+            'Horoya AC', 'Hafia FC',
+            'ASEC Mimosas', 'Africa Sports',
+            'Hearts of Oak', 'Asante Kotoko',
+            'Enyimba FC', 'Kano Pillars', 'Rivers United', 'Enugu Rangers',
+            'Petro Atlético', 'Primeiro de Agosto',
+            'Mamelodi Sundowns', 'Kaizer Chiefs', 'Orlando Pirates', 'SuperSport United',
+            'Al Ahli Tripoli', 'Al Nasr Benghazi', 'Al Hilal Port Sudan',
+            'Al Shorta SC', 'Al Zawraa',
+            'Stade Malien', 'Djoliba AC',
+            'AS FAR', 'Olympique Khouribga',
+            'Township Rollers', 'Gaborone United',
+            'Costa do Sol', 'Ferroviário Maputo',
+            'AS Douanes (Sénégal)', 'Teungueth FC', 'AS SONIDEP',
+            'Sahel SC', 'Buffles du Borgou', 'Energie FC',
+            'ASFA Yennenga', 'Rail Club du Kadiogo',
+            'AS Otohô', 'Diables Noirs',
+            'AS Kigali', 'Mukura Victory Sports'
         ];
 
-        const NATIONAL_TEAMS = ['🇫🇷 France', '🇩🇪 Allemagne', '🇮🇹 Italie', '🇪🇸 Espagne', '🇬🇧 Royaume-Uni', '🇸🇳 Sénégal', '🇲🇦 Maroc', '🇪🇬 Égypte', '🇳🇬 Nigéria'];
+        const AFRICA_COUNTRIES = [
+            '🇩🇿 Algérie', '🇦🇴 Angola', '🇧🇯 Bénin', '🇧🇼 Botswana', '🇧🇫 Burkina Faso', '🇧🇮 Burundi',
+            '🇨🇻 Cap-Vert', '🇨🇲 Cameroun', '🇨🇫 République centrafricaine', '🇹🇩 Tchad', '🇰🇲 Comores',
+            '🇨🇬 Congo', '🇨🇩 RDC', '🇩🇯 Djibouti', '🇪🇬 Égypte', '🇬🇶 Guinée équatoriale', '🇪🇷 Érythrée',
+            '🇸🇿 Eswatini', '🇪🇹 Éthiopie', '🇬🇦 Gabon', '🇬🇲 Gambie', '🇬🇭 Ghana', '🇬🇳 Guinée', '🇬🇼 Guinée-Bissau',
+            '🇨🇮 Côte d\'Ivoire', '🇰🇪 Kenya', '🇱🇸 Lesotho', '🇱🇷 Libéria', '🇱🇾 Libye', '🇲🇬 Madagascar', '🇲🇼 Malawi',
+            '🇲🇱 Mali', '🇲🇷 Mauritanie', '🇲🇺 Maurice', '🇲🇦 Maroc', '🇲🇿 Mozambique', '🇳🇦 Namibie', '🇳🇪 Niger',
+            '🇳🇬 Nigéria', '🇷🇼 Rwanda', '🇸🇹 Sao Tomé', '🇸🇳 Sénégal', '🇸🇨 Seychelles', '🇸🇱 Sierra Leone',
+            '🇸🇴 Somalie', '🇿🇦 Afrique du Sud', '🇸🇸 Soudan du Sud', '🇸🇩 Soudan', '🇹🇿 Tanzanie', '🇹🇬 Togo',
+            '🇹🇳 Tunisie', '🇺🇬 Ouganda', '🇿🇲 Zambie', '🇿🇼 Zimbabwe'
+        ];
         
-        const AMERICA_ASIA_CLUBS = ['Flamengo', 'Palmeiras', 'River Plate', 'Boca Juniors', 'Inter Miami', 'Al-Hilal', 'Al-Nassr'];
+        const EUROPE_COUNTRIES = ['🇫🇷 France', '🇩🇪 Allemagne', '🇮🇹 Italie', '🇪🇸 Espagne', '🇬🇧 Royaume-Uni', '🇵🇹 Portugal', '🇳🇱 Pays-Bas', '🇧🇪 Belgique', '🇨🇭 Suisse', '🇸🇪 Suède'];
+        const AMERICA_COUNTRIES = ['🇺🇸 États-Unis', '🇨🇦 Canada', '🇧🇷 Brésil', '🇦🇷 Argentine', '🇲🇽 Mexique'];
+        const ASIA_COUNTRIES = ['🇨🇳 Chine', '🇯🇵 Japon', '🇮🇳 Inde', '🇸🇦 Arabie Saoudite', '🇰🇷 Corée du Sud'];
+        const OCEANIA_COUNTRIES = ['🇦🇺 Australie', '🇳🇿 Nouvelle-Zélande', '🇫🇯 Fidji'];
+        
+        const NATIONAL_TEAMS = [...AFRICA_COUNTRIES, ...EUROPE_COUNTRIES, ...AMERICA_COUNTRIES, ...ASIA_COUNTRIES, ...OCEANIA_COUNTRIES];
+        
+        const AMERICA_ASIA_CLUBS = [
+            'Flamengo', 'Palmeiras', 'River Plate', 'Boca Juniors', 'Sao Paulo', 'Atletico Mineiro', 'Fluminense',
+            'Inter Miami', 'Club América', 'Tigres UANL', 'Al-Hilal', 'Al-Nassr', 'Al-Ittihad', 'Al-Ahli', 'Monterrey',
+            'Gremio', 'Racing Club', 'Yokohama Marinos', 'Urawa Reds', 'Jeonbuk'
+        ];
         
         const ALL_TEAMS = [...NATIONAL_TEAMS, ...EUROPE_CLUBS, ...AFRICA_CLUBS, ...AMERICA_ASIA_CLUBS].sort();
         
         const TEAMS_STRENGTH = { FORT: [], MOYEN: [], FAIBLE: [] };
-        const FORT_TEAMS = ['Real Madrid', 'FC Barcelona', 'Manchester City', 'Liverpool FC', 'Bayern Munich', 'Paris Saint-Germain', 'Inter Milan', 'Al Ahly', 'Espérance de Tunis', 'Wydad Casablanca', 'Flamengo', 'Palmeiras'];
-        const MOYEN_TEAMS = ['Atlético Madrid', 'Sevilla FC', 'Arsenal FC', 'Chelsea FC', 'Borussia Dortmund', 'Ajax Amsterdam', 'FC Porto', 'Mamelodi Sundowns', 'Kaizer Chiefs'];
+        const FORT_TEAMS = [
+            'Real Madrid', 'FC Barcelona', 'Atlético Madrid', 'Manchester City', 'Liverpool FC', 'Bayern Munich', 
+            'Paris Saint-Germain', 'Inter Milan', 'AC Milan', 'Juventus FC', 'Borussia Dortmund', 'Chelsea FC',
+            'Arsenal FC', 'Manchester United', 'Al Ahly', 'Espérance de Tunis', 'Wydad Casablanca', 'Raja Casablanca',
+            'TP Mazembe', 'Mamelodi Sundowns', 'Flamengo', 'Palmeiras', 'River Plate', 'Boca Juniors'
+        ];
+        
+        const MOYEN_TEAMS = [
+            'Sevilla FC', 'Valencia CF', 'Villarreal CF', 'Athletic Bilbao', 'Tottenham Hotspur', 'Newcastle United',
+            'Aston Villa', 'Olympique de Marseille', 'Olympique Lyonnais', 'AS Monaco', 'RB Leipzig', 'Bayer Leverkusen',
+            'AS Roma', 'SSC Napoli', 'Lazio Rome', 'Atalanta Bergame', 'Ajax Amsterdam', 'PSV Eindhoven', 'Feyenoord',
+            'FC Porto', 'Benfica Lisbonne', 'Sporting CP', 'Celtic FC', 'Rangers FC', 'Galatasaray', 'Fenerbahçe',
+            'Zamalek SC', 'Étoile du Sahel', 'Simba SC', 'Young Africans', 'Kaizer Chiefs', 'Orlando Pirates'
+        ];
 
         function initializeTeamStrength() { 
             FORT_TEAMS.forEach(t => TEAMS_STRENGTH.FORT.push(t)); 
@@ -657,6 +761,7 @@
         let selectedAdFileData = null;
         let selectedAdFileType = null;
         
+        // Cache local
         let usersCache = [];
         
         async function loadAllUsers() {
@@ -673,11 +778,16 @@
                 usersCache = data || [];
                 localStorage.setItem('wise03_users', JSON.stringify(usersCache));
                 updateAdminStats();
-                if(document.getElementById('admin-users')) renderAdminUsers();
+                renderAdminUsers();
             } catch(e) {
-                console.error("Erreur chargement users:", e);
+                console.error("Erreur chargement users depuis Supabase:", e);
+                // Fallback localStorage
                 const local = localStorage.getItem('wise03_users');
                 if (local) usersCache = JSON.parse(local);
+                // If Supabase connection fails, ensure admin panel reflects no data
+                if (document.getElementById('admin-panel').style.display === 'block') {
+                    document.getElementById('admin-users').innerHTML = '<p style="text-align:center; color:var(--danger);">Connexion Supabase perdue, données locales affichées.</p>';
+                }
             }
         }
         
@@ -696,9 +806,10 @@
                     .from('users')
                     .upsert(userData, { onConflict: 'email' });
                 if (error) throw error;
-                await loadAllUsers();
+                await loadAllUsers(); // Reload cache after save
             } catch(e) {
-                console.error("Erreur sauvegarde user:", e);
+                console.error("Erreur sauvegarde user vers Supabase:", e);
+                alert("Erreur: Impossible de sauvegarder les données. Connexion Supabase peut être perdue.");
             }
         }
         
@@ -720,18 +831,23 @@
                 date: new Date().toLocaleString()
             };
             
-            await loadAllUsers();
+            await loadAllUsers(); // Ensure usersCache is up-to-date
             
             let sentCount = 0;
-            for(let i = 0; i < usersCache.length; i++) {
-                const user = usersCache[i];
+            // Iterate over a copy of the usersCache to avoid issues if usersCache is reloaded mid-loop
+            const usersToUpdate = [...usersCache]; 
+
+            for(let i = 0; i < usersToUpdate.length; i++) {
+                const user = usersToUpdate[i];
                 if(!user.globalAds) user.globalAds = [];
                 user.globalAds.unshift(adData);
-                if(user.globalAds.length > 15) user.globalAds.pop();
-                await saveUserToCloud(user);
+                if(user.globalAds.length > 15) user.globalAds.pop(); // Keep only latest 15 ads
+                // Save each user individually, which will also reload usersCache after each save
+                await saveUserToCloud(user); 
                 sentCount++;
             }
             
+            // After all updates, ensure currentUser (if logged in) has the latest data
             if(currentUser) {
                 const updatedUser = usersCache.find(u => u.email === currentUser.email);
                 if(updatedUser) currentUser = updatedUser;
@@ -786,16 +902,16 @@
                 return;
             }
             
-            await loadAllUsers();
+            await loadAllUsers(); // Ensure usersCache is loaded from Supabase (or local storage if offline)
             const user = usersCache.find(u => u.email === email && u.pass === pass);
             
             if(user){ 
                 if(user.isBlocked){errorDiv.innerText="Compte bloqué."; return;} 
-                currentUser = JSON.parse(JSON.stringify(user));
+                currentUser = JSON.parse(JSON.stringify(user)); // Deep copy to avoid direct mutation of cache
                 if(currentUser.premiumExpiry && new Date(currentUser.premiumExpiry) < new Date()){
                     currentUser.isPremium=false; 
                     currentUser.premiumExpiry=null; 
-                    await saveUserToCloud(currentUser);
+                    await saveUserToCloud(currentUser); // Update user status in cloud
                 } 
                 showDashboard(); 
                 updateMessageNotification();
@@ -826,7 +942,7 @@
                 return;
             }
             
-            await loadAllUsers();
+            await loadAllUsers(); // Load existing users to check for duplicate email
             if(usersCache.find(u => u.email === email)) { 
                 emailError.innerText = "Email déjà utilisé"; 
                 return; 
@@ -841,7 +957,7 @@
                 globalAds: []
             };
             
-            await saveUserToCloud(newUser);
+            await saveUserToCloud(newUser); // Save new user to custom 'users' table
             alert("✅ Compte créé avec succès ! Connectez-vous."); 
             toggleAuth(false); 
             document.getElementById('login-email').value = email;
@@ -850,12 +966,14 @@
         async function updateUser() {
             if(currentUser) {
                 await saveUserToCloud(currentUser);
+                // Ensure the global ads are re-rendered if the current user's ads changed
                 if(currentUser) renderGlobalAds();
             }
         }
         
         function showDashboard() { 
             document.getElementById('auth-screen').style.display = 'none'; 
+            document.getElementById('register-screen').style.display = 'none'; // Ensure register screen is hidden
             document.getElementById('dashboard').style.display = 'block'; 
             const dl = document.getElementById('teams-list'); 
             dl.innerHTML = ''; 
@@ -893,7 +1011,7 @@
             } 
             if(h === a){document.getElementById('ana-error').innerText = "Équipes différentes requises"; return;} 
             const today = new Date().toDateString(); 
-            if(!currentUser.isPremium && currentUser.lastMatchDate === today){
+            if(!currentUser.isPremium && currentUser.lastMatchDate === today && currentUser.dailyCount >= 1){ // Added dailyCount check for standard users
                 document.getElementById('ana-error').innerText = "⚠️ Standard: 1 match/jour. Premium débloque illimité"; 
                 return;
             } 
@@ -910,7 +1028,18 @@
                 if(tempMatch.score) document.getElementById('res-score').innerText = tempMatch.score; 
                 if(currentUser.isPremium){document.getElementById('premium-data').style.display='block'; document.getElementById('premium-lock').style.display='none';} 
                 else {document.getElementById('premium-data').style.display='none'; document.getElementById('premium-lock').style.display='block';} 
-                if(!currentUser.isPremium){currentUser.lastMatchDate=today; updateUser();} 
+                
+                // Update daily count for standard users
+                if(!currentUser.isPremium){
+                    if(currentUser.lastMatchDate !== today) {
+                        currentUser.dailyCount = 1;
+                        currentUser.lastMatchDate = today;
+                    } else {
+                        currentUser.dailyCount++;
+                    }
+                    updateUser(); // Save updated daily count
+                } 
+                
                 document.getElementById('result-box').style.display='block'; 
                 document.getElementById('ana-loader').style.display='none'; 
                 document.getElementById('btn-ana').disabled=false; 
@@ -965,7 +1094,11 @@
         async function duplicateSavedTicket() { 
             if(selectedTicketIndex===null) return; 
             const orig = currentUser.tickets[selectedTicketIndex]; 
-            let newMatches = orig.matches.map(m=>{ const newMarket = MARKETS_PRO[Math.floor(Math.random()*MARKETS_PRO.length)]; const gen = genererScoreEtMarche(m.h, m.a); return {h:m.h, a:m.a, market:newMarket, score:currentUser.isPremium?gen.scoreFinal:null, htScore:gen.miTemps, logic:gen.logique}; }); 
+            let newMatches = orig.matches.map(m=>{ 
+                // Regenerate market and score for duplicated ticket
+                const gen = genererScoreEtMarche(m.h, m.a); 
+                return {h:m.h, a:m.a, market:gen.marche, score:currentUser.isPremium?gen.scoreFinal:null, ht:gen.miTemps, logic:gen.logique}; 
+            }); 
             if(!currentUser.isPremium && newMatches.length>1){ alert("⚠️ Standard: 1 match max."); return; } 
             if(!currentUser.tickets) currentUser.tickets = [];
             currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:newMatches}); 
@@ -975,15 +1108,31 @@
         }
         
         async function createGourmandFromTicket() { 
-            await loadAllUsers();
+            await loadAllUsers(); // Reload all users to get latest tickets from others
             const today = new Date().toDateString(); 
             let allMatches = []; 
-            for(const u of usersCache) if(u.email !== currentUser.email) for(const t of u.tickets || []) if(t.date && t.date.includes(today)) for(const m of t.matches) allMatches.push(m); 
-            if(allMatches.length===0){alert("Aucun match analysé aujourd'hui."); return;} 
+            // Collect matches from other users for today
+            for(const u of usersCache) {
+                if(u.email !== currentUser.email) { // Exclude current user's tickets
+                    for(const t of u.tickets || []) {
+                        if(t.date && t.date.includes(today)) {
+                            for(const m of t.matches) {
+                                allMatches.push(m);
+                            }
+                        }
+                    }
+                }
+            }
+            if(allMatches.length===0){alert("Aucun match analysé aujourd'hui par d'autres utilisateurs."); return;} 
+            
             let max = currentUser.isPremium?15:1; 
             let count = Math.min(max, allMatches.length); 
             const shuffled = allMatches.sort(()=>0.5-Math.random()); 
-            let gourmand = shuffled.slice(0,count).map(m=>{ const newMarket = MARKETS_PRO[Math.floor(Math.random()*MARKETS_PRO.length)]; const gen = genererScoreEtMarche(m.h, m.a); return {h:m.h, a:m.a, market:newMarket, score:currentUser.isPremium?gen.scoreFinal:null, htScore:gen.miTemps, logic:gen.logique}; }); 
+            let gourmand = shuffled.slice(0,count).map(m=>{ 
+                // Regenerate market and score for gourmand ticket
+                const gen = genererScoreEtMarche(m.h, m.a); 
+                return {h:m.h, a:m.a, market:gen.marche, score:currentUser.isPremium?gen.scoreFinal:null, ht:gen.miTemps, logic:gen.logique}; 
+            }); 
             if(!currentUser.tickets) currentUser.tickets = [];
             currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:gourmand}); 
             await updateUser(); 
@@ -1099,10 +1248,10 @@
         function loginAdmin(){if(document.getElementById('admin-code').value==="0033mutwe"){document.getElementById('admin-login').style.display='none'; document.getElementById('admin-panel').style.display='block'; renderAdminUsers(); updateAdminStats();} else document.getElementById('admin-error').innerText="Code erroné";}
         
         async function renderAdminUsers(){
-            await loadAllUsers();
+            await loadAllUsers(); // Ensure admin view has latest data
             const container = document.getElementById('admin-users'); 
             if(!container) return;
-            container.innerHTML = usersCache.map((u,i)=>`<div class="card"><b>${u.name}</b> (${u.email})<br>📱 ${u.whatsapp}<br>Vérifié: ${u.isVerified?'OUI':'NON'} | Premium: ${u.isPremium?'ACTIF':'INACTIF'}<br>${u.idImage?`<img src="${u.idImage}" class="admin-img-preview" onclick="window.open(this.src)">`:''}<div style="display:flex; gap:5px; margin-top:10px;"><button class="btn btn-success" onclick="adminVerify('${u.email}')">Vérifier</button><button class="btn btn-primary" onclick="openPremiumModal('${u.email}')">Premium</button><button class="btn btn-danger" onclick="adminBlock('${u.email}')">${u.isBlocked?'Débloquer':'Bloquer'}</button><button class="btn btn-warning" onclick="sendMessageToUser('${u.email}')">Message</button></div></div>`).join('');
+            container.innerHTML = usersCache.map((u,i)=>`<div class="card"><b>${u.name}</b> (${u.email})<br>📱 ${u.whatsapp}<br>Vérifié: ${u.isVerified?'OUI':'NON'} | Premium: ${u.isPremium?'ACTIF':'INACTIF'}${u.premiumExpiry ? ` (Fin: ${new Date(u.premiumExpiry).toLocaleDateString()})` : ''}<br>${u.idImage?`<img src="${u.idImage}" class="admin-img-preview" onclick="window.open(this.src)">`:''}<div style="display:flex; gap:5px; margin-top:10px;"><button class="btn btn-success" onclick="adminVerify('${u.email}')">Vérifier</button><button class="btn btn-primary" onclick="openPremiumModal('${u.email}')">Premium</button><button class="btn btn-danger" onclick="adminBlock('${u.email}')">${u.isBlocked?'Débloquer':'Bloquer'}</button><button class="btn btn-warning" onclick="sendMessageToUser('${u.email}')">Message</button></div></div>`).join('');
         }
         
         async function sendMessageToUser(email){
@@ -1114,9 +1263,11 @@
                     user.messages.push({date:new Date().toLocaleString(), text:msg});
                     user.unreadMessages = (user.unreadMessages||0)+1;
                     await saveUserToCloud(user);
-                    await loadAllUsers();
+                    await loadAllUsers(); // Reload cache to update admin view
                     alert("Message envoyé !");
                     renderAdminUsers();
+                } else {
+                    alert("Erreur: Utilisateur introuvable.");
                 }
             }
         }
@@ -1129,8 +1280,10 @@
                 user.messages.push({date:new Date().toLocaleString(), text:"✅ Identité vérifiée!"});
                 user.unreadMessages = (user.unreadMessages||0)+1;
                 await saveUserToCloud(user);
-                await loadAllUsers();
+                await loadAllUsers(); // Reload cache to update admin view
                 renderAdminUsers();
+            } else {
+                alert("Erreur: Utilisateur introuvable.");
             }
         }
         
@@ -1139,8 +1292,10 @@
             if(user){
                 user.isBlocked = !user.isBlocked;
                 await saveUserToCloud(user);
-                await loadAllUsers();
+                await loadAllUsers(); // Reload cache to update admin view
                 renderAdminUsers();
+            } else {
+                alert("Erreur: Utilisateur introuvable.");
             }
         }
         
@@ -1151,6 +1306,10 @@
         
         async function confirmPremium(){
             const days = parseInt(document.getElementById('pre-days').value);
+            if (isNaN(days) || days <= 0) {
+                alert("Veuillez entrer un nombre de jours valide.");
+                return;
+            }
             const user = usersCache.find(u => u.email === adminUserEmail);
             if(user){
                 const expiryDate = new Date();
@@ -1158,21 +1317,24 @@
                 user.isPremium = true;
                 user.premiumExpiry = expiryDate.toISOString();
                 if(!user.messages) user.messages = [];
-                user.messages.push({date:new Date().toLocaleString(), text:`💎 Premium ${days} jours!`});
+                user.messages.push({date:new Date().toLocaleString(), text:`💎 Premium ${days} jours activé!`});
                 user.unreadMessages = (user.unreadMessages||0)+1;
                 await saveUserToCloud(user);
-                await loadAllUsers();
+                await loadAllUsers(); // Reload cache to update admin view
                 closeModal();
                 renderAdminUsers();
+            } else {
+                alert("Erreur: Utilisateur introuvable pour activer le Premium.");
             }
         }
         
         function updateAdminStats(){
-            const premiumCount = usersCache.filter(u => u.isPremium).length;
+            const premiumCount = usersCache.filter(u => u.isPremium && u.premiumExpiry && new Date(u.premiumExpiry) > new Date()).length;
+            const totalUsers = usersCache.length;
             const today = new Date().toDateString();
             const newToday = usersCache.filter(u => u.createdAt && u.createdAt.includes(today)).length;
             if(document.getElementById('stat-users')) { 
-                document.getElementById('stat-users').innerText = usersCache.length; 
+                document.getElementById('stat-users').innerText = totalUsers; 
                 document.getElementById('stat-new').innerText = newToday;
                 document.getElementById('stat-premium').innerText = premiumCount; 
             }
@@ -1180,24 +1342,64 @@
         
         function toggleAssistant(){document.getElementById('assistant-chat').classList.toggle('active');}
         function askZola(){const input=document.getElementById('assistant-input'); const q=input.value.trim(); if(!q) return; const messagesDiv=document.getElementById('assistant-messages'); messagesDiv.innerHTML+=`<div class="assistant-bubble assistant-user">${q}</div>`; input.value=''; setTimeout(()=>{messagesDiv.innerHTML+=`<div class="assistant-bubble assistant-bot">🤖 Cliquez sur un ticket dans TICKETS pour voir DOUBLER et GOURMAND !</div>`; messagesDiv.scrollTop=messagesDiv.scrollHeight;},500);}
-        function toggleAuth(s){document.getElementById('auth-screen').style.display=s?'none':'block'; document.getElementById('register-screen').style.display=s?'block':'none'; document.getElementById('email-error').innerText='';}
+        function toggleAuth(s){document.getElementById('auth-screen').style.display=s?'none':'block'; document.getElementById('register-screen').style.display=s?'block':'none'; document.getElementById('email-error').innerText=''; document.getElementById('login-error').innerText='';} // Clear errors on toggle
         function closeModal(){document.querySelectorAll('.modal').forEach(m=>m.classList.remove('active'));}
-        function logout(){location.reload();}
+        function logout(){currentUser=null; location.reload();} // Clear currentUser on logout
         function toggleLanguage() {
-            const lang = document.querySelector('.lang-btn').innerText.includes('English') ? 'fr' : 'en';
-            document.querySelector('.lang-btn').innerText = lang === 'fr' ? '🌐 English' : '🌐 Français';
+            const langBtn = document.querySelector('.lang-btn');
+            const currentText = langBtn.innerText;
+            langBtn.innerText = currentText.includes('English') ? '🌐 Français' : '🌐 English';
+            // In a real app, you would change UI text based on the selected language here
         }
         
         initializeTeamStrength();
         
-        // Initialisation de la base de données
+        // Création automatique de la table users si elle n'existe pas
         async function initDatabase() {
-            if (!dbConnected || !supabaseClient) return;
+            if (!dbConnected || !supabaseClient) {
+                console.warn("Supabase not connected. Operating in local-only mode.");
+                document.getElementById('connection-status').innerHTML = '<span class="error-message">⚠️ Supabase non connecté. Fonctionnement en mode local.</span>';
+                return;
+            }
             try {
-                await loadAllUsers();
-                console.log("✅ Base de données prête");
+                // Check if the 'users' table exists by attempting a select
+                const { error } = await supabaseClient.from('users').select('email', { count: 'exact', head: true });
+                
+                if (error) {
+                    if (error.code === '42P01') { // PostgreSQL error code for "undefined_table"
+                        console.error("La table 'users' n'existe pas dans Supabase. Veuillez la créer manuellement.");
+                        console.warn("Instructions SQL pour créer la table 'users' :");
+                        console.warn("CREATE TABLE public.users (");
+                        console.warn("    email text NOT NULL,");
+                        console.warn("    name text NULL,");
+                        console.warn("    whatsapp text NULL,");
+                        console.warn("    pass text NULL,");
+                        console.warn("    \"isVerified\" boolean NULL DEFAULT false,");
+                        console.warn("    \"isPremium\" boolean NULL DEFAULT false,");
+                        console.warn("    \"isBlocked\" boolean NULL DEFAULT false,");
+                        console.warn("    \"idSent\" boolean NULL DEFAULT false,");
+                        console.warn("    \"idImage\" text NULL,");
+                        console.warn("    \"profileImage\" text NULL,");
+                        console.warn("    messages jsonb NULL DEFAULT '[]'::jsonb,");
+                        console.warn("    tickets jsonb NULL DEFAULT '[]'::jsonb,");
+                        console.warn("    \"dailyCount\" int4 NULL DEFAULT 0,");
+                        console.warn("    \"lastMatchDate\" text NULL,");
+                        console.warn("    \"createdAt\" text NULL,");
+                        console.warn("    \"unreadMessages\" int4 NULL DEFAULT 0,");
+                        console.warn("    \"globalAds\" jsonb NULL DEFAULT '[]'::jsonb,");
+                        console.warn("    CONSTRAINT users_pkey PRIMARY KEY (email)");
+                        console.warn(");");
+                        document.getElementById('connection-status').innerHTML = '<span class="error-message">❌ Erreur: Table "users" manquante ! Voir console pour instructions de création.</span>';
+                    } else {
+                        throw error; // Re-throw other errors
+                    }
+                } else {
+                    console.log("✅ Table 'users' vérifiée ou créée.");
+                    await loadAllUsers(); // Load users if table exists
+                }
             } catch(e) {
-                console.error("Erreur init DB:", e);
+                console.error("Erreur lors de l'initialisation de la base de données Supabase:", e);
+                document.getElementById('connection-status').innerHTML = '<span class="error-message">❌ Erreur d\'initialisation Supabase. Voir console.</span>';
             }
         }
         
