@@ -332,6 +332,16 @@
     }
 
     // ===== AUTHENTIFICATION =====
+
+    // Nouvelle fonction pour afficher l'écran d'authentification
+    function showAuthScreen() {
+        document.getElementById('splashScreen').style.display = 'none';
+        document.getElementById('appShell').style.display = 'block';
+        document.getElementById('auth-screen').style.display = 'block';
+        document.getElementById('register-screen').style.display = 'none'; // S'assurer que l'écran d'enregistrement est masqué
+        document.getElementById('admin-login').style.display = 'none'; // S'assurer que l'écran admin est masqué
+    }
+
     async function checkSession() {
         document.getElementById('splashText').innerText = 'Vérification session...';
         const { data: { session } } = await supabase.auth.getSession();
@@ -339,20 +349,23 @@
             await loadOrCreateUser(session.user.id, session.user.email);
             showDashboard();
         } else {
-            setTimeout(() => {
-                document.getElementById('splashScreen').style.display = 'none';
-                document.getElementById('appShell').style.display = 'block';
-                document.getElementById('auth-screen').style.display = 'block';
-            }, 1000);
+            // Si pas de session, on affiche directement l'écran d'authentification
+            showAuthScreen();
         }
     }
     
     supabase.auth.onAuthStateChange(async (event, session) => {
-        if (session) {
+        if (event === 'SIGNED_IN') {
             await loadOrCreateUser(session.user.id, session.user.email);
             showDashboard();
         } else if (event === 'SIGNED_OUT') {
-            location.reload();
+            location.reload(); // Recharger pour revenir à l'écran de connexion
+        } else if (event === 'INITIAL_SESSION') {
+            // Cet événement est déclenché au premier chargement.
+            // Si session est null, il n'y a pas de session existante.
+            if (!session) {
+                showAuthScreen();
+            }
         }
     });
     
@@ -372,11 +385,10 @@
             currentUserData = data;
         }
         currentUserData.uid = uid;
-        document.getElementById('splashText').innerText = 'Prêt !';
-        setTimeout(() => {
-            document.getElementById('splashScreen').style.display = 'none';
-            document.getElementById('appShell').style.display = 'block';
-        }, 500);
+        // Une fois l'utilisateur chargé (ou créé), le splash screen peut être masqué
+        document.getElementById('splashScreen').style.display = 'none';
+        document.getElementById('appShell').style.display = 'block'; // S'assurer que appShell est visible
+        document.getElementById('splashText').innerText = 'Prêt !'; // Mettre à jour le texte du splash screen si visible brièvement
     }
     
     async function saveUser() {
@@ -390,6 +402,7 @@
         const pass = document.getElementById('login-pass').value;
         const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
         if(error) document.getElementById('login-error').innerText = "Email ou mot de passe incorrect";
+        else document.getElementById('login-error').innerText = ""; // Clear error on success
     }
     
     async function registerUser() {
@@ -397,14 +410,19 @@
         const email = document.getElementById('reg-email').value.trim();
         const whatsapp = document.getElementById('reg-whatsapp').value.trim();
         const pass = document.getElementById('reg-pass').value;
+        document.getElementById('email-error').innerText = ""; // Clear previous errors
         if(pass.length < 6) { document.getElementById('email-error').innerText = "Mot de passe min 6 caractères"; return; }
-        const { error } = await supabase.auth.signUp({ email, password: pass });
+        const { data, error } = await supabase.auth.signUp({ email, password: pass });
         if(error) { document.getElementById('email-error').innerText = error.message; return; }
-        setTimeout(async () => {
-            if(currentUserData) { currentUserData.name = name; currentUserData.whatsapp = whatsapp; await saveUser(); }
-            alert("Compte créé ! Connectez-vous.");
-            toggleAuth(false);
-        }, 1000);
+        
+        // Si l'inscription réussit, Supabase crée une session.
+        // L'écouteur onAuthStateChange va gérer le loadOrCreateUser et showDashboard.
+        // Nous pouvons ajouter les détails du profil après que l'utilisateur soit chargé.
+        if (data && data.user) {
+             alert("Compte créé ! Veuillez vérifier votre email pour confirmer l'inscription.");
+             // Après l'inscription, rediriger vers l'écran de connexion
+             toggleAuth(false);
+        }
     }
     
     async function logout() { await supabase.auth.signOut(); location.reload(); }
@@ -414,10 +432,13 @@
         document.getElementById('register-screen').style.display = 'none';
         document.getElementById('dashboard').style.display = 'block';
         const dl = document.getElementById('teams-list');
+        // Vider la datalist avant de la remplir pour éviter les doublons si showDashboard est appelé plusieurs fois
+        dl.innerHTML = ''; 
         ALL_TEAMS.forEach(t => { let opt = document.createElement('option'); opt.value = t; dl.appendChild(opt); });
         document.getElementById('predict-main').style.display = 'block';
         document.getElementById('verify-alert').style.display = 'none';
         if(currentUserData.is_admin) document.getElementById('admin-panel').style.display = 'block';
+        else document.getElementById('admin-panel').style.display = 'none'; // S'assurer que le panneau admin est masqué pour les non-admins
         renderSavedTickets();
         renderProfile();
     }
@@ -427,6 +448,13 @@
         document.getElementById('view-tickets').style.display = view === 'tickets' ? 'block' : 'none';
         document.getElementById('view-profile').style.display = view === 'profile' ? 'block' : 'none';
         document.getElementById('view-ticket-detail').style.display = 'none';
+        
+        // Mettre à jour les classes active pour la nav-bar
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        document.querySelector(`.nav-item[onclick="switchView('${view}')"]`).classList.add('active');
+
         if(view === 'tickets') renderSavedTickets();
         if(view === 'profile') renderProfile();
     }
@@ -434,6 +462,7 @@
     function runAnalysis() {
         const h = document.getElementById('team-h').value.trim();
         const a = document.getElementById('team-a').value.trim();
+        document.getElementById('ana-error').innerText = ""; // Clear previous errors
         if(!ALL_TEAMS.includes(h) || !ALL_TEAMS.includes(a)) {
             document.getElementById('ana-error').innerText = "Équipe invalide";
             return;
@@ -521,10 +550,31 @@
         let badge = currentUserData.is_premium ? '💎 PREMIUM' : (currentUserData.is_verified ? '✅ VÉRIFIÉ' : '⏳ EN ATTENTE');
         let badgeColor = currentUserData.is_premium ? '#d946ef' : (currentUserData.is_verified ? '#22c55e' : '#94a3b8');
         document.getElementById('prof-badge').innerHTML = `<span class="status-badge" style="background:${badgeColor}">${badge}</span>`;
+        
+        // Cacher ou afficher la section d'upload ID en fonction du statut de vérification ou premium
+        if (currentUserData.is_verified || currentUserData.is_premium) {
+            document.getElementById('id-upload-section').style.display = 'none';
+        } else {
+            document.getElementById('id-upload-section').style.display = 'block';
+        }
     }
     
     async function handleIDUpload(input) {
         alert("Fonction upload ID - Configuration Storage Supabase requise");
+        // Implémentation réelle ici :
+        // if (input.files.length > 0) {
+        //     const file = input.files[0];
+        //     const filePath = `${currentUserData.id}/id_docs/${file.name}`;
+        //     const { error: uploadError } = await supabase.storage.from('id-documents').upload(filePath, file);
+        //     if (uploadError) {
+        //         alert("Erreur d'upload: " + uploadError.message);
+        //     } else {
+        //         alert("Document ID envoyé pour vérification.");
+        //         // Optionally update user_profiles table with a reference to the uploaded file
+        //         // currentUserData.id_document_path = filePath;
+        //         // await saveUser();
+        //     }
+        // }
     }
     
     function showAdminLogin() {
@@ -532,20 +582,36 @@
         document.getElementById('admin-login').style.display = 'block';
     }
     
-    function loginAdmin() {
+    async function loginAdmin() {
+        // Le code admin devrait idéalement être stocké de manière sécurisée et non en clair dans le code client.
+        // Pour cet exemple, je garde la vérification simple.
         if(document.getElementById('admin-code').value === "0033mutwe") {
-            if(currentUserData) currentUserData.is_admin = true;
-            saveUser();
-            document.getElementById('admin-login').style.display = 'none';
-            document.getElementById('admin-panel').style.display = 'block';
-            loadAllUsers();
+            // Un admin ne doit pas nécessairement être un utilisateur enregistré au préalable.
+            // Si l'admin se connecte via ce code, on peut lui donner des privilèges.
+            // Il faudrait d'abord s'assurer qu'un utilisateur est connecté (currentUserData).
+            // Si pas d'utilisateur connecté, cela pose problème car currentUserData serait null.
+            // Une meilleure approche serait une authentification admin séparée et plus robuste.
+            if(currentUserData) {
+                currentUserData.is_admin = true;
+                await saveUser();
+                document.getElementById('admin-login').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+                loadAllUsers();
+            } else {
+                alert("Veuillez vous connecter en tant qu'utilisateur avant d'essayer le mode admin.");
+            }
         } else {
-            document.getElementById('admin-error').innerText = "Code incorrect";
+            alert("Code incorrect"); // Utilisation d'alert car il n'y a pas de div d'erreur pour l'admin-login
         }
     }
     
     async function loadAllUsers() {
-        const { data } = await supabase.from('user_profiles').select('*');
+        const { data, error } = await supabase.from('user_profiles').select('*');
+        if(error) {
+            console.error("Erreur de chargement des utilisateurs admin:", error.message);
+            document.getElementById('admin-users').innerHTML = `<p class="error-message">Erreur: ${error.message}</p>`;
+            return;
+        }
         if(data) {
             usersCache = data;
             document.getElementById('admin-users').innerHTML = usersCache.map(u => `
@@ -563,9 +629,13 @@
     }
     
     async function adminVerify(uid) {
-        await supabase.from('user_profiles').update({ is_verified: true }).eq('id', uid);
-        alert("Utilisateur vérifié !");
-        loadAllUsers();
+        const { error } = await supabase.from('user_profiles').update({ is_verified: true }).eq('id', uid);
+        if (error) {
+            alert("Erreur lors de la vérification: " + error.message);
+        } else {
+            alert("Utilisateur vérifié !");
+            loadAllUsers(); // Recharger la liste des utilisateurs pour mettre à jour l'affichage
+        }
     }
     
     function openPremiumModal(uid) {
@@ -577,29 +647,50 @@
         const days = parseInt(document.getElementById('pre-days').value) || 30;
         const expiry = new Date();
         expiry.setDate(expiry.getDate() + days);
-        await supabase.from('user_profiles').update({ is_premium: true, premium_expiry: expiry.toISOString() }).eq('id', adminTargetUid);
-        alert(`Premium ${days} jours activé !`);
-        closeModal();
-        loadAllUsers();
+        const { error } = await supabase.from('user_profiles').update({ is_premium: true, premium_expiry: expiry.toISOString() }).eq('id', adminTargetUid);
+        if (error) {
+            alert("Erreur lors de l'activation Premium: " + error.message);
+        } else {
+            alert(`Premium ${days} jours activé !`);
+            closeModal();
+            loadAllUsers(); // Recharger la liste des utilisateurs pour mettre à jour l'affichage
+        }
     }
     
     async function sendGlobalAd() {
         const title = document.getElementById('ad-title').value || "Nouvelle offre";
-        const adData = { id: Date.now(), title, type: 'image', media: 'https://via.placeholder.com/100x50?text=Promo', date: new Date().toLocaleString() };
-        const { data: users } = await supabase.from('user_profiles').select('id, global_ads');
+        // Pour l'image, il faudrait un mécanisme d'upload vers Supabase Storage et stocker l'URL
+        // Pour l'instant, on utilise une image placeholder
+        const adImageUrl = document.getElementById('ad-image').files.length > 0 ? 'URL_DE_VOTRE_IMAGE_UPLOADEE' : 'https://via.placeholder.com/100x50?text=Promo'; // Ceci est un placeholder
+
+        const adData = { id: Date.now(), title, url: document.getElementById('ad-url').value, type: 'image', media: adImageUrl, date: new Date().toLocaleString() };
+        
+        const { data: users, error: fetchError } = await supabase.from('user_profiles').select('id, global_ads');
+        if(fetchError) {
+            alert("Erreur lors de la récupération des utilisateurs: " + fetchError.message);
+            return;
+        }
+
         for(let u of users) {
             let ads = u.global_ads || [];
-            ads.unshift(adData);
-            if(ads.length > 10) ads.pop();
-            await supabase.from('user_profiles').update({ global_ads: ads }).eq('id', u.id);
+            ads.unshift(adData); // Ajouter la nouvelle annonce au début
+            if(ads.length > 10) ads.pop(); // Garder seulement les 10 dernières annonces
+            const { error: updateError } = await supabase.from('user_profiles').update({ global_ads: ads }).eq('id', u.id);
+            if(updateError) console.error(`Erreur mise à jour annonces pour ${u.id}:`, updateError.message);
         }
         alert("Annonce envoyée !");
+        // Clear les champs après envoi
+        document.getElementById('ad-title').value = '';
+        document.getElementById('ad-url').value = '';
+        document.getElementById('ad-image').value = '';
     }
     
     function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); }
     function toggleAuth(showReg) {
         document.getElementById('auth-screen').style.display = showReg ? 'none' : 'block';
         document.getElementById('register-screen').style.display = showReg ? 'block' : 'none';
+        document.getElementById('login-error').innerText = ""; // Clear errors on toggle
+        document.getElementById('email-error').innerText = ""; // Clear errors on toggle
     }
     function toggleAssistant() { document.getElementById('assistant-chat').classList.toggle('active'); }
     function askZola() {
@@ -610,13 +701,15 @@
         container.innerHTML += `<div class="assistant-bubble assistant-user">${msg}</div>`;
         input.value = '';
         setTimeout(() => {
+            // Réponse de Zola, simplifiée pour cet exemple
             container.innerHTML += `<div class="assistant-bubble assistant-bot">🤖 Cliquez sur un ticket pour le dupliquer !</div>`;
             container.scrollTop = container.scrollHeight;
         }, 500);
     }
     
-    // LANCEMENT
+    // LANCEMENT INITIAL
     document.getElementById('splashText').innerText = 'Initialisation...';
+    // Lancer la vérification de session au chargement de la page
     checkSession();
 </script>
 
@@ -629,4 +722,4 @@
     </div>
 </div>
 </body>
-        </html>
+                    </html>
