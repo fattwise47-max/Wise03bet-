@@ -12,815 +12,621 @@
             --primary: #3b82f6; --danger: #ef4444; --gold: #eab308; --warning: #f97316;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-        body { background: var(--bg); color: var(--text); overflow-x: hidden; touch-action: pan-y pinch-zoom; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; }
         .app-shell { max-width: 480px; margin: 0 auto; padding: 15px; min-height: 100vh; position: relative; padding-bottom: 120px; }
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5); }
-        input, select, textarea { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: #1e293b; color: #fff; margin-bottom: 12px; font-size: 13px; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
-        .btn { padding: 12px; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; transition: 0.3s; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary), #1d4ed8); color: white; flex: 1; }
-        .btn-success { background: var(--green); color: #000; flex: 1; }
-        .btn-danger { background: var(--danger); color: white; flex: 1; }
-        .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); flex: 1; }
-        .btn-full { width: 100%; }
-        .btn-assistant { background: linear-gradient(135deg, var(--gold), var(--warning)); color: #000; }
-        .btn-gourmand { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; }
-        .btn-double { background: linear-gradient(135deg, var(--cyan), #0891b2); color: white; }
-        .btn-warning { background: var(--warning); color: #000; }
-        .nav-bar { display: flex; background: var(--card); border: 1px solid var(--border); border-radius: 18px; margin-bottom: 20px; padding: 5px; }
-        .nav-item { flex: 1; padding: 10px; text-align: center; cursor: pointer; font-size: 10px; font-weight: 800; border-radius: 12px; color: var(--muted); position: relative; transition: all 0.2s ease; }
-        .nav-item.active { background: var(--primary); color: white; }
-        .nav-item .notification-badge { position: absolute; top: -5px; right: -5px; background: var(--danger); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; }
-        .analysis-res { font-size: 22px; font-weight: 900; color: var(--green); margin: 10px 0; text-align: center; }
+        input, select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: #1e293b; color: #fff; margin-bottom: 12px; font-size: 13px; }
+        .btn { padding: 12px; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn-primary { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; width: 100%; }
+        .btn-ghost { background: transparent; border: 1px solid #1e293b; color: #94a3b8; width: 100%; }
+        .btn-danger { background: #ef4444; color: white; width: 100%; }
+        .btn-success { background: #22c55e; color: black; width: 100%; }
+        .nav-bar { display: flex; background: #0f172a; border: 1px solid #1e293b; border-radius: 18px; margin-bottom: 20px; padding: 5px; }
+        .nav-item { flex: 1; padding: 10px; text-align: center; cursor: pointer; font-size: 10px; font-weight: 800; border-radius: 12px; color: #94a3b8; }
+        .nav-item.active { background: #3b82f6; color: white; }
+        .analysis-res { font-size: 22px; font-weight: 900; color: #22c55e; margin: 10px 0; text-align: center; }
         .vs-container { display: flex; align-items: center; justify-content: space-around; margin: 15px 0; }
         .team-name { font-weight: 900; font-size: 13px; text-align: center; flex: 1; }
-        .premium-score { background: linear-gradient(135deg, var(--pink), #a21caf); border-radius: 16px; padding: 15px; text-align: center; margin: 10px 0; color: white; }
-        .loader { width: 18px; height: 18px; border: 3px solid #fff; border-bottom-color: transparent; border-radius: 50%; display: none; animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; }
-        .modal.active { display: flex; }
-        .modal-content { background: var(--card); padding: 25px; border-radius: 20px; width: 90%; max-width: 500px; max-height: 80vh; overflow-y: auto; }
-        .status-badge { font-size: 10px; padding: 4px 8px; border-radius: 10px; font-weight: bold; margin-top: 5px; display: inline-block; }
-        .profile-pic { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 10px auto; border: 3px solid var(--primary); }
-        .admin-img-preview { max-width: 100px; max-height: 100px; margin: 5px 0; border-radius: 8px; cursor: pointer; }
-        .ticket-item { border-left: 3px solid var(--primary); margin-bottom: 5px; padding-left: 10px; }
-        .assistant-chat { position: fixed; bottom: 80px; right: 20px; width: 300px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; z-index: 999; display: none; flex-direction: column; max-height: 400px; }
+        .premium-score { background: linear-gradient(135deg, #d946ef, #a21caf); border-radius: 16px; padding: 15px; text-align: center; margin: 10px 0; color: white; }
+        .loader { width: 18px; height: 18px; border: 3px solid #fff; border-bottom-color: transparent; border-radius: 50%; display: inline-block; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .status-badge { font-size: 10px; padding: 4px 8px; border-radius: 10px; display: inline-block; }
+        .team-strength { font-size: 10px; margin-top: 4px; color: #eab308; }
+        .splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #020617, #0f172a); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; }
+        .splash-logo { font-size: 42px; font-weight: 900; background: linear-gradient(135deg, #3b82f6, #06b6d4); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 40px; }
+        .splash-loader { width: 60px; height: 60px; border: 4px solid rgba(59,130,246,0.2); border-top: 4px solid #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        .error-message { color: #ef4444; background: #4a1e27; padding: 10px; border-radius: 12px; font-size: 12px; text-align: center; margin-top: 10px; }
+        .assistant-chat { position: fixed; bottom: 80px; right: 20px; width: 280px; background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; z-index: 999; display: none; flex-direction: column; max-height: 400px; }
         .assistant-chat.active { display: flex; }
-        .assistant-header { background: linear-gradient(135deg, var(--gold), var(--warning)); padding: 12px; border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; cursor: pointer; color: #000; font-weight: bold; }
+        .assistant-header { background: linear-gradient(135deg, #eab308, #f97316); padding: 12px; border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; cursor: pointer; color: #000; font-weight: bold; }
         .assistant-messages { flex: 1; padding: 10px; overflow-y: auto; max-height: 300px; font-size: 12px; }
-        .assistant-input { display: flex; padding: 10px; gap: 5px; border-top: 1px solid var(--border); }
+        .assistant-input { display: flex; padding: 10px; gap: 5px; border-top: 1px solid #1e293b; }
         .assistant-input input { flex: 1; margin: 0; padding: 8px; }
         .assistant-bubble { margin: 5px 0; padding: 8px; border-radius: 12px; max-width: 85%; word-wrap: break-word; }
-        .assistant-user { background: var(--primary); margin-left: auto; text-align: right; }
-        .assistant-bot { background: var(--border); }
-        .lang-btn { position: fixed; top: 10px; right: 10px; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 5px 10px; cursor: pointer; font-size: 12px; z-index: 100; }
-        .stats-card { display: flex; justify-content: space-around; margin-bottom: 15px; }
-        .stat-item { text-align: center; background: var(--border); padding: 10px; border-radius: 12px; flex: 1; margin: 0 5px; }
-        .stat-number { font-size: 24px; font-weight: bold; color: var(--primary); }
+        .assistant-user { background: #3b82f6; margin-left: auto; text-align: right; }
+        .assistant-bot { background: #1e293b; }
+        .btn-assistant { position: fixed; bottom: 20px; right: 20px; background: linear-gradient(135deg, #eab308, #f97316); color: black; border: none; border-radius: 30px; padding: 12px 18px; cursor: pointer; font-weight: bold; z-index: 998; }
+        .back-btn { margin-bottom: 15px; background: #1e293b; padding: 8px 15px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 12px; }
+        .ticket-card { cursor: pointer; }
+        .detail-header { background: linear-gradient(135deg, #3b82f6, #1d4ed8); padding: 15px; border-radius: 16px; margin-bottom: 15px; text-align: center; }
+        .info-badge { background: #1e293b; padding: 5px 10px; border-radius: 20px; font-size: 11px; display: inline-block; margin: 5px; }
         .action-buttons { display: flex; gap: 10px; margin-top: 15px; }
-        .ticket-card { cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
-        .ticket-card:hover { transform: scale(1.01); border-color: var(--primary); }
-        .back-btn { margin-bottom: 15px; background: var(--border); padding: 8px 15px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 12px; }
-        .team-strength { font-size: 10px; margin-top: 4px; color: var(--gold); }
-        .detail-header { background: linear-gradient(135deg, var(--primary), #1d4ed8); padding: 15px; border-radius: 16px; margin-bottom: 15px; text-align: center; }
-        .info-badge { background: var(--border); padding: 5px 10px; border-radius: 20px; font-size: 11px; display: inline-block; margin: 5px; }
-        .splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #020617, #0f172a); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; transition: opacity 0.5s ease; }
-        .splash-logo { font-size: 42px; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 40px; }
-        .splash-loader { width: 60px; height: 60px; border: 4px solid rgba(59,130,246,0.2); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
-        .splash-progress { width: 70%; max-width: 280px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; margin: 20px 0; }
-        .splash-progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary), var(--cyan)); transition: width 0.1s linear; }
-        .splash-text { color: var(--muted); font-size: 14px; letter-spacing: 1px; }
-        .ad-banner { position: fixed; bottom: 0; left: 0; right: 0; background: linear-gradient(135deg, #1e1b4b, #0f172a); border-top: 2px solid var(--gold); padding: 12px; z-index: 900; max-height: 110px; overflow-x: auto; white-space: nowrap; display: flex; gap: 12px; align-items: center; backdrop-filter: blur(10px); }
-        .ad-item { display: inline-flex; flex-direction: column; align-items: center; background: rgba(0,0,0,0.6); padding: 8px 12px; border-radius: 12px; min-width: 130px; text-align: center; position: relative; }
-        .ad-item img, .ad-item video { max-height: 55px; max-width: 100px; border-radius: 8px; margin-bottom: 4px; cursor: pointer; }
-        .ad-item span { font-size: 10px; color: var(--gold); }
-        .close-ad { position: absolute; right: -8px; top: -8px; background: rgba(0,0,0,0.7); border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12px; color: white; }
-        .error-message { color: var(--danger); background: #4a1e27; border: 1px solid var(--danger); padding: 10px; border-radius: 12px; margin-top: 15px; font-size: 12px; text-align: center; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: #0f172a; padding: 25px; border-radius: 20px; width: 90%; max-width: 400px; }
     </style>
 </head>
 <body>
-    <div class="splash-screen" id="splashScreen">
-        <div class="splash-logo">WISE03<span style="color:white">.BET</span></div>
-        <div class="splash-loader"></div>
-        <div class="splash-progress"><div class="splash-progress-bar" id="splashProgress"></div></div>
-        <div class="splash-text" id="splashText">Connexion à Supabase...</div>
-    </div>
 
-    <div class="app-shell" id="appShell" style="display: none;">
-        <button class="lang-btn" onclick="toggleLanguage()">🌐 English</button>
-        <header style="text-align: center; padding: 20px 0;">
-            <h1 style="color: var(--primary); letter-spacing: 2px;">WISE03<span style="color:white">.BET</span></h1>
-            <div id="connection-status" style="font-size: 10px; color: var(--green); margin-top: 5px;">🟢 Connexion Supabase...</div>
-        </header>
+<div class="splash-screen" id="splashScreen">
+    <div class="splash-logo">WISE03<span style="color:white">.BET</span></div>
+    <div class="splash-loader"></div>
+    <div id="splashText" style="color:#94a3b8; margin-top:20px;">Chargement...</div>
+</div>
 
-        <section id="auth-screen">
-            <div class="card">
-                <h3 style="text-align:center; margin-bottom:15px;">Connexion</h3>
-                <input type="email" id="login-email" placeholder="Email">
-                <input type="password" id="login-pass" placeholder="Mot de passe">
-                <div id="login-error" style="color:var(--danger); font-size:12px;"></div>
-                <button class="btn btn-primary btn-full" onclick="loginUser()">SE CONNECTER</button>
-                <button class="btn btn-ghost btn-full" style="margin-top:10px;" onclick="toggleAuth(true)">Créer un compte</button>
-                <button class="btn btn-ghost btn-full" style="margin-top:30px; font-size:10px;" onclick="showAdminLogin()">CONSOLE MUTWE</button>
-                <div style="margin-top:15px; padding:10px; background:var(--border); border-radius:12px; font-size:10px; text-align:center;">
-                    🌍 <strong>Synchronisation automatique</strong><br>Vos données sont partagées entre tous vos appareils
+<div class="app-shell" id="appShell" style="display: none;">
+    <header style="text-align: center; padding: 20px 0;">
+        <h1 style="color: #3b82f6;">WISE03<span style="color:white">.BET</span></h1>
+        <div id="connection-status" style="font-size: 10px; color: #22c55e;">🟢 Prêt</div>
+    </header>
+
+    <section id="auth-screen">
+        <div class="card">
+            <h3 style="text-align:center; margin-bottom:15px;">Connexion</h3>
+            <input type="email" id="login-email" placeholder="Email">
+            <input type="password" id="login-pass" placeholder="Mot de passe">
+            <div id="login-error" style="color:#ef4444; font-size:12px;"></div>
+            <button class="btn-primary" onclick="loginUser()">SE CONNECTER</button>
+            <button class="btn-ghost" style="margin-top:10px;" onclick="toggleAuth(true)">Créer un compte</button>
+            <button class="btn-ghost" style="margin-top:20px;" onclick="showAdminLogin()">CONSOLE ADMIN</button>
+        </div>
+    </section>
+
+    <section id="register-screen" style="display:none;">
+        <div class="card">
+            <h3 style="text-align:center; margin-bottom:15px;">Inscription</h3>
+            <input type="text" id="reg-name" placeholder="Nom complet">
+            <input type="email" id="reg-email" placeholder="Email">
+            <div id="email-error" style="color:#ef4444; font-size:12px;"></div>
+            <input type="tel" id="reg-whatsapp" placeholder="WhatsApp">
+            <input type="password" id="reg-pass" placeholder="Mot de passe (min 6)">
+            <button class="btn-primary" onclick="registerUser()">S'INSCRIRE</button>
+            <button class="btn-ghost" style="margin-top:10px;" onclick="toggleAuth(false)">Retour</button>
+        </div>
+    </section>
+
+    <section id="dashboard" style="display:none;">
+        <div class="nav-bar">
+            <div class="nav-item active" onclick="switchView('predict')">ANALYSE</div>
+            <div class="nav-item" onclick="switchView('tickets')">TICKETS</div>
+            <div class="nav-item" onclick="switchView('profile')">PROFIL</div>
+        </div>
+
+        <div id="view-predict">
+            <div id="verify-alert" class="card" style="display:none; border-color:#f97316;">
+                <p style="font-size:12px; color:#f97316;">⚠️ Vérification ID requise dans Profil</p>
+            </div>
+            <div id="predict-main" style="display:none;">
+                <div class="card">
+                    <input type="text" id="team-h" placeholder="Équipe domicile" list="teams-list">
+                    <input type="text" id="team-a" placeholder="Équipe extérieur" list="teams-list">
+                    <datalist id="teams-list"></datalist>
+                    <div id="ana-error" style="color:#ef4444; font-size:12px;"></div>
+                    <button class="btn-primary" onclick="runAnalysis()">ANALYSER</button>
                 </div>
-            </div>
-        </section>
-
-        <section id="register-screen" style="display:none;">
-            <div class="card">
-                <h3 style="text-align:center; margin-bottom:15px;">Inscription</h3>
-                <input type="text" id="reg-name" placeholder="Nom complet">
-                <input type="email" id="reg-email" placeholder="Email">
-                <div id="email-error" style="color:var(--danger); font-size:12px;"></div>
-                <input type="tel" id="reg-whatsapp" placeholder="Numéro WhatsApp (ex: 22990123456)">
-                <input type="password" id="reg-pass" placeholder="Mot de passe (min 6 caractères)">
-                <button class="btn btn-primary btn-full" onclick="registerUser()">S'INSCRIRE</button>
-                <button class="btn btn-ghost btn-full" style="margin-top:10px;" onclick="toggleAuth(false)">Retour</button>
-            </div>
-        </section>
-
-        <section id="dashboard" style="display:none;">
-            <div class="nav-bar">
-                <div class="nav-item active" id="nav-predict" onclick="switchView('predict')">ANALYSE</div>
-                <div class="nav-item" id="nav-tickets" onclick="switchView('tickets')">TICKETS</div>
-                <div class="nav-item" id="nav-messages" onclick="switchView('messages')">MESSAGES</div>
-                <div class="nav-item" id="nav-profile" onclick="switchView('profile')">PROFIL</div>
-            </div>
-
-            <div id="view-predict">
-                <div id="verify-alert" class="card" style="display:none; border-color:var(--warning);">
-                    <p style="font-size:12px; color:var(--warning); text-align:center;">⚠️ Votre compte est en attente de vérification. Téléchargez votre ID dans "Profil".</p>
-                </div>
-                <div id="predict-main" style="display:none;">
+                <div id="result-box" style="display:none;">
                     <div class="card">
-                        <label style="font-size:11px; color:var(--muted);">Équipe Domicile</label>
-                        <input type="text" id="team-h" placeholder="Chercher..." list="teams-list">
-                        <label style="font-size:11px; color:var(--muted);">Équipe Extérieur</label>
-                        <input type="text" id="team-a" placeholder="Chercher..." list="teams-list">
-                        <datalist id="teams-list"></datalist>
-                        <div id="ana-error" style="color:var(--danger); font-size:11px; margin-bottom:10px;"></div>
-                        <button class="btn btn-primary btn-full" onclick="runAnalysis()" id="btn-ana">
-                            <span>ANALYSER LE MATCH</span>
-                            <div class="loader" id="ana-loader"></div>
-                        </button>
-                    </div>
-                    <div id="result-box" style="display:none;">
-                        <div class="card" style="border:2px solid var(--cyan);">
-                            <div class="vs-container">
-                                <div class="team-name" id="res-h"></div>
-                                <div style="color:var(--primary); font-weight:900;">VS</div>
-                                <div class="team-name" id="res-a"></div>
-                            </div>
-                            <div id="res-market" class="analysis-res">---</div>
-                            <div id="res-ht" style="text-align:center; font-size:13px; color:var(--cyan); margin:5px 0;"></div>
-                            <div id="res-logic" style="text-align:center; font-size:11px; color:var(--muted); margin:5px 0;"></div>
-                            <div id="premium-lock" class="premium-score" style="background:var(--border); display:none;">🔒 Score Exact Réservé Premium</div>
-                            <div id="premium-data" class="premium-score" style="display:none;">
-                                <small>SCORE EXACT PRÉDIT</small>
-                                <div style="font-size:32px; font-weight:900;" id="res-score">?-?</div>
-                            </div>
-                            <button class="btn btn-ghost btn-full" onclick="addToTicket()">+ AJOUTER AU COUPON</button>
+                        <div class="vs-container">
+                            <div class="team-name" id="res-h"></div>
+                            <div>VS</div>
+                            <div class="team-name" id="res-a"></div>
                         </div>
-                    </div>
-                    <div id="current-ticket" class="card" style="display:none; border-color:var(--green);">
-                        <h4 style="margin-bottom:10px;">Coupon Actuel (<span id="ticket-count">0</span>)</h4>
-                        <div id="ticket-list"></div>
-                        <button class="btn btn-success btn-full" style="margin-top:10px;" onclick="saveTicket()">ENREGISTRER LE TICKET</button>
+                        <div id="res-market" class="analysis-res">---</div>
+                        <div id="res-ht" style="text-align:center; font-size:13px;"></div>
+                        <div id="premium-data" class="premium-score" style="display:none;">
+                            <div style="font-size:32px; font-weight:900;" id="res-score">?-?</div>
+                        </div>
+                        <button class="btn-ghost" onclick="addToTicket()">+ AJOUTER</button>
                     </div>
                 </div>
-            </div>
-
-            <div id="view-tickets" style="display:none;"><div id="tickets-list-view"></div></div>
-            <div id="view-ticket-detail" style="display:none;">
-                <div class="back-btn" onclick="backToTicketsList()">← Retour aux tickets</div>
-                <div id="ticket-detail-content"></div>
-            </div>
-            <div id="view-messages" style="display:none;"><div id="msg-list"></div></div>
-            <div id="view-profile" style="display:none;">
-                <div class="card" style="text-align:center;">
-                    <div id="profile-pic-container"></div>
-                    <h2 id="prof-name">---</h2>
-                    <p id="prof-email" style="font-size:12px; color:var(--muted);"></p>
-                    <p id="prof-whatsapp" style="font-size:12px; color:var(--muted);"></p>
-                    <div id="prof-badge"></div>
-                    <hr style="margin:20px 0; opacity:0.1;">
-                    <div id="profile-pic-section">
-                        <p style="font-size:11px; margin-bottom:10px;">Photo de profil :</p>
-                        <button class="btn btn-primary btn-full" onclick="document.getElementById('profile-file').click()">📸 CHARGER PHOTO DE PROFIL</button>
-                        <input type="file" id="profile-file" style="display:none;" accept="image/*" onchange="handleProfileUpload(this)">
-                    </div>
-                    <div id="id-upload-section">
-                        <p style="font-size:11px; margin-bottom:10px;">Vérification d'identité requise :</p>
-                        <button class="btn btn-warning btn-full" onclick="document.getElementById('id-file').click()">📷 TÉLÉCHARGER PIÈCE ID</button>
-                        <input type="file" id="id-file" style="display:none;" accept="image/*" onchange="handleIDUpload(this)">
-                    </div>
-                    <button class="btn btn-danger btn-full" style="margin-top:20px;" onclick="logout()">DÉCONNEXION</button>
+                <div id="current-ticket" class="card" style="display:none;">
+                    <h4>Ticket (<span id="ticket-count">0</span>)</h4>
+                    <div id="ticket-list"></div>
+                    <button class="btn-success" onclick="saveTicket()">ENREGISTRER</button>
                 </div>
-            </div>
-        </section>
-
-        <section id="admin-login" style="display:none;">
-            <div class="card">
-                <input type="password" id="admin-code" placeholder="Code Secret Mutwe">
-                <div id="admin-error" style="color:var(--danger); font-size:12px;"></div>
-                <button class="btn btn-danger btn-full" onclick="loginAdmin()">ACCÉDER</button>
-                <button class="btn btn-ghost btn-full" style="margin-top:10px;" onclick="location.reload()">RETOUR</button>
-            </div>
-        </section>
-
-        <section id="admin-panel" style="display:none;">
-            <div class="stats-card" id="admin-stats">
-                <div class="stat-item"><div class="stat-number" id="stat-users">0</div><div>Total Utilisateurs</div></div>
-                <div class="stat-item"><div class="stat-number" id="stat-new">0</div><div>Nouveaux aujourd'hui</div></div>
-                <div class="stat-item"><div class="stat-number" id="stat-premium">0</div><div>Premium</div></div>
-            </div>
-            <h3 style="text-align:center; color:var(--danger); margin-bottom:20px;">🛡️ CONSOLE MUTWE</h3>
-            <div class="card">
-                <h4 style="margin-bottom:10px;">📢 Envoyer une annonce à TOUS les utilisateurs</h4>
-                <input type="text" id="ad-title" placeholder="Titre / Description courte" style="margin-bottom:8px;">
-                <input type="url" id="ad-url" placeholder="Lien URL (optionnel)" style="margin-bottom:8px;">
-                <div style="display:flex; gap:8px; margin-bottom:8px;">
-                    <button class="btn btn-primary" onclick="document.getElementById('ad-image').click()">🖼️ Choisir image</button>
-                    <button class="btn btn-primary" onclick="document.getElementById('ad-video').click()">🎬 Choisir vidéo</button>
-                </div>
-                <input type="file" id="ad-image" style="display:none;" accept="image/*">
-                <input type="file" id="ad-video" style="display:none;" accept="video/*">
-                <div id="ad-preview" style="margin:10px 0; padding:10px; background:var(--border); border-radius:12px; display:none;"></div>
-                <button class="btn btn-success btn-full" onclick="sendGlobalAd()">📢 ENVOYER À TOUS</button>
-            </div>
-            <div id="admin-users"></div>
-            <button class="btn btn-ghost btn-full" onclick="location.reload()">QUITTER</button>
-        </section>
-        
-        <div id="assistant-chat" class="assistant-chat">
-            <div class="assistant-header" onclick="toggleAssistant()"><span>🤖 Zola - Assistant</span><span>▼</span></div>
-            <div class="assistant-messages" id="assistant-messages"><div class="assistant-bubble assistant-bot">👋 Bonjour ! Je suis Zola. Cliquez sur un ticket enregistré pour voir ses détails !</div></div>
-            <div class="assistant-input">
-                <input type="text" id="assistant-input" placeholder="Votre question..." onkeypress="if(event.key==='Enter')askZola()">
-                <button class="btn btn-primary" onclick="askZola()" style="padding:8px 12px;">➤</button>
             </div>
         </div>
-        <button class="btn btn-assistant" style="position:fixed; bottom:20px; right:20px; width:auto; padding:10px 15px; z-index:998;" onclick="toggleAssistant()">🤖 Zola</button>
-        <div id="global-ad-banner" class="ad-banner" style="display:none;"></div>
-    </div>
 
-    <div id="modal-premium" class="modal">
-        <div class="modal-content">
-            <h4>Activer Premium</h4>
-            <input type="number" id="pre-days" placeholder="Nombre de jours" value="30">
-            <div style="display:flex; gap:10px;"><button class="btn btn-success" onclick="confirmPremium()">ACTIVER</button><button class="btn btn-ghost" onclick="closeModal()">ANNULER</button></div>
+        <div id="view-tickets" style="display:none;">
+            <div id="tickets-list-view"></div>
+        </div>
+        <div id="view-ticket-detail" style="display:none;">
+            <div class="back-btn" onclick="backToTicketsList()">← Retour</div>
+            <div id="ticket-detail-content"></div>
+        </div>
+
+        <div id="view-profile" style="display:none;">
+            <div class="card" style="text-align:center;">
+                <h2 id="prof-name">---</h2>
+                <p id="prof-email"></p>
+                <p id="prof-whatsapp"></p>
+                <div id="prof-badge"></div>
+                <hr style="margin:20px 0;">
+                <div id="id-upload-section">
+                    <button class="btn-warning" onclick="document.getElementById('id-file').click()">📷 UPLOAD ID</button>
+                    <input type="file" id="id-file" style="display:none;" onchange="handleIDUpload(this)">
+                </div>
+                <button class="btn-danger" style="margin-top:20px;" onclick="logout()">DÉCONNEXION</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="admin-login" style="display:none;">
+        <div class="card">
+            <input type="password" id="admin-code" placeholder="Code Admin">
+            <button class="btn-danger" onclick="loginAdmin()">ACCÉDER</button>
+            <button class="btn-ghost" style="margin-top:10px;" onclick="location.reload()">RETOUR</button>
+        </div>
+    </section>
+
+    <section id="admin-panel" style="display:none;">
+        <div class="card">
+            <h3>📢 Annonce globale</h3>
+            <input type="text" id="ad-title" placeholder="Titre">
+            <input type="url" id="ad-url" placeholder="Lien (optionnel)">
+            <button class="btn-primary" onclick="document.getElementById('ad-image').click()">📷 Image</button>
+            <input type="file" id="ad-image" style="display:none;" accept="image/*">
+            <button class="btn-success" style="margin-top:10px;" onclick="sendGlobalAd()">ENVOYER</button>
+        </div>
+        <div id="admin-users"></div>
+        <button class="btn-ghost" onclick="location.reload()">QUITTER</button>
+    </section>
+
+    <div id="assistant-chat" class="assistant-chat">
+        <div class="assistant-header" onclick="toggleAssistant()">🤖 Zola <span>▼</span></div>
+        <div class="assistant-messages" id="assistant-messages"></div>
+        <div class="assistant-input">
+            <input type="text" id="assistant-input" placeholder="Question...">
+            <button onclick="askZola()">➤</button>
         </div>
     </div>
-    <div id="modal-tickets" class="modal">
-        <div class="modal-content"><h4>📋 Tickets de l'utilisateur</h4><div id="admin-tickets-list"></div><button class="btn btn-ghost btn-full" onclick="closeModal()">FERMER</button></div>
+    <button class="btn-assistant" onclick="toggleAssistant()">🤖</button>
+</div>
+
+<script>
+    // ===== CONFIGURATION =====
+    const SUPABASE_URL = 'https://kvzemwoinlrisauioonq.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_6lDejMl6JmtRiTH0XhwMSQ_NQcuhoyy';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    let currentUserData = null;
+    let currentTicket = [];
+    let tempMatch = null;
+    let usersCache = [];
+    let adminTargetUid = null;
+
+    // ===== LISTE COMPLÈTE DE +500 CLUBS AVEC CLASSIFICATION =====
+    
+    // Équipes FORTES (Top mondial - 80 clubs)
+    const FORT_TEAMS = [
+        'Real Madrid', 'FC Barcelona', 'Atlético Madrid', 'Manchester City', 'Liverpool FC', 
+        'Bayern Munich', 'Paris Saint-Germain', 'Inter Milan', 'AC Milan', 'Juventus FC',
+        'Borussia Dortmund', 'Chelsea FC', 'Arsenal FC', 'Manchester United', 'Tottenham Hotspur',
+        'Newcastle United', 'Al Ahly', 'Espérance de Tunis', 'Wydad Casablanca', 'Raja Casablanca',
+        'TP Mazembe', 'Mamelodi Sundowns', 'Flamengo', 'Palmeiras', 'River Plate', 'Boca Juniors',
+        'Al-Hilal', 'Al-Nassr', 'Al-Ittihad', 'FC Porto', 'Benfica Lisbonne', 'Sporting CP',
+        'Ajax Amsterdam', 'PSV Eindhoven', 'Feyenoord', 'Celtic FC', 'Rangers FC', 'Galatasaray',
+        'Fenerbahçe', 'Beşiktaş', 'RB Leipzig', 'Bayer Leverkusen', 'AS Roma', 'SSC Napoli',
+        'Lazio Rome', 'Atalanta Bergame', 'Sevilla FC', 'Valencia CF', 'Villarreal CF', 'Athletic Bilbao',
+        'Real Sociedad', 'Olympique de Marseille', 'Olympique Lyonnais', 'AS Monaco', 'Lille OSC',
+        'OGC Nice', 'Stade Rennais', 'West Ham United', 'Aston Villa', 'Brighton', 'Brentford',
+        'Eintracht Frankfurt', 'Borussia Mönchengladbach', 'VfL Wolfsburg', 'SC Freiburg', 'Union Berlin',
+        'Fiorentina', 'Torino FC', 'Bologna', 'Real Betis', 'Getafe CF', 'Osasuna', 'Celta Vigo',
+        'RC Lens', 'Montpellier HSC', 'FC Nantes', 'Strasbourg', 'Zamalek SC', 'Étoile du Sahel',
+        'CS Sfaxien', 'JS Kabylie', 'MC Alger', 'CR Belouizdad', 'Simba SC', 'Young Africans'
+    ];
+    
+    // Équipes MOYENNES (120 clubs)
+    const MOYEN_TEAMS = [
+        'Everton FC', 'Crystal Palace', 'Fulham', 'Wolverhampton', 'Nottingham Forest', 'Bournemouth',
+        'Southampton', 'Leicester City', 'Leeds United', 'Schalke 04', 'Hertha Berlin', 'Werder Bremen',
+        'FSV Mainz', 'FC Köln', 'TSG Hoffenheim', 'VfB Stuttgart', 'Augsburg', 'Bochum', 'Darmstadt',
+        'Heidenheim', 'Sampdoria', 'Genoa', 'Udinese', 'Sassuolo', 'Verona', 'Empoli', 'Salernitana',
+        'Lecce', 'Cagliari', 'Granada', 'Cadiz', 'Almeria', 'Rayo Vallecano', 'Mallorca', 'Las Palmas',
+        'Girona', 'Alavés', 'Clermont Foot', 'Toulouse', 'Brest', 'Reims', 'Metz', 'Le Havre', 'Lorient',
+        'US Monastir', 'USM Alger', 'ES Sétif', 'Paradou AC', 'Azam FC', 'Kaizer Chiefs', 'Orlando Pirates',
+        'SuperSport United', 'São Paulo', 'Corinthians', 'Santos', 'Grêmio', 'Internacional', 'Cruzeiro',
+        'Atlético Mineiro', 'Fluminense', 'Botafogo', 'Bahia', 'Fortaleza', 'Athletico Paranaense',
+        'Junior Barranquilla', 'Atlético Nacional', 'Millonarios', 'América de Cali', 'Deportivo Cali',
+        'Independiente Santa Fe', 'Toluca', 'Cruz Azul', 'Pumas UNAM', 'Monterrey', 'Tigres UANL',
+        'Club América', 'Chivas Guadalajara', 'Pachuca', 'Atlas', 'León', 'Querétaro', 'San Luis',
+        'Mazatlán', 'Juárez', 'Necaxa', 'Puebla', 'Tijuana', 'Santos Laguna', 'Urawa Red Diamonds',
+        'Yokohama F. Marinos', 'Kawasaki Frontale', 'Vissel Kobe', 'Nagoya Grampus', 'Cerezo Osaka',
+        'FC Tokyo', 'Kashima Antlers', 'Sanfrecce Hiroshima', 'Gamba Osaka', 'Shonan Bellmare',
+        'Kyoto Sanga', 'Sagan Tosu', 'Avispa Fukuoka', 'Kashiwa Reysol', 'Albirex Niigata',
+        'Jeonbuk Hyundai', 'Ulsan Hyundai', 'Pohang Steelers', 'Daegu FC', 'Incheon United', 'FC Seoul',
+        'Suwon Samsung', 'Gwangju FC', 'Jeju United', 'Gangwon FC', 'Daejeon Hana Citizen'
+    ];
+    
+    // Équipes FAIBLES (plus de 300 clubs)
+    const FAIBLE_TEAMS = [
+        'Accra Hearts of Oak', 'Asante Kotoko', 'Medeama SC', 'Dreams FC', 'Legon Cities', 'Karela United',
+        'Real Tamale United', 'Bibiani Gold Stars', 'Nsoatreman FC', 'Samartex', 'Bechem United',
+        'Berekum Chelsea', 'Great Olympics', 'King Faisal', 'Wa All Stars', 'AS Vita Club',
+        'DC Motema Pembe', 'FC Lupopo', 'Sanga Balende', 'Blessing', 'Etoile de Kivu', 'Renaissance',
+        'New York City FC', 'LAFC', 'LA Galaxy', 'Seattle Sounders', 'Atlanta United', 'Philadelphia Union',
+        'FC Cincinnati', 'New England Revolution', 'Nashville SC', 'Orlando City', 'Columbus Crew',
+        'St Louis City', 'Austin FC', 'FC Dallas', 'Houston Dynamo', 'Vancouver Whitecaps',
+        'Portland Timbers', 'Real Salt Lake', 'Minnesota United', 'Chicago Fire', 'Toronto FC',
+        'Montreal Impact', 'San Jose Earthquakes', 'Colorado Rapids', 'Sporting Kansas City',
+        'Al-Ahli Saudi', 'Al-Shabab', 'Al-Taawoun', 'Al-Ettifaq', 'Abha Club', 'Al-Fayha', 'Al-Raed',
+        'Al-Khaleej', 'Al-Okhdood', 'Al-Hazem', 'Damac FC', 'Ismaily SC', 'Al Masry', 'Pyramids FC',
+        'Future FC', 'National Bank', 'Ceramica Cleopatra', 'Smouha', 'Al Ittihad Alex', 'El Gouna',
+        'Baladeyet El Mahalla', 'Haras El Hodoud', 'Ghazl El Mahalla', 'ENPPI', 'Pharco FC',
+        'Al Ahly Tripoli', 'Al Nasr Benghazi', 'Al Hilal Benghazi', 'Al Akhdar', 'Asaria SC', 'Abu Salim',
+        'Al Olympic Zaouia', 'Al Ahli Benghazi', 'Al Madina', 'Al Morooj', 'Al Sadaqa', 'Al Ittihad Tripoli',
+        'Horoya AC', 'Hafia FC', 'AS Kaloum', 'Milo FC', 'CI Kamsar', 'Ashanti GB', 'ASEC Mimosas',
+        'Africa Sports', 'SO Armée', 'Racing Club', 'Stella Club', 'AS Athlétic', 'Africa Football',
+        'USC Bassam', 'LYS Sassandra', 'Bouaké FC', 'AS Tanda', 'AFAD Djékanou', 'Sol FC', 'Korhogo FC',
+        'AS Denguélé', 'CO Korhogo', 'Enyimba FC', 'Kano Pillars', 'Rivers United', 'Remo Stars',
+        'Plateau United', 'Lobi Stars', 'Akwa United', 'Sunshine Stars', 'Niger Tornadoes',
+        'Bendel Insurance', 'Doma United', 'Kwara United', 'Abia Warriors', 'Gombe United',
+        'Bayelsa United', 'Heartland FC', 'Shooting Stars', 'Wikki Tourists', 'El Kanemi Warriors',
+        'Nasarawa United', 'Dakkada FC', 'MFM FC', 'Warri Wolves', 'Petro Atlético', 'Primeiro de Agosto',
+        'Sagrada Esperança', 'CD Lunda-Sul', 'Wiliete SC', 'Santa Rita', 'Isaac de Benguela',
+        'Recreativo do Libolo', 'Desportivo Huíla', 'Kabuscorp', 'Académica Lobito', 'Sporting Cabinda',
+        'ASA', 'ASO Chlef', 'NC Magra', 'JS Saoura', 'HB Chelghoum', 'RC Arbaâ', 'Olympique Médéa',
+        'NA Hussein Dey', 'MC Oran', 'ASM Oran', 'US Biskra', 'WA Tlemcen', 'CA Bordj Bou Arreridj',
+        'USM Bel Abbès', 'JSM Béjaïa', 'MO Béjaïa', 'AS Khroub', 'CA Batna', 'AB Merouana',
+        'USM El Harrach', 'RC Kouba', 'Stade Tunisien', 'Club Athlétique Bizertin', 'Olympique Béja',
+        'ES Hammam Sousse', 'AS Soliman', 'US Ben Guerdane', 'ES Zarzis', 'JS Kairouan', 'CS Hammam-Lif',
+        'AS Gabès', 'ES Métlaoui', 'AS Marsa', 'CO Transports', 'AS Djerba', 'ES Rades', 'Stade Gabèsien',
+        'ES Bou Salem', 'AS Oued Ellil', 'CS Korba', 'FC Nouadhibou', 'ASC SNIM', 'AS Garde Nationale',
+        'ACS Ksar', 'ASAC Concorde', 'FC Gouraye', 'ASC Tidjikja', 'AS Armée', 'Kaédi FC', 'Nouakchott Kings',
+        'Chemal FC', 'Inter Nouakchott', 'Al-Nasr Benghazi', 'Al-Ittihad', 'Al-Merrikh', 'Al-Hilal Omdurman',
+        'Hay Al Arab', 'Tuti SC', 'Al Ahli Shendi', 'Al Shorta', 'Al Khartoum', 'Kober SC', 'Al-Falah',
+        'Wad Nubawi', 'Al-Ahli Merowe', 'Al Rabita', 'Al-Amal', 'Hilal Alsahil', 'Merreikh Nyala',
+        'Al-Nil', 'Al Zoma SC', 'Baniyas', 'Ajman', 'Al Wahda', 'Al Jazira', 'Sharjah', 'Al Ain',
+        'Al Nasr Dubai', 'Ittihad Kalba', 'Khor Fakkan', 'Hatta Club', 'Al Dhafra', 'Emirates Club'
+    ];
+    
+    // Toutes les équipes combinées (plus de 500)
+    const ALL_TEAMS = [...FORT_TEAMS, ...MOYEN_TEAMS, ...FAIBLE_TEAMS].sort();
+    
+    function getTeamStrength(team) {
+        if(FORT_TEAMS.includes(team)) return 'fort';
+        if(MOYEN_TEAMS.includes(team)) return 'moyen';
+        return 'faible';
+    }
+    
+    function getStrengthLabel(team) {
+        const s = getTeamStrength(team);
+        if(s === 'fort') return '💪 FORT';
+        if(s === 'moyen') return '⚡ MOYEN';
+        return '🌱 FAIBLE';
+    }
+
+    // Marchés disponibles
+    const MARKETS = ["1", "2", "X", "Over 1.5", "Over 2.5", "Under 2.5", "1MT Dom gagne", "1MT Nul", "Les deux MT égalité"];
+    const SCORES = ["2-1","1-2","3-1","2-0","1-0","1-1","2-2","0-1","0-2","4-1","3-0","0-3","4-0","0-4"];
+    
+    function genererPrediction(h, a) {
+        const forceH = getTeamStrength(h), forceA = getTeamStrength(a);
+        let scoreFinal;
+        if(forceH === 'fort' && forceA === 'faible') {
+            scoreFinal = ["3-1","4-1","2-0","3-0","4-0","5-1"][Math.floor(Math.random()*6)];
+        } else if(forceA === 'fort' && forceH === 'faible') {
+            scoreFinal = ["0-2","1-2","0-1","0-3","1-3","0-4"][Math.floor(Math.random()*6)];
+        } else if(forceH === 'fort' && forceA === 'moyen') {
+            scoreFinal = ["2-1","3-1","2-0","1-0","2-2"][Math.floor(Math.random()*5)];
+        } else if(forceA === 'fort' && forceH === 'moyen') {
+            scoreFinal = ["1-2","0-2","1-1","0-1","1-3"][Math.floor(Math.random()*5)];
+        } else {
+            scoreFinal = ["1-1","2-1","1-2","1-0","0-1","2-2"][Math.floor(Math.random()*6)];
+        }
+        
+        const marche = MARKETS[Math.floor(Math.random() * MARKETS.length)];
+        const [fh, fa] = scoreFinal.split('-').map(Number);
+        const miTemps = `${Math.floor(fh/2)}-${Math.floor(fa/2)}`;
+        return { scoreFinal, marche, miTemps };
+    }
+
+    // ===== AUTHENTIFICATION =====
+    async function checkSession() {
+        document.getElementById('splashText').innerText = 'Vérification session...';
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+            await loadOrCreateUser(session.user.id, session.user.email);
+            showDashboard();
+        } else {
+            setTimeout(() => {
+                document.getElementById('splashScreen').style.display = 'none';
+                document.getElementById('appShell').style.display = 'block';
+                document.getElementById('auth-screen').style.display = 'block';
+            }, 1000);
+        }
+    }
+    
+    supabase.auth.onAuthStateChange(async (event, session) => {
+        if (session) {
+            await loadOrCreateUser(session.user.id, session.user.email);
+            showDashboard();
+        } else if (event === 'SIGNED_OUT') {
+            location.reload();
+        }
+    });
+    
+    async function loadOrCreateUser(uid, email) {
+        document.getElementById('splashText').innerText = 'Chargement profil...';
+        let { data, error } = await supabase.from('user_profiles').select('*').eq('id', uid).single();
+        
+        if (error || !data) {
+            const newUser = {
+                id: uid, email: email, name: "", whatsapp: "", is_verified: false,
+                is_premium: false, is_blocked: false, is_admin: false,
+                messages: [], tickets: [], daily_count: 0, unread_messages: 0, global_ads: []
+            };
+            await supabase.from('user_profiles').insert([newUser]);
+            currentUserData = newUser;
+        } else {
+            currentUserData = data;
+        }
+        currentUserData.uid = uid;
+        document.getElementById('splashText').innerText = 'Prêt !';
+        setTimeout(() => {
+            document.getElementById('splashScreen').style.display = 'none';
+            document.getElementById('appShell').style.display = 'block';
+        }, 500);
+    }
+    
+    async function saveUser() {
+        if(!currentUserData) return;
+        const { uid, ...data } = currentUserData;
+        await supabase.from('user_profiles').update(data).eq('id', uid);
+    }
+    
+    async function loginUser() {
+        const email = document.getElementById('login-email').value.trim();
+        const pass = document.getElementById('login-pass').value;
+        const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
+        if(error) document.getElementById('login-error').innerText = "Email ou mot de passe incorrect";
+    }
+    
+    async function registerUser() {
+        const name = document.getElementById('reg-name').value.trim();
+        const email = document.getElementById('reg-email').value.trim();
+        const whatsapp = document.getElementById('reg-whatsapp').value.trim();
+        const pass = document.getElementById('reg-pass').value;
+        if(pass.length < 6) { document.getElementById('email-error').innerText = "Mot de passe min 6 caractères"; return; }
+        const { error } = await supabase.auth.signUp({ email, password: pass });
+        if(error) { document.getElementById('email-error').innerText = error.message; return; }
+        setTimeout(async () => {
+            if(currentUserData) { currentUserData.name = name; currentUserData.whatsapp = whatsapp; await saveUser(); }
+            alert("Compte créé ! Connectez-vous.");
+            toggleAuth(false);
+        }, 1000);
+    }
+    
+    async function logout() { await supabase.auth.signOut(); location.reload(); }
+    
+    function showDashboard() {
+        document.getElementById('auth-screen').style.display = 'none';
+        document.getElementById('register-screen').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        const dl = document.getElementById('teams-list');
+        ALL_TEAMS.forEach(t => { let opt = document.createElement('option'); opt.value = t; dl.appendChild(opt); });
+        document.getElementById('predict-main').style.display = 'block';
+        document.getElementById('verify-alert').style.display = 'none';
+        if(currentUserData.is_admin) document.getElementById('admin-panel').style.display = 'block';
+        renderSavedTickets();
+        renderProfile();
+    }
+    
+    function switchView(view) {
+        document.getElementById('view-predict').style.display = view === 'predict' ? 'block' : 'none';
+        document.getElementById('view-tickets').style.display = view === 'tickets' ? 'block' : 'none';
+        document.getElementById('view-profile').style.display = view === 'profile' ? 'block' : 'none';
+        document.getElementById('view-ticket-detail').style.display = 'none';
+        if(view === 'tickets') renderSavedTickets();
+        if(view === 'profile') renderProfile();
+    }
+    
+    function runAnalysis() {
+        const h = document.getElementById('team-h').value.trim();
+        const a = document.getElementById('team-a').value.trim();
+        if(!ALL_TEAMS.includes(h) || !ALL_TEAMS.includes(a)) {
+            document.getElementById('ana-error').innerText = "Équipe invalide";
+            return;
+        }
+        const gen = genererPrediction(h, a);
+        tempMatch = { h, a, market: gen.marche, score: gen.scoreFinal, ht: gen.miTemps };
+        document.getElementById('res-h').innerHTML = `${h}<div class="team-strength">${getStrengthLabel(h)}</div>`;
+        document.getElementById('res-a').innerHTML = `${a}<div class="team-strength">${getStrengthLabel(a)}</div>`;
+        document.getElementById('res-market').innerText = tempMatch.market;
+        document.getElementById('res-ht').innerText = `Mi-temps: ${tempMatch.ht}`;
+        if(currentUserData.is_premium) {
+            document.getElementById('premium-data').style.display = 'block';
+            document.getElementById('res-score').innerText = tempMatch.score;
+        } else {
+            document.getElementById('premium-data').style.display = 'none';
+        }
+        document.getElementById('result-box').style.display = 'block';
+    }
+    
+    function addToTicket() {
+        if(!tempMatch) return;
+        if(!currentUserData.is_premium && currentTicket.length >= 1) { alert("Version gratuite: 1 match max"); return; }
+        currentTicket.push({...tempMatch});
+        renderCurrentTicket();
+        document.getElementById('result-box').style.display = 'none';
+    }
+    
+    function renderCurrentTicket() {
+        const container = document.getElementById('ticket-list');
+        document.getElementById('current-ticket').style.display = currentTicket.length ? 'block' : 'none';
+        document.getElementById('ticket-count').innerText = currentTicket.length;
+        container.innerHTML = currentTicket.map((m,i) => `<div class="ticket-item">${m.h} vs ${m.a} - ${m.market} <span style="color:red;cursor:pointer" onclick="currentTicket.splice(${i},1);renderCurrentTicket()">✖</span></div>`).join('');
+    }
+    
+    async function saveTicket() {
+        if(!currentTicket.length) return;
+        if(!currentUserData.tickets) currentUserData.tickets = [];
+        currentUserData.tickets.unshift({date: new Date().toLocaleString(), matches: [...currentTicket]});
+        currentTicket = [];
+        renderCurrentTicket();
+        await saveUser();
+        alert("Ticket enregistré !");
+        switchView('tickets');
+    }
+    
+    function renderSavedTickets() {
+        const container = document.getElementById('tickets-list-view');
+        if(!currentUserData.tickets?.length) { container.innerHTML = '<p class="card">Aucun ticket enregistré</p>'; return; }
+        container.innerHTML = currentUserData.tickets.map((t, i) => `<div class="card ticket-card" onclick="viewTicket(${i})">📅 ${t.date}<br>📊 ${t.matches.length} match(s)</div>`).join('');
+    }
+    
+    function viewTicket(idx) {
+        const ticket = currentUserData.tickets[idx];
+        document.getElementById('ticket-detail-content').innerHTML = `
+            <div class="detail-header">🎫 Ticket du ${ticket.date}</div>
+            ${ticket.matches.map(m => `<div class="card">${m.h} vs ${m.a}<br>🎯 ${m.market}${m.score ? ` (${m.score})` : ''}<br>${getStrengthLabel(m.h)} | ${getStrengthLabel(m.a)}</div>`).join('')}
+            <div class="action-buttons"><button class="btn-primary" onclick="duplicateTicket(${idx})">🔄 Doubler ce ticket</button></div>
+        `;
+        document.getElementById('view-tickets').style.display = 'none';
+        document.getElementById('view-ticket-detail').style.display = 'block';
+    }
+    
+    async function duplicateTicket(idx) {
+        const orig = currentUserData.tickets[idx];
+        const newMatches = orig.matches.map(m => {
+            const gen = genererPrediction(m.h, m.a);
+            return { ...m, market: gen.marche, score: gen.scoreFinal, ht: gen.miTemps };
+        });
+        currentUserData.tickets.unshift({date: new Date().toLocaleString(), matches: newMatches});
+        await saveUser();
+        alert("Ticket dupliqué !");
+        backToTicketsList();
+    }
+    
+    function backToTicketsList() {
+        document.getElementById('view-ticket-detail').style.display = 'none';
+        document.getElementById('view-tickets').style.display = 'block';
+        renderSavedTickets();
+    }
+    
+    function renderProfile() {
+        document.getElementById('prof-name').innerText = currentUserData.name || currentUserData.email;
+        document.getElementById('prof-email').innerText = currentUserData.email;
+        document.getElementById('prof-whatsapp').innerHTML = `📱 ${currentUserData.whatsapp || 'Non renseigné'}`;
+        let badge = currentUserData.is_premium ? '💎 PREMIUM' : (currentUserData.is_verified ? '✅ VÉRIFIÉ' : '⏳ EN ATTENTE');
+        let badgeColor = currentUserData.is_premium ? '#d946ef' : (currentUserData.is_verified ? '#22c55e' : '#94a3b8');
+        document.getElementById('prof-badge').innerHTML = `<span class="status-badge" style="background:${badgeColor}">${badge}</span>`;
+    }
+    
+    async function handleIDUpload(input) {
+        alert("Fonction upload ID - Configuration Storage Supabase requise");
+    }
+    
+    function showAdminLogin() {
+        document.getElementById('auth-screen').style.display = 'none';
+        document.getElementById('admin-login').style.display = 'block';
+    }
+    
+    function loginAdmin() {
+        if(document.getElementById('admin-code').value === "0033mutwe") {
+            if(currentUserData) currentUserData.is_admin = true;
+            saveUser();
+            document.getElementById('admin-login').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'block';
+            loadAllUsers();
+        } else {
+            document.getElementById('admin-error').innerText = "Code incorrect";
+        }
+    }
+    
+    async function loadAllUsers() {
+        const { data } = await supabase.from('user_profiles').select('*');
+        if(data) {
+            usersCache = data;
+            document.getElementById('admin-users').innerHTML = usersCache.map(u => `
+                <div class="card">
+                    <b>${u.name || u.email}</b><br>
+                    WhatsApp: ${u.whatsapp || '-'}<br>
+                    Vérifié: ${u.is_verified ? '✅' : '❌'} | Premium: ${u.is_premium ? '💎' : '-'}
+                    <div style="display:flex;gap:5px;margin-top:10px;">
+                        <button class="btn-primary" onclick="adminVerify('${u.id}')">Vérifier</button>
+                        <button class="btn-primary" onclick="openPremiumModal('${u.id}')">Premium</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+    
+    async function adminVerify(uid) {
+        await supabase.from('user_profiles').update({ is_verified: true }).eq('id', uid);
+        alert("Utilisateur vérifié !");
+        loadAllUsers();
+    }
+    
+    function openPremiumModal(uid) {
+        adminTargetUid = uid;
+        document.getElementById('modal-premium').classList.add('active');
+    }
+    
+    async function confirmPremium() {
+        const days = parseInt(document.getElementById('pre-days').value) || 30;
+        const expiry = new Date();
+        expiry.setDate(expiry.getDate() + days);
+        await supabase.from('user_profiles').update({ is_premium: true, premium_expiry: expiry.toISOString() }).eq('id', adminTargetUid);
+        alert(`Premium ${days} jours activé !`);
+        closeModal();
+        loadAllUsers();
+    }
+    
+    async function sendGlobalAd() {
+        const title = document.getElementById('ad-title').value || "Nouvelle offre";
+        const adData = { id: Date.now(), title, type: 'image', media: 'https://via.placeholder.com/100x50?text=Promo', date: new Date().toLocaleString() };
+        const { data: users } = await supabase.from('user_profiles').select('id, global_ads');
+        for(let u of users) {
+            let ads = u.global_ads || [];
+            ads.unshift(adData);
+            if(ads.length > 10) ads.pop();
+            await supabase.from('user_profiles').update({ global_ads: ads }).eq('id', u.id);
+        }
+        alert("Annonce envoyée !");
+    }
+    
+    function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); }
+    function toggleAuth(showReg) {
+        document.getElementById('auth-screen').style.display = showReg ? 'none' : 'block';
+        document.getElementById('register-screen').style.display = showReg ? 'block' : 'none';
+    }
+    function toggleAssistant() { document.getElementById('assistant-chat').classList.toggle('active'); }
+    function askZola() {
+        const input = document.getElementById('assistant-input');
+        const msg = input.value;
+        if(!msg) return;
+        const container = document.getElementById('assistant-messages');
+        container.innerHTML += `<div class="assistant-bubble assistant-user">${msg}</div>`;
+        input.value = '';
+        setTimeout(() => {
+            container.innerHTML += `<div class="assistant-bubble assistant-bot">🤖 Cliquez sur un ticket pour le dupliquer !</div>`;
+            container.scrollTop = container.scrollHeight;
+        }, 500);
+    }
+    
+    // LANCEMENT
+    document.getElementById('splashText').innerText = 'Initialisation...';
+    checkSession();
+</script>
+
+<div id="modal-premium" class="modal">
+    <div class="modal-content">
+        <h4>Activer Premium</h4>
+        <input type="number" id="pre-days" placeholder="Nombre de jours" value="30">
+        <button class="btn-primary" onclick="confirmPremium()">ACTIVER</button>
+        <button class="btn-ghost" onclick="closeModal()">ANNULER</button>
     </div>
-
-    <script>
-        // ===== CONFIGURATION SUPABASE =====
-        const SUPABASE_URL = 'https://kvzemwoinlrisauioonq.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_6lDejMl6JmtRiTH0XhwMSQ_NQcuhoyy';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
-        let currentUser = null, currentUserData = null, currentTicket = [], tempMatch = null, adminUserEmail = null;
-        let selectedAdFileData = null, selectedAdFileType = null, selectedTicketIndex = null, usersCache = [];
-
-        // ===== LISTE DE +500 CLUBS AVEC CLASSIFICATION FORT/MOYEN/FAIBLE =====
-        // Équipes FORTES (Top mondial)
-        const FORT_TEAMS = [
-            'Real Madrid', 'FC Barcelona', 'Atlético Madrid', 'Manchester City', 'Liverpool FC', 'Bayern Munich', 
-            'Paris Saint-Germain', 'Inter Milan', 'AC Milan', 'Juventus FC', 'Borussia Dortmund', 'Chelsea FC',
-            'Arsenal FC', 'Manchester United', 'Tottenham Hotspur', 'Newcastle United', 'Al Ahly', 'Espérance de Tunis',
-            'Wydad Casablanca', 'Raja Casablanca', 'TP Mazembe', 'Mamelodi Sundowns', 'Flamengo', 'Palmeiras',
-            'River Plate', 'Boca Juniors', 'Al-Hilal', 'Al-Nassr', 'Al-Ittihad', 'FC Porto', 'Benfica Lisbonne',
-            'Sporting CP', 'Ajax Amsterdam', 'PSV Eindhoven', 'Feyenoord', 'Celtic FC', 'Rangers FC', 'Galatasaray',
-            'Fenerbahçe', 'Beşiktaş', 'RB Leipzig', 'Bayer Leverkusen', 'AS Roma', 'SSC Napoli', 'Lazio Rome',
-            'Atalanta Bergame', 'Sevilla FC', 'Valencia CF', 'Villarreal CF', 'Athletic Bilbao', 'Real Sociedad',
-            'Olympique de Marseille', 'Olympique Lyonnais', 'AS Monaco', 'Lille OSC', 'OGC Nice', 'Stade Rennais'
-        ];
-        
-        // Équipes MOYENNES
-        const MOYEN_TEAMS = [
-            'West Ham United', 'Aston Villa', 'Everton FC', 'Crystal Palace', 'Fulham', 'Brentford', 'Wolverhampton',
-            'Nottingham Forest', 'Brighton', 'Bournemouth', 'Southampton', 'Leicester City', 'Leeds United',
-            'Schalke 04', 'VfL Wolfsburg', 'Eintracht Frankfurt', 'Borussia Mönchengladbach', 'Hertha Berlin',
-            'Werder Bremen', 'FSV Mainz', 'FC Köln', 'TSG Hoffenheim', 'SC Freiburg', 'Union Berlin', 'VfB Stuttgart',
-            'Fiorentina', 'Torino FC', 'Sampdoria', 'Genoa', 'Bologna', 'Udinese', 'Sassuolo', 'Verona', 'Empoli',
-            'Real Betis', 'Getafe CF', 'Osasuna', 'Rayo Vallecano', 'Celta Vigo', 'Granada', 'Cadiz', 'Almeria',
-            'RC Lens', 'Stade Rennais', 'OGC Nice', 'Montpellier HSC', 'FC Nantes', 'Strasbourg', 'Clermont Foot',
-            'Zamalek SC', 'Étoile du Sahel', 'CS Sfaxien', 'US Monastir', 'JS Kabylie', 'MC Alger', 'CR Belouizdad',
-            'ES Sétif', 'USM Alger', 'Simba SC', 'Young Africans', 'Azam FC', 'Kaizer Chiefs', 'Orlando Pirates',
-            'SuperSport United', 'São Paulo', 'Corinthians', 'Santos', 'Grêmio', 'Internacional', 'Cruzeiro',
-            'Atlético Mineiro', 'Fluminense', 'Botafogo', 'Bahia', 'Fortaleza', 'Athletico Paranaense', 'Goiás',
-            'Junior Barranquilla', 'Atlético Nacional', 'Millonarios', 'América de Cali', 'Deportivo Cali',
-            'Independiente Santa Fe', 'Toluca', 'Cruz Azul', 'Pumas UNAM', 'Monterrey', 'Tigres UANL', 'Club América',
-            'Chivas Guadalajara', 'Pachuca', 'Atlas', 'León', 'Querétaro', 'San Luis', 'Mazatlán', 'Juárez', 'Necaxa',
-            'Puebla', 'Tijuana', 'Santos Laguna', 'Urawa Red Diamonds', 'Yokohama F. Marinos', 'Kawasaki Frontale',
-            'Vissel Kobe', 'Nagoya Grampus', 'Cerezo Osaka', 'FC Tokyo', 'Kashima Antlers', 'Sanfrecce Hiroshima',
-            'Gamba Osaka', 'Shonan Bellmare', 'Kyoto Sanga', 'Sagan Tosu', 'Avispa Fukuoka', 'Kashiwa Reysol',
-            'Albirex Niigata', 'Jeonbuk Hyundai', 'Ulsan Hyundai', 'Pohang Steelers', 'Daegu FC', 'Incheon United',
-            'FC Seoul', 'Suwon Samsung', 'Gwangju FC', 'Jeju United', 'Gangwon FC', 'Daejeon Hana Citizen'
-        ];
-        
-        // Équipes FAIBLES (toutes les autres)
-        const FAIBLE_TEAMS = [
-            'Accra Hearts of Oak', 'Asante Kotoko', 'Medeama SC', 'Dreams FC', 'Legon Cities', 'Karela United',
-            'Real Tamale United', 'Bibiani Gold Stars', 'Nsoatreman FC', 'Samartex', 'Bechem United', 'Berekum Chelsea',
-            'Great Olympics', 'King Faisal', 'Wa All Stars', 'TP Mazembe B', 'AS Vita Club', 'DC Motema Pembe',
-            'FC Lupopo', 'Sanga Balende', 'Blessing', 'Etoile de Kivu', 'Renaissance', 'New York City FC', 'LAFC',
-            'LA Galaxy', 'Seattle Sounders', 'Atlanta United', 'Philadelphia Union', 'FC Cincinnati', 'New England Revolution',
-            'Nashville SC', 'Orlando City', 'Columbus Crew', 'St Louis City', 'Austin FC', 'FC Dallas', 'Houston Dynamo',
-            'Vancouver Whitecaps', 'Portland Timbers', 'Real Salt Lake', 'Minnesota United', 'Chicago Fire', 'Toronto FC',
-            'Montreal Impact', 'San Jose Earthquakes', 'Colorado Rapids', 'Sporting Kansas City', 'CF Montréal',
-            'Al-Ahli Saudi', 'Al-Shabab', 'Al-Taawoun', 'Al-Ettifaq', 'Abha Club', 'Al-Fayha', 'Al-Raed', 'Al-Khaleej',
-            'Al-Okhdood', 'Al-Hazem', 'Damac FC', 'Zamalek B', 'Ismaily SC', 'Al Masry', 'Pyramids FC', 'Future FC',
-            'National Bank', 'Ceramica Cleopatra', 'Smouha', 'Al Ittihad Alex', 'El Gouna', 'Baladeyet El Mahalla',
-            'Haras El Hodoud', 'Ghazl El Mahalla', 'ENPPI', 'Pharco FC', 'Al Ahly Tripoli', 'Al Nasr Benghazi',
-            'Al Hilal Benghazi', 'Al Akhdar', 'Asaria SC', 'Abu Salim', 'Al Olympic Zaouia', 'Al Ahli Benghazi',
-            'Al Madina', 'Al Morooj', 'Al Sadaqa', 'Al Ittihad Tripoli', 'Al Suqoor', 'Al Malaab El Libby',
-            'Horoya AC', 'Hafia FC', 'AS Kaloum', 'Milo FC', 'CI Kamsar', 'Ashanti GB', 'ASEC Mimosas', 'Africa Sports',
-            'SO Armée', 'Racing Club', 'Stella Club', 'AS Athlétic', 'Africa Football', 'USC Bassam', 'LYS Sassandra',
-            'Bouaké FC', 'AS Tanda', 'AFAD Djékanou', 'Sol FC', 'Korhogo FC', 'AS Denguélé', 'CO Korhogo', 'Enyimba FC',
-            'Kano Pillars', 'Rivers United', 'Remo Stars', 'Plateau United', 'Lobi Stars', 'Akwa United', 'Sunshine Stars',
-            'Niger Tornadoes', 'Bendel Insurance', 'Doma United', 'Kwara United', 'Abia Warriors', 'Gombe United',
-            'Bayelsa United', 'Heartland FC', 'Shooting Stars', 'Wikki Tourists', 'El Kanemi Warriors', 'Nasarawa United',
-            'Dakkada FC', 'MFM FC', 'Warri Wolves', 'Petro Atlético', 'Primeiro de Agosto', 'Sagrada Esperança',
-            'CD Lunda-Sul', 'Wiliete SC', 'Santa Rita', 'Isaac de Benguela', 'Recreativo do Libolo', 'Desportivo Huíla',
-            'Kabuscorp', 'Académica Lobito', 'Sporting Cabinda', 'ASA', 'ASO Chlef', 'Paradou AC', 'NC Magra',
-            'JS Saoura', 'HB Chelghoum', 'RC Arbaâ', 'Olympique Médéa', 'NA Hussein Dey', 'MC Oran', 'ASM Oran',
-            'US Biskra', 'WA Tlemcen', 'CA Bordj Bou Arreridj', 'USM Bel Abbès', 'JSM Béjaïa', 'MO Béjaïa',
-            'AS Khroub', 'CA Batna', 'AB Merouana', 'USM El Harrach', 'RC Kouba', 'Stade Tunisien', 'Club Athlétique Bizertin',
-            'Olympique Béja', 'ES Hammam Sousse', 'AS Soliman', 'US Ben Guerdane', 'ES Zarzis', 'JS Kairouan',
-            'CS Hammam-Lif', 'AS Gabès', 'ES Métlaoui', 'AS Marsa', 'CO Transports', 'AS Djerba', 'ES Rades',
-            'Stade Gabèsien', 'ES Bou Salem', 'AS Oued Ellil', 'CS Korba', 'FC Nouadhibou', 'ASC SNIM', 'AS Garde Nationale',
-            'ACS Ksar', 'ASAC Concorde', 'FC Gouraye', 'ASC Tidjikja', 'AS Armée', 'Kaédi FC', 'Nouakchott Kings',
-            'Chemal FC', 'Inter Nouakchott', 'Al-Nasr Benghazi', 'Al-Ittihad', 'Al-Merrikh', 'Al-Hilal Omdurman',
-            'Hay Al Arab', 'Tuti SC', 'Al Ahli Shendi', 'Al Shorta', 'Al Khartoum', 'Kober SC', 'Al-Falah', 'Wad Nubawi',
-            'Al-Ahli Merowe', 'Al Rabita', 'Al-Amal', 'Hilal Alsahil', 'Merreikh Nyala', 'Al-Nil', 'Al Zoma SC'
-        ];
-
-        // Toutes les équipes combinées (plus de 500)
-        const ALL_TEAMS = [...FORT_TEAMS, ...MOYEN_TEAMS, ...FAIBLE_TEAMS].sort();
-        
-        // Obtenir la force d'une équipe
-        function getTeamStrength(team) {
-            if(FORT_TEAMS.includes(team)) return 'fort';
-            if(MOYEN_TEAMS.includes(team)) return 'moyen';
-            return 'faible';
-        }
-        
-        function getStrengthLabel(team) {
-            const s = getTeamStrength(team);
-            if(s === 'fort') return '💪 FORT';
-            if(s === 'moyen') return '⚡ MOYEN';
-            return '🌱 FAIBLE';
-        }
-
-        // MARCHÉS DISPONIBLES
-        const MARKETS_PRO = [
-            "1", "2", "X", "1MT +1.5", "1MT +2", "1MT -2", "1MT -1.5", "1MT Dom gagne", "1MT Ext gagne", "1MT Nul",
-            "+ de buts en 1MT", "+ de buts en 2MT", "2MT Dom gagne", "2MT Ext gagne", "Les deux MT égalité",
-            "Over 1.5", "Over 2", "Over 2.5", "Over 3", "Under 2", "All teams win YES", "All teams win NO"
-        ];
-        
-        const SCORES_FAVORIS = ["2-1","1-2","3-1","2-3","0-2","4-1","2-0","1-0","1-1","2-2","4-0"];
-
-        function getRapportForce(teamH, teamA) {
-            const strengthH = getTeamStrength(teamH);
-            const strengthA = getTeamStrength(teamA);
-            if(strengthH === 'fort' && strengthA === 'faible') return 'favori_vs_faible';
-            if(strengthA === 'fort' && strengthH === 'faible') return 'surprise';
-            return 'equilibre';
-        }
-        
-        function getScoresPossibles(rapport) {
-            if(rapport === 'favori_vs_faible') return ["3-1","4-1","2-0","4-0","3-0"];
-            if(rapport === 'surprise') return ["0-2","1-2","0-1"];
-            return ["1-1","2-1","1-2","2-2","1-0","0-1"];
-        }
-        
-        function validerScoreAvecMarche(scoreFinal, marche) {
-            const [h, a] = scoreFinal.split('-').map(Number);
-            const total = h + a;
-            if(marche === "1") return h > a;
-            if(marche === "2") return a > h;
-            if(marche === "X") return h === a;
-            if(marche === "Over 1.5") return total > 1.5;
-            if(marche === "Over 2") return total > 2;
-            if(marche === "Over 2.5") return total > 2.5;
-            if(marche === "Over 3") return total > 3;
-            if(marche === "Under 2") return total < 2;
-            if(marche === "All teams win YES") return (h > 0 && a > 0);
-            if(marche === "All teams win NO") return (h === 0 || a === 0);
-            return true;
-        }
-        
-        function genererScoreEtMarche(teamH, teamA) {
-            const rapport = getRapportForce(teamH, teamA);
-            const scoresPossibles = getScoresPossibles(rapport);
-            const scoresCompatibles = SCORES_FAVORIS.filter(s => scoresPossibles.includes(s));
-            let scoreFinal = scoresCompatibles.length ? scoresCompatibles[Math.floor(Math.random() * scoresCompatibles.length)] : scoresPossibles[Math.floor(Math.random() * scoresPossibles.length)];
-            let marche = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
-            let tries = 0;
-            while(!validerScoreAvecMarche(scoreFinal, marche) && tries < 15) {
-                marche = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
-                tries++;
-            }
-            const [fh, fa] = scoreFinal.split('-').map(Number);
-            let ht_h = Math.floor(fh / 2) + (Math.random() > 0.7 ? 1 : 0);
-            let ht_a = Math.floor(fa / 2) + (Math.random() > 0.7 ? 1 : 0);
-            if(ht_h > fh) ht_h = fh;
-            if(ht_a > fa) ht_a = fa;
-            const miTemps = `${ht_h}-${ht_a}`;
-            const logique = `Vérification : ${scoreFinal} valide le marché "${marche}" → ${validerScoreAvecMarche(scoreFinal, marche) ? 'OK' : 'NON'}`;
-            return { scoreFinal, marche, miTemps, logique };
-        }
-
-        // ===== SPLASH SCREEN =====
-        let splashStart = Date.now();
-        function hideSplash() {
-            const splash = document.getElementById('splashScreen');
-            splash.style.opacity = '0';
-            setTimeout(() => { splash.style.display = 'none'; document.getElementById('appShell').style.display = 'block'; }, 500);
-        }
-        let progress = 0;
-        const interval = setInterval(() => {
-            progress += Math.random() * 12 + 3;
-            if(progress >= 100) progress = 100;
-            const bar = document.getElementById('splashProgress');
-            const textEl = document.getElementById('splashText');
-            if(bar) bar.style.width = progress + '%';
-            if(textEl) textEl.innerText = progress < 30 ? 'Initialisation IA...' : (progress < 70 ? 'Connexion Supabase...' : 'Prêt !');
-            if(progress >= 100) {
-                clearInterval(interval);
-                setTimeout(() => hideSplash(), Math.max(0, 3000 - (Date.now() - splashStart)));
-            }
-        }, 200);
-
-        // ===== AUTHENTIFICATION SUPABASE =====
-        async function checkSession() {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
-                await loadUserData(session.user.id, session.user.email);
-                if (currentUserData) { showDashboard(); updateMessageNotification(); renderGlobalAds(); }
-            } else {
-                document.getElementById('auth-screen').style.display = 'block';
-                document.getElementById('dashboard').style.display = 'none';
-                document.getElementById('register-screen').style.display = 'none';
-                document.getElementById('admin-panel').style.display = 'none';
-                document.getElementById('admin-login').style.display = 'none';
-            }
-        }
-        
-        supabase.auth.onAuthStateChange(async (event, session) => {
-            if (session) {
-                await loadUserData(session.user.id, session.user.email);
-                if (currentUserData) { showDashboard(); updateMessageNotification(); renderGlobalAds(); }
-            } else {
-                currentUser = null; currentUserData = null;
-                document.getElementById('auth-screen').style.display = 'block';
-                document.getElementById('dashboard').style.display = 'none';
-            }
-        });
-
-        async function loadUserData(uid, email) {
-            try {
-                const { data, error } = await supabase.from('user_profiles').select('*').eq('id', uid).single();
-                if (data && !error) {
-                    currentUserData = data;
-                    currentUserData.uid = uid;
-                    currentUser = { email: email, uid: uid };
-                    if (currentUserData.premium_expiry && new Date(currentUserData.premium_expiry) < new Date()) {
-                        currentUserData.is_premium = false;
-                        currentUserData.premium_expiry = null;
-                        await supabase.from('user_profiles').update({ is_premium: false, premium_expiry: null }).eq('id', uid);
-                    }
-                } else {
-                    const newUserData = {
-                        id: uid, email: email, name: "", whatsapp: "", is_verified: false, is_premium: false,
-                        is_blocked: false, id_sent: false, id_image_url: null, profile_image_url: null,
-                        messages: [], tickets: [], daily_count: 0, last_match_date: null,
-                        created_at: new Date().toISOString(), unread_messages: 0, global_ads: [], is_admin: false
-                    };
-                    await supabase.from('user_profiles').insert([newUserData]);
-                    currentUserData = newUserData;
-                    currentUserData.uid = uid;
-                    currentUser = { email: email, uid: uid };
-                }
-                checkVerificationStatus();
-                document.getElementById('connection-status').innerHTML = '🟢 Supabase prêt';
-            } catch (error) {
-                console.error("Erreur:", error);
-                document.getElementById('connection-status').innerHTML = '<span class="error-message">❌ Erreur chargement données</span>';
-            }
-        }
-
-        async function saveUserData() {
-            if (!currentUserData || !currentUserData.uid) return;
-            try {
-                const { uid, ...dataToSave } = currentUserData;
-                await supabase.from('user_profiles').update({
-                    name: dataToSave.name, whatsapp: dataToSave.whatsapp, is_verified: dataToSave.is_verified,
-                    is_premium: dataToSave.is_premium, is_blocked: dataToSave.is_blocked, id_sent: dataToSave.id_sent,
-                    id_image_url: dataToSave.id_image_url, profile_image_url: dataToSave.profile_image_url,
-                    messages: dataToSave.messages, tickets: dataToSave.tickets, daily_count: dataToSave.daily_count,
-                    last_match_date: dataToSave.last_match_date, unread_messages: dataToSave.unread_messages,
-                    global_ads: dataToSave.global_ads, is_admin: dataToSave.is_admin, premium_expiry: dataToSave.premium_expiry
-                }).eq('id', uid);
-            } catch (error) { console.error("Erreur sauvegarde:", error); }
-        }
-
-        async function loadAllUsers() {
-            if (!currentUserData || !currentUserData.is_admin) return;
-            try {
-                const { data, error } = await supabase.from('user_profiles').select('*');
-                if (data && !error) { usersCache = data; updateAdminStats(); renderAdminUsers(); }
-            } catch (error) { console.error(error); }
-        }
-
-        async function loginUser() {
-            const email = document.getElementById('login-email').value.trim();
-            const pass = document.getElementById('login-pass').value;
-            const errorDiv = document.getElementById('login-error');
-            errorDiv.innerText = '';
-            if(!email || !pass) { errorDiv.innerText = "Veuillez remplir tous les champs"; return; }
-            try {
-                const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
-                if (error) throw error;
-            } catch(error) { errorDiv.innerText = "Email ou mot de passe incorrect"; }
-        }
-
-        async function registerUser() {
-            const name = document.getElementById('reg-name').value.trim();
-            const email = document.getElementById('reg-email').value.trim();
-            const whatsapp = document.getElementById('reg-whatsapp').value.trim();
-            const pass = document.getElementById('reg-pass').value;
-            const emailError = document.getElementById('email-error');
-            emailError.innerText = '';
-            if(!name || !email || !whatsapp || !pass) { emailError.innerText = "Tous les champs sont requis"; return; }
-            if(pass.length < 6) { emailError.innerText = "Mot de passe (min 6 caractères)"; return; }
-            try {
-                const { error } = await supabase.auth.signUp({ email, password: pass, options: { data: { display_name: name } } });
-                if (error) throw error;
-                setTimeout(async () => {
-                    if (currentUserData) { currentUserData.name = name; currentUserData.whatsapp = whatsapp; await saveUserData(); }
-                    alert("✅ Compte créé avec succès !");
-                    toggleAuth(false);
-                }, 1000);
-            } catch(error) {
-                if(error.message.includes('already registered')) emailError.innerText = "Email déjà utilisé";
-                else emailError.innerText = "Erreur: " + error.message;
-            }
-        }
-
-        async function logout() { await supabase.auth.signOut(); currentUser = null; currentUserData = null; location.reload(); }
-
-        // ===== FONCTIONS APPLICATION =====
-        async function updateUser() { if (currentUserData) await saveUserData(); }
-        function showDashboard() { 
-            document.getElementById('auth-screen').style.display = 'none'; 
-            document.getElementById('register-screen').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block'; 
-            const dl = document.getElementById('teams-list'); dl.innerHTML = ''; 
-            ALL_TEAMS.forEach(t => {const opt = document.createElement('option'); opt.value = t; dl.appendChild(opt);}); 
-            checkVerificationStatus(); switchView('predict'); checkAdminStatus();
-        }
-        function checkVerificationStatus() { 
-            const alertBox = document.getElementById('verify-alert'), main = document.getElementById('predict-main'); 
-            if(currentUserData && currentUserData.is_verified){alertBox.style.display='none'; main.style.display='block';} 
-            else {alertBox.style.display='block'; main.style.display='none';} 
-        }
-        async function checkAdminStatus() { if (currentUserData && currentUserData.is_admin) { document.getElementById('admin-panel').style.display = 'block'; await loadAllUsers(); } }
-        function updateMessageNotification() { 
-            const unread = currentUserData?.unread_messages || 0; 
-            const msgNav = document.getElementById('nav-messages'); 
-            if(unread > 0){ let badge = msgNav.querySelector('.notification-badge'); if(!badge){badge=document.createElement('span'); badge.className='notification-badge'; msgNav.appendChild(badge);} badge.innerText = unread; } 
-            else { const badge = msgNav.querySelector('.notification-badge'); if(badge) badge.remove(); } 
-        }
-        function runAnalysis() { 
-            const h = document.getElementById('team-h').value.trim(), a = document.getElementById('team-a').value.trim(); 
-            if(!ALL_TEAMS.includes(h) || !ALL_TEAMS.includes(a)){ document.getElementById('ana-error').innerText = "Sélectionnez des équipes valides"; return; } 
-            if(h === a){document.getElementById('ana-error').innerText = "Équipes différentes requises"; return;} 
-            const today = new Date().toDateString(); 
-            if(!currentUserData.is_premium && currentUserData.last_match_date === today && currentUserData.daily_count >= 1){ document.getElementById('ana-error').innerText = "⚠️ Standard: 1 match/jour. Premium débloque illimité"; return; } 
-            document.getElementById('ana-loader').style.display='inline-block'; document.getElementById('btn-ana').disabled=true; 
-            setTimeout(()=>{ 
-                const gen = genererScoreEtMarche(h,a); 
-                tempMatch = { h, a, market: gen.marche, score: currentUserData.is_premium?gen.scoreFinal:null, ht:gen.miTemps, logic:gen.logique }; 
-                document.getElementById('res-h').innerHTML = `${h}<div class="team-strength">${getStrengthLabel(h)}</div>`; 
-                document.getElementById('res-a').innerHTML = `${a}<div class="team-strength">${getStrengthLabel(a)}</div>`; 
-                document.getElementById('res-market').innerText = tempMatch.market; 
-                document.getElementById('res-ht').innerText = `Mi-temps: ${tempMatch.ht}`; 
-                document.getElementById('res-logic').innerText = tempMatch.logic; 
-                if(tempMatch.score) document.getElementById('res-score').innerText = tempMatch.score; 
-                if(currentUserData.is_premium){document.getElementById('premium-data').style.display='block'; document.getElementById('premium-lock').style.display='none';} 
-                else {document.getElementById('premium-data').style.display='none'; document.getElementById('premium-lock').style.display='block';} 
-                if(!currentUserData.is_premium){
-                    if(currentUserData.last_match_date !== today) { currentUserData.daily_count = 1; currentUserData.last_match_date = today; } 
-                    else { currentUserData.daily_count++; }
-                    updateUser();
-                } 
-                document.getElementById('result-box').style.display='block'; 
-                document.getElementById('ana-loader').style.display='none'; 
-                document.getElementById('btn-ana').disabled=false; 
-            }, 1500); 
-        }
-        function addToTicket() { 
-            if(!tempMatch) return; 
-            if(!currentUserData.is_premium && currentTicket.length >= 1){alert("Standard: 1 match max."); return;} 
-            if(currentUserData.is_premium && currentTicket.length >= 15){alert("Max 15 matchs."); return;} 
-            currentTicket.push({...tempMatch}); renderCurrentTicket(); 
-            document.getElementById('result-box').style.display='none'; 
-            document.getElementById('team-h').value=''; document.getElementById('team-a').value=''; 
-        }
-        function renderCurrentTicket() { 
-            const container = document.getElementById('ticket-list'), count = document.getElementById('ticket-count'); 
-            document.getElementById('current-ticket').style.display = currentTicket.length > 0 ? 'block' : 'none'; 
-            count.innerText = currentTicket.length; 
-            container.innerHTML = currentTicket.map((m,i)=>`<div class="ticket-item" style="padding:8px 0; display:flex; justify-content:space-between;"><div><div>${m.h} vs ${m.a}</div><div><b>${m.market}</b>${m.score?` (${m.score})`:''} | ${m.ht}</div><div class="team-strength">${getStrengthLabel(m.h)} | ${getStrengthLabel(m.a)}</div></div><span style="color:var(--danger);cursor:pointer;" onclick="removeFromTicket(${i})">✖</span></div>`).join(''); 
-        }
-        function removeFromTicket(i){currentTicket.splice(i,1); renderCurrentTicket();}
-        async function saveTicket(){ 
-            if(currentTicket.length === 0) return; 
-            const today = new Date().toDateString(); 
-            const ticketsToday = (currentUserData.tickets || []).filter(t => t.date && t.date.includes(today)).length; 
-            if(!currentUserData.is_premium && ticketsToday >= 1){alert("Standard: 1 ticket/jour max."); return;} 
-            if(currentUserData.is_premium && ticketsToday >= 5){alert("Premium: 5 tickets/jour max."); return;} 
-            if(!currentUserData.tickets) currentUserData.tickets = [];
-            currentUserData.tickets.unshift({date:new Date().toLocaleString(), matches:[...currentTicket]}); 
-            currentTicket = []; renderCurrentTicket(); await updateUser(); 
-            alert("Ticket enregistré !"); switchView('tickets'); 
-        }
-        function viewTicketDetail(index) { 
-            selectedTicketIndex = index; 
-            const ticket = currentUserData.tickets[index]; 
-            const container = document.getElementById('ticket-detail-content'); 
-            container.innerHTML = `<div class="detail-header"><h3>🎫 DÉTAIL DU TICKET</h3><div class="info-badge">📅 ${ticket.date}</div><div class="info-badge">📊 ${ticket.matches.length} match(s)</div></div><div class="card">${ticket.matches.map((m,i)=>`<div class="ticket-item" style="margin-bottom:15px; padding:10px; background:var(--border); border-radius:12px;"><div style="font-weight:bold;">${m.h} vs ${m.a}</div><div style="color:var(--cyan);">🎯 ${m.market}</div>${m.score?`<div style="color:var(--green);">📊 Score exact: ${m.score}</div>`:''}<div class="team-strength">${getStrengthLabel(m.h)} | ${getStrengthLabel(m.a)}</div></div>`).join('')}</div><div class="card"><h4>⚡ Actions</h4><div class="action-buttons"><button class="btn btn-double" onclick="duplicateSavedTicket()">🔄 DOUBLER</button><button class="btn btn-gourmand" onclick="createGourmandFromTicket()">🍽️ GOURMAND</button></div></div>`; 
-            document.getElementById('view-tickets').style.display = 'none'; document.getElementById('view-ticket-detail').style.display = 'block'; 
-        }
-        async function duplicateSavedTicket() { 
-            if(selectedTicketIndex===null) return; 
-            const orig = currentUserData.tickets[selectedTicketIndex]; 
-            let newMatches = orig.matches.map(m=>{ const gen = genererScoreEtMarche(m.h, m.a); return {h:m.h, a:m.a, market:gen.marche, score:currentUserData.is_premium?gen.scoreFinal:null, ht:gen.miTemps, logic:gen.logique}; }); 
-            if(!currentUserData.is_premium && newMatches.length>1){ alert("⚠️ Standard: 1 match max."); return; } 
-            if(!currentUserData.tickets) currentUserData.tickets = [];
-            currentUserData.tickets.unshift({date:new Date().toLocaleString(), matches:newMatches}); 
-            await updateUser(); alert(`✅ Dupliqué (${newMatches.length} matchs)`); backToTicketsList(); 
-        }
-        async function createGourmandFromTicket() { 
-            if (!currentUserData.is_admin) { alert("Fonction réservée aux administrateurs."); return; }
-            await loadAllUsers();
-            const today = new Date().toDateString(); 
-            let allMatches = []; 
-            for(const u of usersCache) {
-                if(u.id !== currentUserData.uid) {
-                    for(const t of u.tickets || []) {
-                        if(t.date && t.date.includes(today)) { for(const m of t.matches) allMatches.push(m); }
-                    }
-                }
-            }
-            if(allMatches.length===0){alert("Aucun match analysé aujourd'hui par d'autres utilisateurs."); return;} 
-            let max = currentUserData.is_premium?15:1; 
-            let count = Math.min(max, allMatches.length); 
-            const shuffled = allMatches.sort(()=>0.5-Math.random()); 
-            let gourmand = shuffled.slice(0,count).map(m=>{ const gen = genererScoreEtMarche(m.h, m.a); return {h:m.h, a:m.a, market:gen.marche, score:currentUserData.is_premium?gen.scoreFinal:null, ht:gen.miTemps, logic:gen.logique}; }); 
-            if(!currentUserData.tickets) currentUserData.tickets = [];
-            currentUserData.tickets.unshift({date:new Date().toLocaleString(), matches:gourmand}); 
-            await updateUser(); alert(`🍽️ Ticket Gourmand créé (${gourmand.length} matchs)`); backToTicketsList(); 
-        }
-        function backToTicketsList() { document.getElementById('view-ticket-detail').style.display = 'none'; document.getElementById('view-tickets').style.display = 'block'; renderSavedTickets(); selectedTicketIndex = null; }
-        function switchView(view){ 
-            if(view==='ticket-detail') return; 
-            document.getElementById('view-tickets').style.display = view==='tickets'?'block':'none'; 
-            document.getElementById('view-predict').style.display = view==='predict'?'block':'none'; 
-            document.getElementById('view-messages').style.display = view==='messages'?'block':'none'; 
-            document.getElementById('view-profile').style.display = view==='profile'?'block':'none'; 
-            document.getElementById('view-ticket-detail').style.display='none'; 
-            ['predict','tickets','messages','profile'].forEach(v=>{document.getElementById('nav-'+v).classList.toggle('active',v===view);}); 
-            if(view==='tickets') renderSavedTickets(); 
-            if(view==='messages'){if(currentUserData.unread_messages>0){currentUserData.unread_messages=0; updateUser(); updateMessageNotification();} renderMessages();} 
-            if(view==='profile') renderProfile(); 
-        }
-        function renderSavedTickets(){ 
-            const container = document.getElementById('tickets-list-view'); 
-            if(!currentUserData.tickets || currentUserData.tickets.length===0){container.innerHTML='<p style="text-align:center; color:var(--muted);">Aucun ticket enregistré.</p>'; return;} 
-            container.innerHTML = currentUserData.tickets.map((t,idx)=>`<div class="card ticket-card" onclick="viewTicketDetail(${idx})"><div style="color:var(--primary); font-weight:bold;">📅 ${t.date}</div><div>📊 ${t.matches.length} match(s)</div><div style="font-size:11px; color:var(--muted); margin-top:5px;">👆 Cliquer pour voir détails</div></div>`).join(''); 
-        }
-        function renderMessages(){ 
-            const container = document.getElementById('msg-list'); 
-            if(!currentUserData.messages || currentUserData.messages.length===0){container.innerHTML='<p style="text-align:center; color:var(--muted);">Aucun message.</p>'; return;} 
-            container.innerHTML = currentUserData.messages.map(m=>`<div class="card"><p>${m.text}</p><div class="message-date">📅 ${m.date}</div></div>`).join(''); 
-        }
-        function renderProfile(){ 
-            document.getElementById('prof-name').innerText = currentUserData.name || currentUserData.email; 
-            document.getElementById('prof-email').innerText = currentUserData.email; 
-            document.getElementById('prof-whatsapp').innerHTML = `📱 WhatsApp: ${currentUserData.whatsapp || 'Non renseigné'}`; 
-            const picContainer = document.getElementById('profile-pic-container'); 
-            picContainer.innerHTML = currentUserData.profile_image_url ? `<img src="${currentUserData.profile_image_url}" class="profile-pic">` : `<div class="profile-pic" style="background:var(--border); display:flex; align-items:center; justify-content:center;">📷</div>`; 
-            let badgeHtml = currentUserData.is_premium ? '<span class="status-badge" style="background:var(--pink);">💎 PREMIUM</span>' : (currentUserData.is_verified ? '<span class="status-badge" style="background:var(--green);">✅ VÉRIFIÉ</span>' : '<span class="status-badge" style="background:var(--muted);">⏳ NON VÉRIFIÉ</span>'); 
-            if(currentUserData.premium_expiry) badgeHtml += `<br><small>Jusqu'au: ${new Date(currentUserData.premium_expiry).toLocaleDateString()}</small>`; 
-            document.getElementById('prof-badge').innerHTML = badgeHtml; 
-            document.getElementById('id-upload-section').style.display = currentUserData.is_verified ? 'none' : 'block'; 
-        }
-        async function handleProfileUpload(input){ alert("⚠️ Stockage d'images: À configurer avec Supabase Storage"); }
-        async function handleIDUpload(input){ alert("⚠️ Stockage d'images: À configurer avec Supabase Storage"); }
-        function renderGlobalAds() {
-            const banner = document.getElementById('global-ad-banner');
-            if(!banner) return;
-            if(currentUserData && currentUserData.global_ads && currentUserData.global_ads.length > 0) {
-                banner.style.display = 'flex';
-                banner.innerHTML = currentUserData.global_ads.map(ad => {
-                    const mediaHtml = ad.type === 'image' ? `<img src="${ad.media}" alt="${ad.title}" onclick="window.open('${ad.url || '#'}', '_blank')">` : `<video src="${ad.media}" controls style="max-height:50px;" onclick="this.paused?this.play():this.pause()"></video>`;
-                    return `<div class="ad-item">${mediaHtml}<span>${ad.title.substring(0, 20)}</span>${ad.url ? `<a href="${ad.url}" target="_blank" style="color:var(--cyan); font-size:9px;">🔗 Voir</a>` : ''}<div class="close-ad" onclick="event.stopPropagation(); removeAd(${ad.id})">✖</div></div>`;
-                }).join('');
-            } else { banner.style.display = 'none'; }
-        }
-        async function removeAd(adId) { if(currentUserData && currentUserData.global_ads) { currentUserData.global_ads = currentUserData.global_ads.filter(ad => ad.id !== adId); await updateUser(); renderGlobalAds(); } }
-        function showAdminLogin(){document.getElementById('auth-screen').style.display='none'; document.getElementById('admin-login').style.display='block';}
-        function loginAdmin(){if(document.getElementById('admin-code').value==="0033mutwe"){document.getElementById('admin-login').style.display='none'; document.getElementById('admin-panel').style.display='block'; if(currentUserData) currentUserData.is_admin = true; updateUser(); loadAllUsers();} else document.getElementById('admin-error').innerText="Code erroné";}
-        async function renderAdminUsers(){
-            const container = document.getElementById('admin-users'); 
-            if(!container) return;
-            container.innerHTML = usersCache.map((u)=>`<div class="card"><b>${u.name || u.email}</b> (${u.email})<br>📱 ${u.whatsapp || 'Non renseigné'}<br>Vérifié: ${u.is_verified?'OUI':'NON'} | Premium: ${u.is_premium?'ACTIF':'INACTIF'}${u.premium_expiry ? ` (Fin: ${new Date(u.premium_expiry).toLocaleDateString()})` : ''}<br>${u.id_image_url?`<img src="${u.id_image_url}" class="admin-img-preview" onclick="window.open(this.src)">`:''}<div style="display:flex; gap:5px; margin-top:10px;"><button class="btn btn-success" onclick="adminVerify('${u.id}')">Vérifier</button><button class="btn btn-primary" onclick="openPremiumModal('${u.id}')">Premium</button><button class="btn btn-danger" onclick="adminBlock('${u.id}')">${u.is_blocked?'Débloquer':'Bloquer'}</button><button class="btn btn-warning" onclick="sendMessageToUser('${u.id}')">Message</button></div></div>`).join('');
-        }
-        async function sendMessageToUser(uid){
-            const msg = prompt("Message:"); 
-            if(msg){
-                const { data } = await supabase.from('user_profiles').select('messages, unread_messages').eq('id', uid).single();
-                if (data) {
-                    const messages = data.messages || [];
-                    messages.push({date:new Date().toLocaleString(), text:msg});
-                    const unreadMessages = (data.unread_messages || 0) + 1;
-                    await supabase.from('user_profiles').update({ messages, unread_messages: unreadMessages }).eq('id', uid);
-                    alert("Message envoyé !");
-                    if(currentUserData.is_admin) await loadAllUsers();
-                } else alert("Erreur: Utilisateur introuvable.");
-            }
-        }
-        async function adminVerify(uid){
-            const { data } = await supabase.from('user_profiles').select('messages, unread_messages').eq('id', uid).single();
-            if (data) {
-                const messages = data.messages || [];
-                messages.push({date:new Date().toLocaleString(), text:"✅ Identité vérifiée!"});
-                const unreadMessages = (data.unread_messages || 0) + 1;
-                await supabase.from('user_profiles').update({ is_verified: true, messages, unread_messages: unreadMessages }).eq('id', uid);
-                alert("Utilisateur vérifié !");
-                if(currentUserData.is_admin) await loadAllUsers();
-            } else alert("Erreur: Utilisateur introuvable.");
-        }
-        async function adminBlock(uid){
-            const { data } = await supabase.from('user_profiles').select('is_blocked').eq('id', uid).single();
-            if (data) {
-                const newBlockedStatus = !data.is_blocked;
-                await supabase.from('user_profiles').update({ is_blocked: newBlockedStatus }).eq('id', uid);
-                alert(newBlockedStatus ? "Utilisateur bloqué" : "Utilisateur débloqué");
-                if(currentUserData.is_admin) await loadAllUsers();
-            } else alert("Erreur: Utilisateur introuvable.");
-        }
-        function openPremiumModal(uid){ adminUserEmail = uid; document.getElementById('modal-premium').classList.add('active'); }
-        async function confirmPremium(){
-            const days = parseInt(document.getElementById('pre-days').value);
-            if (isNaN(days) || days <= 0) { alert("Veuillez entrer un nombre de jours valide."); return; }
-            const expiryDate = new Date(); expiryDate.setDate(expiryDate.getDate() + days);
-            const { data } = await supabase.from('user_profiles').select('messages, unread_messages').eq('id', adminUserEmail).single();
-            if (data) {
-                const messages = data.messages || [];
-                messages.push({date:new Date().toLocaleString(), text:`💎 Premium ${days} jours activé!`});
-                const unreadMessages = (data.unread_messages || 0) + 1;
-                await supabase.from('user_profiles').update({ is_premium: true, premium_expiry: expiryDate.toISOString(), messages, unread_messages: unreadMessages }).eq('id', adminUserEmail);
-                closeModal(); alert("Premium activé !");
-                if(currentUserData.is_admin) await loadAllUsers();
-            } else alert("Erreur: Utilisateur introuvable.");
-        }
-        function updateAdminStats(){
-            const premiumCount = usersCache.filter(u => u.is_premium && u.premium_expiry && new Date(u.premium_expiry) > new Date()).length;
-            const totalUsers = usersCache.length;
-            const today = new Date().toDateString();
-            const newToday = usersCache.filter(u => u.created_at && u.created_at.includes(today)).length;
-            if(document.getElementById('stat-users')) { document.getElementById('stat-users').innerText = totalUsers; document.getElementById('stat-new').innerText = newToday; document.getElementById('stat-premium').innerText = premiumCount; }
-        }
-        async function sendGlobalAd() {
-            const title = document.getElementById('ad-title')?.value.trim() || "Nouvelle annonce";
-            const url = document.getElementById('ad-url')?.value.trim() || "";
-            if(!selectedAdFileData) { alert("❌ Veuillez sélectionner une image ou une vidéo"); return; }
-            const adData = { id: Date.now(), title, url, media: selectedAdFileData, type: selectedAdFileType, date: new Date().toLocaleString() };
-            const { data: users } = await supabase.from('user_profiles').select('id, global_ads');
-            if (users) {
-                for (const user of users) {
-                    const globalAds = user.global_ads || [];
-                    globalAds.unshift(adData);
-                    if(globalAds.length > 15) globalAds.pop();
-                    await supabase.from('user_profiles').update({ global_ads: globalAds }).eq('id', user.id);
-                }
-                alert(`✅ Annonce envoyée avec succès à ${users.length} utilisateur(s) !`);
-            }
-            document.getElementById('ad-title').value = ''; document.getElementById('ad-url').value = ''; document.getElementById('ad-preview').style.display = 'none';
-            selectedAdFileData = null; selectedAdFileType = null;
-            if(currentUserData) { currentUserData.global_ads = currentUserData.global_ads || []; currentUserData.global_ads.unshift(adData); if(currentUserData.global_ads.length > 15) currentUserData.global_ads.pop(); renderGlobalAds(); }
-        }
-        document.getElementById('ad-image')?.addEventListener('change', function(e) {
-            if(e.target.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(ev) { selectedAdFileData = ev.target.result; selectedAdFileType = 'image'; document.getElementById('ad-preview').style.display = 'block'; document.getElementById('ad-preview').innerHTML = `<img src="${ev.target.result}" style="max-height:80px; border-radius:8px;"><span>✓</span>`; };
-                reader.readAsDataURL(e.target.files[0]);
-            }
-        });
-        document.getElementById('ad-video')?.addEventListener('change', function(e) {
-            if(e.target.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(ev) { selectedAdFileData = ev.target.result; selectedAdFileType = 'video'; document.getElementById('ad-preview').style.display = 'block'; document.getElementById('ad-preview').innerHTML = `<video src="${ev.target.result}" style="max-height:80px; border-radius:8px;" controls></video><span>✓</span>`; };
-                reader.readAsDataURL(e.target.files[0]);
-            }
-        });
-        function toggleAssistant(){document.getElementById('assistant-chat').classList.toggle('active');}
-        function askZola(){const input=document.getElementById('assistant-input'); const q=input.value.trim(); if(!q) return; const messagesDiv=document.getElementById('assistant-messages'); messagesDiv.innerHTML+=`<div class="assistant-bubble assistant-user">${q}</div>`; input.value=''; setTimeout(()=>{messagesDiv.innerHTML+=`<div class="assistant-bubble assistant-bot">🤖 Cliquez sur un ticket dans TICKETS pour voir DOUBLER et GOURMAND !</div>`; messagesDiv.scrollTop=messagesDiv.scrollHeight;},500);}
-        function toggleAuth(s){document.getElementById('auth-screen').style.display=s?'none':'block'; document.getElementById('register-screen').style.display=s?'block':'none'; document.getElementById('email-error').innerText=''; document.getElementById('login-error').innerText='';}
-        function closeModal(){document.querySelectorAll('.modal').forEach(m=>m.classList.remove('active'));}
-        function toggleLanguage() { const langBtn = document.querySelector('.lang-btn'); const currentText = langBtn.innerText; langBtn.innerText = currentText.includes('English') ? '🌐 Français' : '🌐 English'; }
-        
-        // Démarrer l'application
-        checkSession();
-    </script>
+</div>
 </body>
-</html>
+        </html>
