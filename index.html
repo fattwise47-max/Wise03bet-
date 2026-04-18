@@ -4,8 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>WISE03.BET — IA Sportive Pro</title>
-    <!-- Supabase JS SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
             --bg: #020617; --card: #0f172a; --border: #1e293b; --text: #f1f5f9;
@@ -45,6 +43,7 @@
         .btn-gourmand { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; }
         .btn-double { background: linear-gradient(135deg, var(--cyan), #0891b2); color: white; }
         .btn-warning { background: var(--warning); color: #000; }
+        .btn-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); color: white; }
 
         .nav-bar { 
             display: flex; background: var(--card); border: 1px solid var(--border); 
@@ -278,6 +277,33 @@
             font-size: 12px;
             color: white;
         }
+
+        .code-input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .code-input-group input {
+            flex: 2;
+            margin-bottom: 0;
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        .expiry-warning {
+            background: rgba(239,68,68,0.2);
+            border: 1px solid var(--danger);
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .code-list-container {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            font-size: 11px;
+        }
     </style>
 </head>
 <body>
@@ -316,7 +342,7 @@
                 <input type="text" id="reg-name" placeholder="Nom complet">
                 <input type="email" id="reg-email" placeholder="Email">
                 <div id="email-error" style="color:var(--danger); font-size:12px;"></div>
-                <input type="tel" id="reg-whatsapp" placeholder="Numéro WhatsApp (ex: 22990123456)">
+                <input type="tel" id="reg-whatsapp" placeholder="Numéro WhatsApp (ex: 243983971254)">
                 <input type="password" id="reg-pass" placeholder="Mot de passe (min 4 caractères)">
                 <button class="btn btn-primary btn-full" onclick="registerUser()">S'INSCRIRE</button>
                 <button class="btn btn-ghost btn-full" style="margin-top:10px;" onclick="toggleAuth(false)">Retour</button>
@@ -333,7 +359,12 @@
 
             <div id="view-predict">
                 <div id="verify-alert" class="card" style="display:none; border-color:var(--warning);">
-                    <p style="font-size:12px; color:var(--warning); text-align:center;">⚠️ Votre compte est en attente de vérification. Téléchargez votre ID dans "Profil".</p>
+                    <p style="font-size:12px; color:var(--warning); text-align:center;">⚠️ Votre compte est en attente de vérification. Entrez un code d'abonnement dans "Profil".</p>
+                </div>
+
+                <div id="subscription-expiry-warning" class="expiry-warning" style="display:none;">
+                    ⚠️ Votre abonnement expire dans <span id="expiry-days-left">0</span> jour(s). 
+                    <button class="btn btn-warning" style="margin-top:8px;" onclick="showSubscriptionSection()">Renouveler</button>
                 </div>
 
                 <div id="predict-main" style="display:none;">
@@ -403,16 +434,20 @@
                     <p id="prof-email" style="font-size:12px; color:var(--muted);"></p>
                     <p id="prof-whatsapp" style="font-size:12px; color:var(--muted);"></p>
                     <div id="prof-badge"></div>
+                    <div id="subscription-info" style="margin:10px 0; font-size:12px;"></div>
                     <hr style="margin:20px 0; opacity:0.1;">
                     <div id="profile-pic-section">
                         <p style="font-size:11px; margin-bottom:10px;">Photo de profil :</p>
                         <button class="btn btn-primary btn-full" onclick="document.getElementById('profile-file').click()">📸 CHARGER PHOTO DE PROFIL</button>
                         <input type="file" id="profile-file" style="display:none;" accept="image/*" onchange="handleProfileUpload(this)">
                     </div>
-                    <div id="id-upload-section">
-                        <p style="font-size:11px; margin-bottom:10px;">Vérification d'identité requise :</p>
-                        <button class="btn btn-warning btn-full" onclick="document.getElementById('id-file').click()">📷 TÉLÉCHARGER PIÈCE ID</button>
-                        <input type="file" id="id-file" style="display:none;" accept="image/*" onchange="handleIDUpload(this)">
+                    <div id="subscription-section">
+                        <p style="font-size:11px; margin-bottom:10px;">🔑 Code d'abonnement (contient 003) :</p>
+                        <div class="code-input-group">
+                            <input type="text" id="subscription-code" placeholder="Entrez votre code" maxlength="20" style="text-transform:uppercase">
+                            <button class="btn btn-success" onclick="validateSubscriptionCode()">VALIDER</button>
+                        </div>
+                        <button class="btn btn-whatsapp btn-full" style="margin-top:10px;" onclick="requestSubscription()">📱 DEMANDER UN CODE À L'ADMIN</button>
                     </div>
                     <button class="btn btn-danger btn-full" style="margin-top:20px;" onclick="logout()">DÉCONNEXION</button>
                 </div>
@@ -436,6 +471,19 @@
             </div>
             <h3 style="text-align:center; color:var(--danger); margin-bottom:20px;">🛡️ CONSOLE MUTWE</h3>
             
+            <!-- SECTION CODES D'ABONNEMENT (MAX 15) -->
+            <div class="card">
+                <h4 style="margin-bottom:10px;">🔑 GESTION DES CODES (MAX 15)</h4>
+                <p style="font-size:11px; margin-bottom:10px;">Codes contenant "003" - Usage unique - Valables 7 jours</p>
+                <div id="codes-list" class="code-list-container"></div>
+                <div style="display:flex; gap:10px;">
+                    <button class="btn btn-primary" onclick="generateNewCodes()" id="gen-codes-btn">➕ GÉNÉRER 15 CODES</button>
+                    <button class="btn btn-danger" onclick="clearAllCodes()" id="clear-codes-btn">🗑️ TOUT EFFACER</button>
+                </div>
+                <p id="codes-limit-msg" style="font-size:10px; color:var(--warning); margin-top:8px;"></p>
+            </div>
+
+            <!-- SECTION ENVOI PUBLICITAIRE -->
             <div class="card">
                 <h4 style="margin-bottom:10px;">📢 Envoyer une annonce à TOUS les utilisateurs</h4>
                 <input type="text" id="ad-title" placeholder="Titre / Description courte" style="margin-bottom:8px;">
@@ -460,7 +508,7 @@
                 <span>▼</span>
             </div>
             <div class="assistant-messages" id="assistant-messages">
-                <div class="assistant-bubble assistant-bot">👋 Bonjour ! Je suis Zola. Cliquez sur un ticket enregistré pour voir ses détails !</div>
+                <div class="assistant-bubble assistant-bot">👋 Bonjour ! Je suis Zola. Entrez votre code d'abonnement contenant "003" dans Profil !</div>
             </div>
             <div class="assistant-input">
                 <input type="text" id="assistant-input" placeholder="Votre question..." onkeypress="if(event.key==='Enter')askZola()">
@@ -492,35 +540,264 @@
         </div>
     </div>
 
-    <script>
-        // ==================== CONFIGURATION SUPABASE ====================
-        const SUPABASE_URL = 'https://kvzemwoinlrisauioonq.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2emVtd29pbmxyaXNhdWlvb25xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ1MTIwMDAsImV4cCI6MjA1MDA4ODAwMH0.6lDejMl6JmtRiTH0XhwMSQ_NQcuhoyy';
-        
-        let supabase;
-        let currentUser = null;
-        let currentTicket = [];
-        let tempMatch = null;
-        let adminUserIdx = null;
-        let selectedTicketIndex = null;
-        let selectedAdFileData = null;
-        let selectedAdFileType = null;
+    <div id="modal-subscription" class="modal">
+        <div class="modal-content">
+            <h4 style="text-align:center;">📱 Demande de code d'abonnement</h4>
+            <p style="margin:15px 0; text-align:center;">Cliquez ci-dessous pour envoyer un message WhatsApp à l'administrateur :</p>
+            <p style="background:var(--border); padding:10px; border-radius:12px; text-align:center; word-break:break-all;" id="subscription-request-text"></p>
+            <button class="btn btn-whatsapp btn-full" onclick="sendWhatsAppRequest()" id="whatsapp-request-btn">📲 ENVOYER SUR WHATSAPP</button>
+            <button class="btn btn-ghost btn-full" style="margin-top:10px;" onclick="closeModal()">FERMER</button>
+        </div>
+    </div>
 
-        // Initialisation Supabase
-        async function initSupabase() {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    <script>
+        // === ADMIN WHATSAPP NUMBER ===
+        const ADMIN_WHATSAPP = "243983971254";
+
+        // === CODES D'ABONNEMENT (MAX 15, CONTIENNENT "003", USAGE UNIQUE, VALABLES 7 JOURS) ===
+        let subscriptionCodes = JSON.parse(localStorage.getItem('wise03_subscription_codes')) || [];
+
+        // Vérifier si un code contient "003"
+        function isValidCodeFormat(code) {
+            return code.toUpperCase().includes("003");
+        }
+
+        // Générer un code aléatoire contenant "003"
+        function generateRandomCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
+            // Format: XXXX003XXX (9-15 caractères avec 003 au milieu)
+            const prefixLength = Math.floor(Math.random() * 4) + 2; // 2 à 5 caractères avant
+            const suffixLength = Math.floor(Math.random() * 4) + 2; // 2 à 5 caractères après
+            let prefix = '';
+            let suffix = '';
+            for(let i = 0; i < prefixLength; i++) prefix += chars.charAt(Math.floor(Math.random() * chars.length));
+            for(let i = 0; i < suffixLength; i++) suffix += chars.charAt(Math.floor(Math.random() * chars.length));
+            return prefix + "003" + suffix;
+        }
+
+        // Générer 15 nouveaux codes (max total 15)
+        function generateNewCodes() {
+            const currentCount = subscriptionCodes.length;
+            const maxCodes = 15;
             
-            // Vérifier session existante
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
-                await loadUserData(session.user.email);
-                if (currentUser) {
-                    showDashboard();
+            if(currentCount >= maxCodes) {
+                alert(`❌ Nombre maximum de codes atteint (${maxCodes}). Supprimez d'abord des codes existants.`);
+                document.getElementById('codes-limit-msg').innerText = `⚠️ Maximum: ${maxCodes} codes. Actuellement: ${currentCount}/${maxCodes}`;
+                return;
+            }
+            
+            const needed = maxCodes - currentCount;
+            const toGenerate = Math.min(needed, 15);
+            const newCodes = [];
+            
+            for(let i = 0; i < toGenerate; i++) {
+                let newCode;
+                let exists;
+                do {
+                    newCode = generateRandomCode();
+                    exists = subscriptionCodes.some(c => c.code === newCode);
+                } while(exists);
+                
+                newCodes.push({
+                    code: newCode,
+                    used: false,
+                    usedBy: null,
+                    usedAt: null,
+                    createdAt: new Date().toISOString()
+                });
+            }
+            
+            subscriptionCodes = [...subscriptionCodes, ...newCodes];
+            saveSubscriptionCodes();
+            renderAdminCodesList();
+            alert(`✅ ${toGenerate} nouveaux codes générés ! Total: ${subscriptionCodes.length}/${maxCodes} codes.`);
+            document.getElementById('codes-limit-msg').innerText = `📊 ${subscriptionCodes.length}/${maxCodes} codes utilisés`;
+        }
+
+        function clearAllCodes() {
+            if(confirm("⚠️ Supprimer TOUS les codes ? Cette action est irréversible.")) {
+                subscriptionCodes = [];
+                saveSubscriptionCodes();
+                renderAdminCodesList();
+                alert("✅ Tous les codes ont été supprimés.");
+                document.getElementById('codes-limit-msg').innerText = `📊 0/15 codes`;
+            }
+        }
+
+        function saveSubscriptionCodes() {
+            localStorage.setItem('wise03_subscription_codes', JSON.stringify(subscriptionCodes));
+        }
+
+        function renderAdminCodesList() {
+            const container = document.getElementById('codes-list');
+            if(!container) return;
+            const available = subscriptionCodes.filter(c => !c.used).length;
+            const used = subscriptionCodes.filter(c => c.used).length;
+            const maxCodes = 15;
+            
+            container.innerHTML = `<div style="margin-bottom:8px;">📊 Disponibles: ${available} | Utilisés: ${used} | Max: ${maxCodes}</div>`;
+            container.innerHTML += `<div style="max-height:150px; overflow-y:auto;">`;
+            
+            if(subscriptionCodes.length === 0) {
+                container.innerHTML += `<div style="padding:8px; text-align:center; color:var(--muted);">Aucun code. Générez-en !</div>`;
+            } else {
+                subscriptionCodes.forEach((c, idx) => {
+                    const status = c.used ? `❌ Utilisé par ${c.usedBy || '?'}` : '✅ Disponible';
+                    container.innerHTML += `<div style="font-family:monospace; padding:4px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between;">
+                        <span>${c.code}</span>
+                        <span style="font-size:10px;">${status}</span>
+                        ${!c.used ? `<button class="btn btn-danger" style="padding:2px 6px; font-size:9px;" onclick="deleteCode(${idx})">🗑️</button>` : ''}
+                    </div>`;
+                });
+            }
+            container.innerHTML += `</div>`;
+            
+            const genBtn = document.getElementById('gen-codes-btn');
+            const clearBtn = document.getElementById('clear-codes-btn');
+            if(genBtn) {
+                if(subscriptionCodes.length >= maxCodes) {
+                    genBtn.disabled = true;
+                    genBtn.style.opacity = '0.5';
+                    document.getElementById('codes-limit-msg').innerText = `⚠️ Maximum atteint: ${maxCodes}/${maxCodes} codes. Supprimez avant de générer.`;
+                } else {
+                    genBtn.disabled = false;
+                    genBtn.style.opacity = '1';
+                    document.getElementById('codes-limit-msg').innerText = `📊 ${subscriptionCodes.length}/${maxCodes} codes utilisés`;
                 }
             }
         }
 
-        // ==================== MOTEUR IA SPORTIF ====================
+        function deleteCode(index) {
+            if(confirm("Supprimer ce code ?")) {
+                subscriptionCodes.splice(index, 1);
+                saveSubscriptionCodes();
+                renderAdminCodesList();
+            }
+        }
+
+        // Valider un code d'abonnement (doit contenir "003" et être inutilisé)
+        function validateSubscriptionCode() {
+            if(!currentUser) return;
+            
+            const codeInput = document.getElementById('subscription-code');
+            const code = codeInput.value.trim().toUpperCase();
+            
+            if(!code) {
+                alert("❌ Veuillez entrer un code d'abonnement.");
+                return;
+            }
+            
+            // Vérifier si le code contient "003"
+            if(!isValidCodeFormat(code)) {
+                alert("❌ Code invalide. Le code doit contenir '003'.");
+                return;
+            }
+            
+            const foundCode = subscriptionCodes.find(c => c.code === code);
+            
+            if(!foundCode) {
+                alert("❌ Code invalide. Ce code n'existe pas dans la base.");
+                return;
+            }
+            
+            if(foundCode.used) {
+                alert(`❌ Code déjà utilisé par ${foundCode.usedBy}. Accès refusé.`);
+                return;
+            }
+            
+            // Activer l'abonnement pour 7 jours
+            const expiryDate = new Date();
+            expiryDate.setDate(expiryDate.getDate() + 7);
+            
+            foundCode.used = true;
+            foundCode.usedBy = currentUser.email;
+            foundCode.usedAt = new Date().toISOString();
+            saveSubscriptionCodes();
+            
+            currentUser.isPremium = true;
+            currentUser.isVerified = true;
+            currentUser.premiumExpiry = expiryDate.toISOString();
+            currentUser.subscriptionCode = code;
+            updateUser();
+            
+            codeInput.value = '';
+            alert(`✅ Abonnement activé avec succès ! Vous avez accès au service complet pour 7 jours (jusqu'au ${expiryDate.toLocaleDateString()}).`);
+            
+            renderProfile();
+            checkSubscriptionExpiry();
+            checkVerificationStatus();
+            
+            if(document.getElementById('view-profile').style.display === 'block') {
+                renderProfile();
+            }
+            if(document.getElementById('predict-main')) {
+                checkVerificationStatus();
+            }
+            
+            renderAdminCodesList();
+        }
+
+        // Vérifier si l'abonnement a expiré
+        function checkSubscriptionExpiry() {
+            if(!currentUser) return;
+            
+            const warningDiv = document.getElementById('subscription-expiry-warning');
+            
+            if(currentUser.isPremium && currentUser.premiumExpiry) {
+                const expiry = new Date(currentUser.premiumExpiry);
+                const now = new Date();
+                const daysLeft = Math.ceil((expiry - now) / (1000 * 60 * 60 * 24));
+                
+                if(daysLeft <= 3 && daysLeft > 0) {
+                    warningDiv.style.display = 'block';
+                    document.getElementById('expiry-days-left').innerText = daysLeft;
+                } else if(daysLeft <= 0) {
+                    currentUser.isPremium = false;
+                    currentUser.isVerified = false;
+                    currentUser.premiumExpiry = null;
+                    updateUser();
+                    warningDiv.style.display = 'none';
+                    alert("⚠️ Votre abonnement a expiré. Veuillez entrer un nouveau code dans Profil.");
+                    checkVerificationStatus();
+                    renderProfile();
+                } else {
+                    warningDiv.style.display = 'none';
+                }
+            } else {
+                warningDiv.style.display = 'none';
+            }
+        }
+
+        // Demander un code via WhatsApp
+        function requestSubscription() {
+            if(!currentUser) return;
+            
+            const userEmail = currentUser.email;
+            const userName = currentUser.name;
+            const userWhatsapp = currentUser.whatsapp || "Non renseigné";
+            
+            const message = `*DEMANDE DE CODE D'ABONNEMENT WISE03*\n\n👤 Nom: ${userName}\n📧 Email: ${userEmail}\n📱 WhatsApp: ${userWhatsapp}\n\n🔑 Veuillez me fournir un code d'abonnement contenant "003".`;
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${ADMIN_WHATSAPP}?text=${encodedMessage}`;
+            
+            const requestText = document.getElementById('subscription-request-text');
+            requestText.innerHTML = `📧 Email: ${userEmail}<br>👤 Nom: ${userName}`;
+            
+            const requestBtn = document.getElementById('whatsapp-request-btn');
+            requestBtn.onclick = () => {
+                window.open(whatsappUrl, '_blank');
+                setTimeout(() => closeModal(), 500);
+            };
+            
+            document.getElementById('modal-subscription').classList.add('active');
+        }
+
+        function showSubscriptionSection() {
+            switchView('profile');
+            document.getElementById('subscription-code').focus();
+        }
+
+        // === MOTEUR IA SPORTIF (RESTE IDENTIQUE) ===
         const MARKETS_PRO = [
             "1", "2", "X", "1MT +1.5", "1MT +2", "1MT -2", "1MT -1.5", "1MT Dom gagne", "1MT Ext gagne", "1MT Nul",
             "+ de buts en 1MT", "+ de buts en 2MT", "2MT Dom gagne", "2MT Ext gagne", "Les deux MT égalité",
@@ -529,12 +806,114 @@
         
         const SCORES_FAVORIS = ["2-1","1-2","3-1","2-3","0-2","4-1","2-0","1-0","1-1","2-2","4-0","2-4","1-5","3-4","3-5"];
         
+        function getRapportForce(teamH, teamA) {
+            const strengthH = getTeamStrength(teamH);
+            const strengthA = getTeamStrength(teamA);
+            if(strengthH === 'fort' && strengthA === 'faible') return 'favori_vs_faible';
+            if(strengthA === 'fort' && strengthH === 'faible') return 'surprise';
+            return 'equilibre';
+        }
+        
+        function getScoresPossibles(rapport) {
+            if(rapport === 'favori_vs_faible') return ["3-1","4-1","2-0","4-0","3-0","4-1","4-2","3-2","2-3","5-2","6-2",];
+            if(rapport === 'surprise') return ["0-2","1-2","0-1"];
+            return ["1-1","2-1","1-2","2-2","1-0","0-1","3-1","3-2","1-3"];
+        }
+        
+        function validerScoreAvecMarche(scoreFinal, marche) {
+            const [h, a] = scoreFinal.split('-').map(Number);
+            const total = h + a;
+            if(marche === "1") return h > a;
+            if(marche === "2") return a > h;
+            if(marche === "X") return h === a;
+            if(marche === "Over 1.5") return total > 1.5;
+            if(marche === "Over 2") return total > 2;
+            if(marche === "Over 2.5") return total > 2.5;
+            if(marche === "Over 3") return total > 3;
+            if(marche === "Under 2") return total < 2;
+            if(marche === "All teams win YES") return (h > 0 && a > 0);
+            if(marche === "All teams win NO") return (h === 0 || a === 0);
+            return true;
+        }
+        
+        function genererScoreEtMarche(teamH, teamA) {
+            const rapport = getRapportForce(teamH, teamA);
+            const scoresPossibles = getScoresPossibles(rapport);
+            const scoresCompatibles = SCORES_FAVORIS.filter(s => scoresPossibles.includes(s));
+            let scoreFinal = scoresCompatibles.length ? scoresCompatibles[Math.floor(Math.random() * scoresCompatibles.length)] : scoresPossibles[Math.floor(Math.random() * scoresPossibles.length)];
+            let marche = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
+            let tries = 0;
+            while(!validerScoreAvecMarche(scoreFinal, marche) && tries < 15) {
+                marche = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
+                tries++;
+            }
+            const [fh, fa] = scoreFinal.split('-').map(Number);
+            let ht_h = Math.floor(fh / 2) + (Math.random() > 0.7 ? 1 : 0);
+            let ht_a = Math.floor(fa / 2) + (Math.random() > 0.7 ? 1 : 0);
+            if(ht_h > fh) ht_h = fh;
+            if(ht_a > fa) ht_a = fa;
+            const miTemps = `${ht_h}-${ht_a}`;
+            const logique = `Vérification : ${scoreFinal} valide le marché "${marche}" → ${validerScoreAvecMarche(scoreFinal, marche) ? 'OK' : 'NON'}`;
+            return { scoreFinal, marche, miTemps, logique };
+        }
+
+        // === SPLASH SCREEN ===
+        let splashStart = Date.now();
+        function hideSplash() {
+            const splash = document.getElementById('splashScreen');
+            splash.style.opacity = '0';
+            setTimeout(() => {
+                splash.style.display = 'none';
+                document.getElementById('appShell').style.display = 'block';
+            }, 500);
+        }
+        function updateSplashProgress(percent, text) {
+            const bar = document.getElementById('splashProgress');
+            const textEl = document.getElementById('splashText');
+            if(bar) bar.style.width = percent + '%';
+            if(textEl && text) textEl.innerText = text;
+        }
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.random() * 12 + 3;
+            if(progress >= 100) progress = 100;
+            updateSplashProgress(progress, progress < 30 ? 'Initialisation IA...' : (progress < 120 ? 'Analyse des marchés...' : 'Prêt pour les pronostics !'));
+            if(progress >= 100) {
+                clearInterval(interval);
+                const elapsed = (Date.now() - splashStart) / 1000;
+                const delay = Math.max(0, (5000 - elapsed));
+                setTimeout(() => hideSplash(), delay);
+            }
+        }, 300);
+
+        // === LISTES COMPLÈTES DES CLUBS ===
         const EUROPE_CLUBS = [
             'Real Madrid', 'FC Barcelona', 'Atlético Madrid', 'Sevilla FC', 'Valencia CF', 'Real Betis', 'Villarreal CF', 'Athletic Bilbao', 'Real Sociedad', 'Getafe CF',
             'Manchester United', 'Manchester City', 'Liverpool FC', 'Chelsea FC', 'Arsenal FC', 'Tottenham Hotspur', 'Newcastle United', 'West Ham United', 'Aston Villa', 'Everton FC',
             'Paris Saint-Germain', 'Olympique de Marseille', 'Olympique Lyonnais', 'AS Monaco', 'Lille OSC', 'OGC Nice', 'Stade Rennais', 'RC Lens', 'FC Nantes', 'Montpellier HSC',
             'Bayern Munich', 'Borussia Dortmund', 'RB Leipzig', 'Bayer Leverkusen', 'Schalke 04', 'VfL Wolfsburg', 'Eintracht Frankfurt', 'Borussia Mönchengladbach', 'Hertha Berlin', 'Werder Bremen',
-            'Juventus FC', 'AC Milan', 'Inter Milan', 'AS Roma', 'SSC Napoli', 'Lazio Rome', 'Atalanta Bergame', 'Fiorentina', 'Torino FC', 'Sampdoria'
+            'Juventus FC', 'AC Milan', 'Inter Milan', 'AS Roma', 'SSC Napoli', 'Lazio Rome', 'Atalanta Bergame', 'Fiorentina', 'Torino FC', 'Sampdoria',
+            'Ajax Amsterdam', 'PSV Eindhoven', 'Feyenoord Rotterdam', 'AZ Alkmaar', 'FC Utrecht', 'Vitesse Arnhem', 'FC Groningen', 'SC Heerenveen', 'Sparta Rotterdam', 'Twente',
+            'FC Porto', 'Benfica Lisbonne', 'Sporting CP', 'Braga', 'Boavista FC', 'Marítimo', 'Rio Ave', 'Vitória Guimarães', 'Nacional', 'Belenenses',
+            'Celtic FC', 'Rangers FC', 'Aberdeen FC', 'Hearts', 'Hibernian FC', 'Dundee United', 'Motherwell FC', 'St Mirren', 'Kilmarnock', 'Ross County',
+            'Galatasaray', 'Fenerbahçe', 'Beşiktaş', 'Trabzonspor', 'Istanbul Başakşehir', 'Bursaspor', 'Antalyaspor', 'Konyaspor', 'Sivasspor', 'Alanyaspor',
+            'Zenit Saint-Pétersbourg', 'CSKA Moscou', 'Spartak Moscou', 'Lokomotiv Moscou', 'Dynamo Moscou', 'Rubin Kazan', 'Krasnodar', 'Rostov', 'Akhmat Grozny', 'Ural',
+            'Shakhtar Donetsk', 'Dynamo Kiev', 'Dnipro', 'Zorya Louhansk', 'Metalist Kharkiv', 'Vorskla Poltava', 'Desna Chernihiv', 'Olexandriya', 'Karpaty Lviv', 'Chornomorets Odessa',
+            'Club Bruges', 'Anderlecht', 'Standard Liège', 'Genk', 'Gent', 'Antwerp', 'Charleroi', 'Cercle Bruges', 'KV Mechelen', 'Oostende',
+            'FC Bâle', 'Young Boys', 'FC Zurich', 'Servette FC', 'Lugano', 'St Gallen', 'Sion', 'Grasshopper Club', 'Lausanne Sport', 'Thun',
+            'Red Bull Salzburg', 'Rapid Vienne', 'Austria Vienne', 'LASK', 'Sturm Graz', 'Wolfsberger AC', 'Hartberg', 'Altach', 'Ried', 'Admira Wacker',
+            'Olympiakos', 'Panathinaikos', 'AEK Athènes', 'PAOK Salonique', 'Aris Salonique', 'OFI Crète', 'Atromitos', 'Panetolikos', 'Volos', 'Lamia',
+            'Copenhague', 'Brøndby IF', 'Midtjylland', 'Aalborg BK', 'Odense BK', 'Randers FC', 'Silkeborg IF', 'Horsens', 'Vejle BK', 'Nordsjælland',
+            'Malmö FF', 'AIK Stockholm', 'IFK Göteborg', 'Djurgårdens IF', 'Hammarby IF', 'Elfsborg', 'Häcken', 'Norrköping', 'Kalmar FF', 'Örebro SK',
+            'Rosenborg BK', 'Molde FK', 'Bodø/Glimt', 'Viking FK', 'Brann', 'Stabæk', 'Valerenga', 'Sarpsborg 08', 'Odd Grenland', 'Kristiansund BK',
+            'Lech Poznań', 'Legia Varsovie', 'Wisła Cracovie', 'Lechia Gdańsk', 'Jagiellonia Białystok', 'Pogoń Szczecin', 'Zagłębie Lubin', 'Śląsk Wrocław', 'Raków Częstochowa', 'Piast Gliwice',
+            'Sparta Prague', 'Slavia Prague', 'Viktoria Plzeň', 'Baník Ostrava', 'Slovan Liberec', 'Sigma Olomouc', 'Jablonec', 'Zbrojovka Brno', 'Karviná', 'Teplice',
+            'Ferencváros', 'Mol Fehérvár', 'Debrecen', 'Honvéd', 'Puskás Akadémia', 'Zalaegerszeg', 'Kisvárda', 'Mezőkövesd', 'Újpest FC', 'Gyirmót',
+            'Steaua Bucarest', 'CFR Cluj', 'Universitatea Craiova', 'Dinamo Bucarest', 'Viitorul Constanța', 'Botoșani', 'Sepsi OSK', 'Gaz Metan Mediaș', 'Voluntari', 'Chindia Târgoviște',
+            'Étoile Rouge Belgrade', 'Partizan Belgrade', 'Vojvodina', 'Radnički Niš', 'Čukarički', 'Napredak Kruševac', 'Mladost Lučani', 'Spartak Subotica', 'Rad Beograd', 'Proleter Novi Sad',
+            'Dinamo Zagreb', 'Hajduk Split', 'Rijeka', 'Osijek', 'Slaven Belupo', 'Lokomotiva Zagreb', 'Gorica', 'Istra 1961', 'Šibenik', 'Varaždin',
+            'Ludogorets Razgrad', 'CSKA Sofia', 'Levski Sofia', 'Lokomotiv Plovdiv', 'Beroe Stara Zagora', 'Slavia Sofia', 'Cherno More', 'Etar', 'Arda Kardzhali', 'Montana',
+            'Slovan Bratislava', 'Spartak Trnava', 'DAC Dunajská Streda', 'Žilina', 'Ružomberok', 'Trenčín', 'Senica', 'Zemplín Michalovce', 'Pohronie', 'Nitra'
         ];
 
         const AFRICA_CLUBS = [
@@ -542,25 +921,53 @@
             'Espérance de Tunis', 'Club Africain', 'Étoile du Sahel', 'CS Sfaxien', 'US Monastir',
             'Wydad Casablanca', 'Raja Casablanca', 'RS Berkane', 'FUS Rabat', 'MAS Fès', 'Moghreb Tétouan',
             'JS Kabylie', 'MC Alger', 'CR Belouizdad', 'ES Sétif', 'USM Alger', 'Paradou AC',
-            'TP Mazembe', 'AS Vita Club', 'DC Motema Pembe', 'FC Lupopo', 'Sanga Balende'
+            'TP Mazembe', 'AS Vita Club', 'DC Motema Pembe', 'FC Lupopo', 'Sanga Balende',
+            'Simba SC', 'Young Africans', 'Azam FC', 'Namungo FC',
+            'APR FC', 'Rayon Sports', 'Police FC Rwanda',
+            'Gor Mahia', 'AFC Leopards', 'Tusker FC',
+            'Al Hilal Omdurman', 'Al Merrikh SC', 'Al Hilal Benghazi', 'Al Ittihad Tripoli',
+            'Horoya AC', 'Hafia FC',
+            'ASEC Mimosas', 'Africa Sports',
+            'Hearts of Oak', 'Asante Kotoko',
+            'Enyimba FC', 'Kano Pillars', 'Rivers United', 'Enugu Rangers',
+            'Petro Atlético', 'Primeiro de Agosto',
+            'Mamelodi Sundowns', 'Kaizer Chiefs', 'Orlando Pirates', 'SuperSport United',
+            'Al Ahli Tripoli', 'Al Nasr Benghazi', 'Al Hilal Port Sudan',
+            'Al Shorta SC', 'Al Zawraa',
+            'Stade Malien', 'Djoliba AC',
+            'AS FAR', 'Olympique Khouribga',
+            'Township Rollers', 'Gaborone United',
+            'Costa do Sol', 'Ferroviário Maputo',
+            'AS Douanes (Sénégal)', 'Teungueth FC', 'AS SONIDEP',
+            'Sahel SC', 'Buffles du Borgou', 'Energie FC',
+            'ASFA Yennenga', 'Rail Club du Kadiogo',
+            'AS Otohô', 'Diables Noirs',
+            'AS Kigali', 'Mukura Victory Sports'
         ];
 
         const AFRICA_COUNTRIES = [
             '🇩🇿 Algérie', '🇦🇴 Angola', '🇧🇯 Bénin', '🇧🇼 Botswana', '🇧🇫 Burkina Faso', '🇧🇮 Burundi',
-            '🇨🇲 Cameroun', '🇨🇬 Congo', '🇨🇩 RDC', '🇪🇬 Égypte', '🇬🇭 Ghana', '🇨🇮 Côte d\'Ivoire',
-            '🇰🇪 Kenya', '🇲🇦 Maroc', '🇳🇬 Nigéria', '🇸🇳 Sénégal', '🇿🇦 Afrique du Sud', '🇹🇳 Tunisie'
+            '🇨🇻 Cap-Vert', '🇨🇲 Cameroun', '🇨🇫 République centrafricaine', '🇹🇩 Tchad', '🇰🇲 Comores',
+            '🇨🇬 Congo', '🇨🇩 RDC', '🇩🇯 Djibouti', '🇪🇬 Égypte', '🇬🇶 Guinée équatoriale', '🇪🇷 Érythrée',
+            '🇸🇿 Eswatini', '🇪🇹 Éthiopie', '🇬🇦 Gabon', '🇬🇲 Gambie', '🇬🇭 Ghana', '🇬🇳 Guinée', '🇬🇼 Guinée-Bissau',
+            '🇨🇮 Côte d\'Ivoire', '🇰🇪 Kenya', '🇱🇸 Lesotho', '🇱🇷 Libéria', '🇱🇾 Libye', '🇲🇬 Madagascar', '🇲🇼 Malawi',
+            '🇲🇱 Mali', '🇲🇷 Mauritanie', '🇲🇺 Maurice', '🇲🇦 Maroc', '🇲🇿 Mozambique', '🇳🇦 Namibie', '🇳🇪 Niger',
+            '🇳🇬 Nigéria', '🇷🇼 Rwanda', '🇸🇹 Sao Tomé', '🇸🇳 Sénégal', '🇸🇨 Seychelles', '🇸🇱 Sierra Leone',
+            '🇸🇴 Somalie', '🇿🇦 Afrique du Sud', '🇸🇸 Soudan du Sud', '🇸🇩 Soudan', '🇹🇿 Tanzanie', '🇹🇬 Togo',
+            '🇹🇳 Tunisie', '🇺🇬 Ouganda', '🇿🇲 Zambie', '🇿🇼 Zimbabwe'
         ];
         
-        const EUROPE_COUNTRIES = ['🇫🇷 France', '🇩🇪 Allemagne', '🇮🇹 Italie', '🇪🇸 Espagne', '🇬🇧 Royaume-Uni', '🇵🇹 Portugal', '🇳🇱 Pays-Bas', '🇧🇪 Belgique'];
-        const AMERICA_COUNTRIES = ['🇺🇸 États-Unis', '🇧🇷 Brésil', '🇦🇷 Argentine', '🇲🇽 Mexique'];
-        const ASIA_COUNTRIES = ['🇨🇳 Chine', '🇯🇵 Japon', '🇮🇳 Inde', '🇸🇦 Arabie Saoudite'];
-        const OCEANIA_COUNTRIES = ['🇦🇺 Australie', '🇳🇿 Nouvelle-Zélande'];
+        const EUROPE_COUNTRIES = ['🇫🇷 France', '🇩🇪 Allemagne', '🇮🇹 Italie', '🇪🇸 Espagne', '🇬🇧 Royaume-Uni', '🇵🇹 Portugal', '🇳🇱 Pays-Bas', '🇧🇪 Belgique', '🇨🇭 Suisse', '🇸🇪 Suède'];
+        const AMERICA_COUNTRIES = ['🇺🇸 États-Unis', '🇨🇦 Canada', '🇧🇷 Brésil', '🇦🇷 Argentine', '🇲🇽 Mexique'];
+        const ASIA_COUNTRIES = ['🇨🇳 Chine', '🇯🇵 Japon', '🇮🇳 Inde', '🇸🇦 Arabie Saoudite', '🇰🇷 Corée du Sud'];
+        const OCEANIA_COUNTRIES = ['🇦🇺 Australie', '🇳🇿 Nouvelle-Zélande', '🇫🇯 Fidji'];
         
         const NATIONAL_TEAMS = [...AFRICA_COUNTRIES, ...EUROPE_COUNTRIES, ...AMERICA_COUNTRIES, ...ASIA_COUNTRIES, ...OCEANIA_COUNTRIES];
         
         const AMERICA_ASIA_CLUBS = [
-            'Flamengo', 'Palmeiras', 'River Plate', 'Boca Juniors', 'Sao Paulo', 'Atletico Mineiro',
-            'Inter Miami', 'Club América', 'Tigres UANL', 'Al-Hilal', 'Al-Nassr'
+            'Flamengo', 'Palmeiras', 'River Plate', 'Boca Juniors', 'Sao Paulo', 'Atletico Mineiro', 'Fluminense',
+            'Inter Miami', 'Club América', 'Tigres UANL', 'Al-Hilal', 'Al-Nassr', 'Al-Ittihad', 'Al-Ahli', 'Monterrey',
+            'Gremio', 'Racing Club', 'Yokohama Marinos', 'Urawa Reds', 'Jeonbuk'
         ];
         
         const ALL_TEAMS = [...NATIONAL_TEAMS, ...EUROPE_CLUBS, ...AFRICA_CLUBS, ...AMERICA_ASIA_CLUBS].sort();
@@ -568,14 +975,17 @@
         const TEAMS_STRENGTH = { FORT: [], MOYEN: [], FAIBLE: [] };
         const FORT_TEAMS = [
             'Real Madrid', 'FC Barcelona', 'Atlético Madrid', 'Manchester City', 'Liverpool FC', 'Bayern Munich', 
-            'Paris Saint-Germain', 'Inter Milan', 'Al Ahly', 'Espérance de Tunis', 'Wydad Casablanca',
-            'Flamengo', 'Palmeiras', 'River Plate'
+            'Paris Saint-Germain', 'Inter Milan', 'AC Milan', 'Juventus FC', 'Borussia Dortmund', 'Chelsea FC',
+            'Arsenal FC', 'Manchester United', 'Al Ahly', 'Espérance de Tunis', 'Wydad Casablanca', 'Raja Casablanca',
+            'TP Mazembe', 'Mamelodi Sundowns', 'Flamengo', 'Palmeiras', 'River Plate', 'Boca Juniors'
         ];
         
         const MOYEN_TEAMS = [
             'Sevilla FC', 'Valencia CF', 'Villarreal CF', 'Athletic Bilbao', 'Tottenham Hotspur', 'Newcastle United',
-            'Olympique de Marseille', 'Olympique Lyonnais', 'AS Monaco', 'RB Leipzig', 'Bayer Leverkusen',
-            'AS Roma', 'SSC Napoli', 'Ajax Amsterdam', 'FC Porto', 'Benfica Lisbonne'
+            'Aston Villa', 'Olympique de Marseille', 'Olympique Lyonnais', 'AS Monaco', 'RB Leipzig', 'Bayer Leverkusen',
+            'AS Roma', 'SSC Napoli', 'Lazio Rome', 'Atalanta Bergame', 'Ajax Amsterdam', 'PSV Eindhoven', 'Feyenoord',
+            'FC Porto', 'Benfica Lisbonne', 'Sporting CP', 'Celtic FC', 'Rangers FC', 'Galatasaray', 'Fenerbahçe',
+            'Zamalek SC', 'Étoile du Sahel', 'Simba SC', 'Young Africans', 'Kaizer Chiefs', 'Orlando Pirates'
         ];
 
         function initializeTeamStrength() { 
@@ -600,546 +1010,30 @@
             return '🌱 FAIBLE'; 
         }
 
-        function getRapportForce(teamH, teamA) {
-            const strengthH = getTeamStrength(teamH);
-            const strengthA = getTeamStrength(teamA);
-            if(strengthH === 'fort' && strengthA === 'faible') return 'favori_vs_faible';
-            if(strengthA === 'fort' && strengthH === 'faible') return 'surprise';
-            return 'equilibre';
-        }
-        
-        function getScoresPossibles(rapport) {
-            if(rapport === 'favori_vs_faible') return ["3-1","4-1","2-0","4-0","3-0","4-2","3-2","2-3","5-2"];
-            if(rapport === 'surprise') return ["0-2","1-2","0-1"];
-            return ["1-1","2-1","1-2","2-2","1-0","0-1","3-1","3-2","1-3"];
-        }
-        
-        function validerScoreAvecMarche(scoreFinal, marche) {
-            const [h, a] = scoreFinal.split('-').map(Number);
-            const total = h + a;
-            if(marche === "1") return h > a;
-            if(marche === "2") return a > h;
-            if(marche === "X") return h === a;
-            if(marche === "Over 1.5") return total > 1.5;
-            if(marche === "Over 2") return total > 2;
-            if(marche === "Over 2.5") return total > 2.5;
-            if(marche === "Over 3") return total > 3;
-            if(marche === "Under 2") return total < 2;
-            if(marche === "All teams win YES") return (h > 0 && a > 0);
-            if(marche === "All teams win NO") return (h === 0 || a === 0);
-            return true;
-        }
-        
-        function genererScoreEtMarche(teamH, teamA) {
-            const rapport = getRapportForce(teamH, teamA);
-            const scoresPossibles = getScoresPossibles(rapport);
-            let scoreFinal = scoresPossibles[Math.floor(Math.random() * scoresPossibles.length)];
-            let marche = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
-            let tries = 0;
-            while(!validerScoreAvecMarche(scoreFinal, marche) && tries < 15) {
-                marche = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
-                tries++;
-            }
-            const [fh, fa] = scoreFinal.split('-').map(Number);
-            let ht_h = Math.floor(fh / 2) + (Math.random() > 0.7 ? 1 : 0);
-            let ht_a = Math.floor(fa / 2) + (Math.random() > 0.7 ? 1 : 0);
-            if(ht_h > fh) ht_h = fh;
-            if(ht_a > fa) ht_a = fa;
-            const miTemps = `${ht_h}-${ht_a}`;
-            const logique = `Vérification : ${scoreFinal} valide le marché "${marche}"`;
-            return { scoreFinal, marche, miTemps, logique };
-        }
+        // === BASE DE DONNÉES ===
+        let db = JSON.parse(localStorage.getItem('wise03_db')) || [];
+        let currentUser = null;
+        let currentTicket = [];
+        let tempMatch = null;
+        let adminUserIdx = null;
+        let selectedTicketIndex = null;
+        let selectedAdFileData = null;
+        let selectedAdFileType = null;
 
-        // ==================== FONCTIONS SUPABASE ====================
+        function saveDB() { localStorage.setItem('wise03_db', JSON.stringify(db)); updateAdminStats(); }
         
-        async function loadUserData(email) {
-            const { data, error } = await supabase
-                .from('users')
-                .select('*')
-                .eq('email', email)
-                .single();
-            
-            if (error && error.code !== 'PGRST116') {
-                console.error('Erreur chargement:', error);
-                return false;
-            }
-            
-            if (data) {
-                currentUser = data;
-                // Convertir les chaînes JSON en objets
-                if (currentUser.tickets && typeof currentUser.tickets === 'string') {
-                    currentUser.tickets = JSON.parse(currentUser.tickets);
-                } else if (!currentUser.tickets) {
-                    currentUser.tickets = [];
-                }
-                if (currentUser.messages && typeof currentUser.messages === 'string') {
-                    currentUser.messages = JSON.parse(currentUser.messages);
-                } else if (!currentUser.messages) {
-                    currentUser.messages = [];
-                }
-                if (currentUser.globalAds && typeof currentUser.globalAds === 'string') {
-                    currentUser.globalAds = JSON.parse(currentUser.globalAds);
-                } else if (!currentUser.globalAds) {
-                    currentUser.globalAds = [];
-                }
-                
-                // Vérifier expiration premium
-                if (currentUser.premium_expiry && new Date(currentUser.premium_expiry) < new Date()) {
-                    currentUser.is_premium = false;
-                    currentUser.premium_expiry = null;
-                    await updateUser();
-                }
-                return true;
-            }
-            return false;
-        }
-
-        async function updateUser() {
-            if (!currentUser || !currentUser.email) return;
-            
-            const userData = {
-                name: currentUser.name,
-                email: currentUser.email,
-                whatsapp: currentUser.whatsapp,
-                pass: currentUser.pass,
-                is_verified: currentUser.is_verified || false,
-                is_premium: currentUser.is_premium || false,
-                is_blocked: currentUser.is_blocked || false,
-                id_sent: currentUser.id_sent || false,
-                id_image: currentUser.id_image || null,
-                profile_image: currentUser.profile_image || null,
-                tickets: JSON.stringify(currentUser.tickets || []),
-                messages: JSON.stringify(currentUser.messages || []),
-                unread_messages: currentUser.unread_messages || 0,
-                daily_count: currentUser.daily_count || 0,
-                last_match_date: currentUser.last_match_date || null,
-                created_at: currentUser.created_at || new Date().toISOString(),
-                premium_expiry: currentUser.premium_expiry || null,
-                global_ads: JSON.stringify(currentUser.globalAds || [])
-            };
-            
-            const { error } = await supabase
-                .from('users')
-                .upsert(userData, { onConflict: 'email' });
-            
-            if (error) {
-                console.error('Erreur mise à jour:', error);
-            }
-        }
-
-        async function registerUserInDB(userData) {
-            const newUser = {
-                name: userData.name,
-                email: userData.email,
-                whatsapp: userData.whatsapp,
-                pass: userData.pass,
-                is_verified: false,
-                is_premium: false,
-                is_blocked: false,
-                id_sent: false,
-                id_image: null,
-                profile_image: null,
-                tickets: '[]',
-                messages: '[]',
-                unread_messages: 0,
-                daily_count: 0,
-                last_match_date: null,
-                created_at: new Date().toISOString(),
-                premium_expiry: null,
-                global_ads: '[]'
-            };
-            
-            const { error } = await supabase
-                .from('users')
-                .insert(newUser);
-            
-            if (error) {
-                console.error('Erreur inscription:', error);
-                return false;
-            }
-            return true;
-        }
-
-        async function getAllUsers() {
-            const { data, error } = await supabase
-                .from('users')
-                .select('*')
-                .order('created_at', { ascending: false });
-            
-            if (error) {
-                console.error('Erreur récupération utilisateurs:', error);
-                return [];
-            }
-            
-            // Convertir les chaînes JSON pour chaque utilisateur
-            return (data || []).map(user => ({
-                ...user,
-                tickets: typeof user.tickets === 'string' ? JSON.parse(user.tickets || '[]') : (user.tickets || []),
-                messages: typeof user.messages === 'string' ? JSON.parse(user.messages || '[]') : (user.messages || []),
-                globalAds: typeof user.global_ads === 'string' ? JSON.parse(user.global_ads || '[]') : (user.global_ads || [])
-            }));
-        }
-
-        // ==================== FONCTIONS UTILISATEURS ====================
-        
-        async function loginUser() { 
-            const email = document.getElementById('login-email').value.trim();
-            const pass = document.getElementById('login-pass').value;
-            const errorDiv = document.getElementById('login-error');
-            errorDiv.innerText = '';
-            
-            if(!email || !pass) {
-                errorDiv.innerText = "Veuillez remplir tous les champs";
-                return;
-            }
-            
-            // Authentification via Supabase Auth
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: pass
-            });
-            
-            if (error) {
-                errorDiv.innerText = "Email ou mot de passe incorrect";
-                return;
-            }
-            
-            const loaded = await loadUserData(email);
-            if (loaded && currentUser) {
-                if (currentUser.is_blocked) {
-                    errorDiv.innerText = "Compte bloqué.";
-                    return;
-                }
-                showDashboard(); 
-                updateMessageNotification();
-                renderGlobalAds();
-            } else {
-                errorDiv.innerText = "Erreur chargement des données";
-            }
-        }
-        
-        async function registerUser() { 
-            const name = document.getElementById('reg-name').value.trim();
-            const email = document.getElementById('reg-email').value.trim();
-            const whatsapp = document.getElementById('reg-whatsapp').value.trim();
-            const pass = document.getElementById('reg-pass').value;
-            const emailError = document.getElementById('email-error');
-            emailError.innerText = '';
-            
-            if(!name || !email || !whatsapp || !pass) { 
-                emailError.innerText = "Tous les champs sont requis"; 
-                return; 
-            }
-            if(pass.length < 4) {
-                emailError.innerText = "Mot de passe (min 4 caractères)";
-                return;
-            }
-            if(!email.includes('@') || !email.includes('.')) {
-                emailError.innerText = "Email invalide";
-                return;
-            }
-            
-            // Vérifier si email existe déjà
-            const { data: existing } = await supabase
-                .from('users')
-                .select('email')
-                .eq('email', email)
-                .single();
-            
-            if (existing) {
-                emailError.innerText = "Email déjà utilisé";
-                return;
-            }
-            
-            // Créer utilisateur dans Auth
-            const { error: signUpError } = await supabase.auth.signUp({
-                email: email,
-                password: pass
-            });
-            
-            if (signUpError) {
-                emailError.innerText = signUpError.message;
-                return;
-            }
-            
-            // Enregistrer dans la table users
-            const success = await registerUserInDB({ name, email, whatsapp, pass });
-            
-            if (success) {
-                alert("✅ Compte créé avec succès ! Connectez-vous."); 
-                toggleAuth(false); 
-                document.getElementById('login-email').value = email;
-            } else {
-                emailError.innerText = "Erreur lors de l'inscription";
-            }
-        }
-        
-        function showDashboard() { 
-            document.getElementById('auth-screen').style.display = 'none'; 
-            document.getElementById('dashboard').style.display = 'block'; 
-            const dl = document.getElementById('teams-list'); 
-            dl.innerHTML = ''; 
-            ALL_TEAMS.forEach(t => {const opt = document.createElement('option'); opt.value = t; dl.appendChild(opt);}); 
-            checkVerificationStatus(); 
-            switchView('predict'); 
-        }
-        
-        function checkVerificationStatus() { 
-            const alertBox = document.getElementById('verify-alert'); 
-            const main = document.getElementById('predict-main'); 
-            if(currentUser && currentUser.is_verified){alertBox.style.display='none'; main.style.display='block';} 
-            else {alertBox.style.display='block'; main.style.display='none';} 
-        }
-        
-        function updateMessageNotification() { 
-            const unread = currentUser?.unread_messages || 0; 
-            const msgNav = document.getElementById('nav-messages'); 
-            if(unread > 0 && msgNav){ 
-                let badge = msgNav.querySelector('.notification-badge'); 
-                if(!badge){badge=document.createElement('span'); badge.className='notification-badge'; msgNav.appendChild(badge);} 
-                badge.innerText = unread; 
-            } else if(msgNav) { 
-                const badge = msgNav.querySelector('.notification-badge'); 
-                if(badge) badge.remove(); 
-            } 
-        }
-        
-        function runAnalysis() { 
-            const h = document.getElementById('team-h').value.trim(); 
-            const a = document.getElementById('team-a').value.trim(); 
-            if(!ALL_TEAMS.includes(h) || !ALL_TEAMS.includes(a)){
-                document.getElementById('ana-error').innerText = "Sélectionnez des équipes valides"; 
-                return;
-            } 
-            if(h === a){document.getElementById('ana-error').innerText = "Équipes différentes requises"; return;} 
+        function updateAdminStats() { 
             const today = new Date().toDateString(); 
-            if(!currentUser.is_premium && currentUser.last_match_date === today){
-                document.getElementById('ana-error').innerText = "⚠️ Standard: 1 match/jour. Premium débloque illimité"; 
-                return;
-            } 
-            document.getElementById('ana-loader').style.display='inline-block'; 
-            document.getElementById('btn-ana').disabled=true; 
-            setTimeout(()=>{ 
-                const gen = genererScoreEtMarche(h,a); 
-                tempMatch = { h, a, market: gen.marche, score: currentUser.is_premium?gen.scoreFinal:null, ht:gen.miTemps, logic:gen.logique }; 
-                document.getElementById('res-h').innerHTML = `${h}<div class="team-strength">${getStrengthLabel(h)}</div>`; 
-                document.getElementById('res-a').innerHTML = `${a}<div class="team-strength">${getStrengthLabel(a)}</div>`; 
-                document.getElementById('res-market').innerText = tempMatch.market; 
-                document.getElementById('res-ht').innerText = `Mi-temps: ${tempMatch.ht}`; 
-                document.getElementById('res-logic').innerText = tempMatch.logic; 
-                if(tempMatch.score) document.getElementById('res-score').innerText = tempMatch.score; 
-                if(currentUser.is_premium){document.getElementById('premium-data').style.display='block'; document.getElementById('premium-lock').style.display='none';} 
-                else {document.getElementById('premium-data').style.display='none'; document.getElementById('premium-lock').style.display='block';} 
-                if(!currentUser.is_premium){currentUser.last_match_date=today; updateUser();} 
-                document.getElementById('result-box').style.display='block'; 
-                document.getElementById('ana-loader').style.display='none'; 
-                document.getElementById('btn-ana').disabled=false; 
-            }, 1500); 
-        }
-        
-        function addToTicket() { 
-            if(!tempMatch) return; 
-            if(!currentUser.is_premium && currentTicket.length >= 1){alert("Standard: 1 match max."); return;} 
-            if(currentUser.is_premium && currentTicket.length >= 15){alert("Max 15 matchs."); return;} 
-            currentTicket.push({...tempMatch}); 
-            renderCurrentTicket(); 
-            document.getElementById('result-box').style.display='none'; 
-            document.getElementById('team-h').value=''; 
-            document.getElementById('team-a').value=''; 
-        }
-        
-        function renderCurrentTicket() { 
-            const container = document.getElementById('ticket-list'); 
-            const count = document.getElementById('ticket-count'); 
-            document.getElementById('current-ticket').style.display = currentTicket.length > 0 ? 'block' : 'none'; 
-            count.innerText = currentTicket.length; 
-            container.innerHTML = currentTicket.map((m,i)=>`<div class="ticket-item" style="padding:8px 0; display:flex; justify-content:space-between;"><div><div>${m.h} vs ${m.a}</div><div><b>${m.market}</b>${m.score?` (${m.score})`:''} | ${m.ht}</div><div class="team-strength">${getStrengthLabel(m.h)} | ${getStrengthLabel(m.a)}</div></div><span style="color:var(--danger);cursor:pointer;" onclick="removeFromTicket(${i})">✖</span></div>`).join(''); 
-        }
-        
-        function removeFromTicket(i){currentTicket.splice(i,1); renderCurrentTicket();}
-        
-        async function saveTicket(){ 
-            if(currentTicket.length === 0) return; 
-            const today = new Date().toDateString(); 
-            const ticketsToday = currentUser.tickets.filter(t => t.date && t.date.includes(today)).length; 
-            if(!currentUser.is_premium && ticketsToday >= 1){alert("Standard: 1 ticket/jour max."); return;} 
-            if(currentUser.is_premium && ticketsToday >= 5){alert("Premium: 5 tickets/jour max."); return;} 
-            currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:[...currentTicket]}); 
-            currentTicket = []; 
-            renderCurrentTicket(); 
-            await updateUser(); 
-            alert("Ticket enregistré !"); 
-            switchView('tickets'); 
-        }
-        
-        function viewTicketDetail(index) { 
-            selectedTicketIndex = index; 
-            const ticket = currentUser.tickets[index]; 
-            const container = document.getElementById('ticket-detail-content'); 
-            container.innerHTML = `<div class="detail-header"><h3>🎫 DÉTAIL DU TICKET</h3><div class="info-badge">📅 ${ticket.date}</div><div class="info-badge">📊 ${ticket.matches.length} match(s)</div></div><div class="card">${ticket.matches.map((m,i)=>`<div class="ticket-item" style="margin-bottom:15px; padding:10px; background:var(--border); border-radius:12px;"><div style="font-weight:bold;">${m.h} vs ${m.a}</div><div style="color:var(--cyan);">🎯 ${m.market}</div>${m.score?`<div style="color:var(--green);">📊 Score exact: ${m.score}</div>`:''}<div class="team-strength">${getStrengthLabel(m.h)} | ${getStrengthLabel(m.a)}</div></div>`).join('')}</div><div class="card"><h4>⚡ Actions</h4><div class="action-buttons"><button class="btn btn-double" onclick="duplicateSavedTicket()">🔄 DOUBLER</button><button class="btn btn-gourmand" onclick="createGourmandFromTicket()">🍽️ GOURMAND</button></div></div>`; 
-            document.getElementById('view-tickets').style.display = 'none'; 
-            document.getElementById('view-ticket-detail').style.display = 'block'; 
-        }
-        
-        async function duplicateSavedTicket() { 
-            if(selectedTicketIndex===null) return; 
-            const orig = currentUser.tickets[selectedTicketIndex]; 
-            let newMatches = orig.matches.map(m=>{ const newMarket = MARKETS_PRO[Math.floor(Math.random()*MARKETS_PRO.length)]; const gen = genererScoreEtMarche(m.h, m.a); return {h:m.h, a:m.a, market:newMarket, score:currentUser.is_premium?gen.scoreFinal:null, ht:gen.miTemps, logic:gen.logique}; }); 
-            if(!currentUser.is_premium && newMatches.length>1){ alert("⚠️ Standard: 1 match max."); return; } 
-            currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:newMatches}); 
-            await updateUser(); 
-            alert(`✅ Dupliqué (${newMatches.length} matchs)`); 
-            backToTicketsList(); 
-        }
-        
-        async function createGourmandFromTicket() { 
-            const today = new Date().toDateString(); 
-            const allUsers = await getAllUsers();
-            let allMatches = []; 
-            for(const u of allUsers) if(u.email !== currentUser.email) for(const t of u.tickets) if(t.date && t.date.includes(today)) for(const m of t.matches) allMatches.push(m); 
-            if(allMatches.length===0){alert("Aucun match analysé aujourd'hui."); return;} 
-            let max = currentUser.is_premium?15:1; 
-            let count = Math.min(max, allMatches.length); 
-            const shuffled = allMatches.sort(()=>0.5-Math.random()); 
-            let gourmand = shuffled.slice(0,count).map(m=>{ const newMarket = MARKETS_PRO[Math.floor(Math.random()*MARKETS_PRO.length)]; const gen = genererScoreEtMarche(m.h, m.a); return {h:m.h, a:m.a, market:newMarket, score:currentUser.is_premium?gen.scoreFinal:null, ht:gen.miTemps, logic:gen.logique}; }); 
-            currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:gourmand}); 
-            await updateUser(); 
-            alert(`🍽️ Ticket Gourmand créé (${gourmand.length} matchs)`); 
-            backToTicketsList(); 
-        }
-        
-        function backToTicketsList() { 
-            document.getElementById('view-ticket-detail').style.display = 'none'; 
-            document.getElementById('view-tickets').style.display = 'block'; 
-            renderSavedTickets(); 
-            selectedTicketIndex = null; 
-        }
-        
-        function switchView(view){ 
-            if(view==='ticket-detail') return; 
-            document.getElementById('view-tickets').style.display = view==='tickets'?'block':'none'; 
-            document.getElementById('view-predict').style.display = view==='predict'?'block':'none'; 
-            document.getElementById('view-messages').style.display = view==='messages'?'block':'none'; 
-            document.getElementById('view-profile').style.display = view==='profile'?'block':'none'; 
-            document.getElementById('view-ticket-detail').style.display='none'; 
-            ['predict','tickets','messages','profile'].forEach(v=>{const el = document.getElementById('nav-'+v); if(el) el.classList.toggle('active',v===view);}); 
-            if(view==='tickets') renderSavedTickets(); 
-            if(view==='messages'){if(currentUser.unread_messages > 0){currentUser.unread_messages = 0; updateUser(); updateMessageNotification();} renderMessages();} 
-            if(view==='profile') renderProfile(); 
-        }
-        
-        function renderSavedTickets(){ 
-            const container = document.getElementById('tickets-list-view'); 
-            if(!currentUser.tickets || currentUser.tickets.length===0){container.innerHTML='<p style="text-align:center; color:var(--muted);">Aucun ticket enregistré.</p>'; return;} 
-            container.innerHTML = currentUser.tickets.map((t,idx)=>`<div class="card ticket-card" onclick="viewTicketDetail(${idx})"><div style="color:var(--primary); font-weight:bold;">📅 ${t.date}</div><div>📊 ${t.matches.length} match(s)</div><div style="font-size:11px; color:var(--muted); margin-top:5px;">👆 Cliquer pour voir détails</div></div>`).join(''); 
-        }
-        
-        function renderMessages(){ 
-            const container = document.getElementById('msg-list'); 
-            if(!currentUser.messages || currentUser.messages.length===0){container.innerHTML='<p style="text-align:center; color:var(--muted);">Aucun message.</p>'; return;} 
-            container.innerHTML = currentUser.messages.map(m=>`<div class="card"><p>${m.text}</p><div class="message-date">📅 ${m.date}</div></div>`).join(''); 
-        }
-        
-        function renderProfile(){ 
-            document.getElementById('prof-name').innerText = currentUser.name; 
-            document.getElementById('prof-email').innerText = currentUser.email; 
-            document.getElementById('prof-whatsapp').innerHTML = `📱 WhatsApp: ${currentUser.whatsapp || 'Non renseigné'}`; 
-            const picContainer = document.getElementById('profile-pic-container'); 
-            picContainer.innerHTML = currentUser.profile_image ? `<img src="${currentUser.profile_image}" class="profile-pic">` : `<div class="profile-pic" style="background:var(--border); display:flex; align-items:center; justify-content:center;">📷</div>`; 
-            let badgeHtml = currentUser.is_premium ? '<span class="status-badge" style="background:var(--pink);">💎 PREMIUM</span>' : (currentUser.is_verified ? '<span class="status-badge" style="background:var(--green);">✅ VÉRIFIÉ</span>' : '<span class="status-badge" style="background:var(--muted);">⏳ NON VÉRIFIÉ</span>'); 
-            if(currentUser.premium_expiry) badgeHtml += `<br><small>Jusqu'au: ${new Date(currentUser.premium_expiry).toLocaleDateString()}</small>`; 
-            document.getElementById('prof-badge').innerHTML = badgeHtml; 
-            const idSection = document.getElementById('id-upload-section');
-            if(idSection) idSection.style.display = currentUser.is_verified ? 'none' : 'block';
-        }
-        
-        function handleProfileUpload(input){if(input.files[0]){const reader=new FileReader(); reader.onload=async e=>{currentUser.profile_image=e.target.result; await updateUser(); renderProfile(); alert("Photo mise à jour !");}; reader.readAsDataURL(input.files[0]);}}
-        function handleIDUpload(input){if(input.files[0]){const reader=new FileReader(); reader.onload=async e=>{currentUser.id_image=e.target.result; currentUser.id_sent=true; await updateUser(); alert("ID envoyée !"); renderProfile();}; reader.readAsDataURL(input.files[0]);}}
-        
-        function showAdminLogin(){document.getElementById('auth-screen').style.display='none'; document.getElementById('admin-login').style.display='block';}
-        
-        async function loginAdmin(){if(document.getElementById('admin-code').value==="0033mutwe"){document.getElementById('admin-login').style.display='none'; document.getElementById('admin-panel').style.display='block'; await renderAdminUsers(); updateAdminStats();} else document.getElementById('admin-error').innerText="Code erroné";}
-        
-        async function renderAdminUsers(){
-            const users = await getAllUsers();
-            const container=document.getElementById('admin-users'); 
-            container.innerHTML=users.map((u,i)=>`<div class="card"><b>${u.name}</b> (${u.email})<br>📱 ${u.whatsapp}<br>Vérifié: ${u.is_verified?'OUI':'NON'} | Premium: ${u.is_premium?'ACTIF':'INACTIF'}<br>${u.id_image?`<img src="${u.id_image}" class="admin-img-preview" onclick="window.open(this.src)">`:''}<div style="display:flex; gap:5px; margin-top:10px;"><button class="btn btn-success" onclick="adminVerify('${u.email}')">Vérifier</button><button class="btn btn-primary" onclick="openPremiumModal('${u.email}')">Premium</button><button class="btn btn-danger" onclick="adminBlock('${u.email}')">${u.is_blocked?'Débloquer':'Bloquer'}</button><button class="btn btn-warning" onclick="sendMessageToUser('${u.email}')">Message</button></div></div>`).join('');
-        }
-        
-        async function sendMessageToUser(email){
-            const msg=prompt("Message:"); 
-            if(msg){
-                const users = await getAllUsers();
-                const user = users.find(u => u.email === email);
-                if(user){
-                    if(!user.messages) user.messages = [];
-                    user.messages.push({date:new Date().toLocaleString(), text:msg});
-                    user.unread_messages = (user.unread_messages || 0) + 1;
-                    const { error } = await supabase
-                        .from('users')
-                        .update({ messages: JSON.stringify(user.messages), unread_messages: user.unread_messages })
-                        .eq('email', email);
-                    if(!error) alert("Message envoyé !");
-                    await renderAdminUsers();
-                }
-            }
-        }
-        
-        async function adminVerify(email){
-            const { error } = await supabase
-                .from('users')
-                .update({ is_verified: true })
-                .eq('email', email);
-            if(!error){
-                await sendMessageToUser(email);
-                await renderAdminUsers();
-            }
-        }
-        
-        async function adminBlock(email){
-            const users = await getAllUsers();
-            const user = users.find(u => u.email === email);
-            if(user){
-                const newBlocked = !user.is_blocked;
-                const { error } = await supabase
-                    .from('users')
-                    .update({ is_blocked: newBlocked })
-                    .eq('email', email);
-                if(!error) await renderAdminUsers();
-            }
-        }
-        
-        function openPremiumModal(email){adminUserIdx=email; document.getElementById('modal-premium').classList.add('active');}
-        
-        async function confirmPremium(){
-            const days=parseInt(document.getElementById('pre-days').value); 
-            const expiryDate=new Date(); 
-            expiryDate.setDate(expiryDate.getDate()+days);
-            const { error } = await supabase
-                .from('users')
-                .update({ is_premium: true, premium_expiry: expiryDate.toISOString() })
-                .eq('email', adminUserIdx);
-            if(!error){
-                await sendMessageToUser(adminUserIdx);
-                closeModal(); 
-                await renderAdminUsers();
-                updateAdminStats();
-            }
-        }
-        
-        async function updateAdminStats(){ 
-            const users = await getAllUsers();
-            const today = new Date().toDateString(); 
-            const newToday = users.filter(u => u.created_at && u.created_at.includes(today.substring(0,10))).length; 
-            const premiumCount = users.filter(u => u.is_premium).length; 
-            if(document.getElementById('stat-users')){ 
-                document.getElementById('stat-users').innerText = users.length; 
+            const newToday = db.filter(u => u.createdAt && u.createdAt.includes(today)).length; 
+            const premiumCount = db.filter(u => u.isPremium).length; 
+            if(document.getElementById('stat-users')) { 
+                document.getElementById('stat-users').innerText = db.length; 
                 document.getElementById('stat-new').innerText = newToday; 
                 document.getElementById('stat-premium').innerText = premiumCount; 
             } 
         }
         
-        // Publicités
+        // === FONCTIONS PUBLICITAIRES ===
         document.getElementById('ad-image')?.addEventListener('change', function(e) {
             if(e.target.files[0]) {
                 const reader = new FileReader();
@@ -1168,7 +1062,7 @@
             }
         });
         
-        async function sendGlobalAd() {
+        function sendGlobalAd() {
             const title = document.getElementById('ad-title')?.value.trim() || "Nouvelle annonce";
             const url = document.getElementById('ad-url')?.value.trim() || "";
             
@@ -1186,24 +1080,21 @@
                 date: new Date().toLocaleString()
             };
             
-            const users = await getAllUsers();
             let sentCount = 0;
-            
-            for(const user of users) {
-                let ads = user.globalAds || [];
-                ads.unshift(adData);
-                if(ads.length > 15) ads.pop();
-                
-                await supabase
-                    .from('users')
-                    .update({ global_ads: JSON.stringify(ads) })
-                    .eq('email', user.email);
+            for(let i = 0; i < db.length; i++) {
+                if(!db[i].globalAds) db[i].globalAds = [];
+                db[i].globalAds.unshift(adData);
+                if(db[i].globalAds.length > 15) db[i].globalAds.pop();
                 sentCount++;
             }
+            saveDB();
             
             if(currentUser) {
-                await loadUserData(currentUser.email);
-                renderGlobalAds();
+                const userIdx = db.findIndex(u => u.email === currentUser.email);
+                if(userIdx !== -1) {
+                    currentUser = db[userIdx];
+                    renderGlobalAds();
+                }
             }
             
             alert(`✅ Annonce envoyée avec succès à ${sentCount} utilisateur(s) !`);
@@ -1226,7 +1117,7 @@
                 banner.innerHTML = currentUser.globalAds.map(ad => {
                     const mediaHtml = ad.type === 'image' 
                         ? `<img src="${ad.media}" alt="${ad.title}" onclick="window.open('${ad.url || '#'}', '_blank')">` 
-                        : `<video src="${ad.media}" style="max-height:50px;" onclick="this.paused?this.play():this.pause()"></video>`;
+                        : `<video src="${ad.media}" controls style="max-height:50px;" onclick="this.paused?this.play():this.pause()"></video>`;
                     const linkHtml = ad.url ? `<a href="${ad.url}" target="_blank" style="color:var(--cyan); font-size:9px;">🔗 Voir</a>` : '';
                     return `
                         <div class="ad-item">
@@ -1242,56 +1133,305 @@
             }
         }
         
-        async function removeAd(adId) {
+        function removeAd(adId) {
             if(currentUser && currentUser.globalAds) {
                 currentUser.globalAds = currentUser.globalAds.filter(ad => ad.id !== adId);
-                await updateUser();
+                updateUser();
                 renderGlobalAds();
             }
         }
         
+        // === FONCTIONS UTILISATEURS ===
+        function loginUser() { 
+            const email = document.getElementById('login-email').value.trim();
+            const pass = document.getElementById('login-pass').value;
+            const errorDiv = document.getElementById('login-error');
+            errorDiv.innerText = '';
+            
+            if(!email || !pass) {
+                errorDiv.innerText = "Veuillez remplir tous les champs";
+                return;
+            }
+            
+            const user = db.find(u => u.email === email && u.pass === pass); 
+            if(user){ 
+                if(user.isBlocked){errorDiv.innerText="Compte bloqué."; return;} 
+                currentUser = JSON.parse(JSON.stringify(user));
+                if(currentUser.premiumExpiry && new Date(currentUser.premiumExpiry) < new Date()){currentUser.isPremium=false; currentUser.premiumExpiry=null; updateUser();} 
+                showDashboard(); 
+                updateMessageNotification();
+                renderGlobalAds();
+                checkSubscriptionExpiry();
+                checkVerificationStatus();
+            } else { 
+                errorDiv.innerText = "Email ou mot de passe incorrect"; 
+            } 
+        }
+        
+        function registerUser() { 
+            const name = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const whatsapp = document.getElementById('reg-whatsapp').value.trim();
+            const pass = document.getElementById('reg-pass').value;
+            const emailError = document.getElementById('email-error');
+            emailError.innerText = '';
+            
+            if(!name || !email || !whatsapp || !pass) { 
+                emailError.innerText = "Tous les champs sont requis"; 
+                return; 
+            }
+            if(pass.length < 4) {
+                emailError.innerText = "Mot de passe (min 4 caractères)";
+                return;
+            }
+            if(!email.includes('@') || !email.includes('.')) {
+                emailError.innerText = "Email invalide";
+                return;
+            }
+            if(db.find(u => u.email === email)) { 
+                emailError.innerText = "Email déjà utilisé"; 
+                return; 
+            }
+            
+            db.push({
+                name, email, whatsapp, pass, 
+                isVerified: false, isPremium: false, isBlocked: false, 
+                idSent: false, idImage: null, profileImage: null, 
+                messages: [], tickets: [], dailyCount: 0, lastMatchDate: null, 
+                createdAt: new Date().toLocaleString(), unreadMessages: 0,
+                globalAds: [], subscriptionCode: null
+            }); 
+            saveDB(); 
+            
+            // Envoyer notification WhatsApp à l'admin
+            const adminMsg = `*NOUVEL UTILISATEUR WISE03*\n\n👤 Nom: ${name}\n📧 Email: ${email}\n📱 WhatsApp: ${whatsapp}\n\n🔑 Envoyez-lui un code d'abonnement contenant "003".`;
+            const adminUrl = `https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(adminMsg)}`;
+            window.open(adminUrl, '_blank');
+            
+            alert("✅ Compte créé avec succès ! Un message a été envoyé à l'administrateur. Connectez-vous et entrez votre code dans Profil."); 
+            toggleAuth(false); 
+            document.getElementById('login-email').value = email;
+        }
+        
+        function showDashboard() { 
+            document.getElementById('auth-screen').style.display = 'none'; 
+            document.getElementById('dashboard').style.display = 'block'; 
+            const dl = document.getElementById('teams-list'); 
+            dl.innerHTML = ''; 
+            ALL_TEAMS.forEach(t => {const opt = document.createElement('option'); opt.value = t; dl.appendChild(opt);}); 
+            checkVerificationStatus(); 
+            switchView('predict'); 
+        }
+        
+        function checkVerificationStatus() { 
+            const alertBox = document.getElementById('verify-alert'); 
+            const main = document.getElementById('predict-main'); 
+            if(currentUser.isPremium || currentUser.isVerified){alertBox.style.display='none'; main.style.display='block';} 
+            else {alertBox.style.display='block'; main.style.display='none';} 
+        }
+        
+        function updateMessageNotification() { 
+            const unread = currentUser.unreadMessages || 0; 
+            const msgNav = document.getElementById('nav-messages'); 
+            if(unread > 0){ 
+                let badge = msgNav.querySelector('.notification-badge'); 
+                if(!badge){badge=document.createElement('span'); badge.className='notification-badge'; msgNav.appendChild(badge);} 
+                badge.innerText = unread; 
+            } else { 
+                const badge = msgNav.querySelector('.notification-badge'); 
+                if(badge) badge.remove(); 
+            } 
+        }
+        
+        function runAnalysis() { 
+            if(!currentUser.isPremium && !currentUser.isVerified) {
+                document.getElementById('ana-error').innerText = "⚠️ Veuillez entrer un code d'abonnement valide dans Profil.";
+                return;
+            }
+            const h = document.getElementById('team-h').value.trim(); 
+            const a = document.getElementById('team-a').value.trim(); 
+            if(!ALL_TEAMS.includes(h) || !ALL_TEAMS.includes(a)){
+                document.getElementById('ana-error').innerText = "Sélectionnez des équipes valides"; 
+                return;
+            } 
+            if(h === a){document.getElementById('ana-error').innerText = "Équipes différentes requises"; return;} 
+            const today = new Date().toDateString(); 
+            if(!currentUser.isPremium && currentUser.lastMatchDate === today){
+                document.getElementById('ana-error').innerText = "⚠️ Standard: 1 match/jour. Premium débloque illimité"; 
+                return;
+            } 
+            document.getElementById('ana-loader').style.display='inline-block'; 
+            document.getElementById('btn-ana').disabled=true; 
+            setTimeout(()=>{ 
+                const gen = genererScoreEtMarche(h,a); 
+                tempMatch = { h, a, market: gen.marche, score: currentUser.isPremium?gen.scoreFinal:null, ht:gen.miTemps, logic:gen.logique }; 
+                document.getElementById('res-h').innerHTML = `${h}<div class="team-strength">${getStrengthLabel(h)}</div>`; 
+                document.getElementById('res-a').innerHTML = `${a}<div class="team-strength">${getStrengthLabel(a)}</div>`; 
+                document.getElementById('res-market').innerText = tempMatch.market; 
+                document.getElementById('res-ht').innerText = `Mi-temps: ${tempMatch.ht}`; 
+                document.getElementById('res-logic').innerText = tempMatch.logic; 
+                if(tempMatch.score) document.getElementById('res-score').innerText = tempMatch.score; 
+                if(currentUser.isPremium){document.getElementById('premium-data').style.display='block'; document.getElementById('premium-lock').style.display='none';} 
+                else {document.getElementById('premium-data').style.display='none'; document.getElementById('premium-lock').style.display='block';} 
+                if(!currentUser.isPremium){currentUser.lastMatchDate=today; updateUser();} 
+                document.getElementById('result-box').style.display='block'; 
+                document.getElementById('ana-loader').style.display='none'; 
+                document.getElementById('btn-ana').disabled=false; 
+            }, 1500); 
+        }
+        
+        function addToTicket() { 
+            if(!tempMatch) return; 
+            if(!currentUser.isPremium && currentTicket.length >= 1){alert("Standard: 1 match max."); return;} 
+            if(currentUser.isPremium && currentTicket.length >= 15){alert("Max 15 matchs."); return;} 
+            currentTicket.push({...tempMatch}); 
+            renderCurrentTicket(); 
+            document.getElementById('result-box').style.display='none'; 
+            document.getElementById('team-h').value=''; 
+            document.getElementById('team-a').value=''; 
+        }
+        
+        function renderCurrentTicket() { 
+            const container = document.getElementById('ticket-list'); 
+            const count = document.getElementById('ticket-count'); 
+            document.getElementById('current-ticket').style.display = currentTicket.length > 0 ? 'block' : 'none'; 
+            count.innerText = currentTicket.length; 
+            container.innerHTML = currentTicket.map((m,i)=>`<div class="ticket-item" style="padding:8px 0; display:flex; justify-content:space-between;"><div><div>${m.h} vs ${m.a}</div><div><b>${m.market}</b>${m.score?` (${m.score})`:''} | ${m.ht}</div><div class="team-strength">${getStrengthLabel(m.h)} | ${getStrengthLabel(m.a)}</div></div><span style="color:var(--danger);cursor:pointer;" onclick="removeFromTicket(${i})">✖</span></div>`).join(''); 
+        }
+        
+        function removeFromTicket(i){currentTicket.splice(i,1); renderCurrentTicket();}
+        
+        function saveTicket(){ 
+            if(currentTicket.length === 0) return; 
+            const today = new Date().toDateString(); 
+            const ticketsToday = currentUser.tickets.filter(t => t.date.includes(today)).length; 
+            if(!currentUser.isPremium && ticketsToday >= 1){alert("Standard: 1 ticket/jour max."); return;} 
+            if(currentUser.isPremium && ticketsToday >= 5){alert("Premium: 5 tickets/jour max."); return;} 
+            currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:[...currentTicket]}); 
+            currentTicket = []; 
+            renderCurrentTicket(); 
+            updateUser(); 
+            alert("Ticket enregistré !"); 
+            switchView('tickets'); 
+        }
+        
+        function viewTicketDetail(index) { 
+            selectedTicketIndex = index; 
+            const ticket = currentUser.tickets[index]; 
+            const container = document.getElementById('ticket-detail-content'); 
+            container.innerHTML = `<div class="detail-header"><h3>🎫 DÉTAIL DU TICKET</h3><div class="info-badge">📅 ${ticket.date}</div><div class="info-badge">📊 ${ticket.matches.length} match(s)</div></div><div class="card">${ticket.matches.map((m,i)=>`<div class="ticket-item" style="margin-bottom:15px; padding:10px; background:var(--border); border-radius:12px;"><div style="font-weight:bold;">${m.h} vs ${m.a}</div><div style="color:var(--cyan);">🎯 ${m.market}</div>${m.score?`<div style="color:var(--green);">📊 Score exact: ${m.score}</div>`:''}<div class="team-strength">${getStrengthLabel(m.h)} | ${getStrengthLabel(m.a)}</div></div>`).join('')}</div><div class="card"><h4>⚡ Actions</h4><div class="action-buttons"><button class="btn btn-double" onclick="duplicateSavedTicket()">🔄 DOUBLER</button><button class="btn btn-gourmand" onclick="createGourmandFromTicket()">🍽️ GOURMAND</button></div></div>`; 
+            document.getElementById('view-tickets').style.display = 'none'; 
+            document.getElementById('view-ticket-detail').style.display = 'block'; 
+        }
+        
+        function duplicateSavedTicket() { 
+            if(selectedTicketIndex===null) return; 
+            const orig = currentUser.tickets[selectedTicketIndex]; 
+            let newMatches = orig.matches.map(m=>{ const newMarket = MARKETS_PRO[Math.floor(Math.random()*MARKETS_PRO.length)]; const gen = genererScoreEtMarche(m.h, m.a); return {h:m.h, a:m.a, market:newMarket, score:currentUser.isPremium?gen.scoreFinal:null, htScore:gen.miTemps, logic:gen.logique}; }); 
+            if(!currentUser.isPremium && newMatches.length>1){ alert("⚠️ Standard: 1 match max."); return; } 
+            currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:newMatches}); 
+            updateUser(); 
+            alert(`✅ Dupliqué (${newMatches.length} matchs)`); 
+            backToTicketsList(); 
+        }
+        
+        function createGourmandFromTicket() { 
+            const today = new Date().toDateString(); 
+            let allMatches = []; 
+            for(const u of db) if(u.email!==currentUser.email) for(const t of u.tickets) if(t.date.includes(today)) for(const m of t.matches) allMatches.push(m); 
+            if(allMatches.length===0){alert("Aucun match analysé aujourd'hui."); return;} 
+            let max = currentUser.isPremium?15:1; 
+            let count = Math.min(max, allMatches.length); 
+            const shuffled = allMatches.sort(()=>0.5-Math.random()); 
+            let gourmand = shuffled.slice(0,count).map(m=>{ const newMarket = MARKETS_PRO[Math.floor(Math.random()*MARKETS_PRO.length)]; const gen = genererScoreEtMarche(m.h, m.a); return {h:m.h, a:m.a, market:newMarket, score:currentUser.isPremium?gen.scoreFinal:null, htScore:gen.miTemps, logic:gen.logique}; }); 
+            currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:gourmand}); 
+            updateUser(); 
+            alert(`🍽️ Ticket Gourmand créé (${gourmand.length} matchs)`); 
+            backToTicketsList(); 
+        }
+        
+        function backToTicketsList() { 
+            document.getElementById('view-ticket-detail').style.display = 'none'; 
+            document.getElementById('view-tickets').style.display = 'block'; 
+            renderSavedTickets(); 
+            selectedTicketIndex = null; 
+        }
+        
+        function switchView(view){ 
+            if(view==='ticket-detail') return; 
+            document.getElementById('view-tickets').style.display = view==='tickets'?'block':'none'; 
+            document.getElementById('view-predict').style.display = view==='predict'?'block':'none'; 
+            document.getElementById('view-messages').style.display = view==='messages'?'block':'none'; 
+            document.getElementById('view-profile').style.display = view==='profile'?'block':'none'; 
+            document.getElementById('view-ticket-detail').style.display='none'; 
+            ['predict','tickets','messages','profile'].forEach(v=>{document.getElementById('nav-'+v).classList.toggle('active',v===view);}); 
+            if(view==='tickets') renderSavedTickets(); 
+            if(view==='messages'){if(currentUser.unreadMessages>0){currentUser.unreadMessages=0; updateUser(); updateMessageNotification();} renderMessages();} 
+            if(view==='profile') renderProfile(); 
+        }
+        
+        function renderSavedTickets(){ 
+            const container = document.getElementById('tickets-list-view'); 
+            if(currentUser.tickets.length===0){container.innerHTML='<p style="text-align:center; color:var(--muted);">Aucun ticket enregistré.</p>'; return;} 
+            container.innerHTML = currentUser.tickets.map((t,idx)=>`<div class="card ticket-card" onclick="viewTicketDetail(${idx})"><div style="color:var(--primary); font-weight:bold;">📅 ${t.date}</div><div>📊 ${t.matches.length} match(s)</div><div style="font-size:11px; color:var(--muted); margin-top:5px;">👆 Cliquer pour voir détails</div></div>`).join(''); 
+        }
+        
+        function renderMessages(){ 
+            const container = document.getElementById('msg-list'); 
+            if(currentUser.messages.length===0){container.innerHTML='<p style="text-align:center; color:var(--muted);">Aucun message.</p>'; return;} 
+            container.innerHTML = currentUser.messages.map(m=>`<div class="card"><p>${m.text}</p><div class="message-date">📅 ${m.date}</div></div>`).join(''); 
+        }
+        
+        function renderProfile(){ 
+            document.getElementById('prof-name').innerText = currentUser.name; 
+            document.getElementById('prof-email').innerText = currentUser.email; 
+            document.getElementById('prof-whatsapp').innerHTML = `📱 WhatsApp: ${currentUser.whatsapp || 'Non renseigné'}`; 
+            const picContainer = document.getElementById('profile-pic-container'); 
+            picContainer.innerHTML = currentUser.profileImage ? `<img src="${currentUser.profileImage}" class="profile-pic">` : `<div class="profile-pic" style="background:var(--border); display:flex; align-items:center; justify-content:center;">📷</div>`; 
+            let badgeHtml = currentUser.isPremium ? '<span class="status-badge" style="background:var(--pink);">💎 PREMIUM ACTIF</span>' : '<span class="status-badge" style="background:var(--muted);">⏳ ABONNEMENT INACTIF</span>'; 
+            if(currentUser.premiumExpiry) badgeHtml += `<br><small>Valable jusqu'au: ${new Date(currentUser.premiumExpiry).toLocaleDateString()}</small>`;
+            if(currentUser.subscriptionCode) badgeHtml += `<br><small>Code utilisé: ${currentUser.subscriptionCode}</small>`;
+            document.getElementById('prof-badge').innerHTML = badgeHtml; 
+            
+            const subscriptionInfo = document.getElementById('subscription-info');
+            if(currentUser.isPremium && currentUser.premiumExpiry) {
+                const expiry = new Date(currentUser.premiumExpiry);
+                const daysLeft = Math.ceil((expiry - new Date()) / (1000*60*60*24));
+                subscriptionInfo.innerHTML = `<span style="color:var(--green);">✅ Abonnement actif - ${daysLeft} jour(s) restant(s)</span>`;
+            } else {
+                subscriptionInfo.innerHTML = `<span style="color:var(--danger);">❌ Aucun abonnement actif. Entrez un code contenant "003".</span>`;
+            }
+        }
+        
+        function handleProfileUpload(input){if(input.files[0]){const reader=new FileReader(); reader.onload=e=>{currentUser.profileImage=e.target.result; updateUser(); renderProfile(); alert("Photo mise à jour !");}; reader.readAsDataURL(input.files[0]);}}
+        function handleIDUpload(input){if(input.files[0]){const reader=new FileReader(); reader.onload=e=>{currentUser.idImage=e.target.result; currentUser.idSent=true; updateUser(); alert("ID envoyée !"); renderProfile();}; reader.readAsDataURL(input.files[0]);}}
+        function showAdminLogin(){document.getElementById('auth-screen').style.display='none'; document.getElementById('admin-login').style.display='block';}
+        function loginAdmin(){if(document.getElementById('admin-code').value==="0033mutwe"){document.getElementById('admin-login').style.display='none'; document.getElementById('admin-panel').style.display='block'; renderAdminUsers(); updateAdminStats(); renderAdminCodesList();} else document.getElementById('admin-error').innerText="Code erroné";}
+        function renderAdminUsers(){const container=document.getElementById('admin-users'); container.innerHTML=db.map((u,i)=>`<div class="card"><b>${u.name}</b> (${u.email})<br>📱 ${u.whatsapp}<br>Premium: ${u.isPremium?'ACTIF':'INACTIF'}<br>${u.subscriptionCode?`Code: ${u.subscriptionCode}`:''}<div style="display:flex; gap:5px; margin-top:10px;"><button class="btn btn-primary" onclick="openPremiumModal(${i})">Premium</button><button class="btn btn-danger" onclick="adminBlock(${i})">${u.isBlocked?'Débloquer':'Bloquer'}</button><button class="btn btn-warning" onclick="sendMessageToUser(${i})">Message</button></div></div>`).join('');}
+        function sendMessageToUser(i){const msg=prompt("Message:"); if(msg){db[i].messages.push({date:new Date().toLocaleString(), text:msg}); db[i].unreadMessages=(db[i].unreadMessages||0)+1; saveDB(); renderAdminUsers(); alert("Message envoyé !");}}
+        function adminBlock(i){db[i].isBlocked=!db[i].isBlocked; saveDB(); renderAdminUsers();}
+        function openPremiumModal(i){adminUserIdx=i; document.getElementById('modal-premium').classList.add('active');}
+        function confirmPremium(){const days=parseInt(document.getElementById('pre-days').value); const expiryDate=new Date(); expiryDate.setDate(expiryDate.getDate()+days); db[adminUserIdx].isPremium=true; db[adminUserIdx].premiumExpiry=expiryDate.toISOString(); db[adminUserIdx].messages.push({date:new Date().toLocaleString(), text:`💎 Premium ${days} jours!`}); db[adminUserIdx].unreadMessages=(db[adminUserIdx].unreadMessages||0)+1; saveDB(); closeModal(); renderAdminUsers();}
         function toggleAssistant(){document.getElementById('assistant-chat').classList.toggle('active');}
-        function askZola(){const input=document.getElementById('assistant-input'); const q=input.value.trim(); if(!q) return; const messagesDiv=document.getElementById('assistant-messages'); messagesDiv.innerHTML+=`<div class="assistant-bubble assistant-user">${q}</div>`; input.value=''; setTimeout(()=>{messagesDiv.innerHTML+=`<div class="assistant-bubble assistant-bot">🤖 Cliquez sur un ticket dans TICKETS pour voir DOUBLER et GOURMAND !</div>`; messagesDiv.scrollTop=messagesDiv.scrollHeight;},500);}
+        function askZola(){const input=document.getElementById('assistant-input'); const q=input.value.trim(); if(!q) return; const messagesDiv=document.getElementById('assistant-messages'); messagesDiv.innerHTML+=`<div class="assistant-bubble assistant-user">${q}</div>`; input.value=''; setTimeout(()=>{messagesDiv.innerHTML+=`<div class="assistant-bubble assistant-bot">🤖 Pour activer votre compte, allez dans PROFIL et entrez un code d'abonnement contenant "003". Contactez l'admin sur WhatsApp pour obtenir un code !</div>`; messagesDiv.scrollTop=messagesDiv.scrollHeight;},500);}
         function toggleAuth(s){document.getElementById('auth-screen').style.display=s?'none':'block'; document.getElementById('register-screen').style.display=s?'block':'none'; document.getElementById('email-error').innerText='';}
+        function updateUser(){const idx=db.findIndex(u=>u.email===currentUser.email); if(idx!==-1){db[idx]=currentUser; saveDB();} if(currentUser) renderGlobalAds();}
         function closeModal(){document.querySelectorAll('.modal').forEach(m=>m.classList.remove('active'));}
-        function logout(){supabase.auth.signOut(); location.reload();}
+        function logout(){location.reload();}
+        
         function toggleLanguage() {
             const lang = document.querySelector('.lang-btn').innerText.includes('English') ? 'fr' : 'en';
             document.querySelector('.lang-btn').innerText = lang === 'fr' ? '🌐 English' : '🌐 Français';
         }
-
-        // Splash screen
-        let splashStart = Date.now();
-        function hideSplash() {
-            const splash = document.getElementById('splashScreen');
-            splash.style.opacity = '0';
-            setTimeout(() => {
-                splash.style.display = 'none';
-                document.getElementById('appShell').style.display = 'block';
-            }, 500);
-        }
-        function updateSplashProgress(percent, text) {
-            const bar = document.getElementById('splashProgress');
-            const textEl = document.getElementById('splashText');
-            if(bar) bar.style.width = percent + '%';
-            if(textEl && text) textEl.innerText = text;
-        }
-        let progress = 0;
-        const interval = setInterval(() => {
-            progress += Math.random() * 12 + 3;
-            if(progress >= 100) progress = 100;
-            updateSplashProgress(progress, progress < 30 ? 'Initialisation IA...' : (progress < 70 ? 'Connexion à Supabase...' : 'Prêt pour les pronostics !'));
-            if(progress >= 100) {
-                clearInterval(interval);
-                const elapsed = (Date.now() - splashStart) / 1000;
-                const delay = Math.max(0, (4000 - elapsed));
-                setTimeout(() => hideSplash(), delay);
-            }
-        }, 300);
-
-        // Initialisation
+        
         initializeTeamStrength();
-        initSupabase();
+        
+        // Initialiser les codes si vide (générer 15 codes par défaut)
+        if(subscriptionCodes.length === 0) {
+            generateNewCodes();
+        } else {
+            renderAdminCodesList();
+        }
     </script>
 </body>
     </html>
