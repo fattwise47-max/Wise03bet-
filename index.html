@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>WISE03.BET — IA Sportive Pro</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
             --bg: #020617; --card: #0f172a; --border: #1e293b; --text: #f1f5f9;
@@ -21,8 +20,9 @@
         .btn-ghost { background: transparent; border: 1px solid #1e293b; color: #94a3b8; width: 100%; }
         .btn-danger { background: #ef4444; color: white; width: 100%; }
         .btn-success { background: #22c55e; color: black; width: 100%; }
+        .btn-warning { background: #f97316; color: black; width: 100%; }
         .nav-bar { display: flex; background: #0f172a; border: 1px solid #1e293b; border-radius: 18px; margin-bottom: 20px; padding: 5px; }
-        .nav-item { flex: 1; padding: 10px; text-align: center; cursor: pointer; font-size: 10px; font-weight: 800; border-radius: 12px; color: #94a3b8; }
+        .nav-item { flex: 1; padding: 10px; text-align: center; cursor: pointer; font-size: 10px; font-weight: 800; border-radius: 12px; color: #94a3b8; transition: all 0.2s; }
         .nav-item.active { background: #3b82f6; color: white; }
         .analysis-res { font-size: 22px; font-weight: 900; color: #22c55e; margin: 10px 0; text-align: center; }
         .vs-container { display: flex; align-items: center; justify-content: space-around; margin: 15px 0; }
@@ -32,10 +32,9 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         .status-badge { font-size: 10px; padding: 4px 8px; border-radius: 10px; display: inline-block; }
         .team-strength { font-size: 10px; margin-top: 4px; color: #eab308; }
-        .splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #020617, #0f172a); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; }
+        .splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #020617, #0f172a); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; transition: opacity 0.5s; }
         .splash-logo { font-size: 42px; font-weight: 900; background: linear-gradient(135deg, #3b82f6, #06b6d4); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 40px; }
         .splash-loader { width: 60px; height: 60px; border: 4px solid rgba(59,130,246,0.2); border-top: 4px solid #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
-        .error-message { color: #ef4444; background: #4a1e27; padding: 10px; border-radius: 12px; font-size: 12px; text-align: center; margin-top: 10px; }
         .assistant-chat { position: fixed; bottom: 80px; right: 20px; width: 280px; background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; z-index: 999; display: none; flex-direction: column; max-height: 400px; }
         .assistant-chat.active { display: flex; }
         .assistant-header { background: linear-gradient(135deg, #eab308, #f97316); padding: 12px; border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; cursor: pointer; color: #000; font-weight: bold; }
@@ -47,13 +46,17 @@
         .assistant-bot { background: #1e293b; }
         .btn-assistant { position: fixed; bottom: 20px; right: 20px; background: linear-gradient(135deg, #eab308, #f97316); color: black; border: none; border-radius: 30px; padding: 12px 18px; cursor: pointer; font-weight: bold; z-index: 998; }
         .back-btn { margin-bottom: 15px; background: #1e293b; padding: 8px 15px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 12px; }
-        .ticket-card { cursor: pointer; }
+        .ticket-card { cursor: pointer; transition: transform 0.2s; }
+        .ticket-card:hover { transform: scale(1.01); border-color: #3b82f6; }
         .detail-header { background: linear-gradient(135deg, #3b82f6, #1d4ed8); padding: 15px; border-radius: 16px; margin-bottom: 15px; text-align: center; }
-        .info-badge { background: #1e293b; padding: 5px 10px; border-radius: 20px; font-size: 11px; display: inline-block; margin: 5px; }
         .action-buttons { display: flex; gap: 10px; margin-top: 15px; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; }
         .modal.active { display: flex; }
         .modal-content { background: #0f172a; padding: 25px; border-radius: 20px; width: 90%; max-width: 400px; }
+        .ticket-item { border-left: 3px solid #3b82f6; padding: 8px; margin-bottom: 8px; background: #1e293b; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .message-date { font-size: 10px; color: #94a3b8; margin-top: 5px; }
+        .profile-pic { width: 80px; height: 80px; border-radius: 50%; background: #1e293b; display: flex; align-items: center; justify-content: center; margin: 10px auto; font-size: 30px; }
+        hr { opacity: 0.1; margin: 15px 0; }
     </style>
 </head>
 <body>
@@ -67,9 +70,10 @@
 <div class="app-shell" id="appShell" style="display: none;">
     <header style="text-align: center; padding: 20px 0;">
         <h1 style="color: #3b82f6;">WISE03<span style="color:white">.BET</span></h1>
-        <div id="connection-status" style="font-size: 10px; color: #22c55e;">🟢 Prêt</div>
+        <div id="connection-status" style="font-size: 10px; color: #22c55e;">🟢 Mode Local</div>
     </header>
 
+    <!-- Écran de connexion -->
     <section id="auth-screen">
         <div class="card">
             <h3 style="text-align:center; margin-bottom:15px;">Connexion</h3>
@@ -78,10 +82,14 @@
             <div id="login-error" style="color:#ef4444; font-size:12px;"></div>
             <button class="btn-primary" onclick="loginUser()">SE CONNECTER</button>
             <button class="btn-ghost" style="margin-top:10px;" onclick="toggleAuth(true)">Créer un compte</button>
-            <button class="btn-ghost" style="margin-top:20px;" onclick="showAdminLogin()">CONSOLE ADMIN</button>
+            <div style="margin-top:15px; padding:10px; background:#1e293b; border-radius:12px; font-size:10px; text-align:center;">
+                🌍 <strong>Mode Démo Local</strong><br>
+                Les données sont sauvegardées dans votre navigateur
+            </div>
         </div>
     </section>
 
+    <!-- Écran d'inscription -->
     <section id="register-screen" style="display:none;">
         <div class="card">
             <h3 style="text-align:center; margin-bottom:15px;">Inscription</h3>
@@ -89,50 +97,58 @@
             <input type="email" id="reg-email" placeholder="Email">
             <div id="email-error" style="color:#ef4444; font-size:12px;"></div>
             <input type="tel" id="reg-whatsapp" placeholder="WhatsApp">
-            <input type="password" id="reg-pass" placeholder="Mot de passe (min 6)">
+            <input type="password" id="reg-pass" placeholder="Mot de passe (min 4)">
             <button class="btn-primary" onclick="registerUser()">S'INSCRIRE</button>
             <button class="btn-ghost" style="margin-top:10px;" onclick="toggleAuth(false)">Retour</button>
         </div>
     </section>
 
+    <!-- Dashboard -->
     <section id="dashboard" style="display:none;">
         <div class="nav-bar">
-            <div class="nav-item active" onclick="switchView('predict')">ANALYSE</div>
-            <div class="nav-item" onclick="switchView('tickets')">TICKETS</div>
-            <div class="nav-item" onclick="switchView('profile')">PROFIL</div>
+            <div class="nav-item active" data-view="predict" onclick="switchView('predict')">ANALYSE</div>
+            <div class="nav-item" data-view="tickets" onclick="switchView('tickets')">TICKETS</div>
+            <div class="nav-item" data-view="profile" onclick="switchView('profile')">PROFIL</div>
         </div>
 
         <div id="view-predict">
             <div id="verify-alert" class="card" style="display:none; border-color:#f97316;">
                 <p style="font-size:12px; color:#f97316;">⚠️ Vérification ID requise dans Profil</p>
             </div>
-            <div id="predict-main" style="display:none;">
+            <div id="predict-main">
                 <div class="card">
-                    <input type="text" id="team-h" placeholder="Équipe domicile" list="teams-list">
-                    <input type="text" id="team-a" placeholder="Équipe extérieur" list="teams-list">
+                    <label style="font-size:11px; color:#94a3b8;">Équipe Domicile</label>
+                    <input type="text" id="team-h" placeholder="Chercher..." list="teams-list">
+                    <label style="font-size:11px; color:#94a3b8;">Équipe Extérieur</label>
+                    <input type="text" id="team-a" placeholder="Chercher..." list="teams-list">
                     <datalist id="teams-list"></datalist>
                     <div id="ana-error" style="color:#ef4444; font-size:12px;"></div>
-                    <button class="btn-primary" onclick="runAnalysis()">ANALYSER</button>
+                    <button class="btn-primary" onclick="runAnalysis()">ANALYSER LE MATCH</button>
                 </div>
                 <div id="result-box" style="display:none;">
-                    <div class="card">
+                    <div class="card" style="border:2px solid #06b6d4;">
                         <div class="vs-container">
                             <div class="team-name" id="res-h"></div>
-                            <div>VS</div>
+                            <div style="color:#3b82f6; font-weight:900;">VS</div>
                             <div class="team-name" id="res-a"></div>
                         </div>
                         <div id="res-market" class="analysis-res">---</div>
-                        <div id="res-ht" style="text-align:center; font-size:13px;"></div>
+                        <div id="res-ht" style="text-align:center; font-size:13px; color:#06b6d4;"></div>
+                        <div id="res-logic" style="text-align:center; font-size:11px; color:#94a3b8;"></div>
+                        <div id="premium-lock" class="premium-score" style="background:#1e293b; display:none;">
+                            🔒 Score Exact Réservé Premium
+                        </div>
                         <div id="premium-data" class="premium-score" style="display:none;">
+                            <small>SCORE EXACT PRÉDIT</small>
                             <div style="font-size:32px; font-weight:900;" id="res-score">?-?</div>
                         </div>
-                        <button class="btn-ghost" onclick="addToTicket()">+ AJOUTER</button>
+                        <button class="btn-ghost" onclick="addToTicket()">+ AJOUTER AU COUPON</button>
                     </div>
                 </div>
-                <div id="current-ticket" class="card" style="display:none;">
-                    <h4>Ticket (<span id="ticket-count">0</span>)</h4>
+                <div id="current-ticket" class="card" style="display:none; border-color:#22c55e;">
+                    <h4>Coupon Actuel (<span id="ticket-count">0</span>)</h4>
                     <div id="ticket-list"></div>
-                    <button class="btn-success" onclick="saveTicket()">ENREGISTRER</button>
+                    <button class="btn-success" style="margin-top:10px;" onclick="saveTicket()">ENREGISTRER LE TICKET</button>
                 </div>
             </div>
         </div>
@@ -140,74 +156,48 @@
         <div id="view-tickets" style="display:none;">
             <div id="tickets-list-view"></div>
         </div>
+        
         <div id="view-ticket-detail" style="display:none;">
-            <div class="back-btn" onclick="backToTicketsList()">← Retour</div>
+            <div class="back-btn" onclick="backToTicketsList()">← Retour aux tickets</div>
             <div id="ticket-detail-content"></div>
         </div>
 
         <div id="view-profile" style="display:none;">
             <div class="card" style="text-align:center;">
+                <div id="profile-pic-container"><div class="profile-pic">📷</div></div>
                 <h2 id="prof-name">---</h2>
-                <p id="prof-email"></p>
-                <p id="prof-whatsapp"></p>
+                <p id="prof-email" style="font-size:12px; color:#94a3b8;"></p>
+                <p id="prof-whatsapp" style="font-size:12px; color:#94a3b8;"></p>
                 <div id="prof-badge"></div>
-                <hr style="margin:20px 0;">
-                <div id="id-upload-section">
-                    <button class="btn-warning" onclick="document.getElementById('id-file').click()">📷 UPLOAD ID</button>
-                    <input type="file" id="id-file" style="display:none;" onchange="handleIDUpload(this)">
-                </div>
-                <button class="btn-danger" style="margin-top:20px;" onclick="logout()">DÉCONNEXION</button>
+                <hr>
+                <button class="btn-danger" onclick="logout()">DÉCONNEXION</button>
             </div>
         </div>
     </section>
 
-    <section id="admin-login" style="display:none;">
-        <div class="card">
-            <input type="password" id="admin-code" placeholder="Code Admin">
-            <button class="btn-danger" onclick="loginAdmin()">ACCÉDER</button>
-            <button class="btn-ghost" style="margin-top:10px;" onclick="location.reload()">RETOUR</button>
-        </div>
-    </section>
-
-    <section id="admin-panel" style="display:none;">
-        <div class="card">
-            <h3>📢 Annonce globale</h3>
-            <input type="text" id="ad-title" placeholder="Titre">
-            <input type="url" id="ad-url" placeholder="Lien (optionnel)">
-            <button class="btn-primary" onclick="document.getElementById('ad-image').click()">📷 Image</button>
-            <input type="file" id="ad-image" style="display:none;" accept="image/*">
-            <button class="btn-success" style="margin-top:10px;" onclick="sendGlobalAd()">ENVOYER</button>
-        </div>
-        <div id="admin-users"></div>
-        <button class="btn-ghost" onclick="location.reload()">QUITTER</button>
-    </section>
-
     <div id="assistant-chat" class="assistant-chat">
         <div class="assistant-header" onclick="toggleAssistant()">🤖 Zola <span>▼</span></div>
-        <div class="assistant-messages" id="assistant-messages"></div>
+        <div class="assistant-messages" id="assistant-messages">
+            <div class="assistant-bubble assistant-bot">👋 Bonjour ! Je suis Zola. Cliquez sur un ticket pour voir ses détails !</div>
+        </div>
         <div class="assistant-input">
-            <input type="text" id="assistant-input" placeholder="Question...">
+            <input type="text" id="assistant-input" placeholder="Votre question...">
             <button onclick="askZola()">➤</button>
         </div>
     </div>
-    <button class="btn-assistant" onclick="toggleAssistant()">🤖</button>
+    <button class="btn-assistant" onclick="toggleAssistant()">🤖 Zola</button>
 </div>
 
 <script>
-    // ===== CONFIGURATION =====
-    const SUPABASE_URL = 'https://kvzemwoinlrisauioonq.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_6lDejMl6JmtRiTH0XhwMSQ_NQcuhoyy';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    
+    // ===== VERSION LOCALE SANS SUPABASE =====
+    // Stockage localStorage
+    let currentUser = null;
     let currentUserData = null;
     let currentTicket = [];
     let tempMatch = null;
-    let usersCache = [];
-    let adminTargetUid = null;
+    let selectedTicketIndex = null;
 
-    // ===== LISTE COMPLÈTE DE +500 CLUBS AVEC CLASSIFICATION =====
-    
-    // Équipes FORTES (Top mondial - 80 clubs)
+    // ===== LISTE COMPLÈTE DE +500 CLUBS =====
     const FORT_TEAMS = [
         'Real Madrid', 'FC Barcelona', 'Atlético Madrid', 'Manchester City', 'Liverpool FC', 
         'Bayern Munich', 'Paris Saint-Germain', 'Inter Milan', 'AC Milan', 'Juventus FC',
@@ -222,75 +212,43 @@
         'OGC Nice', 'Stade Rennais', 'West Ham United', 'Aston Villa', 'Brighton', 'Brentford',
         'Eintracht Frankfurt', 'Borussia Mönchengladbach', 'VfL Wolfsburg', 'SC Freiburg', 'Union Berlin',
         'Fiorentina', 'Torino FC', 'Bologna', 'Real Betis', 'Getafe CF', 'Osasuna', 'Celta Vigo',
-        'RC Lens', 'Montpellier HSC', 'FC Nantes', 'Strasbourg', 'Zamalek SC', 'Étoile du Sahel',
-        'CS Sfaxien', 'JS Kabylie', 'MC Alger', 'CR Belouizdad', 'Simba SC', 'Young Africans'
+        'RC Lens', 'Montpellier HSC', 'FC Nantes', 'Strasbourg', 'Zamalek SC', 'Étoile du Sahel'
     ];
     
-    // Équipes MOYENNES (120 clubs)
     const MOYEN_TEAMS = [
         'Everton FC', 'Crystal Palace', 'Fulham', 'Wolverhampton', 'Nottingham Forest', 'Bournemouth',
         'Southampton', 'Leicester City', 'Leeds United', 'Schalke 04', 'Hertha Berlin', 'Werder Bremen',
-        'FSV Mainz', 'FC Köln', 'TSG Hoffenheim', 'VfB Stuttgart', 'Augsburg', 'Bochum', 'Darmstadt',
-        'Heidenheim', 'Sampdoria', 'Genoa', 'Udinese', 'Sassuolo', 'Verona', 'Empoli', 'Salernitana',
+        'FSV Mainz', 'FC Köln', 'TSG Hoffenheim', 'VfB Stuttgart', 'Augsburg', 'Bochum',
+        'Sampdoria', 'Genoa', 'Udinese', 'Sassuolo', 'Verona', 'Empoli', 'Salernitana',
         'Lecce', 'Cagliari', 'Granada', 'Cadiz', 'Almeria', 'Rayo Vallecano', 'Mallorca', 'Las Palmas',
         'Girona', 'Alavés', 'Clermont Foot', 'Toulouse', 'Brest', 'Reims', 'Metz', 'Le Havre', 'Lorient',
         'US Monastir', 'USM Alger', 'ES Sétif', 'Paradou AC', 'Azam FC', 'Kaizer Chiefs', 'Orlando Pirates',
         'SuperSport United', 'São Paulo', 'Corinthians', 'Santos', 'Grêmio', 'Internacional', 'Cruzeiro',
         'Atlético Mineiro', 'Fluminense', 'Botafogo', 'Bahia', 'Fortaleza', 'Athletico Paranaense',
         'Junior Barranquilla', 'Atlético Nacional', 'Millonarios', 'América de Cali', 'Deportivo Cali',
-        'Independiente Santa Fe', 'Toluca', 'Cruz Azul', 'Pumas UNAM', 'Monterrey', 'Tigres UANL',
-        'Club América', 'Chivas Guadalajara', 'Pachuca', 'Atlas', 'León', 'Querétaro', 'San Luis',
-        'Mazatlán', 'Juárez', 'Necaxa', 'Puebla', 'Tijuana', 'Santos Laguna', 'Urawa Red Diamonds',
-        'Yokohama F. Marinos', 'Kawasaki Frontale', 'Vissel Kobe', 'Nagoya Grampus', 'Cerezo Osaka',
-        'FC Tokyo', 'Kashima Antlers', 'Sanfrecce Hiroshima', 'Gamba Osaka', 'Shonan Bellmare',
-        'Kyoto Sanga', 'Sagan Tosu', 'Avispa Fukuoka', 'Kashiwa Reysol', 'Albirex Niigata',
-        'Jeonbuk Hyundai', 'Ulsan Hyundai', 'Pohang Steelers', 'Daegu FC', 'Incheon United', 'FC Seoul',
-        'Suwon Samsung', 'Gwangju FC', 'Jeju United', 'Gangwon FC', 'Daejeon Hana Citizen'
+        'Toluca', 'Cruz Azul', 'Pumas UNAM', 'Monterrey', 'Tigres UANL', 'Club América',
+        'Chivas Guadalajara', 'Pachuca', 'Atlas', 'León', 'Urawa Red Diamonds', 'Yokohama F. Marinos',
+        'Kawasaki Frontale', 'Vissel Kobe', 'Nagoya Grampus', 'Cerezo Osaka', 'FC Tokyo', 'Kashima Antlers',
+        'Jeonbuk Hyundai', 'Ulsan Hyundai', 'Pohang Steelers', 'Daegu FC', 'Incheon United', 'FC Seoul'
     ];
     
-    // Équipes FAIBLES (plus de 300 clubs)
     const FAIBLE_TEAMS = [
         'Accra Hearts of Oak', 'Asante Kotoko', 'Medeama SC', 'Dreams FC', 'Legon Cities', 'Karela United',
-        'Real Tamale United', 'Bibiani Gold Stars', 'Nsoatreman FC', 'Samartex', 'Bechem United',
-        'Berekum Chelsea', 'Great Olympics', 'King Faisal', 'Wa All Stars', 'AS Vita Club',
-        'DC Motema Pembe', 'FC Lupopo', 'Sanga Balende', 'Blessing', 'Etoile de Kivu', 'Renaissance',
-        'New York City FC', 'LAFC', 'LA Galaxy', 'Seattle Sounders', 'Atlanta United', 'Philadelphia Union',
-        'FC Cincinnati', 'New England Revolution', 'Nashville SC', 'Orlando City', 'Columbus Crew',
-        'St Louis City', 'Austin FC', 'FC Dallas', 'Houston Dynamo', 'Vancouver Whitecaps',
-        'Portland Timbers', 'Real Salt Lake', 'Minnesota United', 'Chicago Fire', 'Toronto FC',
-        'Montreal Impact', 'San Jose Earthquakes', 'Colorado Rapids', 'Sporting Kansas City',
+        'AS Vita Club', 'DC Motema Pembe', 'FC Lupopo', 'Sanga Balende', 'New York City FC', 'LAFC',
+        'LA Galaxy', 'Seattle Sounders', 'Atlanta United', 'Philadelphia Union', 'FC Cincinnati',
+        'Orlando City', 'Columbus Crew', 'St Louis City', 'Austin FC', 'FC Dallas', 'Houston Dynamo',
+        'Vancouver Whitecaps', 'Portland Timbers', 'Real Salt Lake', 'Minnesota United', 'Chicago Fire',
+        'Toronto FC', 'Montreal Impact', 'San Jose Earthquakes', 'Colorado Rapids', 'Sporting Kansas City',
         'Al-Ahli Saudi', 'Al-Shabab', 'Al-Taawoun', 'Al-Ettifaq', 'Abha Club', 'Al-Fayha', 'Al-Raed',
-        'Al-Khaleej', 'Al-Okhdood', 'Al-Hazem', 'Damac FC', 'Ismaily SC', 'Al Masry', 'Pyramids FC',
-        'Future FC', 'National Bank', 'Ceramica Cleopatra', 'Smouha', 'Al Ittihad Alex', 'El Gouna',
-        'Baladeyet El Mahalla', 'Haras El Hodoud', 'Ghazl El Mahalla', 'ENPPI', 'Pharco FC',
-        'Al Ahly Tripoli', 'Al Nasr Benghazi', 'Al Hilal Benghazi', 'Al Akhdar', 'Asaria SC', 'Abu Salim',
-        'Al Olympic Zaouia', 'Al Ahli Benghazi', 'Al Madina', 'Al Morooj', 'Al Sadaqa', 'Al Ittihad Tripoli',
-        'Horoya AC', 'Hafia FC', 'AS Kaloum', 'Milo FC', 'CI Kamsar', 'Ashanti GB', 'ASEC Mimosas',
-        'Africa Sports', 'SO Armée', 'Racing Club', 'Stella Club', 'AS Athlétic', 'Africa Football',
-        'USC Bassam', 'LYS Sassandra', 'Bouaké FC', 'AS Tanda', 'AFAD Djékanou', 'Sol FC', 'Korhogo FC',
-        'AS Denguélé', 'CO Korhogo', 'Enyimba FC', 'Kano Pillars', 'Rivers United', 'Remo Stars',
-        'Plateau United', 'Lobi Stars', 'Akwa United', 'Sunshine Stars', 'Niger Tornadoes',
-        'Bendel Insurance', 'Doma United', 'Kwara United', 'Abia Warriors', 'Gombe United',
-        'Bayelsa United', 'Heartland FC', 'Shooting Stars', 'Wikki Tourists', 'El Kanemi Warriors',
-        'Nasarawa United', 'Dakkada FC', 'MFM FC', 'Warri Wolves', 'Petro Atlético', 'Primeiro de Agosto',
-        'Sagrada Esperança', 'CD Lunda-Sul', 'Wiliete SC', 'Santa Rita', 'Isaac de Benguela',
-        'Recreativo do Libolo', 'Desportivo Huíla', 'Kabuscorp', 'Académica Lobito', 'Sporting Cabinda',
-        'ASA', 'ASO Chlef', 'NC Magra', 'JS Saoura', 'HB Chelghoum', 'RC Arbaâ', 'Olympique Médéa',
-        'NA Hussein Dey', 'MC Oran', 'ASM Oran', 'US Biskra', 'WA Tlemcen', 'CA Bordj Bou Arreridj',
-        'USM Bel Abbès', 'JSM Béjaïa', 'MO Béjaïa', 'AS Khroub', 'CA Batna', 'AB Merouana',
-        'USM El Harrach', 'RC Kouba', 'Stade Tunisien', 'Club Athlétique Bizertin', 'Olympique Béja',
-        'ES Hammam Sousse', 'AS Soliman', 'US Ben Guerdane', 'ES Zarzis', 'JS Kairouan', 'CS Hammam-Lif',
-        'AS Gabès', 'ES Métlaoui', 'AS Marsa', 'CO Transports', 'AS Djerba', 'ES Rades', 'Stade Gabèsien',
-        'ES Bou Salem', 'AS Oued Ellil', 'CS Korba', 'FC Nouadhibou', 'ASC SNIM', 'AS Garde Nationale',
-        'ACS Ksar', 'ASAC Concorde', 'FC Gouraye', 'ASC Tidjikja', 'AS Armée', 'Kaédi FC', 'Nouakchott Kings',
-        'Chemal FC', 'Inter Nouakchott', 'Al-Nasr Benghazi', 'Al-Ittihad', 'Al-Merrikh', 'Al-Hilal Omdurman',
-        'Hay Al Arab', 'Tuti SC', 'Al Ahli Shendi', 'Al Shorta', 'Al Khartoum', 'Kober SC', 'Al-Falah',
-        'Wad Nubawi', 'Al-Ahli Merowe', 'Al Rabita', 'Al-Amal', 'Hilal Alsahil', 'Merreikh Nyala',
-        'Al-Nil', 'Al Zoma SC', 'Baniyas', 'Ajman', 'Al Wahda', 'Al Jazira', 'Sharjah', 'Al Ain',
-        'Al Nasr Dubai', 'Ittihad Kalba', 'Khor Fakkan', 'Hatta Club', 'Al Dhafra', 'Emirates Club'
+        'Ismaily SC', 'Al Masry', 'Pyramids FC', 'Future FC', 'National Bank', 'Ceramica Cleopatra',
+        'Smouha', 'El Gouna', 'ENPPI', 'Horoya AC', 'Hafia FC', 'AS Kaloum', 'Milo FC', 'CI Kamsar',
+        'ASEC Mimosas', 'Africa Sports', 'SO Armée', 'Racing Club', 'Stella Club', 'Enyimba FC',
+        'Kano Pillars', 'Rivers United', 'Remo Stars', 'Plateau United', 'Lobi Stars', 'Akwa United',
+        'Petro Atlético', 'Primeiro de Agosto', 'Sagrada Esperança', 'ASO Chlef', 'NC Magra', 'JS Saoura',
+        'Stade Tunisien', 'Club Athlétique Bizertin', 'Olympique Béja', 'ES Hammam Sousse', 'AS Soliman',
+        'US Ben Guerdane', 'FC Nouadhibou', 'ASC SNIM', 'AS Garde Nationale', 'ACS Ksar', 'ASAC Concorde'
     ];
     
-    // Toutes les équipes combinées (plus de 500)
     const ALL_TEAMS = [...FORT_TEAMS, ...MOYEN_TEAMS, ...FAIBLE_TEAMS].sort();
     
     function getTeamStrength(team) {
@@ -305,142 +263,184 @@
         if(s === 'moyen') return '⚡ MOYEN';
         return '🌱 FAIBLE';
     }
-
+    
     // Marchés disponibles
-    const MARKETS = ["1", "2", "X", "Over 1.5", "Over 2.5", "Under 2.5", "1MT Dom gagne", "1MT Nul", "Les deux MT égalité"];
-    const SCORES = ["2-1","1-2","3-1","2-0","1-0","1-1","2-2","0-1","0-2","4-1","3-0","0-3","4-0","0-4"];
+    const MARKETS_PRO = [
+        "1", "2", "X", "1MT +1.5", "1MT Dom gagne", "1MT Ext gagne", "1MT Nul",
+        "Over 1.5", "Over 2", "Over 2.5", "Over 3", "Under 2", "All teams win YES", "All teams win NO"
+    ];
     
-    function genererPrediction(h, a) {
-        const forceH = getTeamStrength(h), forceA = getTeamStrength(a);
-        let scoreFinal;
-        if(forceH === 'fort' && forceA === 'faible') {
-            scoreFinal = ["3-1","4-1","2-0","3-0","4-0","5-1"][Math.floor(Math.random()*6)];
-        } else if(forceA === 'fort' && forceH === 'faible') {
-            scoreFinal = ["0-2","1-2","0-1","0-3","1-3","0-4"][Math.floor(Math.random()*6)];
-        } else if(forceH === 'fort' && forceA === 'moyen') {
-            scoreFinal = ["2-1","3-1","2-0","1-0","2-2"][Math.floor(Math.random()*5)];
-        } else if(forceA === 'fort' && forceH === 'moyen') {
-            scoreFinal = ["1-2","0-2","1-1","0-1","1-3"][Math.floor(Math.random()*5)];
-        } else {
-            scoreFinal = ["1-1","2-1","1-2","1-0","0-1","2-2"][Math.floor(Math.random()*6)];
+    const SCORES_FAVORIS = ["2-1","1-2","3-1","2-3","0-2","4-1","2-0","1-0","1-1","2-2","4-0"];
+    
+    function getRapportForce(teamH, teamA) {
+        const strengthH = getTeamStrength(teamH);
+        const strengthA = getTeamStrength(teamA);
+        if(strengthH === 'fort' && strengthA === 'faible') return 'favori_vs_faible';
+        if(strengthA === 'fort' && strengthH === 'faible') return 'surprise';
+        return 'equilibre';
+    }
+    
+    function getScoresPossibles(rapport) {
+        if(rapport === 'favori_vs_faible') return ["3-1","4-1","2-0","4-0","3-0"];
+        if(rapport === 'surprise') return ["0-2","1-2","0-1"];
+        return ["1-1","2-1","1-2","2-2","1-0","0-1"];
+    }
+    
+    function validerScoreAvecMarche(scoreFinal, marche) {
+        const [h, a] = scoreFinal.split('-').map(Number);
+        const total = h + a;
+        if(marche === "1") return h > a;
+        if(marche === "2") return a > h;
+        if(marche === "X") return h === a;
+        if(marche === "Over 1.5") return total > 1.5;
+        if(marche === "Over 2") return total > 2;
+        if(marche === "Over 2.5") return total > 2.5;
+        if(marche === "Over 3") return total > 3;
+        if(marche === "Under 2") return total < 2;
+        if(marche === "All teams win YES") return (h > 0 && a > 0);
+        if(marche === "All teams win NO") return (h === 0 || a === 0);
+        return true;
+    }
+    
+    function genererScoreEtMarche(teamH, teamA) {
+        const rapport = getRapportForce(teamH, teamA);
+        const scoresPossibles = getScoresPossibles(rapport);
+        const scoresCompatibles = SCORES_FAVORIS.filter(s => scoresPossibles.includes(s));
+        let scoreFinal = scoresCompatibles.length ? scoresCompatibles[Math.floor(Math.random() * scoresCompatibles.length)] : scoresPossibles[Math.floor(Math.random() * scoresPossibles.length)];
+        let marche = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
+        let tries = 0;
+        while(!validerScoreAvecMarche(scoreFinal, marche) && tries < 15) {
+            marche = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
+            tries++;
         }
-        
-        const marche = MARKETS[Math.floor(Math.random() * MARKETS.length)];
         const [fh, fa] = scoreFinal.split('-').map(Number);
-        const miTemps = `${Math.floor(fh/2)}-${Math.floor(fa/2)}`;
-        return { scoreFinal, marche, miTemps };
+        let ht_h = Math.floor(fh / 2) + (Math.random() > 0.7 ? 1 : 0);
+        let ht_a = Math.floor(fa / 2) + (Math.random() > 0.7 ? 1 : 0);
+        if(ht_h > fh) ht_h = fh;
+        if(ht_a > fa) ht_a = fa;
+        const miTemps = `${ht_h}-${ht_a}`;
+        const logique = `Vérification : ${scoreFinal} valide le marché "${marche}" → ${validerScoreAvecMarche(scoreFinal, marche) ? 'OK' : 'NON'}`;
+        return { scoreFinal, marche, miTemps, logique };
     }
 
-    // ===== AUTHENTIFICATION =====
-
-    // Nouvelle fonction pour afficher l'écran d'authentification
-    function showAuthScreen() {
-        document.getElementById('splashScreen').style.display = 'none';
-        document.getElementById('appShell').style.display = 'block';
-        document.getElementById('auth-screen').style.display = 'block';
-        document.getElementById('register-screen').style.display = 'none'; // S'assurer que l'écran d'enregistrement est masqué
-        document.getElementById('admin-login').style.display = 'none'; // S'assurer que l'écran admin est masqué
-    }
-
-    async function checkSession() {
-        document.getElementById('splashText').innerText = 'Vérification session...';
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-            await loadOrCreateUser(session.user.id, session.user.email);
-            showDashboard();
-        } else {
-            // Si pas de session, on affiche directement l'écran d'authentification
-            showAuthScreen();
-        }
+    // ===== GESTION DES UTILISATEURS (LOCALSTORAGE) =====
+    function loadUsers() {
+        const users = localStorage.getItem('wise03_users');
+        return users ? JSON.parse(users) : [];
     }
     
-    supabase.auth.onAuthStateChange(async (event, session) => {
-        if (event === 'SIGNED_IN') {
-            await loadOrCreateUser(session.user.id, session.user.email);
-            showDashboard();
-        } else if (event === 'SIGNED_OUT') {
-            location.reload(); // Recharger pour revenir à l'écran de connexion
-        } else if (event === 'INITIAL_SESSION') {
-            // Cet événement est déclenché au premier chargement.
-            // Si session est null, il n'y a pas de session existante.
-            if (!session) {
-                showAuthScreen();
-            }
-        }
-    });
-    
-    async function loadOrCreateUser(uid, email) {
-        document.getElementById('splashText').innerText = 'Chargement profil...';
-        let { data, error } = await supabase.from('user_profiles').select('*').eq('id', uid).single();
-        
-        if (error || !data) {
-            const newUser = {
-                id: uid, email: email, name: "", whatsapp: "", is_verified: false,
-                is_premium: false, is_blocked: false, is_admin: false,
-                messages: [], tickets: [], daily_count: 0, unread_messages: 0, global_ads: []
-            };
-            await supabase.from('user_profiles').insert([newUser]);
-            currentUserData = newUser;
-        } else {
-            currentUserData = data;
-        }
-        currentUserData.uid = uid;
-        // Une fois l'utilisateur chargé (ou créé), le splash screen peut être masqué
-        document.getElementById('splashScreen').style.display = 'none';
-        document.getElementById('appShell').style.display = 'block'; // S'assurer que appShell est visible
-        document.getElementById('splashText').innerText = 'Prêt !'; // Mettre à jour le texte du splash screen si visible brièvement
+    function saveUsers(users) {
+        localStorage.setItem('wise03_users', JSON.stringify(users));
     }
     
-    async function saveUser() {
-        if(!currentUserData) return;
-        const { uid, ...data } = currentUserData;
-        await supabase.from('user_profiles').update(data).eq('id', uid);
-    }
-    
-    async function loginUser() {
+    function loginUser() {
         const email = document.getElementById('login-email').value.trim();
         const pass = document.getElementById('login-pass').value;
-        const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
-        if(error) document.getElementById('login-error').innerText = "Email ou mot de passe incorrect";
-        else document.getElementById('login-error').innerText = ""; // Clear error on success
+        const errorDiv = document.getElementById('login-error');
+        
+        const users = loadUsers();
+        const user = users.find(u => u.email === email && u.password === pass);
+        
+        if(user) {
+            currentUser = user;
+            currentUserData = { ...user, is_premium: user.is_premium || false, is_verified: user.is_verified || false };
+            showDashboard();
+        } else {
+            errorDiv.innerText = "Email ou mot de passe incorrect";
+        }
     }
     
-    async function registerUser() {
+    function registerUser() {
         const name = document.getElementById('reg-name').value.trim();
         const email = document.getElementById('reg-email').value.trim();
         const whatsapp = document.getElementById('reg-whatsapp').value.trim();
         const pass = document.getElementById('reg-pass').value;
-        document.getElementById('email-error').innerText = ""; // Clear previous errors
-        if(pass.length < 6) { document.getElementById('email-error').innerText = "Mot de passe min 6 caractères"; return; }
-        const { data, error } = await supabase.auth.signUp({ email, password: pass });
-        if(error) { document.getElementById('email-error').innerText = error.message; return; }
+        const errorDiv = document.getElementById('email-error');
         
-        // Si l'inscription réussit, Supabase crée une session.
-        // L'écouteur onAuthStateChange va gérer le loadOrCreateUser et showDashboard.
-        // Nous pouvons ajouter les détails du profil après que l'utilisateur soit chargé.
-        if (data && data.user) {
-             alert("Compte créé ! Veuillez vérifier votre email pour confirmer l'inscription.");
-             // Après l'inscription, rediriger vers l'écran de connexion
-             toggleAuth(false);
+        if(!name || !email || !whatsapp || !pass) {
+            errorDiv.innerText = "Tous les champs sont requis";
+            return;
+        }
+        if(pass.length < 4) {
+            errorDiv.innerText = "Mot de passe (min 4 caractères)";
+            return;
+        }
+        
+        const users = loadUsers();
+        if(users.find(u => u.email === email)) {
+            errorDiv.innerText = "Email déjà utilisé";
+            return;
+        }
+        
+        const newUser = {
+            id: Date.now().toString(),
+            email: email,
+            name: name,
+            whatsapp: whatsapp,
+            password: pass,
+            is_verified: false,
+            is_premium: false,
+            tickets: [],
+            messages: [],
+            daily_count: 0,
+            last_match_date: null,
+            created_at: new Date().toISOString()
+        };
+        
+        users.push(newUser);
+        saveUsers(users);
+        
+        alert("✅ Compte créé avec succès ! Connectez-vous.");
+        toggleAuth(false);
+        document.getElementById('login-email').value = email;
+    }
+    
+    function logout() {
+        currentUser = null;
+        currentUserData = null;
+        currentTicket = [];
+        document.getElementById('dashboard').style.display = 'none';
+        document.getElementById('auth-screen').style.display = 'block';
+        document.getElementById('register-screen').style.display = 'none';
+    }
+    
+    function updateUserData() {
+        if(!currentUserData) return;
+        const users = loadUsers();
+        const index = users.findIndex(u => u.id === currentUserData.id);
+        if(index !== -1) {
+            users[index] = { ...users[index], ...currentUserData };
+            saveUsers(users);
+            currentUser = users[index];
         }
     }
     
-    async function logout() { await supabase.auth.signOut(); location.reload(); }
-    
+    // ===== FONCTIONS DE L'APPLICATION =====
     function showDashboard() {
+        document.getElementById('splashScreen').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('splashScreen').style.display = 'none';
+            document.getElementById('appShell').style.display = 'block';
+        }, 500);
+        
         document.getElementById('auth-screen').style.display = 'none';
         document.getElementById('register-screen').style.display = 'none';
         document.getElementById('dashboard').style.display = 'block';
+        
         const dl = document.getElementById('teams-list');
-        // Vider la datalist avant de la remplir pour éviter les doublons si showDashboard est appelé plusieurs fois
-        dl.innerHTML = ''; 
-        ALL_TEAMS.forEach(t => { let opt = document.createElement('option'); opt.value = t; dl.appendChild(opt); });
+        dl.innerHTML = '';
+        ALL_TEAMS.forEach(t => {
+            const opt = document.createElement('option');
+            opt.value = t;
+            dl.appendChild(opt);
+        });
+        
         document.getElementById('predict-main').style.display = 'block';
-        document.getElementById('verify-alert').style.display = 'none';
-        if(currentUserData.is_admin) document.getElementById('admin-panel').style.display = 'block';
-        else document.getElementById('admin-panel').style.display = 'none'; // S'assurer que le panneau admin est masqué pour les non-admins
-        renderSavedTickets();
+        document.getElementById('verify-alert').style.display = currentUserData.is_verified ? 'none' : 'block';
+        
         renderProfile();
+        renderSavedTickets();
+        switchView('predict');
     }
     
     function switchView(view) {
@@ -449,12 +449,14 @@
         document.getElementById('view-profile').style.display = view === 'profile' ? 'block' : 'none';
         document.getElementById('view-ticket-detail').style.display = 'none';
         
-        // Mettre à jour les classes active pour la nav-bar
         document.querySelectorAll('.nav-item').forEach(item => {
-            item.classList.remove('active');
+            if(item.getAttribute('data-view') === view) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
         });
-        document.querySelector(`.nav-item[onclick="switchView('${view}')"]`).classList.add('active');
-
+        
         if(view === 'tickets') renderSavedTickets();
         if(view === 'profile') renderProfile();
     }
@@ -462,78 +464,180 @@
     function runAnalysis() {
         const h = document.getElementById('team-h').value.trim();
         const a = document.getElementById('team-a').value.trim();
-        document.getElementById('ana-error').innerText = ""; // Clear previous errors
+        
         if(!ALL_TEAMS.includes(h) || !ALL_TEAMS.includes(a)) {
-            document.getElementById('ana-error').innerText = "Équipe invalide";
+            document.getElementById('ana-error').innerText = "Sélectionnez des équipes valides";
             return;
         }
-        const gen = genererPrediction(h, a);
-        tempMatch = { h, a, market: gen.marche, score: gen.scoreFinal, ht: gen.miTemps };
+        if(h === a) {
+            document.getElementById('ana-error').innerText = "Équipes différentes requises";
+            return;
+        }
+        
+        const today = new Date().toDateString();
+        if(!currentUserData.is_premium && currentUserData.last_match_date === today && currentUserData.daily_count >= 1) {
+            document.getElementById('ana-error').innerText = "⚠️ Version gratuite: 1 match/jour. Premium débloque illimité";
+            return;
+        }
+        
+        const gen = genererScoreEtMarche(h, a);
+        tempMatch = { h, a, market: gen.marche, score: currentUserData.is_premium ? gen.scoreFinal : null, ht: gen.miTemps, logic: gen.logique };
+        
         document.getElementById('res-h').innerHTML = `${h}<div class="team-strength">${getStrengthLabel(h)}</div>`;
         document.getElementById('res-a').innerHTML = `${a}<div class="team-strength">${getStrengthLabel(a)}</div>`;
         document.getElementById('res-market').innerText = tempMatch.market;
         document.getElementById('res-ht').innerText = `Mi-temps: ${tempMatch.ht}`;
-        if(currentUserData.is_premium) {
+        document.getElementById('res-logic').innerText = tempMatch.logic;
+        
+        if(tempMatch.score) {
             document.getElementById('premium-data').style.display = 'block';
             document.getElementById('res-score').innerText = tempMatch.score;
+            document.getElementById('premium-lock').style.display = 'none';
         } else {
             document.getElementById('premium-data').style.display = 'none';
+            document.getElementById('premium-lock').style.display = 'block';
         }
+        
+        if(!currentUserData.is_premium) {
+            if(currentUserData.last_match_date !== today) {
+                currentUserData.daily_count = 1;
+                currentUserData.last_match_date = today;
+            } else {
+                currentUserData.daily_count++;
+            }
+            updateUserData();
+        }
+        
         document.getElementById('result-box').style.display = 'block';
+        document.getElementById('ana-error').innerText = '';
     }
     
     function addToTicket() {
         if(!tempMatch) return;
-        if(!currentUserData.is_premium && currentTicket.length >= 1) { alert("Version gratuite: 1 match max"); return; }
+        if(!currentUserData.is_premium && currentTicket.length >= 1) {
+            alert("Version gratuite: 1 match maximum par ticket");
+            return;
+        }
+        if(currentTicket.length >= 15) {
+            alert("Maximum 15 matchs par ticket");
+            return;
+        }
         currentTicket.push({...tempMatch});
         renderCurrentTicket();
         document.getElementById('result-box').style.display = 'none';
+        document.getElementById('team-h').value = '';
+        document.getElementById('team-a').value = '';
     }
     
     function renderCurrentTicket() {
         const container = document.getElementById('ticket-list');
-        document.getElementById('current-ticket').style.display = currentTicket.length ? 'block' : 'none';
-        document.getElementById('ticket-count').innerText = currentTicket.length;
-        container.innerHTML = currentTicket.map((m,i) => `<div class="ticket-item">${m.h} vs ${m.a} - ${m.market} <span style="color:red;cursor:pointer" onclick="currentTicket.splice(${i},1);renderCurrentTicket()">✖</span></div>`).join('');
+        const count = document.getElementById('ticket-count');
+        document.getElementById('current-ticket').style.display = currentTicket.length > 0 ? 'block' : 'none';
+        count.innerText = currentTicket.length;
+        container.innerHTML = currentTicket.map((m, i) => `
+            <div class="ticket-item">
+                <div>
+                    <div>${m.h} vs ${m.a}</div>
+                    <div><b>${m.market}</b>${m.score ? ` (${m.score})` : ''} | ${m.ht}</div>
+                    <div class="team-strength">${getStrengthLabel(m.h)} | ${getStrengthLabel(m.a)}</div>
+                </div>
+                <span style="color:var(--danger);cursor:pointer;" onclick="removeFromTicket(${i})">✖</span>
+            </div>
+        `).join('');
     }
     
-    async function saveTicket() {
-        if(!currentTicket.length) return;
+    function removeFromTicket(i) {
+        currentTicket.splice(i, 1);
+        renderCurrentTicket();
+    }
+    
+    function saveTicket() {
+        if(currentTicket.length === 0) return;
+        
+        const today = new Date().toDateString();
+        const ticketsToday = (currentUserData.tickets || []).filter(t => t.date && t.date.includes(today)).length;
+        
+        if(!currentUserData.is_premium && ticketsToday >= 1) {
+            alert("Version gratuite: 1 ticket/jour maximum");
+            return;
+        }
+        if(currentUserData.is_premium && ticketsToday >= 10) {
+            alert("Premium: 10 tickets/jour maximum");
+            return;
+        }
+        
         if(!currentUserData.tickets) currentUserData.tickets = [];
-        currentUserData.tickets.unshift({date: new Date().toLocaleString(), matches: [...currentTicket]});
+        currentUserData.tickets.unshift({
+            date: new Date().toLocaleString(),
+            matches: [...currentTicket]
+        });
+        
         currentTicket = [];
         renderCurrentTicket();
-        await saveUser();
+        updateUserData();
         alert("Ticket enregistré !");
         switchView('tickets');
     }
     
     function renderSavedTickets() {
         const container = document.getElementById('tickets-list-view');
-        if(!currentUserData.tickets?.length) { container.innerHTML = '<p class="card">Aucun ticket enregistré</p>'; return; }
-        container.innerHTML = currentUserData.tickets.map((t, i) => `<div class="card ticket-card" onclick="viewTicket(${i})">📅 ${t.date}<br>📊 ${t.matches.length} match(s)</div>`).join('');
+        if(!currentUserData.tickets || currentUserData.tickets.length === 0) {
+            container.innerHTML = '<p class="card" style="text-align:center; color:#94a3b8;">Aucun ticket enregistré.</p>';
+            return;
+        }
+        container.innerHTML = currentUserData.tickets.map((t, idx) => `
+            <div class="card ticket-card" onclick="viewTicketDetail(${idx})">
+                <div style="color:var(--primary); font-weight:bold;">📅 ${t.date}</div>
+                <div>📊 ${t.matches.length} match(s)</div>
+                <div style="font-size:11px; color:var(--muted); margin-top:5px;">👆 Cliquer pour voir détails</div>
+            </div>
+        `).join('');
     }
     
-    function viewTicket(idx) {
-        const ticket = currentUserData.tickets[idx];
-        document.getElementById('ticket-detail-content').innerHTML = `
-            <div class="detail-header">🎫 Ticket du ${ticket.date}</div>
-            ${ticket.matches.map(m => `<div class="card">${m.h} vs ${m.a}<br>🎯 ${m.market}${m.score ? ` (${m.score})` : ''}<br>${getStrengthLabel(m.h)} | ${getStrengthLabel(m.a)}</div>`).join('')}
-            <div class="action-buttons"><button class="btn-primary" onclick="duplicateTicket(${idx})">🔄 Doubler ce ticket</button></div>
+    function viewTicketDetail(index) {
+        selectedTicketIndex = index;
+        const ticket = currentUserData.tickets[index];
+        const container = document.getElementById('ticket-detail-content');
+        container.innerHTML = `
+            <div class="detail-header">
+                <h3>🎫 DÉTAIL DU TICKET</h3>
+                <div class="info-badge">📅 ${ticket.date}</div>
+                <div class="info-badge">📊 ${ticket.matches.length} match(s)</div>
+            </div>
+            <div class="card">
+                ${ticket.matches.map(m => `
+                    <div style="margin-bottom:15px; padding:10px; background:var(--border); border-radius:12px;">
+                        <div style="font-weight:bold;">${m.h} vs ${m.a}</div>
+                        <div style="color:var(--cyan);">🎯 ${m.market}</div>
+                        ${m.score ? `<div style="color:var(--green);">📊 Score exact: ${m.score}</div>` : ''}
+                        <div class="team-strength">${getStrengthLabel(m.h)} | ${getStrengthLabel(m.a)}</div>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="card">
+                <h4>⚡ Actions</h4>
+                <div class="action-buttons">
+                    <button class="btn-primary" onclick="duplicateTicket()">🔄 DOUBLER</button>
+                </div>
+            </div>
         `;
         document.getElementById('view-tickets').style.display = 'none';
         document.getElementById('view-ticket-detail').style.display = 'block';
     }
     
-    async function duplicateTicket(idx) {
-        const orig = currentUserData.tickets[idx];
+    function duplicateTicket() {
+        if(selectedTicketIndex === null) return;
+        const orig = currentUserData.tickets[selectedTicketIndex];
         const newMatches = orig.matches.map(m => {
-            const gen = genererPrediction(m.h, m.a);
-            return { ...m, market: gen.marche, score: gen.scoreFinal, ht: gen.miTemps };
+            const gen = genererScoreEtMarche(m.h, m.a);
+            return { ...m, market: gen.marche, score: currentUserData.is_premium ? gen.scoreFinal : null, ht: gen.miTemps, logic: gen.logique };
         });
-        currentUserData.tickets.unshift({date: new Date().toLocaleString(), matches: newMatches});
-        await saveUser();
-        alert("Ticket dupliqué !");
+        currentUserData.tickets.unshift({
+            date: new Date().toLocaleString(),
+            matches: newMatches
+        });
+        updateUserData();
+        alert(`✅ Ticket dupliqué (${newMatches.length} matchs)`);
         backToTicketsList();
     }
     
@@ -541,185 +645,63 @@
         document.getElementById('view-ticket-detail').style.display = 'none';
         document.getElementById('view-tickets').style.display = 'block';
         renderSavedTickets();
+        selectedTicketIndex = null;
     }
     
     function renderProfile() {
         document.getElementById('prof-name').innerText = currentUserData.name || currentUserData.email;
         document.getElementById('prof-email').innerText = currentUserData.email;
-        document.getElementById('prof-whatsapp').innerHTML = `📱 ${currentUserData.whatsapp || 'Non renseigné'}`;
-        let badge = currentUserData.is_premium ? '💎 PREMIUM' : (currentUserData.is_verified ? '✅ VÉRIFIÉ' : '⏳ EN ATTENTE');
-        let badgeColor = currentUserData.is_premium ? '#d946ef' : (currentUserData.is_verified ? '#22c55e' : '#94a3b8');
-        document.getElementById('prof-badge').innerHTML = `<span class="status-badge" style="background:${badgeColor}">${badge}</span>`;
+        document.getElementById('prof-whatsapp').innerHTML = `📱 WhatsApp: ${currentUserData.whatsapp || 'Non renseigné'}`;
         
-        // Cacher ou afficher la section d'upload ID en fonction du statut de vérification ou premium
-        if (currentUserData.is_verified || currentUserData.is_premium) {
-            document.getElementById('id-upload-section').style.display = 'none';
-        } else {
-            document.getElementById('id-upload-section').style.display = 'block';
-        }
+        let badgeHtml = currentUserData.is_premium 
+            ? '<span class="status-badge" style="background:#d946ef;">💎 PREMIUM</span>' 
+            : (currentUserData.is_verified 
+                ? '<span class="status-badge" style="background:#22c55e;">✅ VÉRIFIÉ</span>' 
+                : '<span class="status-badge" style="background:#94a3b8;">⏳ NON VÉRIFIÉ</span>');
+        document.getElementById('prof-badge').innerHTML = badgeHtml;
     }
     
-    async function handleIDUpload(input) {
-        alert("Fonction upload ID - Configuration Storage Supabase requise");
-        // Implémentation réelle ici :
-        // if (input.files.length > 0) {
-        //     const file = input.files[0];
-        //     const filePath = `${currentUserData.id}/id_docs/${file.name}`;
-        //     const { error: uploadError } = await supabase.storage.from('id-documents').upload(filePath, file);
-        //     if (uploadError) {
-        //         alert("Erreur d'upload: " + uploadError.message);
-        //     } else {
-        //         alert("Document ID envoyé pour vérification.");
-        //         // Optionally update user_profiles table with a reference to the uploaded file
-        //         // currentUserData.id_document_path = filePath;
-        //         // await saveUser();
-        //     }
-        // }
+    // ===== ASSISTANT =====
+    function toggleAssistant() {
+        document.getElementById('assistant-chat').classList.toggle('active');
     }
     
-    function showAdminLogin() {
-        document.getElementById('auth-screen').style.display = 'none';
-        document.getElementById('admin-login').style.display = 'block';
-    }
-    
-    async function loginAdmin() {
-        // Le code admin devrait idéalement être stocké de manière sécurisée et non en clair dans le code client.
-        // Pour cet exemple, je garde la vérification simple.
-        if(document.getElementById('admin-code').value === "0033mutwe") {
-            // Un admin ne doit pas nécessairement être un utilisateur enregistré au préalable.
-            // Si l'admin se connecte via ce code, on peut lui donner des privilèges.
-            // Il faudrait d'abord s'assurer qu'un utilisateur est connecté (currentUserData).
-            // Si pas d'utilisateur connecté, cela pose problème car currentUserData serait null.
-            // Une meilleure approche serait une authentification admin séparée et plus robuste.
-            if(currentUserData) {
-                currentUserData.is_admin = true;
-                await saveUser();
-                document.getElementById('admin-login').style.display = 'none';
-                document.getElementById('admin-panel').style.display = 'block';
-                loadAllUsers();
-            } else {
-                alert("Veuillez vous connecter en tant qu'utilisateur avant d'essayer le mode admin.");
-            }
-        } else {
-            alert("Code incorrect"); // Utilisation d'alert car il n'y a pas de div d'erreur pour l'admin-login
-        }
-    }
-    
-    async function loadAllUsers() {
-        const { data, error } = await supabase.from('user_profiles').select('*');
-        if(error) {
-            console.error("Erreur de chargement des utilisateurs admin:", error.message);
-            document.getElementById('admin-users').innerHTML = `<p class="error-message">Erreur: ${error.message}</p>`;
-            return;
-        }
-        if(data) {
-            usersCache = data;
-            document.getElementById('admin-users').innerHTML = usersCache.map(u => `
-                <div class="card">
-                    <b>${u.name || u.email}</b><br>
-                    WhatsApp: ${u.whatsapp || '-'}<br>
-                    Vérifié: ${u.is_verified ? '✅' : '❌'} | Premium: ${u.is_premium ? '💎' : '-'}
-                    <div style="display:flex;gap:5px;margin-top:10px;">
-                        <button class="btn-primary" onclick="adminVerify('${u.id}')">Vérifier</button>
-                        <button class="btn-primary" onclick="openPremiumModal('${u.id}')">Premium</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-    }
-    
-    async function adminVerify(uid) {
-        const { error } = await supabase.from('user_profiles').update({ is_verified: true }).eq('id', uid);
-        if (error) {
-            alert("Erreur lors de la vérification: " + error.message);
-        } else {
-            alert("Utilisateur vérifié !");
-            loadAllUsers(); // Recharger la liste des utilisateurs pour mettre à jour l'affichage
-        }
-    }
-    
-    function openPremiumModal(uid) {
-        adminTargetUid = uid;
-        document.getElementById('modal-premium').classList.add('active');
-    }
-    
-    async function confirmPremium() {
-        const days = parseInt(document.getElementById('pre-days').value) || 30;
-        const expiry = new Date();
-        expiry.setDate(expiry.getDate() + days);
-        const { error } = await supabase.from('user_profiles').update({ is_premium: true, premium_expiry: expiry.toISOString() }).eq('id', adminTargetUid);
-        if (error) {
-            alert("Erreur lors de l'activation Premium: " + error.message);
-        } else {
-            alert(`Premium ${days} jours activé !`);
-            closeModal();
-            loadAllUsers(); // Recharger la liste des utilisateurs pour mettre à jour l'affichage
-        }
-    }
-    
-    async function sendGlobalAd() {
-        const title = document.getElementById('ad-title').value || "Nouvelle offre";
-        // Pour l'image, il faudrait un mécanisme d'upload vers Supabase Storage et stocker l'URL
-        // Pour l'instant, on utilise une image placeholder
-        const adImageUrl = document.getElementById('ad-image').files.length > 0 ? 'URL_DE_VOTRE_IMAGE_UPLOADEE' : 'https://via.placeholder.com/100x50?text=Promo'; // Ceci est un placeholder
-
-        const adData = { id: Date.now(), title, url: document.getElementById('ad-url').value, type: 'image', media: adImageUrl, date: new Date().toLocaleString() };
-        
-        const { data: users, error: fetchError } = await supabase.from('user_profiles').select('id, global_ads');
-        if(fetchError) {
-            alert("Erreur lors de la récupération des utilisateurs: " + fetchError.message);
-            return;
-        }
-
-        for(let u of users) {
-            let ads = u.global_ads || [];
-            ads.unshift(adData); // Ajouter la nouvelle annonce au début
-            if(ads.length > 10) ads.pop(); // Garder seulement les 10 dernières annonces
-            const { error: updateError } = await supabase.from('user_profiles').update({ global_ads: ads }).eq('id', u.id);
-            if(updateError) console.error(`Erreur mise à jour annonces pour ${u.id}:`, updateError.message);
-        }
-        alert("Annonce envoyée !");
-        // Clear les champs après envoi
-        document.getElementById('ad-title').value = '';
-        document.getElementById('ad-url').value = '';
-        document.getElementById('ad-image').value = '';
-    }
-    
-    function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); }
-    function toggleAuth(showReg) {
-        document.getElementById('auth-screen').style.display = showReg ? 'none' : 'block';
-        document.getElementById('register-screen').style.display = showReg ? 'block' : 'none';
-        document.getElementById('login-error').innerText = ""; // Clear errors on toggle
-        document.getElementById('email-error').innerText = ""; // Clear errors on toggle
-    }
-    function toggleAssistant() { document.getElementById('assistant-chat').classList.toggle('active'); }
     function askZola() {
         const input = document.getElementById('assistant-input');
-        const msg = input.value;
-        if(!msg) return;
-        const container = document.getElementById('assistant-messages');
-        container.innerHTML += `<div class="assistant-bubble assistant-user">${msg}</div>`;
+        const q = input.value.trim();
+        if(!q) return;
+        const messagesDiv = document.getElementById('assistant-messages');
+        messagesDiv.innerHTML += `<div class="assistant-bubble assistant-user">${q}</div>`;
         input.value = '';
         setTimeout(() => {
-            // Réponse de Zola, simplifiée pour cet exemple
-            container.innerHTML += `<div class="assistant-bubble assistant-bot">🤖 Cliquez sur un ticket pour le dupliquer !</div>`;
-            container.scrollTop = container.scrollHeight;
+            messagesDiv.innerHTML += `<div class="assistant-bubble assistant-bot">🤖 Cliquez sur un ticket dans TICKETS pour le dupliquer !</div>`;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }, 500);
     }
     
-    // LANCEMENT INITIAL
-    document.getElementById('splashText').innerText = 'Initialisation...';
-    // Lancer la vérification de session au chargement de la page
-    checkSession();
+    function toggleAuth(showReg) {
+        document.getElementById('auth-screen').style.display = showReg ? 'none' : 'block';
+        document.getElementById('register-screen').style.display = showReg ? 'block' : 'none';
+        document.getElementById('email-error').innerText = '';
+        document.getElementById('login-error').innerText = '';
+    }
+    
+    // ===== INITIALISATION =====
+    let splashProgress = 0;
+    const splashInterval = setInterval(() => {
+        splashProgress += Math.random() * 15 + 5;
+        if(splashProgress >= 100) {
+            clearInterval(splashInterval);
+            const splash = document.getElementById('splashScreen');
+            splash.style.opacity = '0';
+            setTimeout(() => {
+                splash.style.display = 'none';
+                document.getElementById('appShell').style.display = 'block';
+                document.getElementById('auth-screen').style.display = 'block';
+            }, 500);
+        }
+        document.getElementById('splashText').innerText = splashProgress < 30 ? 'Initialisation IA...' : (splashProgress < 70 ? 'Chargement des clubs...' : 'Prêt !');
+    }, 200);
 </script>
-
-<div id="modal-premium" class="modal">
-    <div class="modal-content">
-        <h4>Activer Premium</h4>
-        <input type="number" id="pre-days" placeholder="Nombre de jours" value="30">
-        <button class="btn-primary" onclick="confirmPremium()">ACTIVER</button>
-        <button class="btn-ghost" onclick="closeModal()">ANNULER</button>
-    </div>
-</div>
 </body>
-                    </html>
+                </html>
