@@ -3,723 +3,743 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>WISE03.BET — IA Sportive Pro 03</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>WISE03.BET — IA Sportive Pro | Code Activation</title>
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; }
         :root {
-            --bg: #020617; --card: #0f172a; --border: #1e293b; --text: #f1f5f9;
-            --muted: #94a3b8; --green: #22c55e; --pink: #d946ef; --cyan: #06b6d4;
-            --primary: #3b82f6; --danger: #ef4444; --gold: #eab308; --warning: #f97316;
+            --bg-dark: #0a0c12; --card-bg: #11161f; --border-dim: #1f2a3a; --text-primary: #f0f3fa; --text-muted: #8e9aaf;
+            --primary: #2b7fff; --primary-glow: #1e5fcf; --success: #22c55e; --danger: #ef4444; --warning: #f97316;
+            --cyan: #06b6d4; --purple: #a855f7; --gold: #eab308; --double: #8b5cf6;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-        body { background: var(--bg); color: var(--text); overflow-x: hidden; }
-        .app-shell { max-width: 480px; margin: 0 auto; padding: 15px; min-height: 100vh; position: relative; padding-bottom: 120px; }
-        .card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5); }
-        input, select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: #1e293b; color: #fff; margin-bottom: 12px; font-size: 13px; }
-        .btn { padding: 12px; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
-        .btn-primary { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; width: 100%; }
-        .btn-ghost { background: transparent; border: 1px solid #1e293b; color: #94a3b8; width: 100%; }
-        .btn-danger { background: #ef4444; color: white; width: 100%; }
-        .btn-success { background: #22c55e; color: black; width: 100%; }
-        .nav-bar { display: flex; background: #0f172a; border: 1px solid #1e293b; border-radius: 18px; margin-bottom: 20px; padding: 5px; }
-        .nav-item { flex: 1; padding: 10px; text-align: center; cursor: pointer; font-size: 10px; font-weight: 800; border-radius: 12px; color: #94a3b8; }
-        .nav-item.active { background: #3b82f6; color: white; }
-        .analysis-res { font-size: 22px; font-weight: 900; color: #22c55e; margin: 10px 0; text-align: center; }
-        .vs-container { display: flex; align-items: center; justify-content: space-around; margin: 15px 0; }
-        .team-name { font-weight: 900; font-size: 13px; text-align: center; flex: 1; }
-        .premium-score { background: linear-gradient(135deg, #d946ef, #a21caf); border-radius: 16px; padding: 15px; text-align: center; margin: 10px 0; color: white; }
-        .loader { width: 18px; height: 18px; border: 3px solid #fff; border-bottom-color: transparent; border-radius: 50%; display: inline-block; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .status-badge { font-size: 10px; padding: 4px 8px; border-radius: 10px; display: inline-block; }
-        .team-strength { font-size: 10px; margin-top: 4px; color: #eab308; }
-        .splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #020617, #0f172a); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; }
-        .splash-logo { font-size: 42px; font-weight: 900; background: linear-gradient(135deg, #3b82f6, #06b6d4); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 40px; }
-        .splash-loader { width: 60px; height: 60px; border: 4px solid rgba(59,130,246,0.2); border-top: 4px solid #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
-        .error-message { color: #ef4444; background: #4a1e27; padding: 10px; border-radius: 12px; font-size: 12px; text-align: center; margin-top: 10px; }
-        .assistant-chat { position: fixed; bottom: 80px; right: 20px; width: 280px; background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; z-index: 999; display: none; flex-direction: column; max-height: 400px; }
-        .assistant-chat.active { display: flex; }
-        .assistant-header { background: linear-gradient(135deg, #eab308, #f97316); padding: 12px; border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; cursor: pointer; color: #000; font-weight: bold; }
-        .assistant-messages { flex: 1; padding: 10px; overflow-y: auto; max-height: 300px; font-size: 12px; }
-        .assistant-input { display: flex; padding: 10px; gap: 5px; border-top: 1px solid #1e293b; }
-        .assistant-input input { flex: 1; margin: 0; padding: 8px; }
-        .assistant-bubble { margin: 5px 0; padding: 8px; border-radius: 12px; max-width: 85%; word-wrap: break-word; }
-        .assistant-user { background: #3b82f6; margin-left: auto; text-align: right; }
-        .assistant-bot { background: #1e293b; }
-        .btn-assistant { position: fixed; bottom: 20px; right: 20px; background: linear-gradient(135deg, #eab308, #f97316); color: black; border: none; border-radius: 30px; padding: 12px 18px; cursor: pointer; font-weight: bold; z-index: 998; }
-        .back-btn { margin-bottom: 15px; background: #1e293b; padding: 8px 15px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 12px; }
-        .ticket-card { cursor: pointer; }
-        .detail-header { background: linear-gradient(135deg, #3b82f6, #1d4ed8); padding: 15px; border-radius: 16px; margin-bottom: 15px; text-align: center; }
-        .info-badge { background: #1e293b; padding: 5px 10px; border-radius: 20px; font-size: 11px; display: inline-block; margin: 5px; }
-        .action-buttons { display: flex; gap: 10px; margin-top: 15px; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; }
+        body { background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .app-container { max-width: 650px; width: 100%; margin: 0 auto; }
+        .splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--bg-dark), #0f1522); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 3000; animation: splash-fade-out 1s ease-in-out forwards; animation-delay: 8s; }
+        .splash-screen.hidden { display: none; }
+        @keyframes splash-fade-out { 0% { opacity: 1; } 100% { opacity: 0; pointer-events: none; } }
+        .splash-logo { font-size: 56px; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 20px; animation: pulse-splash 1.5s infinite; }
+        @keyframes pulse-splash { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .splash-text { font-size: 18px; color: var(--text-muted); text-align: center; margin-top: 20px; }
+        .splash-progress { width: 200px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 20px; margin-top: 30px; overflow: hidden; }
+        .splash-progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--cyan)); border-radius: 20px; animation: progress-splash 8s linear forwards; }
+        @keyframes progress-splash { 0% { width: 0%; } 100% { width: 100%; } }
+        .auth-screen { display: none; } .auth-screen.active { display: block; }
+        .card { background: var(--card-bg); border: 1px solid var(--border-dim); border-radius: 28px; padding: 24px 20px; margin-bottom: 20px; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5); }
+        .logo { font-size: 28px; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; text-align: center; margin-bottom: 8px; }
+        .badge { display: inline-block; background: rgba(43,127,255,0.2); padding: 6px 14px; border-radius: 40px; font-size: 12px; font-weight: 600; color: var(--primary); }
+        .badge-gourmand { display: inline-block; background: linear-gradient(135deg, rgba(249,115,22,0.3), rgba(235,179,8,0.3)); border: 1px solid var(--warning); padding: 8px 16px; border-radius: 40px; font-size: 12px; font-weight: 700; color: var(--gold); }
+        .badge-double { display: inline-block; background: linear-gradient(135deg, rgba(139,92,246,0.3), rgba(6,182,212,0.3)); border: 1px solid var(--double); padding: 8px 16px; border-radius: 40px; font-size: 12px; font-weight: 700; color: var(--double); }
+        input, select { width: 100%; padding: 14px 16px; background: #0f121b; border: 1px solid var(--border-dim); border-radius: 20px; color: white; font-size: 14px; margin-bottom: 16px; }
+        input:focus { outline: none; border-color: var(--primary); }
+        .btn { border: none; border-radius: 40px; padding: 12px 20px; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; }
+        .btn-primary { background: linear-gradient(95deg, var(--primary), var(--primary-glow)); color: white; }
+        .btn-success { background: var(--success); color: #020617; }
+        .btn-outline { background: transparent; border: 1px solid var(--border-dim); color: var(--text-muted); }
+        .btn-double { background: linear-gradient(95deg, var(--double), #6d28d9); color: white; }
+        .btn:hover { opacity: 0.9; } .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .alert { background: rgba(239,68,68,0.15); border-left: 4px solid var(--danger); padding: 12px; border-radius: 14px; font-size: 13px; margin-bottom: 18px; }
+        .alert-success { background: rgba(34,197,94,0.12); border-left-color: var(--success); color: #b0f0b0; }
+        .info-text { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 12px; }
+        .vs-panel { background: #0e131c; border-radius: 24px; padding: 16px; margin: 12px 0; }
+        .market-result { font-size: 24px; font-weight: 800; text-align: center; color: var(--cyan); margin: 15px 0; }
+        .strength-badge { font-size: 11px; padding: 4px 10px; border-radius: 30px; display: inline-block; margin: 4px; }
+        .tier-10 { background: #d946ef20; color: #d946ef; border-left: 3px solid #d946ef; }
+        .tier-8 { background: #2b7fff20; color: #2b7fff; }
+        .tier-6 { background: #eab30820; color: #eab308; }
+        .tier-4 { background: #f9731620; color: #f97316; }
+        .tier-2 { background: #ef444420; color: #ef4444; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .modal.active { display: flex; }
-        .modal-content { background: #0f172a; padding: 25px; border-radius: 20px; width: 90%; max-width: 400px; }
+        .modal-content { background: var(--card-bg); border-radius: 32px; max-width: 90%; width: 400px; padding: 24px; max-height: 80vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-close { background: none; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; }
+        hr { margin: 20px 0; border-color: var(--border-dim); }
+        .auth-toggle { text-align: center; margin-top: 16px; font-size: 13px; }
+        .auth-toggle a { color: var(--primary); cursor: pointer; text-decoration: underline; }
+        .profile-section { background: #0e131c; border-radius: 20px; padding: 16px; margin: 12px 0; }
+        .profile-stat { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-dim); }
+        .profile-stat:last-child { border-bottom: none; }
+        .ticket-details { background: #0e131c; border-radius: 16px; padding: 12px; margin: 8px 0; }
+        .ticket-gourmand { background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(235,179,8,0.15)); border: 1px solid var(--warning); border-radius: 16px; padding: 12px; margin: 8px 0; }
+        .ticket-double { background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(6,182,212,0.15)); border: 1px solid var(--double); border-radius: 16px; padding: 12px; margin: 8px 0; }
+        .btn-small { padding: 8px 16px; font-size: 12px; }
+        .waiting-animation { text-align: center; padding: 20px; }
+        .dot-pulse { display: inline-block; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        .language-selector { position: absolute; top: 20px; right: 20px; z-index: 100; }
+        .language-selector select { width: auto; padding: 8px 12px; font-size: 13px; margin-bottom: 0; }
+        .precision-banner { background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(6,182,212,0.15)); border: 1px solid var(--border-dim); border-radius: 16px; padding: 14px; margin: 16px 0; font-size: 12px; line-height: 1.5; }
+        .support-banner { background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(167,139,250,0.15)); border: 1px solid var(--border-dim); border-radius: 16px; padding: 14px; margin: 16px 0; font-size: 12px; text-align: center; line-height: 1.5; }
+        .prediction-list { background: #0e131c; border-radius: 16px; padding: 12px; margin: 12px 0; max-height: 300px; overflow-y: auto; }
+        .prediction-item { background: #11161f; border: 1px solid var(--border-dim); border-radius: 12px; padding: 10px; margin: 8px 0; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .prediction-item-text { flex: 1; }
+        .prediction-item-remove { background: var(--danger); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+        .ticket-counter { background: rgba(43,127,255,0.2); border: 1px solid var(--border-dim); border-radius: 12px; padding: 10px; margin: 12px 0; font-size: 12px; text-align: center; }
+        .terms-text { font-size: 11px; color: var(--text-muted); line-height: 1.6; max-height: 200px; overflow-y: auto; padding: 12px; background: #0a0f18; border-radius: 12px; margin: 12px 0; }
+        .gourmand-warning { background: linear-gradient(135deg, rgba(249,115,22,0.2), rgba(235,179,8,0.2)); border: 1px solid var(--warning); border-radius: 12px; padding: 12px; margin: 12px 0; font-size: 12px; color: var(--gold); }
+        .premium-expiry-warning { background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(249,115,22,0.2)); border: 1px solid var(--warning); border-radius: 12px; padding: 12px; margin: 12px 0; font-size: 12px; color: var(--warning); }
+        .double-actions { display: flex; gap: 10px; margin-top: 10px; } .double-actions .btn { flex: 1; }
+        .ticket-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px; }
+        .ticket-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+        .activation-hint { background: #1e2a3a; border-radius: 12px; padding: 12px; margin: 16px 0; font-size: 12px; color: var(--warning); }
     </style>
 </head>
 <body>
-
-<div class="splash-screen" id="splashScreen">
-    <div class="splash-logo">WISE03<span style="color:white">.BET</span></div>
-    <div class="splash-loader"></div>
-    <div id="splashText" style="color:#94a3b8; margin-top:20px;">Chargement...</div>
-</div>
-
-<div class="app-shell" id="appShell" style="display: none;">
-    <header style="text-align: center; padding: 20px 0;">
-        <h1 style="color: #3b82f6;">WISE03<span style="color:white">.BET</span></h1>
-        <div id="connection-status" style="font-size: 10px; color: #22c55e;">🟢 Prêt</div>
-    </header>
-
-    <section id="auth-screen">
+<div class="language-selector"><select id="languageSelector"><option value="fr">🇫🇷 Français</option><option value="en">🇬🇧 English</option><option value="sw">🇹🇿 Swahili</option></select></div>
+<div class="splash-screen" id="splashScreen"><div class="splash-logo">WISE03<span style="color:white;">.BET</span></div><div class="splash-text" id="splashText">Chargement de l'analyse IA...</div><div class="splash-progress"><div class="splash-progress-bar"></div></div></div>
+<div class="app-container" id="appContainer" style="display: none;">
+    <!-- LOGIN SCREEN -->
+    <div class="auth-screen active" id="loginScreen">
         <div class="card">
-            <h3 style="text-align:center; margin-bottom:15px;">Connexion</h3>
-            <input type="email" id="login-email" placeholder="Email">
-            <input type="password" id="login-pass" placeholder="Mot de passe">
-            <div id="login-error" style="color:#ef4444; font-size:12px;"></div>
-            <button class="btn-primary" onclick="loginUser()">SE CONNECTER</button>
-            <button class="btn-ghost" style="margin-top:10px;" onclick="toggleAuth(true)">Créer un compte</button>
-            <button class="btn-ghost" style="margin-top:20px;" onclick="showAdminLogin()">CONSOLE ADMIN</button>
-        </div>
-    </section>
-
-    <section id="register-screen" style="display:none;">
-        <div class="card">
-            <h3 style="text-align:center; margin-bottom:15px;">Inscription</h3>
-            <input type="text" id="reg-name" placeholder="Nom complet">
-            <input type="email" id="reg-email" placeholder="Email">
-            <div id="email-error" style="color:#ef4444; font-size:12px;"></div>
-            <input type="tel" id="reg-whatsapp" placeholder="WhatsApp">
-            <input type="password" id="reg-pass" placeholder="Mot de passe (min 6)">
-            <button class="btn-primary" onclick="registerUser()">S'INSCRIRE</button>
-            <button class="btn-ghost" style="margin-top:10px;" onclick="toggleAuth(false)">Retour</button>
-        </div>
-    </section>
-
-    <section id="dashboard" style="display:none;">
-        <div class="nav-bar">
-            <div class="nav-item active" onclick="switchView('predict')">ANALYSE</div>
-            <div class="nav-item" onclick="switchView('tickets')">TICKETS</div>
-            <div class="nav-item" onclick="switchView('profile')">PROFIL</div>
-        </div>
-
-        <div id="view-predict">
-            <div id="verify-alert" class="card" style="display:none; border-color:#f97316;">
-                <p style="font-size:12px; color:#f97316;">⚠️ Vérification ID requise dans Profil</p>
-            </div>
-            <div id="predict-main" style="display:none;">
-                <div class="card">
-                    <input type="text" id="team-h" placeholder="Équipe domicile" list="teams-list">
-                    <input type="text" id="team-a" placeholder="Équipe extérieur" list="teams-list">
-                    <datalist id="teams-list"></datalist>
-                    <div id="ana-error" style="color:#ef4444; font-size:12px;"></div>
-                    <button class="btn-primary" onclick="runAnalysis()">ANALYSER</button>
-                </div>
-                <div id="result-box" style="display:none;">
-                    <div class="card">
-                        <div class="vs-container">
-                            <div class="team-name" id="res-h"></div>
-                            <div>VS</div>
-                            <div class="team-name" id="res-a"></div>
-                        </div>
-                        <div id="res-market" class="analysis-res">---</div>
-                        <div id="res-ht" style="text-align:center; font-size:13px;"></div>
-                        <div id="premium-data" class="premium-score" style="display:none;">
-                            <div style="font-size:32px; font-weight:900;" id="res-score">?-?</div>
-                        </div>
-                        <button class="btn-ghost" onclick="addToTicket()">+ AJOUTER</button>
-                    </div>
-                </div>
-                <div id="current-ticket" class="card" style="display:none;">
-                    <h4>Ticket (<span id="ticket-count">0</span>)</h4>
-                    <div id="ticket-list"></div>
-                    <button class="btn-success" onclick="saveTicket()">ENREGISTRER</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="view-tickets" style="display:none;">
-            <div id="tickets-list-view"></div>
-        </div>
-        <div id="view-ticket-detail" style="display:none;">
-            <div class="back-btn" onclick="backToTicketsList()">← Retour</div>
-            <div id="ticket-detail-content"></div>
-        </div>
-
-        <div id="view-profile" style="display:none;">
-            <div class="card" style="text-align:center;">
-                <h2 id="prof-name">---</h2>
-                <p id="prof-email"></p>
-                <p id="prof-whatsapp"></p>
-                <div id="prof-badge"></div>
-                <hr style="margin:20px 0;">
-                <div id="id-upload-section">
-                    <button class="btn-warning" onclick="document.getElementById('id-file').click()">📷 UPLOAD ID</button>
-                    <input type="file" id="id-file" style="display:none;" onchange="handleIDUpload(this)">
-                </div>
-                <button class="btn-danger" style="margin-top:20px;" onclick="logout()">DÉCONNEXION</button>
-            </div>
-        </div>
-    </section>
-
-    <section id="admin-login" style="display:none;">
-        <div class="card">
-            <input type="password" id="admin-code" placeholder="Code Admin">
-            <button class="btn-danger" onclick="loginAdmin()">ACCÉDER</button>
-            <button class="btn-ghost" style="margin-top:10px;" onclick="location.reload()">RETOUR</button>
-        </div>
-    </section>
-
-    <section id="admin-panel" style="display:none;">
-        <div class="card">
-            <h3>📢 Annonce globale</h3>
-            <input type="text" id="ad-title" placeholder="Titre">
-            <input type="url" id="ad-url" placeholder="Lien (optionnel)">
-            <button class="btn-primary" onclick="document.getElementById('ad-image').click()">📷 Image</button>
-            <input type="file" id="ad-image" style="display:none;" accept="image/*">
-            <button class="btn-success" style="margin-top:10px;" onclick="sendGlobalAd()">ENVOYER</button>
-        </div>
-        <div id="admin-users"></div>
-        <button class="btn-ghost" onclick="location.reload()">QUITTER</button>
-    </section>
-
-    <div id="assistant-chat" class="assistant-chat">
-        <div class="assistant-header" onclick="toggleAssistant()">🤖 Zola <span>▼</span></div>
-        <div class="assistant-messages" id="assistant-messages"></div>
-        <div class="assistant-input">
-            <input type="text" id="assistant-input" placeholder="Question...">
-            <button onclick="askZola()">➤</button>
+            <div class="logo">WISE03<span style="color:white;">.BET</span></div>
+            <div style="text-align:center; margin-bottom: 16px;"><span class="badge" id="loginBadge">🔐 CONNEXION</span></div>
+            <div id="loginStatus"></div>
+            <label id="loginPhoneLabel">📱 Numéro de téléphone</label>
+            <input type="tel" id="loginPhone" placeholder="+243 98 39 71 254">
+            <label id="loginPasswordLabel">🔐 Mot de passe</label>
+            <input type="password" id="loginPassword" placeholder="Votre mot de passe">
+            <button class="btn btn-primary" id="loginBtn">📱 SE CONNECTER</button>
+            <div class="auth-toggle"><span id="noAccountText">Pas de compte ?</span> <a id="switchToSignup">Créer un compte</a></div>
         </div>
     </div>
-    <button class="btn-assistant" onclick="toggleAssistant()">🤖</button>
-</div>
-
-<script>
-    // ===== CONFIGURATION =====
-    const SUPABASE_URL = 'https://kvzemwoinlrisauioonq.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_6lDejMl6JmtRiTH0XhwMSQ_NQcuhoyy';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    
-    let currentUserData = null;
-    let currentTicket = [];
-    let tempMatch = null;
-    let usersCache = [];
-    let adminTargetUid = null;
-
-    // ===== LISTE COMPLÈTE DE +500 CLUBS AVEC CLASSIFICATION =====
-    
-    // Équipes FORTES (Top mondial - 80 clubs)
-    const FORT_TEAMS = [
-        'Real Madrid', 'FC Barcelona', 'Atlético Madrid', 'Manchester City', 'Liverpool FC', 
-        'Bayern Munich', 'Paris Saint-Germain', 'Inter Milan', 'AC Milan', 'Juventus FC',
-        'Borussia Dortmund', 'Chelsea FC', 'Arsenal FC', 'Manchester United', 'Tottenham Hotspur',
-        'Newcastle United', 'Al Ahly', 'Espérance de Tunis', 'Wydad Casablanca', 'Raja Casablanca',
-        'TP Mazembe', 'Mamelodi Sundowns', 'Flamengo', 'Palmeiras', 'River Plate', 'Boca Juniors',
-        'Al-Hilal', 'Al-Nassr', 'Al-Ittihad', 'FC Porto', 'Benfica Lisbonne', 'Sporting CP',
-        'Ajax Amsterdam', 'PSV Eindhoven', 'Feyenoord', 'Celtic FC', 'Rangers FC', 'Galatasaray',
-        'Fenerbahçe', 'Beşiktaş', 'RB Leipzig', 'Bayer Leverkusen', 'AS Roma', 'SSC Napoli',
-        'Lazio Rome', 'Atalanta Bergame', 'Sevilla FC', 'Valencia CF', 'Villarreal CF', 'Athletic Bilbao',
-        'Real Sociedad', 'Olympique de Marseille', 'Olympique Lyonnais', 'AS Monaco', 'Lille OSC',
-        'OGC Nice', 'Stade Rennais', 'West Ham United', 'Aston Villa', 'Brighton', 'Brentford',
-        'Eintracht Frankfurt', 'Borussia Mönchengladbach', 'VfL Wolfsburg', 'SC Freiburg', 'Union Berlin',
-        'Fiorentina', 'Torino FC', 'Bologna', 'Real Betis', 'Getafe CF', 'Osasuna', 'Celta Vigo',
-        'RC Lens', 'Montpellier HSC', 'FC Nantes', 'Strasbourg', 'Zamalek SC', 'Étoile du Sahel',
-        'CS Sfaxien', 'JS Kabylie', 'MC Alger', 'CR Belouizdad', 'Simba SC', 'Young Africans'
-    ];
-    
-    // Équipes MOYENNES (120 clubs)
-    const MOYEN_TEAMS = [
-        'Everton FC', 'Crystal Palace', 'Fulham', 'Wolverhampton', 'Nottingham Forest', 'Bournemouth',
-        'Southampton', 'Leicester City', 'Leeds United', 'Schalke 04', 'Hertha Berlin', 'Werder Bremen',
-        'FSV Mainz', 'FC Köln', 'TSG Hoffenheim', 'VfB Stuttgart', 'Augsburg', 'Bochum', 'Darmstadt',
-        'Heidenheim', 'Sampdoria', 'Genoa', 'Udinese', 'Sassuolo', 'Verona', 'Empoli', 'Salernitana',
-        'Lecce', 'Cagliari', 'Granada', 'Cadiz', 'Almeria', 'Rayo Vallecano', 'Mallorca', 'Las Palmas',
-        'Girona', 'Alavés', 'Clermont Foot', 'Toulouse', 'Brest', 'Reims', 'Metz', 'Le Havre', 'Lorient',
-        'US Monastir', 'USM Alger', 'ES Sétif', 'Paradou AC', 'Azam FC', 'Kaizer Chiefs', 'Orlando Pirates',
-        'SuperSport United', 'São Paulo', 'Corinthians', 'Santos', 'Grêmio', 'Internacional', 'Cruzeiro',
-        'Atlético Mineiro', 'Fluminense', 'Botafogo', 'Bahia', 'Fortaleza', 'Athletico Paranaense',
-        'Junior Barranquilla', 'Atlético Nacional', 'Millonarios', 'América de Cali', 'Deportivo Cali',
-        'Independiente Santa Fe', 'Toluca', 'Cruz Azul', 'Pumas UNAM', 'Monterrey', 'Tigres UANL',
-        'Club América', 'Chivas Guadalajara', 'Pachuca', 'Atlas', 'León', 'Querétaro', 'San Luis',
-        'Mazatlán', 'Juárez', 'Necaxa', 'Puebla', 'Tijuana', 'Santos Laguna', 'Urawa Red Diamonds',
-        'Yokohama F. Marinos', 'Kawasaki Frontale', 'Vissel Kobe', 'Nagoya Grampus', 'Cerezo Osaka',
-        'FC Tokyo', 'Kashima Antlers', 'Sanfrecce Hiroshima', 'Gamba Osaka', 'Shonan Bellmare',
-        'Kyoto Sanga', 'Sagan Tosu', 'Avispa Fukuoka', 'Kashiwa Reysol', 'Albirex Niigata',
-        'Jeonbuk Hyundai', 'Ulsan Hyundai', 'Pohang Steelers', 'Daegu FC', 'Incheon United', 'FC Seoul',
-        'Suwon Samsung', 'Gwangju FC', 'Jeju United', 'Gangwon FC', 'Daejeon Hana Citizen'
-    ];
-    
-    // Équipes FAIBLES (plus de 300 clubs)
-    const FAIBLE_TEAMS = [
-        'Accra Hearts of Oak', 'Asante Kotoko', 'Medeama SC', 'Dreams FC', 'Legon Cities', 'Karela United',
-        'Real Tamale United', 'Bibiani Gold Stars', 'Nsoatreman FC', 'Samartex', 'Bechem United',
-        'Berekum Chelsea', 'Great Olympics', 'King Faisal', 'Wa All Stars', 'AS Vita Club',
-        'DC Motema Pembe', 'FC Lupopo', 'Sanga Balende', 'Blessing', 'Etoile de Kivu', 'Renaissance',
-        'New York City FC', 'LAFC', 'LA Galaxy', 'Seattle Sounders', 'Atlanta United', 'Philadelphia Union',
-        'FC Cincinnati', 'New England Revolution', 'Nashville SC', 'Orlando City', 'Columbus Crew',
-        'St Louis City', 'Austin FC', 'FC Dallas', 'Houston Dynamo', 'Vancouver Whitecaps',
-        'Portland Timbers', 'Real Salt Lake', 'Minnesota United', 'Chicago Fire', 'Toronto FC',
-        'Montreal Impact', 'San Jose Earthquakes', 'Colorado Rapids', 'Sporting Kansas City',
-        'Al-Ahli Saudi', 'Al-Shabab', 'Al-Taawoun', 'Al-Ettifaq', 'Abha Club', 'Al-Fayha', 'Al-Raed',
-        'Al-Khaleej', 'Al-Okhdood', 'Al-Hazem', 'Damac FC', 'Ismaily SC', 'Al Masry', 'Pyramids FC',
-        'Future FC', 'National Bank', 'Ceramica Cleopatra', 'Smouha', 'Al Ittihad Alex', 'El Gouna',
-        'Baladeyet El Mahalla', 'Haras El Hodoud', 'Ghazl El Mahalla', 'ENPPI', 'Pharco FC',
-        'Al Ahly Tripoli', 'Al Nasr Benghazi', 'Al Hilal Benghazi', 'Al Akhdar', 'Asaria SC', 'Abu Salim',
-        'Al Olympic Zaouia', 'Al Ahli Benghazi', 'Al Madina', 'Al Morooj', 'Al Sadaqa', 'Al Ittihad Tripoli',
-        'Horoya AC', 'Hafia FC', 'AS Kaloum', 'Milo FC', 'CI Kamsar', 'Ashanti GB', 'ASEC Mimosas',
-        'Africa Sports', 'SO Armée', 'Racing Club', 'Stella Club', 'AS Athlétic', 'Africa Football',
-        'USC Bassam', 'LYS Sassandra', 'Bouaké FC', 'AS Tanda', 'AFAD Djékanou', 'Sol FC', 'Korhogo FC',
-        'AS Denguélé', 'CO Korhogo', 'Enyimba FC', 'Kano Pillars', 'Rivers United', 'Remo Stars',
-        'Plateau United', 'Lobi Stars', 'Akwa United', 'Sunshine Stars', 'Niger Tornadoes',
-        'Bendel Insurance', 'Doma United', 'Kwara United', 'Abia Warriors', 'Gombe United',
-        'Bayelsa United', 'Heartland FC', 'Shooting Stars', 'Wikki Tourists', 'El Kanemi Warriors',
-        'Nasarawa United', 'Dakkada FC', 'MFM FC', 'Warri Wolves', 'Petro Atlético', 'Primeiro de Agosto',
-        'Sagrada Esperança', 'CD Lunda-Sul', 'Wiliete SC', 'Santa Rita', 'Isaac de Benguela',
-        'Recreativo do Libolo', 'Desportivo Huíla', 'Kabuscorp', 'Académica Lobito', 'Sporting Cabinda',
-        'ASA', 'ASO Chlef', 'NC Magra', 'JS Saoura', 'HB Chelghoum', 'RC Arbaâ', 'Olympique Médéa',
-        'NA Hussein Dey', 'MC Oran', 'ASM Oran', 'US Biskra', 'WA Tlemcen', 'CA Bordj Bou Arreridj',
-        'USM Bel Abbès', 'JSM Béjaïa', 'MO Béjaïa', 'AS Khroub', 'CA Batna', 'AB Merouana',
-        'USM El Harrach', 'RC Kouba', 'Stade Tunisien', 'Club Athlétique Bizertin', 'Olympique Béja',
-        'ES Hammam Sousse', 'AS Soliman', 'US Ben Guerdane', 'ES Zarzis', 'JS Kairouan', 'CS Hammam-Lif',
-        'AS Gabès', 'ES Métlaoui', 'AS Marsa', 'CO Transports', 'AS Djerba', 'ES Rades', 'Stade Gabèsien',
-        'ES Bou Salem', 'AS Oued Ellil', 'CS Korba', 'FC Nouadhibou', 'ASC SNIM', 'AS Garde Nationale',
-        'ACS Ksar', 'ASAC Concorde', 'FC Gouraye', 'ASC Tidjikja', 'AS Armée', 'Kaédi FC', 'Nouakchott Kings',
-        'Chemal FC', 'Inter Nouakchott', 'Al-Nasr Benghazi', 'Al-Ittihad', 'Al-Merrikh', 'Al-Hilal Omdurman',
-        'Hay Al Arab', 'Tuti SC', 'Al Ahli Shendi', 'Al Shorta', 'Al Khartoum', 'Kober SC', 'Al-Falah',
-        'Wad Nubawi', 'Al-Ahli Merowe', 'Al Rabita', 'Al-Amal', 'Hilal Alsahil', 'Merreikh Nyala',
-        'Al-Nil', 'Al Zoma SC', 'Baniyas', 'Ajman', 'Al Wahda', 'Al Jazira', 'Sharjah', 'Al Ain',
-        'Al Nasr Dubai', 'Ittihad Kalba', 'Khor Fakkan', 'Hatta Club', 'Al Dhafra', 'Emirates Club'
-    ];
-    
-    // Toutes les équipes combinées (plus de 500)
-    const ALL_TEAMS = [...FORT_TEAMS, ...MOYEN_TEAMS, ...FAIBLE_TEAMS].sort();
-    
-    function getTeamStrength(team) {
-        if(FORT_TEAMS.includes(team)) return 'fort';
-        if(MOYEN_TEAMS.includes(team)) return 'moyen';
-        return 'faible';
-    }
-    
-    function getStrengthLabel(team) {
-        const s = getTeamStrength(team);
-        if(s === 'fort') return '💪 FORT';
-        if(s === 'moyen') return '⚡ MOYEN';
-        return '🌱 FAIBLE';
-    }
-
-    // Marchés disponibles
-    const MARKETS = ["1", "2", "X", "Over 1.5", "Over 2.5", "Under 2.5", "1MT Dom gagne", "1MT Nul", "Les deux MT égalité"];
-    const SCORES = ["2-1","1-2","3-1","2-0","1-0","1-1","2-2","0-1","0-2","4-1","3-0","0-3","4-0","0-4"];
-    
-    function genererPrediction(h, a) {
-        const forceH = getTeamStrength(h), forceA = getTeamStrength(a);
-        let scoreFinal;
-        if(forceH === 'fort' && forceA === 'faible') {
-            scoreFinal = ["3-1","4-1","2-0","3-0","4-0","5-1"][Math.floor(Math.random()*6)];
-        } else if(forceA === 'fort' && forceH === 'faible') {
-            scoreFinal = ["0-2","1-2","0-1","0-3","1-3","0-4"][Math.floor(Math.random()*6)];
-        } else if(forceH === 'fort' && forceA === 'moyen') {
-            scoreFinal = ["2-1","3-1","2-0","1-0","2-2"][Math.floor(Math.random()*5)];
-        } else if(forceA === 'fort' && forceH === 'moyen') {
-            scoreFinal = ["1-2","0-2","1-1","0-1","1-3"][Math.floor(Math.random()*5)];
-        } else {
-            scoreFinal = ["1-1","2-1","1-2","1-0","0-1","2-2"][Math.floor(Math.random()*6)];
-        }
-        
-        const marche = MARKETS[Math.floor(Math.random() * MARKETS.length)];
-        const [fh, fa] = scoreFinal.split('-').map(Number);
-        const miTemps = `${Math.floor(fh/2)}-${Math.floor(fa/2)}`;
-        return { scoreFinal, marche, miTemps };
-    }
-
-    // ===== AUTHENTIFICATION =====
-
-    // Nouvelle fonction pour afficher l'écran d'authentification
-    function showAuthScreen() {
-        document.getElementById('splashScreen').style.display = 'none';
-        document.getElementById('appShell').style.display = 'block';
-        document.getElementById('auth-screen').style.display = 'block';
-        document.getElementById('register-screen').style.display = 'none'; // S'assurer que l'écran d'enregistrement est masqué
-        document.getElementById('admin-login').style.display = 'none'; // S'assurer que l'écran admin est masqué
-    }
-
-    async function checkSession() {
-        document.getElementById('splashText').innerText = 'Vérification session...';
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-            await loadOrCreateUser(session.user.id, session.user.email);
-            showDashboard();
-        } else {
-            // Si pas de session, on affiche directement l'écran d'authentification
-            showAuthScreen();
-        }
-    }
-    
-    supabase.auth.onAuthStateChange(async (event, session) => {
-        if (event === 'SIGNED_IN') {
-            await loadOrCreateUser(session.user.id, session.user.email);
-            showDashboard();
-        } else if (event === 'SIGNED_OUT') {
-            location.reload(); // Recharger pour revenir à l'écran de connexion
-        } else if (event === 'INITIAL_SESSION') {
-            // Cet événement est déclenché au premier chargement.
-            // Si session est null, il n'y a pas de session existante.
-            if (!session) {
-                showAuthScreen();
-            }
-        }
-    });
-    
-    async function loadOrCreateUser(uid, email) {
-        document.getElementById('splashText').innerText = 'Chargement profil...';
-        let { data, error } = await supabase.from('user_profiles').select('*').eq('id', uid).single();
-        
-        if (error || !data) {
-            const newUser = {
-                id: uid, email: email, name: "", whatsapp: "", is_verified: false,
-                is_premium: false, is_blocked: false, is_admin: false,
-                messages: [], tickets: [], daily_count: 0, unread_messages: 0, global_ads: []
-            };
-            await supabase.from('user_profiles').insert([newUser]);
-            currentUserData = newUser;
-        } else {
-            currentUserData = data;
-        }
-        currentUserData.uid = uid;
-        // Une fois l'utilisateur chargé (ou créé), le splash screen peut être masqué
-        document.getElementById('splashScreen').style.display = 'none';
-        document.getElementById('appShell').style.display = 'block'; // S'assurer que appShell est visible
-        document.getElementById('splashText').innerText = 'Prêt !'; // Mettre à jour le texte du splash screen si visible brièvement
-    }
-    
-    async function saveUser() {
-        if(!currentUserData) return;
-        const { uid, ...data } = currentUserData;
-        await supabase.from('user_profiles').update(data).eq('id', uid);
-    }
-    
-    async function loginUser() {
-        const email = document.getElementById('login-email').value.trim();
-        const pass = document.getElementById('login-pass').value;
-        const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
-        if(error) document.getElementById('login-error').innerText = "Email ou mot de passe incorrect";
-        else document.getElementById('login-error').innerText = ""; // Clear error on success
-    }
-    
-    async function registerUser() {
-        const name = document.getElementById('reg-name').value.trim();
-        const email = document.getElementById('reg-email').value.trim();
-        const whatsapp = document.getElementById('reg-whatsapp').value.trim();
-        const pass = document.getElementById('reg-pass').value;
-        document.getElementById('email-error').innerText = ""; // Clear previous errors
-        if(pass.length < 6) { document.getElementById('email-error').innerText = "Mot de passe min 6 caractères"; return; }
-        const { data, error } = await supabase.auth.signUp({ email, password: pass });
-        if(error) { document.getElementById('email-error').innerText = error.message; return; }
-        
-        // Si l'inscription réussit, Supabase crée une session.
-        // L'écouteur onAuthStateChange va gérer le loadOrCreateUser et showDashboard.
-        // Nous pouvons ajouter les détails du profil après que l'utilisateur soit chargé.
-        if (data && data.user) {
-             alert("Compte créé ! Veuillez vérifier votre email pour confirmer l'inscription.");
-             // Après l'inscription, rediriger vers l'écran de connexion
-             toggleAuth(false);
-        }
-    }
-    
-    async function logout() { await supabase.auth.signOut(); location.reload(); }
-    
-    function showDashboard() {
-        document.getElementById('auth-screen').style.display = 'none';
-        document.getElementById('register-screen').style.display = 'none';
-        document.getElementById('dashboard').style.display = 'block';
-        const dl = document.getElementById('teams-list');
-        // Vider la datalist avant de la remplir pour éviter les doublons si showDashboard est appelé plusieurs fois
-        dl.innerHTML = ''; 
-        ALL_TEAMS.forEach(t => { let opt = document.createElement('option'); opt.value = t; dl.appendChild(opt); });
-        document.getElementById('predict-main').style.display = 'block';
-        document.getElementById('verify-alert').style.display = 'none';
-        if(currentUserData.is_admin) document.getElementById('admin-panel').style.display = 'block';
-        else document.getElementById('admin-panel').style.display = 'none'; // S'assurer que le panneau admin est masqué pour les non-admins
-        renderSavedTickets();
-        renderProfile();
-    }
-    
-    function switchView(view) {
-        document.getElementById('view-predict').style.display = view === 'predict' ? 'block' : 'none';
-        document.getElementById('view-tickets').style.display = view === 'tickets' ? 'block' : 'none';
-        document.getElementById('view-profile').style.display = view === 'profile' ? 'block' : 'none';
-        document.getElementById('view-ticket-detail').style.display = 'none';
-        
-        // Mettre à jour les classes active pour la nav-bar
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.classList.remove('active');
-        });
-        document.querySelector(`.nav-item[onclick="switchView('${view}')"]`).classList.add('active');
-
-        if(view === 'tickets') renderSavedTickets();
-        if(view === 'profile') renderProfile();
-    }
-    
-    function runAnalysis() {
-        const h = document.getElementById('team-h').value.trim();
-        const a = document.getElementById('team-a').value.trim();
-        document.getElementById('ana-error').innerText = ""; // Clear previous errors
-        if(!ALL_TEAMS.includes(h) || !ALL_TEAMS.includes(a)) {
-            document.getElementById('ana-error').innerText = "Équipe invalide";
-            return;
-        }
-        const gen = genererPrediction(h, a);
-        tempMatch = { h, a, market: gen.marche, score: gen.scoreFinal, ht: gen.miTemps };
-        document.getElementById('res-h').innerHTML = `${h}<div class="team-strength">${getStrengthLabel(h)}</div>`;
-        document.getElementById('res-a').innerHTML = `${a}<div class="team-strength">${getStrengthLabel(a)}</div>`;
-        document.getElementById('res-market').innerText = tempMatch.market;
-        document.getElementById('res-ht').innerText = `Mi-temps: ${tempMatch.ht}`;
-        if(currentUserData.is_premium) {
-            document.getElementById('premium-data').style.display = 'block';
-            document.getElementById('res-score').innerText = tempMatch.score;
-        } else {
-            document.getElementById('premium-data').style.display = 'none';
-        }
-        document.getElementById('result-box').style.display = 'block';
-    }
-    
-    function addToTicket() {
-        if(!tempMatch) return;
-        if(!currentUserData.is_premium && currentTicket.length >= 1) { alert("Version gratuite: 1 match max"); return; }
-        currentTicket.push({...tempMatch});
-        renderCurrentTicket();
-        document.getElementById('result-box').style.display = 'none';
-    }
-    
-    function renderCurrentTicket() {
-        const container = document.getElementById('ticket-list');
-        document.getElementById('current-ticket').style.display = currentTicket.length ? 'block' : 'none';
-        document.getElementById('ticket-count').innerText = currentTicket.length;
-        container.innerHTML = currentTicket.map((m,i) => `<div class="ticket-item">${m.h} vs ${m.a} - ${m.market} <span style="color:red;cursor:pointer" onclick="currentTicket.splice(${i},1);renderCurrentTicket()">✖</span></div>`).join('');
-    }
-    
-    async function saveTicket() {
-        if(!currentTicket.length) return;
-        if(!currentUserData.tickets) currentUserData.tickets = [];
-        currentUserData.tickets.unshift({date: new Date().toLocaleString(), matches: [...currentTicket]});
-        currentTicket = [];
-        renderCurrentTicket();
-        await saveUser();
-        alert("Ticket enregistré !");
-        switchView('tickets');
-    }
-    
-    function renderSavedTickets() {
-        const container = document.getElementById('tickets-list-view');
-        if(!currentUserData.tickets?.length) { container.innerHTML = '<p class="card">Aucun ticket enregistré</p>'; return; }
-        container.innerHTML = currentUserData.tickets.map((t, i) => `<div class="card ticket-card" onclick="viewTicket(${i})">📅 ${t.date}<br>📊 ${t.matches.length} match(s)</div>`).join('');
-    }
-    
-    function viewTicket(idx) {
-        const ticket = currentUserData.tickets[idx];
-        document.getElementById('ticket-detail-content').innerHTML = `
-            <div class="detail-header">🎫 Ticket du ${ticket.date}</div>
-            ${ticket.matches.map(m => `<div class="card">${m.h} vs ${m.a}<br>🎯 ${m.market}${m.score ? ` (${m.score})` : ''}<br>${getStrengthLabel(m.h)} | ${getStrengthLabel(m.a)}</div>`).join('')}
-            <div class="action-buttons"><button class="btn-primary" onclick="duplicateTicket(${idx})">🔄 Doubler ce ticket</button></div>
-        `;
-        document.getElementById('view-tickets').style.display = 'none';
-        document.getElementById('view-ticket-detail').style.display = 'block';
-    }
-    
-    async function duplicateTicket(idx) {
-        const orig = currentUserData.tickets[idx];
-        const newMatches = orig.matches.map(m => {
-            const gen = genererPrediction(m.h, m.a);
-            return { ...m, market: gen.marche, score: gen.scoreFinal, ht: gen.miTemps };
-        });
-        currentUserData.tickets.unshift({date: new Date().toLocaleString(), matches: newMatches});
-        await saveUser();
-        alert("Ticket dupliqué !");
-        backToTicketsList();
-    }
-    
-    function backToTicketsList() {
-        document.getElementById('view-ticket-detail').style.display = 'none';
-        document.getElementById('view-tickets').style.display = 'block';
-        renderSavedTickets();
-    }
-    
-    function renderProfile() {
-        document.getElementById('prof-name').innerText = currentUserData.name || currentUserData.email;
-        document.getElementById('prof-email').innerText = currentUserData.email;
-        document.getElementById('prof-whatsapp').innerHTML = `📱 ${currentUserData.whatsapp || 'Non renseigné'}`;
-        let badge = currentUserData.is_premium ? '💎 PREMIUM' : (currentUserData.is_verified ? '✅ VÉRIFIÉ' : '⏳ EN ATTENTE');
-        let badgeColor = currentUserData.is_premium ? '#d946ef' : (currentUserData.is_verified ? '#22c55e' : '#94a3b8');
-        document.getElementById('prof-badge').innerHTML = `<span class="status-badge" style="background:${badgeColor}">${badge}</span>`;
-        
-        // Cacher ou afficher la section d'upload ID en fonction du statut de vérification ou premium
-        if (currentUserData.is_verified || currentUserData.is_premium) {
-            document.getElementById('id-upload-section').style.display = 'none';
-        } else {
-            document.getElementById('id-upload-section').style.display = 'block';
-        }
-    }
-    
-    async function handleIDUpload(input) {
-        alert("Fonction upload ID - Configuration Storage Supabase requise");
-        // Implémentation réelle ici :
-        // if (input.files.length > 0) {
-        //     const file = input.files[0];
-        //     const filePath = `${currentUserData.id}/id_docs/${file.name}`;
-        //     const { error: uploadError } = await supabase.storage.from('id-documents').upload(filePath, file);
-        //     if (uploadError) {
-        //         alert("Erreur d'upload: " + uploadError.message);
-        //     } else {
-        //         alert("Document ID envoyé pour vérification.");
-        //         // Optionally update user_profiles table with a reference to the uploaded file
-        //         // currentUserData.id_document_path = filePath;
-        //         // await saveUser();
-        //     }
-        // }
-    }
-    
-    function showAdminLogin() {
-        document.getElementById('auth-screen').style.display = 'none';
-        document.getElementById('admin-login').style.display = 'block';
-    }
-    
-    async function loginAdmin() {
-        // Le code admin devrait idéalement être stocké de manière sécurisée et non en clair dans le code client.
-        // Pour cet exemple, je garde la vérification simple.
-        if(document.getElementById('admin-code').value === "0033mutwe") {
-            // Un admin ne doit pas nécessairement être un utilisateur enregistré au préalable.
-            // Si l'admin se connecte via ce code, on peut lui donner des privilèges.
-            // Il faudrait d'abord s'assurer qu'un utilisateur est connecté (currentUserData).
-            // Si pas d'utilisateur connecté, cela pose problème car currentUserData serait null.
-            // Une meilleure approche serait une authentification admin séparée et plus robuste.
-            if(currentUserData) {
-                currentUserData.is_admin = true;
-                await saveUser();
-                document.getElementById('admin-login').style.display = 'none';
-                document.getElementById('admin-panel').style.display = 'block';
-                loadAllUsers();
-            } else {
-                alert("Veuillez vous connecter en tant qu'utilisateur avant d'essayer le mode admin.");
-            }
-        } else {
-            alert("Code incorrect"); // Utilisation d'alert car il n'y a pas de div d'erreur pour l'admin-login
-        }
-    }
-    
-    async function loadAllUsers() {
-        const { data, error } = await supabase.from('user_profiles').select('*');
-        if(error) {
-            console.error("Erreur de chargement des utilisateurs admin:", error.message);
-            document.getElementById('admin-users').innerHTML = `<p class="error-message">Erreur: ${error.message}</p>`;
-            return;
-        }
-        if(data) {
-            usersCache = data;
-            document.getElementById('admin-users').innerHTML = usersCache.map(u => `
-                <div class="card">
-                    <b>${u.name || u.email}</b><br>
-                    WhatsApp: ${u.whatsapp || '-'}<br>
-                    Vérifié: ${u.is_verified ? '✅' : '❌'} | Premium: ${u.is_premium ? '💎' : '-'}
-                    <div style="display:flex;gap:5px;margin-top:10px;">
-                        <button class="btn-primary" onclick="adminVerify('${u.id}')">Vérifier</button>
-                        <button class="btn-primary" onclick="openPremiumModal('${u.id}')">Premium</button>
-                    </div>
+    <!-- SIGNUP SCREEN -->
+    <div class="auth-screen" id="signupScreen">
+        <div class="card">
+            <div class="logo">WISE03<span style="color:white;">.BET</span></div>
+            <div style="text-align:center; margin-bottom: 16px;"><span class="badge" id="signupBadge">✨ INSCRIPTION</span></div>
+            <div id="signupStatus"></div>
+            <label id="signupPhoneLabel">📱 Numéro de téléphone</label>
+            <input type="tel" id="signupPhone" placeholder="+243 98 39 71 254">
+            <label id="signupNameLabel">👤 Nom complet</label>
+            <input type="text" id="signupName" placeholder="Votre nom">
+            <label id="signupPasswordLabel">🔐 Mot de passe</label>
+            <input type="password" id="signupPassword" placeholder="Créez un mot de passe">
+            <label id="signupPasswordConfirmLabel">🔐 Confirmer mot de passe</label>
+            <input type="password" id="signupPasswordConfirm" placeholder="Confirmez le mot de passe">
+            <div class="terms-text" id="termsText">Conditions Générales d'Utilisation - Wise03.bet
+1. Description du Service : Wise03.bet est une plateforme d'analyse de données footballistiques et de génération de tickets de score. L'outil utilise un algorithme de traitement statistique pour accompagner l'utilisateur dans ses prises de décision.
+2. Performance et Précision : Précision Globale : L'analyse générale de l'application affiche un taux de précision moyen de 89 % sur l'ensemble des marchés. Cas particulier du Score Exact : le marché spécifique du "Score Exact" reste le plus complexe avec un taux de réalité d'environ 34 %. Les utilisateurs sont invités à utiliser cette option avec stratégie.
+3. Accès et Abonnement Premium : Activation manuelle : L'accès aux fonctionnalités Premium n'est pas automatique. Procédure d'abonnement : Pour activer, renouveler ou prolonger un abonnement, l'utilisateur doit contacter l'administrateur uniquement via WhatsApp au +243983971254. Durée d'accès : L'administrateur définit la durée de validité (ex: 4 jours). Une fois le délai expiré, l'accès est automatiquement bloqué.
+4. Fonctionnement technique : Validation : Un ticket peut être validé dès que deux (2) matchs minimum ont été scannés. Sécurité des codes : Tout code d'activation est à usage unique. En cas de tentative de réutilisation, le système affichera un message de "Refus d'accès".
+5. Responsabilité et Limitation : Aide à la décision : Les données fournies par Wise03.bet sont des outils d'aide et non des certitudes absolues. Gestion des Risques : L'utilisateur est seul responsable de ses mises et de son capital. L'administrateur décline toute responsabilité en cas de pertes financières liées à l'utilisation des pronostics.
+6. Protection des Données : Les informations de connexion et les statuts des comptes sont gérés de manière confidentielle. Toute tentative de piratage ou d'usage frauduleux du script entraînera une exclusion immédiate.
+7. Modifications : L'administrateur se réserve le droit de modifier ces conditions pour garantir la sécurité et la performance de l'application Wise03.bet.</div>
+            <label style="display: flex; align-items: center; font-size: 12px; margin: 12px 0;">
+                <input type="checkbox" id="acceptTerms" style="width: 20px; height: 20px; margin-right: 8px;">
+                <span id="acceptTermsText">J'accepte les conditions d'utilisation</span>
+            </label>
+            <button class="btn btn-primary" id="signupBtn">✨ CRÉER UN COMPTE</button>
+            <div class="auth-toggle"><span id="hasAccountText">Vous avez un compte ?</span> <a id="switchToLogin">Se connecter</a></div>
+        </div>
+    </div>
+    <!-- DASHBOARD -->
+    <div id="dashboardPanel" style="display: none;">
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 id="dashboardTitle">⚡ WISE03 PRO</h3>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-outline btn-small" id="profileBtn">👤 PROFIL</button>
+                    <button class="btn btn-outline btn-small" id="logoutBtn">🚪 DÉCONNEXION</button>
                 </div>
-            `).join('');
-        }
-    }
-    
-    async function adminVerify(uid) {
-        const { error } = await supabase.from('user_profiles').update({ is_verified: true }).eq('id', uid);
-        if (error) {
-            alert("Erreur lors de la vérification: " + error.message);
-        } else {
-            alert("Utilisateur vérifié !");
-            loadAllUsers(); // Recharger la liste des utilisateurs pour mettre à jour l'affichage
-        }
-    }
-    
-    function openPremiumModal(uid) {
-        adminTargetUid = uid;
-        document.getElementById('modal-premium').classList.add('active');
-    }
-    
-    async function confirmPremium() {
-        const days = parseInt(document.getElementById('pre-days').value) || 30;
-        const expiry = new Date();
-        expiry.setDate(expiry.getDate() + days);
-        const { error } = await supabase.from('user_profiles').update({ is_premium: true, premium_expiry: expiry.toISOString() }).eq('id', adminTargetUid);
-        if (error) {
-            alert("Erreur lors de l'activation Premium: " + error.message);
-        } else {
-            alert(`Premium ${days} jours activé !`);
-            closeModal();
-            loadAllUsers(); // Recharger la liste des utilisateurs pour mettre à jour l'affichage
-        }
-    }
-    
-    async function sendGlobalAd() {
-        const title = document.getElementById('ad-title').value || "Nouvelle offre";
-        // Pour l'image, il faudrait un mécanisme d'upload vers Supabase Storage et stocker l'URL
-        // Pour l'instant, on utilise une image placeholder
-        const adImageUrl = document.getElementById('ad-image').files.length > 0 ? 'URL_DE_VOTRE_IMAGE_UPLOADEE' : 'https://via.placeholder.com/100x50?text=Promo'; // Ceci est un placeholder
-
-        const adData = { id: Date.now(), title, url: document.getElementById('ad-url').value, type: 'image', media: adImageUrl, date: new Date().toLocaleString() };
-        
-        const { data: users, error: fetchError } = await supabase.from('user_profiles').select('id, global_ads');
-        if(fetchError) {
-            alert("Erreur lors de la récupération des utilisateurs: " + fetchError.message);
-            return;
-        }
-
-        for(let u of users) {
-            let ads = u.global_ads || [];
-            ads.unshift(adData); // Ajouter la nouvelle annonce au début
-            if(ads.length > 10) ads.pop(); // Garder seulement les 10 dernières annonces
-            const { error: updateError } = await supabase.from('user_profiles').update({ global_ads: ads }).eq('id', u.id);
-            if(updateError) console.error(`Erreur mise à jour annonces pour ${u.id}:`, updateError.message);
-        }
-        alert("Annonce envoyée !");
-        // Clear les champs après envoi
-        document.getElementById('ad-title').value = '';
-        document.getElementById('ad-url').value = '';
-        document.getElementById('ad-image').value = '';
-    }
-    
-    function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); }
-    function toggleAuth(showReg) {
-        document.getElementById('auth-screen').style.display = showReg ? 'none' : 'block';
-        document.getElementById('register-screen').style.display = showReg ? 'block' : 'none';
-        document.getElementById('login-error').innerText = ""; // Clear errors on toggle
-        document.getElementById('email-error').innerText = ""; // Clear errors on toggle
-    }
-    function toggleAssistant() { document.getElementById('assistant-chat').classList.toggle('active'); }
-    function askZola() {
-        const input = document.getElementById('assistant-input');
-        const msg = input.value;
-        if(!msg) return;
-        const container = document.getElementById('assistant-messages');
-        container.innerHTML += `<div class="assistant-bubble assistant-user">${msg}</div>`;
-        input.value = '';
-        setTimeout(() => {
-            // Réponse de Zola, simplifiée pour cet exemple
-            container.innerHTML += `<div class="assistant-bubble assistant-bot">🤖 Cliquez sur un ticket pour le dupliquer !</div>`;
-            container.scrollTop = container.scrollHeight;
-        }, 500);
-    }
-    
-    // LANCEMENT INITIAL
-    document.getElementById('splashText').innerText = 'Initialisation...';
-    // Lancer la vérification de session au chargement de la page
-    checkSession();
-</script>
-
-<div id="modal-premium" class="modal">
+            </div>
+            <div id="userInfoBlock" style="font-size: 12px; color:var(--cyan); padding: 12px; background: #0e131c; border-radius: 12px;"></div>
+            <div id="premiumExpiryWarning" class="premium-expiry-warning" style="display: none; margin-top: 12px;"></div>
+            <div id="activationHint" class="activation-hint" style="display: none;">
+                ⚠️ Votre compte n'est pas activé. Pour activer l'accès Premium, contactez l'administrateur via WhatsApp : +243983971254
+            </div>
+        </div>
+        <div class="card">
+            <h3 id="analyzeTitle">⚡ PRONOSTIC PRO</h3>
+            <div id="premiumStatusBadge" class="badge" style="background:#22c55e20; margin-bottom: 16px;">🔓 ACTIF</div>
+            <label id="homeTeamLabel">🏠 Équipe Domicile</label>
+            <input type="text" id="teamHome" placeholder="ex: Real Madrid, France..." list="globalTeamsList">
+            <label id="awayTeamLabel">✈️ Équipe Extérieur</label>
+            <input type="text" id="teamAway" placeholder="ex: Bayern Munich, Brésil..." list="globalTeamsList">
+            <datalist id="globalTeamsList"></datalist>
+            <button class="btn btn-primary" id="analyzeMatchBtn">🧠 ANALYSER & GÉNÉRER MARCHÉ</button>
+            <div id="analysisResult" style="margin-top: 20px;"></div>
+            <div class="ticket-counter">
+                <strong id="ticketCountLabel">Événements du jour:</strong> <span id="eventCount">0</span>/20 | <strong id="ticketsLeftLabel">Tickets restants:</strong> <span id="ticketsLeft">4</span>/4
+            </div>
+            <div id="gourmandWarning" class="gourmand-warning" style="display: none;">
+                <strong>🍽️ TICKET GOURMAND</strong><br><span id="gourmandText">Ce ticket contient plus de 12 événements.</span>
+            </div>
+            <div id="predictionListContainer" style="display: none;">
+                <h4 id="currentPredictionsTitle">📋 wise03.bet Opère là magie...</h4>
+                <div class="prediction-list" id="predictionList"></div>
+                <div class="double-actions">
+                    <button class="btn btn-success" id="saveTicketBtn">💾 ENREGISTRER LE TICKET</button>
+                    <button class="btn btn-double" id="doubleTicketBtn">🔄 DOUBLER LE TICKET</button>
+                </div>
+                <button class="btn btn-outline" id="clearPredictionsBtn" style="margin-top: 8px;">🗑️ EFFACER LES PRÉDICTIONS</button>
+            </div>
+        </div>
+        <div class="card">
+            <h4 id="ticketsTitle">🎫 TICKETS ENREGISTRÉS</h4>
+            <div id="ticketHistoryList" style="max-height: 280px; overflow-y: auto;"></div>
+        </div>
+    </div>
+</div>
+<!-- PROFILE MODAL -->
+<div class="modal" id="profileModal">
     <div class="modal-content">
-        <h4>Activer Premium</h4>
-        <input type="number" id="pre-days" placeholder="Nombre de jours" value="30">
-        <button class="btn-primary" onclick="confirmPremium()">ACTIVER</button>
-        <button class="btn-ghost" onclick="closeModal()">ANNULER</button>
+        <div class="modal-header"><h3 id="profileTitle">👤 MON PROFIL</h3><button class="modal-close" id="closeProfileBtn">&times;</button></div>
+        <div class="profile-section">
+            <div class="profile-stat"><span id="phoneLabel">📱 Téléphone:</span><strong id="profilePhone">-</strong></div>
+            <div class="profile-stat"><span id="nameLabel">👤 Nom:</span><strong id="profileName">-</strong></div>
+            <div class="profile-stat"><span id="statusLabel">✅ Statut:</span><strong id="profileStatus">-</strong></div>
+            <div class="profile-stat"><span id="premiumLabel">💎 Premium:</span><strong id="profilePremium">-</strong></div>
+            <div class="profile-stat"><span id="premiumExpiryLabel">📅 Expire:</span><strong id="profilePremiumExpiry">-</strong></div>
+            <div class="profile-stat"><span id="joinedLabel">📅 Inscrit:</span><strong id="profileDate">-</strong></div>
+        </div>
+        <hr>
+        <h4 id="activationCodeTitle">🔐 CODE D'ACTIVATION</h4>
+        <label id="activationCodeLabel">Code à 15 chiffres</label>
+        <input type="text" id="activationCodeInput" placeholder="000000000000000" maxlength="15">
+        <div id="codeStatus"></div>
+        <button class="btn btn-primary" id="validateCodeBtn">✅ VALIDER LE CODE</button>
+        <div class="precision-banner">
+            <strong id="precisionTitle">📊 Précision du Service:</strong>
+            <div id="precisionText">• Analyse globale: 89% de précision</div>
+            <div id="exactScoreText">• Score exact: 34% de taux de réalité</div>
+        </div>
+        <div class="support-banner">
+            <strong id="supportTitle">📞 Support & Assistance</strong>
+            <div id="supportText">Pour activation manuelle ou aide:</div>
+            <button class="btn btn-outline" id="contactAdminBtn" style="margin-top: 10px;">💬 WHATSAPP +243983971254</button>
+        </div>
     </div>
 </div>
+<script>
+(function(){
+"use strict";
+
+// ---------- TRADUCTIONS ----------
+const translations = {
+    fr: { splashText: "Chargement de l'analyse IA wise03.bet...", loginBadge: "🔐 CONNEXION", loginPhoneLabel: "📱 Numéro de téléphone", loginPasswordLabel: "🔐 Mot de passe", loginBtn: "📱 SE CONNECTER", noAccountText: "Pas de compte ?", createAccountLink: "Créer un compte", signupBadge: "✨ INSCRIPTION", signupPhoneLabel: "📱 Numéro de téléphone", signupNameLabel: "👤 Nom complet", signupPasswordLabel: "🔐 Mot de passe", signupPasswordConfirmLabel: "🔐 Confirmer mot de passe", acceptTermsText: "J'accepte les conditions d'utilisation", signupBtn: "✨ CRÉER UN COMPTE", hasAccountText: "Vous avez un compte ?", loginLink: "Se connecter", dashboardTitle: "⚡ WISE03 PRO", profileBtn: "👤 PROFIL", logoutBtn: "🚪 DÉCONNEXION", analyzeTitle: "⚡ PRONOSTIC PRO", homeTeamLabel: "🏠 Équipe Domicile", awayTeamLabel: "✈️ Équipe Extérieur", analyzeBtn: "🧠 ANALYSER & GÉNÉRER MARCHÉ", ticketsTitle: "🎫 TICKETS ENREGISTRÉS", profileTitle: "👤 MON PROFIL", phoneLabel: "📱 Téléphone:", nameLabel: "👤 Nom:", statusLabel: "✅ Statut:", premiumLabel: "💎 Premium:", premiumExpiryLabel: "📅 Expire:", joinedLabel: "📅 Inscrit:", activationCodeTitle: "🔐 CODE D'ACTIVATION", activationCodeLabel: "Code à 15 chiffres", validateCodeBtn: "✅ VALIDER LE CODE", precisionTitle: "📊 Précision du Service:", globalPrecision: "• Analyse globale: 89% de précision", exactScore: "• Score exact: 34% de taux de réalité", supportTitle: "📞 Support & Assistance", supportText: "Pour activation manuelle ou aide:", whatsappBtn: "💬 WHATSAPP +243983971254", validError: "❌ Le code doit contenir exactement 15 chiffres.", usedCodeError: "❌ Refus d'accès : Ce code a déjà été utilisé.", accountActivated: "✅ Compte ACTIVÉ !", premiumAdded: "+7 jours d'abonnement Premium ajoutés.", invalidCode: "⚠️ Code valide mais aucune règle d'activation.", fillAllFields: "Remplissez tous les champs.", passwordMismatch: "Les mots de passe ne correspondent pas.", minPassword: "Le mot de passe doit contenir au moins 6 caractères.", acceptTerms: "Acceptez les conditions d'utilisation.", phoneExists: "❌ Ce numéro est déjà inscrit.", accountNotFound: "❌ Compte non trouvé.", wrongPassword: "❌ Mot de passe incorrect.", accountCreated: "✅ Compte créé! Redirection...", noTickets: "Aucun ticket. Analysez un match.", ticketCountLabel: "Événements du jour:", ticketsLeftLabel: "Tickets restants:", currentPredictionsTitle: "📋 Prédictions en cours", saveTicketBtn: "💾 ENREGISTRER LE TICKET", clearPredictionsBtn: "🗑️ EFFACER LES PRÉDICTIONS", ticketSavedSuccess: "✅ Ticket enregistré avec succès!", maxEventsReached: "❌ Limite de 20 événements atteinte pour ce ticket.", maxTicketsReached: "❌ Vous avez atteint le maximum de 4 tickets pour aujourd'hui.", predictionsCleared: "✅ Prédictions effacées.", gourmandText: "Ce ticket contient plus de 12 événements.", premiumExpired: "⚠️ Votre Premium a expiré.", premiumExpiresIn: "⏰ Premium expire dans", premiumDays: "jours", doubleTicketBtn: "🔄 DOUBLER LE TICKET", doubleTicketSuccess: "✅ Ticket doublé avec succès! Nouvelles analyses générées.", doubleTicketError: "❌ Impossible de doubler le ticket vide.", matchAlreadyAnalyzed: "❌ Ce match a déjà été analysé dans les dernières 48 heures.", activationRequired: "⚠️ Compte non activé. Contactez l'administrateur WhatsApp +243983971254 pour activer votre accès." },
+    en: { splashText: "Loading AI analysis...", loginBadge: "🔐 LOGIN", loginPhoneLabel: "📱 Phone number", loginPasswordLabel: "🔐 Password", loginBtn: "📱 SIGN IN", noAccountText: "No account?", createAccountLink: "Create account", signupBadge: "✨ SIGN UP", signupPhoneLabel: "📱 Phone number", signupNameLabel: "👤 Full name", signupPasswordLabel: "🔐 Password", signupPasswordConfirmLabel: "🔐 Confirm password", acceptTermsText: "I accept the terms of use", signupBtn: "✨ CREATE ACCOUNT", hasAccountText: "Have an account?", loginLink: "Sign in", dashboardTitle: "⚡ WISE03 PRO", profileBtn: "👤 PROFILE", logoutBtn: "🚪 LOGOUT", analyzeTitle: "⚡ PRO FORECAST", homeTeamLabel: "🏠 Home Team", awayTeamLabel: "✈️ Away Team", analyzeBtn: "🧠 ANALYZE & GENERATE MARKET", ticketsTitle: "🎫 REGISTERED TICKETS", profileTitle: "👤 MY PROFILE", phoneLabel: "📱 Phone:", nameLabel: "👤 Name:", statusLabel: "✅ Status:", premiumLabel: "💎 Premium:", premiumExpiryLabel: "📅 Expires:", joinedLabel: "📅 Joined:", activationCodeTitle: "🔐 ACTIVATION CODE", activationCodeLabel: "15-digit code", validateCodeBtn: "✅ VALIDATE CODE", precisionTitle: "📊 Service Precision:", globalPrecision: "• Global analysis: 89% accuracy", exactScore: "• Exact score: 34% reality rate", supportTitle: "📞 Support & Assistance", supportText: "For manual activation or help:", whatsappBtn: "💬 WHATSAPP +243983971254", validError: "❌ Code must contain exactly 15 digits.", usedCodeError: "❌ Access denied: This code has already been used.", accountActivated: "✅ Account ACTIVATED!", premiumAdded: "+7 days of Premium subscription added.", invalidCode: "⚠️ Valid code but no activation rule.", fillAllFields: "Fill in all fields.", passwordMismatch: "Passwords do not match.", minPassword: "Password must be at least 6 characters.", acceptTerms: "Accept the terms of use.", phoneExists: "❌ This number is already registered.", accountNotFound: "❌ Account not found.", wrongPassword: "❌ Incorrect password.", accountCreated: "✅ Account created! Redirecting...", noTickets: "No tickets. Analyze a match.", ticketCountLabel: "Events today:", ticketsLeftLabel: "Tickets remaining:", currentPredictionsTitle: "📋 Current Predictions", saveTicketBtn: "💾 SAVE TICKET", clearPredictionsBtn: "🗑️ CLEAR PREDICTIONS", ticketSavedSuccess: "✅ Ticket saved successfully!", maxEventsReached: "❌ Maximum 20 events reached for this ticket.", maxTicketsReached: "❌ You have reached the maximum of 4 tickets for today.", predictionsCleared: "✅ Predictions cleared.", gourmandText: "This ticket contains more than 12 events.", premiumExpired: "⚠️ Your Premium has expired.", premiumExpiresIn: "⏰ Premium expires in", premiumDays: "days", doubleTicketBtn: "🔄 DOUBLE TICKET", doubleTicketSuccess: "✅ Ticket doubled successfully! New analyses generated.", doubleTicketError: "❌ Cannot double an empty ticket.", matchAlreadyAnalyzed: "❌ This match has already been analyzed in the last 48 hours.", activationRequired: "⚠️ Account not activated. Contact admin WhatsApp +243983971254 to activate your access." },
+    sw: { splashText: "Inakadiriwa uchambuzi wa AI...", loginBadge: "🔐 INGIA", loginPhoneLabel: "📱 Namba ya simu", loginPasswordLabel: "🔐 Nenosiri", loginBtn: "📱 INGIA", noAccountText: "Hakuna akaunti?", createAccountLink: "Unda akaunti", signupBadge: "✨ JISAJILI", signupPhoneLabel: "📱 Namba ya simu", signupNameLabel: "👤 Jina kamili", signupPasswordLabel: "🔐 Nenosiri", signupPasswordConfirmLabel: "🔐 Thibitisha nenosiri", acceptTermsText: "Nakubali masharti ya matumizi", signupBtn: "✨ UNDA AKAUNTI", hasAccountText: "Una akaunti?", loginLink: "Ingia", dashboardTitle: "⚡ WISE03 PRO", profileBtn: "👤 PROFILI", logoutBtn: "🚪 LOGOUT", analyzeTitle: "⚡ UTABIRI PRO", homeTeamLabel: "🏠 Timu ya Nyumbani", awayTeamLabel: "✈️ Timu ya Wageni", analyzeBtn: "🧠 CHAMBUZA & TENGENEZA SOKO", ticketsTitle: "🎫 TIKITI ZILIZOSAJILIWA", profileTitle: "👤 PROFILI YANGU", phoneLabel: "📱 Simu:", nameLabel: "👤 Jina:", statusLabel: "✅ Hali:", premiumLabel: "💎 Ziada:", premiumExpiryLabel: "📅 Inaishia:", joinedLabel: "📅 Kujifunza:", activationCodeTitle: "🔐 MSIMBO WA KUANZISHA", activationCodeLabel: "Msimbo wa tarakimu 15", validateCodeBtn: "✅ THIBITISHA MSIMBO", precisionTitle: "📊 Usahihi wa Huduma:", globalPrecision: "• Uchambuzi wa jumla: 89% usahihi", exactScore: "• Alama sahihi: 34% kiwango cha kweli", supportTitle: "📞 Msaada & Usaidizi", supportText: "Kwa kuanzisha kwa mikono au usaidizi:", whatsappBtn: "💬 WHATSAPP +243983971254", validError: "❌ Msimbo lazima uwe na tarakimu 15 haswa.", usedCodeError: "❌ Kukataliwa kwa access: Msimbo huu umecheleza tayari.", accountActivated: "✅ Akaunti ILIANZISHWA!", premiumAdded: "+7 siku za usajili wa Premium zilizoongezwa.", invalidCode: "⚠️ Msimbo halali lakini hakuna sheria ya kuanzisha.", fillAllFields: "Jaza sehemu zote.", passwordMismatch: "Nenosiri hazilingani.", minPassword: "Nenosiri lazima liwe na angalau herufi 6.", acceptTerms: "Kubali masharti ya matumizi.", phoneExists: "❌ Namba hii tayari imesajiliwa.", accountNotFound: "❌ Akaunti haipo.", wrongPassword: "❌ Nenosiri sio sahihi.", accountCreated: "✅ Akaunti iliundwa! Inabadili...", noTickets: "Hakuna tikiti. Chambuza meza.", ticketCountLabel: "Matukio leo:", ticketsLeftLabel: "Tikiti iliyobaki:", currentPredictionsTitle: "📋 Matatizo ya sasa", saveTicketBtn: "💾 HIFADHI TIKITI", clearPredictionsBtn: "🗑️ FUTA MATATIZO", ticketSavedSuccess: "✅ Tikiti ilihifadhiwa!", maxEventsReached: "❌ Kiwango cha juu cha matukio 20 kimefikiwa.", maxTicketsReached: "❌ Umefika kiwango cha juu cha tikiti 4 leo.", predictionsCleared: "✅ Matatizo yafutwa.", gourmandText: "Hii tikiti ina matukio zaidi ya 12.", premiumExpired: "⚠️ Premium yako imeishia.", premiumExpiresIn: "⏰ Premium inaishia katika", premiumDays: "siku", doubleTicketBtn: "🔄 ONGEZA TIKITI", doubleTicketSuccess: "✅ Tikiti imeongezwa mara mbili! Uchambuzi mpya umezalishwa.", doubleTicketError: "❌ Haiwezi kuongeza tikiti tupu.", matchAlreadyAnalyzed: "❌ Mechi hii tayari imechambuliwa katika saa 48 zilizopita.", activationRequired: "⚠️ Akaunti haijawashwa. Wasiliana na msimamizi WhatsApp +243983971254 ili kuwezesha ufikiaji wako." }
+};
+let currentLanguage = 'fr';
+function t(key) { return translations[currentLanguage]?.[key] || translations['fr'][key]; }
+function updateLanguage(lang) {
+    currentLanguage = lang;
+    document.querySelectorAll('[id]').forEach(el => { if (el.id && translations[lang]?.[el.id]) el.textContent = translations[lang][el.id]; });
+    document.getElementById('splashText').textContent = t('splashText');
+    document.getElementById('loginBadge').textContent = t('loginBadge');
+    document.getElementById('loginPhoneLabel').textContent = t('loginPhoneLabel');
+    document.getElementById('loginPasswordLabel').textContent = t('loginPasswordLabel');
+    document.getElementById('loginBtn').textContent = t('loginBtn');
+    document.getElementById('noAccountText').textContent = t('noAccountText');
+    document.getElementById('switchToSignup').textContent = t('createAccountLink');
+    document.getElementById('signupBadge').textContent = t('signupBadge');
+    document.getElementById('signupPhoneLabel').textContent = t('signupPhoneLabel');
+    document.getElementById('signupNameLabel').textContent = t('signupNameLabel');
+    document.getElementById('signupPasswordLabel').textContent = t('signupPasswordLabel');
+    document.getElementById('signupPasswordConfirmLabel').textContent = t('signupPasswordConfirmLabel');
+    document.getElementById('acceptTermsText').textContent = t('acceptTermsText');
+    document.getElementById('signupBtn').textContent = t('signupBtn');
+    document.getElementById('hasAccountText').textContent = t('hasAccountText');
+    document.getElementById('switchToLogin').textContent = t('loginLink');
+    document.getElementById('dashboardTitle').textContent = t('dashboardTitle');
+    document.getElementById('profileBtn').textContent = t('profileBtn');
+    document.getElementById('logoutBtn').textContent = t('logoutBtn');
+    document.getElementById('analyzeTitle').textContent = t('analyzeTitle');
+    document.getElementById('homeTeamLabel').textContent = t('homeTeamLabel');
+    document.getElementById('awayTeamLabel').textContent = t('awayTeamLabel');
+    document.getElementById('analyzeMatchBtn').textContent = t('analyzeBtn');
+    document.getElementById('ticketsTitle').textContent = t('ticketsTitle');
+    document.getElementById('profileTitle').textContent = t('profileTitle');
+    document.getElementById('phoneLabel').textContent = t('phoneLabel');
+    document.getElementById('nameLabel').textContent = t('nameLabel');
+    document.getElementById('statusLabel').textContent = t('statusLabel');
+    document.getElementById('premiumLabel').textContent = t('premiumLabel');
+    document.getElementById('premiumExpiryLabel').textContent = t('premiumExpiryLabel');
+    document.getElementById('joinedLabel').textContent = t('joinedLabel');
+    document.getElementById('activationCodeTitle').textContent = t('activationCodeTitle');
+    document.getElementById('activationCodeLabel').textContent = t('activationCodeLabel');
+    document.getElementById('validateCodeBtn').textContent = t('validateCodeBtn');
+    document.getElementById('precisionTitle').textContent = t('precisionTitle');
+    document.getElementById('precisionText').textContent = t('globalPrecision');
+    document.getElementById('exactScoreText').textContent = t('exactScore');
+    document.getElementById('supportTitle').textContent = t('supportTitle');
+    document.getElementById('supportText').textContent = t('supportText');
+    document.getElementById('contactAdminBtn').textContent = t('whatsappBtn');
+    document.getElementById('ticketCountLabel').textContent = t('ticketCountLabel');
+    document.getElementById('ticketsLeftLabel').textContent = t('ticketsLeftLabel');
+    document.getElementById('currentPredictionsTitle').textContent = t('currentPredictionsTitle');
+    document.getElementById('saveTicketBtn').textContent = t('saveTicketBtn');
+    document.getElementById('clearPredictionsBtn').textContent = t('clearPredictionsBtn');
+    document.getElementById('gourmandText').textContent = t('gourmandText');
+    document.getElementById('doubleTicketBtn').textContent = t('doubleTicketBtn');
+}
+
+// ---------- BASE DE DONNÉES DES CLUBS (600+) ----------
+const LEVEL1 = [ 
+    "Real Madrid", "Manchester City", "Liverpool", "Arsenal", "Bayern Munich", "Bayer Leverkusen", "Inter Milan", 
+    "Paris Saint-Germain", "FC Barcelone", "Borussia Dortmund", "Atlético Madrid", "Juventus", "AC Milan", 
+    "RB Leipzig", "Napoli", "Aston Villa", "Sporting CP", "Benfica", "FC Porto", "Atalanta", "Newcastle", 
+    "Tottenham", "Chelsea", "Manchester United", "Real Sociedad", "Athletic Bilbao", "Girona", "AS Monaco", 
+    "Lille OSC", "Olympique de Marseille", "OGC Nice", "Stuttgart", "Eintracht Frankfurt", "Ajax Amsterdam", 
+    "PSV Eindhoven", "Feyenoord", "Galatasaray", "Fenerbahçe", "Besiktas", "Celtic Glasgow", "Glasgow Rangers", 
+    "Sporting Braga", "Lazio Rome", "AS Roma", "Fiorentina", "Bologne", "Séville FC", "Villarreal", "Real Betis", 
+    "West Ham", "Brighton", "Wolfsburg", "Fribourg", "AZ Alkmaar", "Club Bruges", "Union Saint-Gilloise", 
+    "Anderlecht", "Olympiakos", "Panathinaikos", "Sparta Prague", "Flamengo", "Palmeiras", "River Plate", 
+    "Atlético Mineiro", "Fluminense", "Botafogo", "São Paulo", "Grêmio", "Internacional", "Boca Juniors", 
+    "Racing Club", "Estudiantes", "Talleres", "Independiente del Valle", "LDU Quito", "Al Ahly", "Mamelodi Sundowns", 
+    "Wydad Casablanca", "Raja Casablanca", "Espérance de Tunis", "Zamalek", "RS Berkane", "Pyramids FC", 
+    "CR Belouizdad", "USM Alger", "Al-Hilal", "Al-Nassr", "Al-Ittihad", "Al-Ahli", "Yokohama F. Marinos", 
+    "Vissel Kobe", "Urawa Reds", "Jeonbuk", "Pohang Steelers", "Al-Ain", "Club América", "Monterrey", 
+    "Tigres UANL", "Columbus Crew", "LAFC", "Al-Sadd", "Al-Duhail", "Persepolis", "Esteghlal", "Buriram United",
+    "Ulsan HD", "Kawasaki Frontale", "Al-Rayyan", "Sepahan", "Pakhtakor", "Al-Shorta", "Navbahor", "Al-Fayha",
+    "Mumbai City", "Odisha FC", "ATK Mohun Bagan", "Melbourne City", "Central Coast Mariners", "Wellington Phoenix"
+];
+
+const LEVEL2 = [ 
+    "Everton", "Fulham", "Crystal Palace", "Wolves", "Bournemouth", "Getafe", "Osasuna", "Valence", "Celta Vigo", 
+    "Torino", "Udinese", "Monza", "Genoa", "Sassuolo", "Stade Rennais", "RC Lens", "Stade de Reims", 
+    "Olympique Lyonnais", "Montpellier", "Werder Brême", "Hoffenheim", "Mayence", "Augsbourg", "Twente", 
+    "Utrecht", "Slavia Prague", "Dinamo Zagreb", "Hajduk Split", "Étoile Rouge de Belgrade", "Partizan Belgrade", 
+    "PAOK Salonique", "AEK Athènes", "Bodo/Glimt", "Molde", "Malmö", "Copenhague", "Young Boys Berne", 
+    "Servette", "Bâle", "Salzbourg", "Sturm Graz", "Corinthians", "Cruzeiro", "Vasco da Gama", "Bahia", 
+    "Fortaleza", "RB Bragantino", "Athletico Paranaense", "Vélez Sarsfield", "Lanús", "Defensa y Justicia", 
+    "San Lorenzo", "Colo-Colo", "Universidad de Chile", "Olimpia", "Cerro Porteño", "Libertad", "Nacional (URU)", 
+    "Peñarol", "Junior Barranquilla", "Millonarios", "Atlético Nacional", "Sporting Cristal", "TP Mazembe", 
+    "Simba SC", "Young Africans", "Petro Luanda", "Horoya AC", "ASEC Mimosas", "Orlando Pirates", 
+    "Kaizer Chiefs", "Inter Miami", "Pachuca", "Chivas Guadalajara", "Santos Laguna", "Cruz Azul", "Pumas UNAM",
+    "Toluca", "León", "Necaxa", "Atlas", "Shanghai Port", "Shanghai Shenhua", "Shandong Taishan", "Beijing Guoan",
+    "Zhejiang FC", "Chengdu Rongcheng", "Al-Wasl", "Al-Jazira", "Sharjah FC", "Al-Wahda", "Shabab Al-Ahli",
+    "Al-Taawoun", "Al-Ettifaq", "Al-Shabab", "Damac FC", "Al-Raed", "Abha Club", "Al-Tai", "Al-Riyadh"
+];
+
+const LEVEL3 = [ 
+    "Brentford", "Nottingham Forest", "Leicester", "Ipswich", "Southampton", "Las Palmas", "Majorque", "Alavés", 
+    "Rayo Vallecano", "Valladolid", "Empoli", "Hellas Vérone", "Lecce", "Cagliari", "Parme", "FC Nantes", 
+    "Strasbourg", "FC Lorient", "Auxerre", "Brest", "Bochum", "Heidenheim", "St. Pauli", "NEC Nimègue", 
+    "Heerenveen", "Heracles", "Vitesse", "Courtrai", "Westerlo", "Charleroi", "Mechelen", "Cercle Bruges", 
+    "Kilmarnock", "St. Mirren", "Austria Vienne", "LASK", "Grasshopper", "Lucerne", "Cuiabá", "Vitória", 
+    "Juventude", "Platense", "Tigre", "Banfield", "Coquimbo Unido", "Everton (CHI)", "Palestino", "Guaraní", 
+    "Nacional (PAR)", "Montevideo City Torque", "Santa Fe (COL)", "Deportivo Cali", "Once Caldas", "AS Vita Club", 
+    "Maniema Union", "Dauphins Noirs", "Don Bosco", "JS Kabylie", "ES Sétif", "MC Alger", "Club Africain", 
+    "Étoile du Sahel", "Al-Hilal Omdurman", "Al-Merrikh", "Enyimba", "Rivers United", "Al-Talaba", "Al-Zawraa",
+    "Al-Quwa Al-Jawiya", "Al-Kahrabaa", "Duhok SC", "Erbil SC", "Al-Minaa", "Naft Al-Basra", "Al-Najaf",
+    "Churchill Brothers", "Gokulam Kerala", "Sreenidi Deccan", "Real Kashmir", "Aizawl FC", "TRAU FC",
+    "Sudeva Delhi", "Kenkre FC", "Bhawanipore FC", "Delhi FC", "Bengaluru United", "Kickstart FC"
+];
+
+const LEVEL4 = [ 
+    "Le Havre", "FC Metz", "Burnley", "Watford", "Hull City", "Schalke 04", "Hertha Berlin", "Bordeaux", 
+    "Saint-Étienne", "Espanyol Barcelone", "Sampdoria", "Bari", "Palermo", "Sheffield United", "Leeds", 
+    "Norwich", "Malaga", "Elche", "Levante", "Hamburger SV", "Bolivar", "The Strongest", "Caracas FC", 
+    "Universidad Católica (CHI)", "Hearts of Oak", "Asante Kotoko", "1º de Agosto", "Auckland City", 
+    "Sydney FC", "Mumbai City", "Odisha FC", "Hyderabad FC", "East Bengal", "Mohammedan SC", "Churchill Brothers",
+    "Gokulam Kerala", "Punjab FC", "Namdhari FC", "Shillong Lajong", "Rajasthan United", "Sudeva Delhi",
+    "Kenkre FC", "Delhi FC", "Bengaluru United", "Bhawanipore FC", "Kickstart FC", "Sreenidi Deccan",
+    "Real Kashmir", "Aizawl FC", "TRAU FC", "Neroca FC", "Sreenidi Deccan", "Gokulam Kerala"
+];
+
+const LEVEL5 = [ 
+    "AS Douanes", "Coton Sport", "AS Otôho", "Teungueth FC", "Jaraaf", "Buffles du Borgou", "ASKO Kara", 
+    "ASCK", "AS FAN", "AS Police (Mali)", "Real Bamako", "Binga FC", "Lincoln Red Imps", "Europa FC", 
+    "Tre Penne", "La Fiorita", "Hamrun Spartans", "Dudelange", "Ballkani", "San Marino Academy", "AS Pirae", 
+    "Hienghène Sport", "Lupe o le Soaga", "Kiwi FC", "Tupapa Maraerenga", "Pago Youth", "Vaivase-Tai",
+    "Tonga FC", "Lotoha'apai United", "Navutoka FC", "Marist FC", "Solomon Warriors", "Central Coast",
+    "Hekari United", "Lae City", "Toti City", "Madang FC", "Morobe Wawens", "Gulf Komara", "Port Moresby",
+    "Ba FC", "Suva FC", "Rewa FC", "Labasa FC", "Nadi FC", "Lautoka FC", "Navua FC", "Nasinu FC",
+    "Tavua FC", "Dreketi FC", "Rakiraki FC", "Seaqaqa FC", "Savusavu FC", "Bua FC", "Nadroga FC"
+];
+
+const NATIONS_TIER5 = ["France","Argentine","Brésil","Angleterre","Espagne","Portugal","Allemagne","Italie","Pays-Bas","Belgique","Uruguay","Croatie","Maroc","Sénégal","Colombie"];
+const NATIONS_TIER4 = ["Danemark","Suisse","Serbie","Pologne","États-Unis","Mexique","Japon","Corée du Sud","Australie","Iran","Arabie Saoudite","Qatar","Canada","Chili","Pérou","Paraguay","Équateur","Venezuela","Nigeria","Cameroun","Ghana","Algérie","Égypte","Tunisie","Mali","Côte d'Ivoire","Afrique du Sud","Burkina Faso"];
+const NATIONS_TIER3 = ["RD Congo","Zambie","Ouganda","Guinée","Gabon","Bénin","Togo","Madagascar","Irak","Ouzbékistan","Jordanie","Bahreïn","Vietnam","Bolivie","Panama","Honduras","Jamaïque","Costa Rica","Salvador","Guatemala","Trinité-et-Tobago","Haïti","Cuba","Nicaragua","Guyana","Suriname"];
+const NATIONS_TIER2 = ["Niger","Tchad","Somalie","Djibouti","Érythrée","Soudan du Sud","Népal","Bhoutan","Mongolie","Cambodge","Laos","Îles Salomon","Tahiti","Samoa","Guam","Saint-Marin","Andorre","Liechtenstein","Malte","Gibraltar","Îles Féroé","Luxembourg","Moldavie","Estonie","Lettonie","Lituanie","Arménie","Géorgie","Azerbaïdjan","Kazakhstan","Kirghizistan","Tadjikistan","Turkménistan"];
+const NATIONS_TIER1 = ["Sao Tomé-et-Principe","Guinée-Bissau","Guinée équatoriale","Cap-Vert","Seychelles","Maurice","Comores","Lesotho","Eswatini","Botswana","Namibie","Malawi","Burundi","Rwanda","Soudan","Mauritanie","Sierra Leone","Liberia","Gambie","Centrafrique","Somaliland","Zanzibar","Timor oriental","Brunei","Macao","Mongolie intérieure","Tibet","Cachemire","Palestine","Chypre du Nord"];
+
+const ALL_TEAMS = [...new Set([...LEVEL1, ...LEVEL2, ...LEVEL3, ...LEVEL4, ...LEVEL5, ...NATIONS_TIER5, ...NATIONS_TIER4, ...NATIONS_TIER3, ...NATIONS_TIER2, ...NATIONS_TIER1])];
+const ELITE_PLUS = ["Real Madrid", "Manchester City", "Bayern Munich", "Liverpool", "Arsenal", "FC Barcelone", "Inter Milan", "Paris Saint-Germain","Bayer Leverkusen", "Inter Milan","Borussia Dortmund", "Atlético Madrid", "Juventus", "AC Milan", 
+    "RB Leipzig", "Napoli", "Aston Villa","Crystal Palace", "Wolves", "Bournemouth", "Getafe", "Osasuna", "Valence", "Celta Vigo", 
+    "Torino", "Udinese", "Monza", "Genoa", "Sassuolo"];
+const AFRICA_ELITE = ["Al Ahly", "Wydad Casablanca", "Espérance de Tunis", "Mamelodi Sundowns", "Raja Casablanca"];
+
+function getBaseStrength(team) {
+    if (LEVEL1.includes(team) || NATIONS_TIER5.includes(team)) return 10;
+    if (LEVEL2.includes(team) || NATIONS_TIER4.includes(team)) return 8;
+    if (LEVEL3.includes(team) || NATIONS_TIER3.includes(team)) return 6;
+    if (LEVEL4.includes(team) || NATIONS_TIER2.includes(team)) return 4;
+    if (LEVEL5.includes(team) || NATIONS_TIER1.includes(team)) return 2;
+    return 5;
+}
+function getAdjustedStrength(team, isHome, opponent) {
+    let strength = getBaseStrength(team);
+    if (isHome) strength += 0.8;
+    if (ELITE_PLUS.includes(team)) strength += 0.5;
+    if (AFRICA_ELITE.includes(team)) strength += 0.3;
+    return strength;
+}
+
+// ---------- SCORES DE RÉFÉRENCE (45) ----------
+const SCORE_POOL = ["0-0","1-0","0-1","1-1","2-1","1-2","2-0","0-2","2-2","3-0","0-3","3-1","1-3","3-2","2-3","4-0","0-4","4-1","1-4","4-2","2-4","4-3","3-4","5-0","0-5","5-1","1-5","5-2","2-5","3-3","6-0","0-6","6-1","1-6","5-3","3-5","6-2","2-6","4-4","7-0","0-7","7-1","1-7","8-0","0-8","9-0","0-9","10-0","0-10"];
+function generateScoreFromDiff(diff) {
+    let possible = [];
+    if (diff >= 6) possible = [{s:"3-0",p:0.15},{s:"4-0",p:0.15},{s:"4-1",p:0.1},{s:"5-0",p:0.12},{s:"5-1",p:0.1},{s:"3-1",p:0.08},{s:"2-0",p:0.08},{s:"6-0",p:0.07},{s:"7-0",p:0.05},{s:"8-0",p:0.05},{s:"9-0",p:0.03},{s:"10-0",p:0.02}];
+    else if (diff >= 4) possible = [{s:"2-0",p:0.12},{s:"3-0",p:0.15},{s:"3-1",p:0.12},{s:"2-1",p:0.12},{s:"4-1",p:0.1},{s:"4-0",p:0.1},{s:"1-0",p:0.08},{s:"5-1",p:0.07},{s:"5-0",p:0.07},{s:"6-0",p:0.04},{s:"6-1",p:0.03}];
+    else if (diff >= 2.5) possible = [{s:"2-1",p:0.18},{s:"1-0",p:0.12},{s:"2-0",p:0.12},{s:"1-1",p:0.1},{s:"3-1",p:0.12},{s:"0-0",p:0.08},{s:"3-2",p:0.1},{s:"0-1",p:0.05},{s:"3-0",p:0.08},{s:"4-1",p:0.05}];
+    else if (diff >= 1.5) possible = [{s:"1-0",p:0.18},{s:"1-1",p:0.15},{s:"2-1",p:0.15},{s:"0-0",p:0.12},{s:"0-1",p:0.08},{s:"2-0",p:0.1},{s:"2-2",p:0.07},{s:"3-2",p:0.08},{s:"3-1",p:0.07}];
+    else if (diff >= 0.5) possible = [{s:"1-1",p:0.18},{s:"1-0",p:0.15},{s:"0-1",p:0.12},{s:"0-0",p:0.15},{s:"2-1",p:0.12},{s:"1-2",p:0.1},{s:"2-2",p:0.1},{s:"3-3",p:0.05},{s:"0-0",p:0.03}];
+    else if (diff >= -0.5) possible = [{s:"1-1",p:0.18},{s:"0-1",p:0.15},{s:"1-0",p:0.12},{s:"0-0",p:0.15},{s:"1-2",p:0.12},{s:"2-1",p:0.1},{s:"2-2",p:0.1},{s:"3-3",p:0.05},{s:"0-0",p:0.03}];
+    else if (diff >= -1.5) possible = [{s:"0-1",p:0.18},{s:"1-1",p:0.15},{s:"1-2",p:0.15},{s:"0-0",p:0.12},{s:"1-0",p:0.08},{s:"0-2",p:0.1},{s:"2-2",p:0.07},{s:"2-3",p:0.08},{s:"1-3",p:0.07}];
+    else if (diff >= -2.5) possible = [{s:"1-2",p:0.18},{s:"0-1",p:0.12},{s:"0-2",p:0.12},{s:"1-1",p:0.1},{s:"1-3",p:0.12},{s:"0-0",p:0.08},{s:"2-3",p:0.1},{s:"1-0",p:0.05},{s:"0-3",p:0.08},{s:"1-4",p:0.05}];
+    else if (diff >= -4) possible = [{s:"0-2",p:0.12},{s:"0-3",p:0.15},{s:"1-3",p:0.12},{s:"1-2",p:0.12},{s:"0-1",p:0.08},{s:"0-4",p:0.1},{s:"1-4",p:0.1},{s:"1-5",p:0.07},{s:"0-5",p:0.07},{s:"0-6",p:0.04},{s:"1-6",p:0.03}];
+    else possible = [{s:"0-3",p:0.15},{s:"0-4",p:0.15},{s:"1-4",p:0.1},{s:"0-5",p:0.12},{s:"1-5",p:0.1},{s:"0-2",p:0.08},{s:"0-6",p:0.07},{s:"0-7",p:0.05},{s:"0-8",p:0.05},{s:"0-9",p:0.03},{s:"0-10",p:0.02}];
+    
+    const rand = Math.random();
+    let cum = 0, chosen = possible[0].s;
+    for (let p of possible) { 
+        cum += p.p; 
+        if (rand <= cum) { chosen = p.s; break; } 
+    }
+    const [h,a] = chosen.split('-').map(Number);
+    if (Math.random()<0.1) { 
+        const surprise = SCORE_POOL[Math.floor(Math.random()*SCORE_POOL.length)]; 
+        const [sh,sa] = surprise.split('-').map(Number); 
+        return {home:sh, away:sa}; 
+    }
+    return {home:h, away:a};
+}
+
+// ---------- MARCHÉS (22) + SYNCHRONISATION ----------
+const ALL_MARKETS = ["1","2","X","Première mi-temps +1.5 buts","Première mi-temps +2 buts","Première mi-temps -2 buts","Première mi-temps -1.5 buts","Première mi-temps domicile gagne","Première mi-temps extérieur gagne","Première mi-temps match nul","Plus de buts en première mi-temps","Plus de buts en deuxième mi-temps","Deuxième mi-temps domicile gagne","Deuxième mi-temps extérieur gagne","Deux mi-temps égalité","Over 1.5","Over 2","Over 2.5","Over 3","Under 2","All teams win Yes","All teams win No"];
+function isMarketCompatible(market, homeScore, awayScore, homeTier, awayTier, diff) {
+    const total = homeScore+awayScore;
+    const htHome = Math.floor(homeScore*0.45), htAway = Math.floor(awayScore*0.45);
+    if (market==="1" && homeScore>awayScore) return true;
+    if (market==="2" && awayScore>homeScore) return true;
+    if (market==="X" && homeScore===awayScore) return true;
+    if (market==="Over 1.5" && total>1.5) return true;
+    if (market==="Over 2" && total>2) return true;
+    if (market==="Over 2.5" && total>2.5) return true;
+    if (market==="Over 3" && total>3) return true;
+    if (market==="Under 2" && total<2) return true;
+    if (market==="All teams win Yes" && homeScore>0 && awayScore>0) return true;
+    if (market==="All teams win No" && (homeScore===0 || awayScore===0)) return true;
+    if (market.includes("Première mi-temps")) {
+        if (market.includes("+1.5") && (htHome+htAway)>1.5) return true;
+        if (market.includes("+2") && (htHome+htAway)>2) return true;
+        if (market.includes("-2") && (htHome+htAway)<2) return true;
+        if (market.includes("-1.5") && (htHome+htAway)<1.5) return true;
+        if (market.includes("domicile gagne") && htHome>htAway) return true;
+        if (market.includes("extérieur gagne") && htAway>htHome) return true;
+        if (market.includes("match nul") && htHome===htAway) return true;
+    }
+    if (market==="Plus de buts en première mi-temps" && (htHome+htAway) > (homeScore+awayScore)/2) return true;
+    if (market==="Plus de buts en deuxième mi-temps" && (homeScore+awayScore - (htHome+htAway)) > (htHome+htAway)) return true;
+    if (market.includes("Deuxième mi-temps")) {
+        const sh = homeScore-htHome, sa = awayScore-htAway;
+        if (market.includes("domicile gagne") && sh>sa) return true;
+        if (market.includes("extérieur gagne") && sa>sh) return true;
+    }
+    if (market==="Deux mi-temps égalité" && (htHome+htAway) === (homeScore-htHome + awayScore-htAway)) return true;
+    return false;
+}
+function selectMarket(homeScore, awayScore, homeTier, awayTier, diff) {
+    const compatible = ALL_MARKETS.filter(m => isMarketCompatible(m, homeScore, awayScore, homeTier, awayTier, diff));
+    if (compatible.length===0) return "Over 1.5";
+    if (diff>=5 && compatible.includes("Première mi-temps +1.5 buts")) return "Première mi-temps +1.5 buts";
+    if (diff===0 && compatible.includes("X")) return "X";
+    return compatible[Math.floor(Math.random()*compatible.length)];
+}
+
+// ---------- PRÉDICTION PRINCIPALE ----------
+function predictMatch(home, away) {
+    const homeStrength = getAdjustedStrength(home, true, away);
+    const awayStrength = getAdjustedStrength(away, false, home);
+    const diff = homeStrength - awayStrength;
+    const scoreObj = generateScoreFromDiff(diff);
+    const market = selectMarket(scoreObj.home, scoreObj.away, getBaseStrength(home), getBaseStrength(away), diff);
+    return { finalScore: `${scoreObj.home}-${scoreObj.away}`, market, homeTier: getBaseStrength(home), awayTier: getBaseStrength(away) };
+}
+
+// ---------- STOCKAGE / UTILISATEUR (avec historique 48h) ----------
+let db = { users: {}, currentUser: null, usedCodes: new Set() };
+let currentPredictions = [], ticketsToday = 0;
+const MAX_TICKETS = 4, MAX_EVENTS = 20, GOURMAND = 12, PREMIUM_DAYS = 7;
+
+function loadStorage() {
+    const s = localStorage.getItem('wise03_pro_db');
+    if(s) try { 
+        const p=JSON.parse(s); 
+        db.users=p.users||{}; 
+        db.usedCodes=new Set(p.usedCodes||[]); 
+        db.currentUser=p.currentUser||null; 
+    } catch(e){}
+    Object.values(db.users).forEach(u => { if (!u.matchHistory) u.matchHistory = []; });
+    checkTodayTickets();
+}
+function saveStorage() {
+    localStorage.setItem('wise03_pro_db', JSON.stringify({users:db.users, usedCodes:Array.from(db.usedCodes), currentUser:db.currentUser}));
+}
+function checkTodayTickets() {
+    const u=getCurrentUser(); if(!u) return;
+    const today=new Date().toLocaleDateString();
+    ticketsToday=u.tickets.filter(t=>new Date(t.date).toLocaleDateString()===today).length;
+}
+function createUser(phone,name,pwd) {
+    if(db.users[phone]) { showMessage('signupStatus', t('phoneExists'), false); return false; }
+    db.users[phone]={name,phone,password:pwd,isActive:false,premiumExpiryDate:null,tickets:[],matchHistory:[],createdDate:new Date().toLocaleString()};
+    db.currentUser=phone; saveStorage(); return true;
+}
+function loginUser(phone,pwd) {
+    if(!db.users[phone]) { showMessage('loginStatus', t('accountNotFound'), false); return false; }
+    if(db.users[phone].password!==pwd) { showMessage('loginStatus', t('wrongPassword'), false); return false; }
+    db.currentUser=phone; saveStorage(); return true;
+}
+function getCurrentUser() { return db.currentUser && db.users[db.currentUser] ? db.users[db.currentUser] : null; }
+function isPremiumActive() {
+    const u=getCurrentUser(); if(!u||!u.isActive||!u.premiumExpiryDate) return false;
+    return new Date() < new Date(u.premiumExpiryDate);
+}
+function getPremiumDaysLeft() {
+    const u=getCurrentUser(); if(!u||!u.premiumExpiryDate) return 0;
+    const now=new Date(), exp=new Date(u.premiumExpiryDate);
+    return now>=exp?0:Math.ceil((exp-now)/(1000*60*60*24));
+}
+
+// Vérification 48h pour un match
+function canAnalyzeMatch(home, away) {
+    const u = getCurrentUser();
+    if (!u) return false;
+    const now = Date.now();
+    const key = `${home.toLowerCase().trim()}|${away.toLowerCase().trim()}`;
+    const history = u.matchHistory || [];
+    u.matchHistory = history.filter(entry => (now - entry.timestamp) < 48 * 60 * 60 * 1000);
+    const exists = u.matchHistory.some(entry => entry.key === key);
+    if (exists) {
+        showMessage('analysisResult', t('matchAlreadyAnalyzed'), false);
+        return false;
+    }
+    return true;
+}
+function addMatchToHistory(home, away) {
+    const u = getCurrentUser();
+    if (!u) return;
+    if (!u.matchHistory) u.matchHistory = [];
+    const key = `${home.toLowerCase().trim()}|${away.toLowerCase().trim()}`;
+    u.matchHistory.push({ key, timestamp: Date.now() });
+    saveStorage();
+}
+
+function processActivationCode(code) {
+    const u=getCurrentUser(); if(!u) return false;
+    if(!/^\d{15}$/.test(code)) { showMessage('codeStatus', t('validError'), false); return false; }
+    if(db.usedCodes.has(code)) { showMessage('codeStatus', t('usedCodeError'), false); return false; }
+    const count3=(code.match(/3/g)||[]).length, count0=(code.match(/0/g)||[]).length;
+    let msg='';
+    if(count3===3) { u.isActive=true; msg=t('accountActivated'); }
+    if(count0===2 && count3===1) {
+        const now=new Date(), exp=new Date(now.getTime()+PREMIUM_DAYS*24*60*60*1000);
+        u.premiumExpiryDate=exp.toISOString(); msg+=(msg?' ':'')+t('premiumAdded');
+    }
+    if(!msg) { showMessage('codeStatus', t('invalidCode'), false); return false; }
+    db.usedCodes.add(code); saveStorage(); showMessage('codeStatus', msg, true);
+    updateUIByStatus(); return true;
+}
+
+function updateUIByStatus() {
+    const u=getCurrentUser(), dash=document.getElementById('dashboardPanel');
+    const activationHint = document.getElementById('activationHint');
+    if(u) {
+        document.getElementById('loginScreen').style.display='none';
+        document.getElementById('signupScreen').style.display='none';
+        dash.style.display='block';
+        if (u.isActive) {
+            const days=isPremiumActive()?getPremiumDaysLeft():0;
+            document.getElementById('premiumStatusBadge').innerHTML=isPremiumActive()?`💎 PREMIUM (${days}j)`:'✅ COMPTE ACTIF';
+            document.getElementById('userInfoBlock').innerHTML=isPremiumActive()?`📊 Statut: PREMIUM | ${days}j restants`:`📊 Statut: ACTIF | Premium inactif`;
+            activationHint.style.display='none';
+        } else {
+            document.getElementById('premiumStatusBadge').innerHTML='⏳ EN ATTENTE D\'ACTIVATION';
+            document.getElementById('userInfoBlock').innerHTML=`⏳ Statut: En attente d'activation`;
+            activationHint.style.display='block';
+        }
+        if(isPremiumActive() && getPremiumDaysLeft()<=3) {
+            const w=document.getElementById('premiumExpiryWarning');
+            w.innerHTML=`⏰ ${t('premiumExpiresIn')} ${getPremiumDaysLeft()} ${t('premiumDays')}`;
+            w.style.display='block';
+        } else document.getElementById('premiumExpiryWarning').style.display='none';
+    } else {
+        document.getElementById('loginScreen').style.display='block';
+        document.getElementById('signupScreen').style.display='none';
+        dash.style.display='none';
+    }
+    renderTickets(); populateTeamsDatalist(); updateTicketCounter();
+}
+
+function updateTicketCounter() {
+    document.getElementById('eventCount').textContent=currentPredictions.length;
+    document.getElementById('ticketsLeft').textContent=MAX_TICKETS-ticketsToday;
+    document.getElementById('gourmandWarning').style.display=currentPredictions.length>GOURMAND?'block':'none';
+}
+function showMessage(elId, msg, success) {
+    const c=document.getElementById(elId); if(c) { c.innerHTML=`<div class="alert ${success?'alert-success':''}">${msg}</div>`; setTimeout(()=>c.innerHTML='',4000); }
+}
+function renderPredictionList() {
+    const cont=document.getElementById('predictionList');
+    cont.innerHTML=currentPredictions.map((p,i)=>`<div class="prediction-item"><div class="prediction-item-text"><strong>⚽ ${p.home} vs ${p.away}</strong><br>📊 ${p.market} | 🎯 ${p.score}</div><button class="prediction-item-remove" onclick="removePrediction(${i})">✕</button></div>`).join('');
+    updateTicketCounter();
+}
+
+// CORRECTION ICI - Fonction globale pour removePrediction
+window.removePrediction = function(idx) {
+    currentPredictions.splice(idx,1);
+    if(currentPredictions.length===0) { 
+        document.getElementById('predictionListContainer').style.display='none'; 
+        document.getElementById('analysisResult').innerHTML=''; 
+    } else {
+        renderPredictionList();
+    }
+};
+
+function renderTickets() {
+    const u=getCurrentUser(), cont=document.getElementById('ticketHistoryList');
+    if(!u||!u.tickets.length) { cont.innerHTML=`<div class="info-text">${t('noTickets')}</div>`; return; }
+    cont.innerHTML=u.tickets.map((t,i)=>{
+        const isG=t.matches.length>GOURMAND, isD=t.isDouble===true;
+        let cls='ticket-details', badge='';
+        if(isG&&isD) { cls='ticket-double'; badge='<span class="badge-gourmand">🍽️ GOURMAND</span><span class="badge-double">🔄 DOUBLE</span>'; }
+        else if(isG) { cls='ticket-gourmand'; badge='<span class="badge-gourmand">🍽️ GOURMAND</span>'; }
+        else if(isD) { cls='ticket-double'; badge='<span class="badge-double">🔄 DOUBLE</span>'; }
+        return `<div class="${cls}"><div class="ticket-header"><strong>📅 ${t.date}</strong><div class="ticket-badges">${badge}</div></div><div>(${t.matches.length} matchs)</div><div style="margin-top:8px;">${t.matches.map(m=>`⚽ ${m.home} vs ${m.away} → ${m.market}`).join('<br>')}</div>${!isD&&t.matches.length>0?`<button class="btn btn-outline btn-small" style="margin-top:8px;" onclick="prepareDoubleTicket(${i})">🔄 Doublon</button>`:''}</div>`;
+    }).join('');
+}
+
+// CORRECTION ICI - Fonction globale pour prepareDoubleTicket
+window.prepareDoubleTicket = function(idx) {
+    const u=getCurrentUser(); 
+    if(!u||!u.tickets[idx]) return;
+    const orig=u.tickets[idx];
+    if(orig.isDouble) { 
+        showMessage('analysisResult',"❌ Ce ticket est déjà un doublon.",false); 
+        return; 
+    }
+    if(currentPredictions.length>0 && !confirm("Remplacer les prédictions en cours ?")) return;
+    currentPredictions=[];
+    document.getElementById('analysisResult').innerHTML=`<div class="waiting-animation">🔄 Génération double ticket...</div>`;
+    setTimeout(()=>{
+        for(let m of orig.matches) { 
+            const p=predictMatch(m.home, m.away); 
+            currentPredictions.push({home:m.home, away:m.away, market:p.market, score:p.finalScore}); 
+        }
+        document.getElementById('analysisResult').innerHTML=`<div class="alert alert-success">✅ ${orig.matches.length} analyses régénérées!</div>`;
+        document.getElementById('predictionListContainer').style.display='block';
+        renderPredictionList();
+        orig.isDouble=true; 
+        saveStorage(); 
+        renderTickets();
+    },1500);
+};
+
+function doubleCurrentTicket() {
+    if(currentPredictions.length===0) { showMessage('analysisResult', t('doubleTicketError'), false); return; }
+    if(ticketsToday>=MAX_TICKETS) { showMessage('analysisResult', t('maxTicketsReached'), false); return; }
+    const u=getCurrentUser(); if(!u) return;
+    document.getElementById('analysisResult').innerHTML=`<div class="waiting-animation">🔄 Doublage en cours...</div>`;
+    setTimeout(()=>{
+        const newPreds=currentPredictions.map(p=>{ const np=predictMatch(p.home,p.away); return {home:p.home, away:p.away, market:np.market, score:np.finalScore}; });
+        u.tickets.unshift({date:new Date().toLocaleString(), matches:newPreds, isDouble:true});
+        ticketsToday++; saveStorage();
+        showMessage('analysisResult', t('doubleTicketSuccess'), true);
+        renderTickets(); updateTicketCounter();
+    },2000);
+}
+function saveTicket() {
+    const u=getCurrentUser(); if(!u||currentPredictions.length===0) return;
+    if(ticketsToday>=MAX_TICKETS) { showMessage('analysisResult', t('maxTicketsReached'), false); return; }
+    u.tickets.unshift({date:new Date().toLocaleString(), matches:currentPredictions.map(p=>({...p})), isDouble:false});
+    ticketsToday++; saveStorage();
+    showMessage('analysisResult', t('ticketSavedSuccess'), true);
+    currentPredictions=[]; document.getElementById('predictionListContainer').style.display='none';
+    renderTickets(); updateTicketCounter();
+}
+function clearPredictions() {
+    if(confirm("Effacer toutes les prédictions ?")) { currentPredictions=[]; document.getElementById('predictionListContainer').style.display='none'; updateTicketCounter(); showMessage('analysisResult', t('predictionsCleared'), true); }
+}
+function populateTeamsDatalist() {
+    const dl=document.getElementById('globalTeamsList'); dl.innerHTML='';
+    ALL_TEAMS.sort().forEach(t=>{ const o=document.createElement('option'); o.value=t; dl.appendChild(o); });
+}
+function runAnalysis() {
+    const home=document.getElementById('teamHome').value.trim(), away=document.getElementById('teamAway').value.trim();
+    if(!home||!away) { document.getElementById('analysisResult').innerHTML='<div class="alert">Entrez deux équipes.</div>'; return; }
+    if(home.toLowerCase()===away.toLowerCase()) { document.getElementById('analysisResult').innerHTML='<div class="alert">Équipes différentes.</div>'; return; }
+    const u=getCurrentUser();
+    if(!u) return;
+    if(!u.isActive) { document.getElementById('analysisResult').innerHTML=`<div class="alert">${t('activationRequired')}</div>`; return; }
+    if(currentPredictions.length>=MAX_EVENTS) { document.getElementById('analysisResult').innerHTML=`<div class="alert">${t('maxEventsReached')}</div>`; return; }
+    if(!canAnalyzeMatch(home, away)) return;
+
+    document.getElementById('analysisResult').innerHTML='<div class="waiting-animation">🧠 Analyse IA en cours...</div>';
+    setTimeout(()=>{
+        const pred=predictMatch(home, away);
+        currentPredictions.push({home, away, market:pred.market, score:pred.finalScore});
+        addMatchToHistory(home, away);
+        const homeTier=getBaseStrength(home), awayTier=getBaseStrength(away);
+        const homeTierClass = homeTier>=9?'tier-10':homeTier>=7?'tier-8':homeTier>=5?'tier-6':homeTier>=3?'tier-4':'tier-2';
+        const awayTierClass = awayTier>=9?'tier-10':awayTier>=7?'tier-8':awayTier>=5?'tier-6':awayTier>=3?'tier-4':'tier-2';
+        document.getElementById('analysisResult').innerHTML=`
+            <div class="vs-panel">
+                <div style="display:flex; justify-content:space-between;"><b>${home}</b> <span style="color:var(--cyan);">VS</span> <b>${away}</b></div>
+                <div><span class="strength-badge ${homeTierClass}">Force ${homeTier}/10</span> vs <span class="strength-badge ${awayTierClass}">Force ${awayTier}/10</span></div>
+                <div class="market-result">🎯 ${pred.market}</div>
+                <div>📊 Score: <strong style="color:var(--success);">${pred.finalScore}</strong></div>
+            </div>`;
+        document.getElementById('teamHome').value=''; document.getElementById('teamAway').value='';
+        document.getElementById('predictionListContainer').style.display='block';
+        renderPredictionList();
+    },4500);
+}
+function openProfileModal() {
+    const u=getCurrentUser(); if(!u) return;
+    document.getElementById('profilePhone').textContent=u.phone;
+    document.getElementById('profileName').textContent=u.name;
+    document.getElementById('profileStatus').textContent=u.isActive?"✅ ACTIF":"⏳ En attente";
+    const days=getPremiumDaysLeft(), isPrem=isPremiumActive();
+    document.getElementById('profilePremium').textContent=isPrem?`💎 ${days} jours`:"❌ Pas de premium";
+    document.getElementById('profilePremiumExpiry').textContent=isPrem&&u.premiumExpiryDate?new Date(u.premiumExpiryDate).toLocaleDateString():"N/A";
+    document.getElementById('profileDate').textContent=u.createdDate;
+    document.getElementById('profileModal').classList.add('active');
+}
+function setupListeners() {
+    document.getElementById('languageSelector').addEventListener('change',e=>updateLanguage(e.target.value));
+    document.getElementById('switchToSignup').addEventListener('click',()=>{ document.getElementById('loginScreen').style.display='none'; document.getElementById('signupScreen').style.display='block'; });
+    document.getElementById('switchToLogin').addEventListener('click',()=>{ document.getElementById('loginScreen').style.display='block'; document.getElementById('signupScreen').style.display='none'; });
+    document.getElementById('loginBtn').addEventListener('click',()=>{
+        const ph=document.getElementById('loginPhone').value.trim(), pw=document.getElementById('loginPassword').value.trim();
+        if(!ph||!pw) { showMessage('loginStatus', t('fillAllFields'), false); return; }
+        if(loginUser(ph,pw)) updateUIByStatus();
+    });
+    document.getElementById('signupBtn').addEventListener('click',()=>{
+        const ph=document.getElementById('signupPhone').value.trim(), nm=document.getElementById('signupName').value.trim(), pw=document.getElementById('signupPassword').value.trim(), pwc=document.getElementById('signupPasswordConfirm').value.trim(), accept=document.getElementById('acceptTerms').checked;
+        if(!ph||!nm||!pw||!pwc) { showMessage('signupStatus', t('fillAllFields'), false); return; }
+        if(pw!==pwc) { showMessage('signupStatus', t('passwordMismatch'), false); return; }
+        if(pw.length<6) { showMessage('signupStatus', t('minPassword'), false); return; }
+        if(!accept) { showMessage('signupStatus', t('acceptTerms'), false); return; }
+        if(createUser(ph,nm,pw)) { showMessage('signupStatus', t('accountCreated'), true); setTimeout(()=>{ document.getElementById('loginScreen').style.display='none'; document.getElementById('signupScreen').style.display='none'; updateUIByStatus(); },2000); }
+    });
+    document.getElementById('profileBtn').addEventListener('click',openProfileModal);
+    document.getElementById('logoutBtn').addEventListener('click',()=>{ if(confirm("Déconnexion ?")) { db.currentUser=null; currentPredictions=[]; saveStorage(); location.reload(); } });
+    document.getElementById('analyzeMatchBtn').addEventListener('click',runAnalysis);
+    document.getElementById('saveTicketBtn').addEventListener('click',saveTicket);
+    document.getElementById('doubleTicketBtn').addEventListener('click',doubleCurrentTicket);
+    document.getElementById('clearPredictionsBtn').addEventListener('click',clearPredictions);
+    document.getElementById('closeProfileBtn').addEventListener('click',()=>document.getElementById('profileModal').classList.remove('active'));
+    document.getElementById('validateCodeBtn').addEventListener('click',()=>{ const code=document.getElementById('activationCodeInput').value.trim(); if(!code) { showMessage('codeStatus', t('validError'), false); return; } processActivationCode(code); });
+    document.getElementById('contactAdminBtn').addEventListener('click',()=>{ window.open('https://wa.me/243983971254?text=Bonjour%20activation%20Wise03.bet','_blank'); });
+}
+function showSplash() { setTimeout(()=>{ document.getElementById('splashScreen').classList.add('hidden'); document.getElementById('appContainer').style.display='block'; },8000); }
+document.addEventListener('DOMContentLoaded',()=>{
+    loadStorage(); updateLanguage('fr'); showSplash(); setupListeners();
+    if(db.currentUser && db.users[db.currentUser]) updateUIByStatus();
+});
+})();
+</script>
 </body>
     </html>
