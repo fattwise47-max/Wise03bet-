@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>WISE03.BET — IA Sportive Pro | Code Activation</title>
+    <title>WISE03.BET — IA Sportive Pro | 600+ Clubs</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; }
         :root {
@@ -58,9 +58,10 @@
         .profile-section { background: #0e131c; border-radius: 20px; padding: 16px; margin: 12px 0; }
         .profile-stat { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-dim); }
         .profile-stat:last-child { border-bottom: none; }
-        .ticket-details { background: #0e131c; border-radius: 16px; padding: 12px; margin: 8px 0; }
-        .ticket-gourmand { background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(235,179,8,0.15)); border: 1px solid var(--warning); border-radius: 16px; padding: 12px; margin: 8px 0; }
-        .ticket-double { background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(6,182,212,0.15)); border: 1px solid var(--double); border-radius: 16px; padding: 12px; margin: 8px 0; }
+        .ticket-details { background: #0e131c; border-radius: 16px; padding: 12px; margin: 8px 0; cursor: pointer; transition: transform 0.1s ease; border: 1px solid transparent; }
+        .ticket-details:hover { transform: scale(1.01); border-color: var(--primary); }
+        .ticket-gourmand { background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(235,179,8,0.15)); border: 1px solid var(--warning); border-radius: 16px; padding: 12px; margin: 8px 0; cursor: pointer; }
+        .ticket-double { background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(6,182,212,0.15)); border: 1px solid var(--double); border-radius: 16px; padding: 12px; margin: 8px 0; cursor: pointer; }
         .btn-small { padding: 8px 16px; font-size: 12px; }
         .waiting-animation { text-align: center; padding: 20px; }
         .dot-pulse { display: inline-block; animation: pulse 1.5s infinite; }
@@ -81,6 +82,80 @@
         .ticket-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px; }
         .ticket-badges { display: flex; gap: 6px; flex-wrap: wrap; }
         .activation-hint { background: #1e2a3a; border-radius: 12px; padding: 12px; margin: 16px 0; font-size: 12px; color: var(--warning); }
+
+        /* NOUVEAU : Espace utilisateur avec tickets collés */
+        .user-space-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-dim);
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
+        }
+        .profile-header-compact {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed var(--border-dim);
+        }
+        .tickets-attached-section {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-dim);
+        }
+        .user-greeting {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--cyan);
+        }
+        .user-phone-badge {
+            background: #1e2a3a;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .space-indicator {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-muted);
+            font-size: 13px;
+            border-bottom: 1px dashed var(--border-dim);
+            margin-bottom: 20px;
+        }
+        .space-indicator i {
+            font-style: normal;
+            background: rgba(43,127,255,0.1);
+            padding: 8px 16px;
+            border-radius: 40px;
+        }
+
+        .ticket-modal .modal-content {
+            background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #334155;
+            border-radius: 40px;
+            width: 440px;
+            max-width: 95%;
+            padding: 28px 22px;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.7), 0 0 0 2px #3b82f6 inset;
+        }
+        .ticket-detail-header { text-align: center; margin-bottom: 24px; border-bottom: 2px dashed #4f46e5; padding-bottom: 16px; }
+        .ticket-detail-title { font-size: 28px; font-weight: 900; background: linear-gradient(135deg, #fbbf24, #ec4899, #06b6d4); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: -0.5px; }
+        .ticket-id-badge { background: #2dd4bf20; border: 1px solid #2dd4bf; border-radius: 60px; padding: 8px 18px; display: inline-block; margin: 12px 0 6px; color: #a7f3d0; font-weight: 700; font-size: 15px; backdrop-filter: blur(4px); }
+        .ticket-meta-grid { display: flex; justify-content: center; gap: 20px; margin: 15px 0; }
+        .meta-chip { background: #1e1b4b; padding: 6px 14px; border-radius: 30px; color: #c7d2fe; font-weight: 600; font-size: 13px; border: 1px solid #6366f1; }
+        .match-detail-list { display: flex; flex-direction: column; gap: 14px; margin: 20px 0; }
+        .match-card-detail { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); border-radius: 28px; padding: 18px 16px; border: 1px solid #a78bfa; box-shadow: 0 8px 0 #4c1d95; }
+        .match-teams { display: flex; align-items: center; justify-content: space-between; font-weight: 800; font-size: 18px; margin-bottom: 12px; color: #fef08a; }
+        .match-vs-badge { background: #ec4899; color: black; padding: 4px 12px; border-radius: 40px; font-size: 14px; font-weight: 900; }
+        .match-analysis-row { display: flex; justify-content: space-between; background: #02061780; padding: 12px 14px; border-radius: 20px; margin: 10px 0; border-left: 5px solid #06b6d4; }
+        .market-badge-large { background: #f97316; color: #0c0a2a; font-weight: 900; padding: 8px 14px; border-radius: 30px; font-size: 16px; box-shadow: 0 3px 0 #b45309; }
+        .score-badge-large { background: #10b981; color: #022c22; font-weight: 900; padding: 8px 18px; border-radius: 30px; font-size: 20px; box-shadow: 0 3px 0 #047857; }
+        .strength-detail { display: flex; gap: 15px; font-size: 13px; color: #cbd5e1; margin-top: 8px; }
+        .ticket-modal .modal-close { background: #dc2626; color: white; width: 40px; height: 40px; border-radius: 30px; font-size: 22px; display: flex; align-items: center; justify-content: center; }
+        .double-from-ticket-btn { background: linear-gradient(145deg, #8b5cf6, #4f46e5); border: none; color: white; padding: 14px; border-radius: 40px; font-weight: bold; margin-top: 16px; width: 100%; border-bottom: 4px solid #312e81; }
     </style>
 </head>
 <body>
@@ -115,14 +190,7 @@
             <input type="password" id="signupPassword" placeholder="Créez un mot de passe">
             <label id="signupPasswordConfirmLabel">🔐 Confirmer mot de passe</label>
             <input type="password" id="signupPasswordConfirm" placeholder="Confirmez le mot de passe">
-            <div class="terms-text" id="termsText">Conditions Générales d'Utilisation - Wise03.bet
-1. Description du Service : Wise03.bet est une plateforme d'analyse de données footballistiques et de génération de tickets de score. L'outil utilise un algorithme de traitement statistique pour accompagner l'utilisateur dans ses prises de décision.
-2. Performance et Précision : Précision Globale : L'analyse générale de l'application affiche un taux de précision moyen de 89 % sur l'ensemble des marchés. Cas particulier du Score Exact : le marché spécifique du "Score Exact" reste le plus complexe avec un taux de réalité d'environ 34 %. Les utilisateurs sont invités à utiliser cette option avec stratégie.
-3. Accès et Abonnement Premium : Activation manuelle : L'accès aux fonctionnalités Premium n'est pas automatique. Procédure d'abonnement : Pour activer, renouveler ou prolonger un abonnement, l'utilisateur doit contacter l'administrateur uniquement via WhatsApp au +243983971254. Durée d'accès : L'administrateur définit la durée de validité (ex: 4 jours). Une fois le délai expiré, l'accès est automatiquement bloqué.
-4. Fonctionnement technique : Validation : Un ticket peut être validé dès que deux (2) matchs minimum ont été scannés. Sécurité des codes : Tout code d'activation est à usage unique. En cas de tentative de réutilisation, le système affichera un message de "Refus d'accès".
-5. Responsabilité et Limitation : Aide à la décision : Les données fournies par Wise03.bet sont des outils d'aide et non des certitudes absolues. Gestion des Risques : L'utilisateur est seul responsable de ses mises et de son capital. L'administrateur décline toute responsabilité en cas de pertes financières liées à l'utilisation des pronostics.
-6. Protection des Données : Les informations de connexion et les statuts des comptes sont gérés de manière confidentielle. Toute tentative de piratage ou d'usage frauduleux du script entraînera une exclusion immédiate.
-7. Modifications : L'administrateur se réserve le droit de modifier ces conditions pour garantir la sécurité et la performance de l'application Wise03.bet.</div>
+            <div class="terms-text" id="termsText">Conditions Générales d'Utilisation - Wise03.bet ...</div>
             <label style="display: flex; align-items: center; font-size: 12px; margin: 12px 0;">
                 <input type="checkbox" id="acceptTerms" style="width: 20px; height: 20px; margin-right: 8px;">
                 <span id="acceptTermsText">J'accepte les conditions d'utilisation</span>
@@ -133,23 +201,42 @@
     </div>
     <!-- DASHBOARD -->
     <div id="dashboardPanel" style="display: none;">
-        <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <h3 id="dashboardTitle">⚡ WISE03 PRO</h3>
+        <!-- BLOC ESPACE UTILISATEUR AVEC TICKETS COLLÉS -->
+        <div class="user-space-card">
+            <div class="profile-header-compact">
+                <div>
+                    <span class="user-greeting" id="userGreeting">👤 Bonjour, </span>
+                    <span id="userNameDisplay"></span>
+                </div>
                 <div style="display: flex; gap: 8px;">
-                    <button class="btn btn-outline btn-small" id="profileBtn">👤 PROFIL</button>
-                    <button class="btn btn-outline btn-small" id="logoutBtn">🚪 DÉCONNEXION</button>
+                    <span class="user-phone-badge" id="userPhoneBadge"></span>
+                    <button class="btn btn-outline btn-small" id="profileBtnFromSpace">👤</button>
+                    <button class="btn btn-outline btn-small" id="logoutBtnFromSpace">🚪</button>
                 </div>
             </div>
-            <div id="userInfoBlock" style="font-size: 12px; color:var(--cyan); padding: 12px; background: #0e131c; border-radius: 12px;"></div>
-            <div id="premiumExpiryWarning" class="premium-expiry-warning" style="display: none; margin-top: 12px;"></div>
-            <div id="activationHint" class="activation-hint" style="display: none;">
-                ⚠️ Votre compte n'est pas activé. Pour activer l'accès Premium, contactez l'administrateur via WhatsApp : +243983971254
+            <div id="premiumStatusInline" class="badge" style="background:#22c55e20; margin-bottom: 8px;">🔓 ACTIF</div>
+            <div id="activationHintInline" class="activation-hint" style="display: none; margin-top: 8px;">
+                ⚠️ Compte non activé. Contactez WhatsApp : +243983971254
+            </div>
+            
+            <!-- TICKETS ATTACHÉS DIRECTEMENT SOUS LE PROFIL -->
+            <div class="tickets-attached-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <h4 style="margin:0;" id="ticketsTitleInline">🎫 MES TICKETS</h4>
+                    <span style="font-size: 12px; color: var(--text-muted);" id="ticketCountBadge">0/4</span>
+                </div>
+                <div id="ticketHistoryListInline" style="max-height: 200px; overflow-y: auto;"></div>
             </div>
         </div>
+
+        <!-- ESPACE (séparateur visuel) -->
+        <div class="space-indicator">
+            <i>✨ Espace Pronostics — Analyse IA ✨</i>
+        </div>
+
+        <!-- PRONOSTIC PRO -->
         <div class="card">
-            <h3 id="analyzeTitle">⚡ PRONOSTIC PRO</h3>
-            <div id="premiumStatusBadge" class="badge" style="background:#22c55e20; margin-bottom: 16px;">🔓 ACTIF</div>
+            <h3 id="analyzeTitle">⚡ PRONOSTIC wisePRO</h3>
             <label id="homeTeamLabel">🏠 Équipe Domicile</label>
             <input type="text" id="teamHome" placeholder="ex: Real Madrid, France..." list="globalTeamsList">
             <label id="awayTeamLabel">✈️ Équipe Extérieur</label>
@@ -172,10 +259,6 @@
                 </div>
                 <button class="btn btn-outline" id="clearPredictionsBtn" style="margin-top: 8px;">🗑️ EFFACER LES PRÉDICTIONS</button>
             </div>
-        </div>
-        <div class="card">
-            <h4 id="ticketsTitle">🎫 TICKETS ENREGISTRÉS</h4>
-            <div id="ticketHistoryList" style="max-height: 280px; overflow-y: auto;"></div>
         </div>
     </div>
 </div>
@@ -209,11 +292,22 @@
         </div>
     </div>
 </div>
+<!-- MODAL DÉTAIL TICKET -->
+<div class="modal ticket-modal" id="ticketDetailModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 style="color:white;">✨ Détails du Ticket</h3>
+            <button class="modal-close" id="closeTicketDetailBtn">&times;</button>
+        </div>
+        <div id="ticketDetailContent"></div>
+        <button class="double-from-ticket-btn" id="doubleFromDetailBtn">🔄 DOUBLER CE TICKET (nouvelle analyse)</button>
+    </div>
+</div>
 <script>
 (function(){
 "use strict";
 
-// ---------- TRADUCTIONS ----------
+// ---------- TRADUCTIONS (inchangé) ----------
 const translations = {
     fr: { splashText: "Chargement de l'analyse IA wise03.bet...", loginBadge: "🔐 CONNEXION", loginPhoneLabel: "📱 Numéro de téléphone", loginPasswordLabel: "🔐 Mot de passe", loginBtn: "📱 SE CONNECTER", noAccountText: "Pas de compte ?", createAccountLink: "Créer un compte", signupBadge: "✨ INSCRIPTION", signupPhoneLabel: "📱 Numéro de téléphone", signupNameLabel: "👤 Nom complet", signupPasswordLabel: "🔐 Mot de passe", signupPasswordConfirmLabel: "🔐 Confirmer mot de passe", acceptTermsText: "J'accepte les conditions d'utilisation", signupBtn: "✨ CRÉER UN COMPTE", hasAccountText: "Vous avez un compte ?", loginLink: "Se connecter", dashboardTitle: "⚡ WISE03 PRO", profileBtn: "👤 PROFIL", logoutBtn: "🚪 DÉCONNEXION", analyzeTitle: "⚡ PRONOSTIC PRO", homeTeamLabel: "🏠 Équipe Domicile", awayTeamLabel: "✈️ Équipe Extérieur", analyzeBtn: "🧠 ANALYSER & GÉNÉRER MARCHÉ", ticketsTitle: "🎫 TICKETS ENREGISTRÉS", profileTitle: "👤 MON PROFIL", phoneLabel: "📱 Téléphone:", nameLabel: "👤 Nom:", statusLabel: "✅ Statut:", premiumLabel: "💎 Premium:", premiumExpiryLabel: "📅 Expire:", joinedLabel: "📅 Inscrit:", activationCodeTitle: "🔐 CODE D'ACTIVATION", activationCodeLabel: "Code à 15 chiffres", validateCodeBtn: "✅ VALIDER LE CODE", precisionTitle: "📊 Précision du Service:", globalPrecision: "• Analyse globale: 89% de précision", exactScore: "• Score exact: 34% de taux de réalité", supportTitle: "📞 Support & Assistance", supportText: "Pour activation manuelle ou aide:", whatsappBtn: "💬 WHATSAPP +243983971254", validError: "❌ Le code doit contenir exactement 15 chiffres.", usedCodeError: "❌ Refus d'accès : Ce code a déjà été utilisé.", accountActivated: "✅ Compte ACTIVÉ !", premiumAdded: "+7 jours d'abonnement Premium ajoutés.", invalidCode: "⚠️ Code valide mais aucune règle d'activation.", fillAllFields: "Remplissez tous les champs.", passwordMismatch: "Les mots de passe ne correspondent pas.", minPassword: "Le mot de passe doit contenir au moins 6 caractères.", acceptTerms: "Acceptez les conditions d'utilisation.", phoneExists: "❌ Ce numéro est déjà inscrit.", accountNotFound: "❌ Compte non trouvé.", wrongPassword: "❌ Mot de passe incorrect.", accountCreated: "✅ Compte créé! Redirection...", noTickets: "Aucun ticket. Analysez un match.", ticketCountLabel: "Événements du jour:", ticketsLeftLabel: "Tickets restants:", currentPredictionsTitle: "📋 Prédictions en cours", saveTicketBtn: "💾 ENREGISTRER LE TICKET", clearPredictionsBtn: "🗑️ EFFACER LES PRÉDICTIONS", ticketSavedSuccess: "✅ Ticket enregistré avec succès!", maxEventsReached: "❌ Limite de 20 événements atteinte pour ce ticket.", maxTicketsReached: "❌ Vous avez atteint le maximum de 4 tickets pour aujourd'hui.", predictionsCleared: "✅ Prédictions effacées.", gourmandText: "Ce ticket contient plus de 12 événements.", premiumExpired: "⚠️ Votre Premium a expiré.", premiumExpiresIn: "⏰ Premium expire dans", premiumDays: "jours", doubleTicketBtn: "🔄 DOUBLER LE TICKET", doubleTicketSuccess: "✅ Ticket doublé avec succès! Nouvelles analyses générées.", doubleTicketError: "❌ Impossible de doubler le ticket vide.", matchAlreadyAnalyzed: "❌ Ce match a déjà été analysé dans les dernières 48 heures.", activationRequired: "⚠️ Compte non activé. Contactez l'administrateur WhatsApp +243983971254 pour activer votre accès." },
     en: { splashText: "Loading AI analysis...", loginBadge: "🔐 LOGIN", loginPhoneLabel: "📱 Phone number", loginPasswordLabel: "🔐 Password", loginBtn: "📱 SIGN IN", noAccountText: "No account?", createAccountLink: "Create account", signupBadge: "✨ SIGN UP", signupPhoneLabel: "📱 Phone number", signupNameLabel: "👤 Full name", signupPasswordLabel: "🔐 Password", signupPasswordConfirmLabel: "🔐 Confirm password", acceptTermsText: "I accept the terms of use", signupBtn: "✨ CREATE ACCOUNT", hasAccountText: "Have an account?", loginLink: "Sign in", dashboardTitle: "⚡ WISE03 PRO", profileBtn: "👤 PROFILE", logoutBtn: "🚪 LOGOUT", analyzeTitle: "⚡ PRO FORECAST", homeTeamLabel: "🏠 Home Team", awayTeamLabel: "✈️ Away Team", analyzeBtn: "🧠 ANALYZE & GENERATE MARKET", ticketsTitle: "🎫 REGISTERED TICKETS", profileTitle: "👤 MY PROFILE", phoneLabel: "📱 Phone:", nameLabel: "👤 Name:", statusLabel: "✅ Status:", premiumLabel: "💎 Premium:", premiumExpiryLabel: "📅 Expires:", joinedLabel: "📅 Joined:", activationCodeTitle: "🔐 ACTIVATION CODE", activationCodeLabel: "15-digit code", validateCodeBtn: "✅ VALIDATE CODE", precisionTitle: "📊 Service Precision:", globalPrecision: "• Global analysis: 89% accuracy", exactScore: "• Exact score: 34% reality rate", supportTitle: "📞 Support & Assistance", supportText: "For manual activation or help:", whatsappBtn: "💬 WHATSAPP +243983971254", validError: "❌ Code must contain exactly 15 digits.", usedCodeError: "❌ Access denied: This code has already been used.", accountActivated: "✅ Account ACTIVATED!", premiumAdded: "+7 days of Premium subscription added.", invalidCode: "⚠️ Valid code but no activation rule.", fillAllFields: "Fill in all fields.", passwordMismatch: "Passwords do not match.", minPassword: "Password must be at least 6 characters.", acceptTerms: "Accept the terms of use.", phoneExists: "❌ This number is already registered.", accountNotFound: "❌ Account not found.", wrongPassword: "❌ Incorrect password.", accountCreated: "✅ Account created! Redirecting...", noTickets: "No tickets. Analyze a match.", ticketCountLabel: "Events today:", ticketsLeftLabel: "Tickets remaining:", currentPredictionsTitle: "📋 Current Predictions", saveTicketBtn: "💾 SAVE TICKET", clearPredictionsBtn: "🗑️ CLEAR PREDICTIONS", ticketSavedSuccess: "✅ Ticket saved successfully!", maxEventsReached: "❌ Maximum 20 events reached for this ticket.", maxTicketsReached: "❌ You have reached the maximum of 4 tickets for today.", predictionsCleared: "✅ Predictions cleared.", gourmandText: "This ticket contains more than 12 events.", premiumExpired: "⚠️ Your Premium has expired.", premiumExpiresIn: "⏰ Premium expires in", premiumDays: "days", doubleTicketBtn: "🔄 DOUBLE TICKET", doubleTicketSuccess: "✅ Ticket doubled successfully! New analyses generated.", doubleTicketError: "❌ Cannot double an empty ticket.", matchAlreadyAnalyzed: "❌ This match has already been analyzed in the last 48 hours.", activationRequired: "⚠️ Account not activated. Contact admin WhatsApp +243983971254 to activate your access." },
@@ -240,14 +334,11 @@ function updateLanguage(lang) {
     document.getElementById('signupBtn').textContent = t('signupBtn');
     document.getElementById('hasAccountText').textContent = t('hasAccountText');
     document.getElementById('switchToLogin').textContent = t('loginLink');
-    document.getElementById('dashboardTitle').textContent = t('dashboardTitle');
-    document.getElementById('profileBtn').textContent = t('profileBtn');
-    document.getElementById('logoutBtn').textContent = t('logoutBtn');
     document.getElementById('analyzeTitle').textContent = t('analyzeTitle');
     document.getElementById('homeTeamLabel').textContent = t('homeTeamLabel');
     document.getElementById('awayTeamLabel').textContent = t('awayTeamLabel');
     document.getElementById('analyzeMatchBtn').textContent = t('analyzeBtn');
-    document.getElementById('ticketsTitle').textContent = t('ticketsTitle');
+    document.getElementById('ticketsTitleInline').textContent = t('ticketsTitle');
     document.getElementById('profileTitle').textContent = t('profileTitle');
     document.getElementById('phoneLabel').textContent = t('phoneLabel');
     document.getElementById('nameLabel').textContent = t('nameLabel');
@@ -273,80 +364,12 @@ function updateLanguage(lang) {
     document.getElementById('doubleTicketBtn').textContent = t('doubleTicketBtn');
 }
 
-// ---------- BASE DE DONNÉES DES CLUBS (600+) ----------
-const LEVEL1 = [ 
-    "Real Madrid", "Manchester City", "Liverpool", "Arsenal", "Bayern Munich", "Bayer Leverkusen", "Inter Milan", 
-    "Paris Saint-Germain", "FC Barcelone", "Borussia Dortmund", "Atlético Madrid", "Juventus", "AC Milan", 
-    "RB Leipzig", "Napoli", "Aston Villa", "Sporting CP", "Benfica", "FC Porto", "Atalanta", "Newcastle", 
-    "Tottenham", "Chelsea", "Manchester United", "Real Sociedad", "Athletic Bilbao", "Girona", "AS Monaco", 
-    "Lille OSC", "Olympique de Marseille", "OGC Nice", "Stuttgart", "Eintracht Frankfurt", "Ajax Amsterdam", 
-    "PSV Eindhoven", "Feyenoord", "Galatasaray", "Fenerbahçe", "Besiktas", "Celtic Glasgow", "Glasgow Rangers", 
-    "Sporting Braga", "Lazio Rome", "AS Roma", "Fiorentina", "Bologne", "Séville FC", "Villarreal", "Real Betis", 
-    "West Ham", "Brighton", "Wolfsburg", "Fribourg", "AZ Alkmaar", "Club Bruges", "Union Saint-Gilloise", 
-    "Anderlecht", "Olympiakos", "Panathinaikos", "Sparta Prague", "Flamengo", "Palmeiras", "River Plate", 
-    "Atlético Mineiro", "Fluminense", "Botafogo", "São Paulo", "Grêmio", "Internacional", "Boca Juniors", 
-    "Racing Club", "Estudiantes", "Talleres", "Independiente del Valle", "LDU Quito", "Al Ahly", "Mamelodi Sundowns", 
-    "Wydad Casablanca", "Raja Casablanca", "Espérance de Tunis", "Zamalek", "RS Berkane", "Pyramids FC", 
-    "CR Belouizdad", "USM Alger", "Al-Hilal", "Al-Nassr", "Al-Ittihad", "Al-Ahli", "Yokohama F. Marinos", 
-    "Vissel Kobe", "Urawa Reds", "Jeonbuk", "Pohang Steelers", "Al-Ain", "Club América", "Monterrey", 
-    "Tigres UANL", "Columbus Crew", "LAFC", "Al-Sadd", "Al-Duhail", "Persepolis", "Esteghlal", "Buriram United",
-    "Ulsan HD", "Kawasaki Frontale", "Al-Rayyan", "Sepahan", "Pakhtakor", "Al-Shorta", "Navbahor", "Al-Fayha",
-    "Mumbai City", "Odisha FC", "ATK Mohun Bagan", "Melbourne City", "Central Coast Mariners", "Wellington Phoenix"
-];
-
-const LEVEL2 = [ 
-    "Everton", "Fulham", "Crystal Palace", "Wolves", "Bournemouth", "Getafe", "Osasuna", "Valence", "Celta Vigo", 
-    "Torino", "Udinese", "Monza", "Genoa", "Sassuolo", "Stade Rennais", "RC Lens", "Stade de Reims", 
-    "Olympique Lyonnais", "Montpellier", "Werder Brême", "Hoffenheim", "Mayence", "Augsbourg", "Twente", 
-    "Utrecht", "Slavia Prague", "Dinamo Zagreb", "Hajduk Split", "Étoile Rouge de Belgrade", "Partizan Belgrade", 
-    "PAOK Salonique", "AEK Athènes", "Bodo/Glimt", "Molde", "Malmö", "Copenhague", "Young Boys Berne", 
-    "Servette", "Bâle", "Salzbourg", "Sturm Graz", "Corinthians", "Cruzeiro", "Vasco da Gama", "Bahia", 
-    "Fortaleza", "RB Bragantino", "Athletico Paranaense", "Vélez Sarsfield", "Lanús", "Defensa y Justicia", 
-    "San Lorenzo", "Colo-Colo", "Universidad de Chile", "Olimpia", "Cerro Porteño", "Libertad", "Nacional (URU)", 
-    "Peñarol", "Junior Barranquilla", "Millonarios", "Atlético Nacional", "Sporting Cristal", "TP Mazembe", 
-    "Simba SC", "Young Africans", "Petro Luanda", "Horoya AC", "ASEC Mimosas", "Orlando Pirates", 
-    "Kaizer Chiefs", "Inter Miami", "Pachuca", "Chivas Guadalajara", "Santos Laguna", "Cruz Azul", "Pumas UNAM",
-    "Toluca", "León", "Necaxa", "Atlas", "Shanghai Port", "Shanghai Shenhua", "Shandong Taishan", "Beijing Guoan",
-    "Zhejiang FC", "Chengdu Rongcheng", "Al-Wasl", "Al-Jazira", "Sharjah FC", "Al-Wahda", "Shabab Al-Ahli",
-    "Al-Taawoun", "Al-Ettifaq", "Al-Shabab", "Damac FC", "Al-Raed", "Abha Club", "Al-Tai", "Al-Riyadh"
-];
-
-const LEVEL3 = [ 
-    "Brentford", "Nottingham Forest", "Leicester", "Ipswich", "Southampton", "Las Palmas", "Majorque", "Alavés", 
-    "Rayo Vallecano", "Valladolid", "Empoli", "Hellas Vérone", "Lecce", "Cagliari", "Parme", "FC Nantes", 
-    "Strasbourg", "FC Lorient", "Auxerre", "Brest", "Bochum", "Heidenheim", "St. Pauli", "NEC Nimègue", 
-    "Heerenveen", "Heracles", "Vitesse", "Courtrai", "Westerlo", "Charleroi", "Mechelen", "Cercle Bruges", 
-    "Kilmarnock", "St. Mirren", "Austria Vienne", "LASK", "Grasshopper", "Lucerne", "Cuiabá", "Vitória", 
-    "Juventude", "Platense", "Tigre", "Banfield", "Coquimbo Unido", "Everton (CHI)", "Palestino", "Guaraní", 
-    "Nacional (PAR)", "Montevideo City Torque", "Santa Fe (COL)", "Deportivo Cali", "Once Caldas", "AS Vita Club", 
-    "Maniema Union", "Dauphins Noirs", "Don Bosco", "JS Kabylie", "ES Sétif", "MC Alger", "Club Africain", 
-    "Étoile du Sahel", "Al-Hilal Omdurman", "Al-Merrikh", "Enyimba", "Rivers United", "Al-Talaba", "Al-Zawraa",
-    "Al-Quwa Al-Jawiya", "Al-Kahrabaa", "Duhok SC", "Erbil SC", "Al-Minaa", "Naft Al-Basra", "Al-Najaf",
-    "Churchill Brothers", "Gokulam Kerala", "Sreenidi Deccan", "Real Kashmir", "Aizawl FC", "TRAU FC",
-    "Sudeva Delhi", "Kenkre FC", "Bhawanipore FC", "Delhi FC", "Bengaluru United", "Kickstart FC"
-];
-
-const LEVEL4 = [ 
-    "Le Havre", "FC Metz", "Burnley", "Watford", "Hull City", "Schalke 04", "Hertha Berlin", "Bordeaux", 
-    "Saint-Étienne", "Espanyol Barcelone", "Sampdoria", "Bari", "Palermo", "Sheffield United", "Leeds", 
-    "Norwich", "Malaga", "Elche", "Levante", "Hamburger SV", "Bolivar", "The Strongest", "Caracas FC", 
-    "Universidad Católica (CHI)", "Hearts of Oak", "Asante Kotoko", "1º de Agosto", "Auckland City", 
-    "Sydney FC", "Mumbai City", "Odisha FC", "Hyderabad FC", "East Bengal", "Mohammedan SC", "Churchill Brothers",
-    "Gokulam Kerala", "Punjab FC", "Namdhari FC", "Shillong Lajong", "Rajasthan United", "Sudeva Delhi",
-    "Kenkre FC", "Delhi FC", "Bengaluru United", "Bhawanipore FC", "Kickstart FC", "Sreenidi Deccan",
-    "Real Kashmir", "Aizawl FC", "TRAU FC", "Neroca FC", "Sreenidi Deccan", "Gokulam Kerala"
-];
-
-const LEVEL5 = [ 
-    "AS Douanes", "Coton Sport", "AS Otôho", "Teungueth FC", "Jaraaf", "Buffles du Borgou", "ASKO Kara", 
-    "ASCK", "AS FAN", "AS Police (Mali)", "Real Bamako", "Binga FC", "Lincoln Red Imps", "Europa FC", 
-    "Tre Penne", "La Fiorita", "Hamrun Spartans", "Dudelange", "Ballkani", "San Marino Academy", "AS Pirae", 
-    "Hienghène Sport", "Lupe o le Soaga", "Kiwi FC", "Tupapa Maraerenga", "Pago Youth", "Vaivase-Tai",
-    "Tonga FC", "Lotoha'apai United", "Navutoka FC", "Marist FC", "Solomon Warriors", "Central Coast",
-    "Hekari United", "Lae City", "Toti City", "Madang FC", "Morobe Wawens", "Gulf Komara", "Port Moresby",
-    "Ba FC", "Suva FC", "Rewa FC", "Labasa FC", "Nadi FC", "Lautoka FC", "Navua FC", "Nasinu FC",
-    "Tavua FC", "Dreketi FC", "Rakiraki FC", "Seaqaqa FC", "Savusavu FC", "Bua FC", "Nadroga FC"
-];
+// ---------- BASE DE DONNÉES DES 600 CLUBS ----------
+const LEVEL1 = ["Real Madrid","Manchester City","Liverpool","Arsenal","Bayern Munich","Bayer Leverkusen","Inter Milan","Paris Saint-Germain","FC Barcelone","Borussia Dortmund","Atlético Madrid","Juventus","AC Milan","RB Leipzig","Napoli","Aston Villa","Sporting CP","Benfica","FC Porto","Atalanta","Newcastle","Tottenham","Chelsea","Manchester United","Real Sociedad","Athletic Bilbao","Girona","AS Monaco","Lille OSC","Olympique de Marseille","OGC Nice","Stuttgart","Eintracht Frankfurt","Ajax Amsterdam","PSV Eindhoven","Feyenoord","Galatasaray","Fenerbahçe","Besiktas","Celtic Glasgow","Glasgow Rangers","Sporting Braga","Lazio Rome","AS Roma","Fiorentina","Bologne","Séville FC","Villarreal","Real Betis","West Ham","Brighton","Wolfsburg","Fribourg","AZ Alkmaar","Club Bruges","Union Saint-Gilloise","Anderlecht","Olympiakos","Panathinaikos","Sparta Prague","Flamengo","Palmeiras","River Plate","Atlético Mineiro","Fluminense","Botafogo","São Paulo","Grêmio","Internacional","Boca Juniors","Racing Club","Estudiantes","Talleres","Independiente del Valle","LDU Quito","Al Ahly","Mamelodi Sundowns","Wydad Casablanca","Raja Casablanca","Espérance de Tunis","Zamalek","RS Berkane","Pyramids FC","CR Belouizdad","USM Alger","Al-Hilal","Al-Nassr","Al-Ittihad","Al-Ahli","Yokohama F. Marinos","Vissel Kobe","Urawa Reds","Jeonbuk Hyundai","Pohang Steelers","Al-Ain","Club América","Monterrey","Tigres UANL","Columbus Crew","LAFC"];
+const LEVEL2 = ["Everton","Fulham","Crystal Palace","Wolves","Bournemouth","Getafe","Osasuna","Valence","Celta Vigo","Torino","Udinese","Monza","Genoa","Sassuolo","Stade Rennais","RC Lens","Stade de Reims","Olympique Lyonnais","Montpellier","Werder Brême","Hoffenheim","Mayence","Augsbourg","Twente","Utrecht","Slavia Prague","Dinamo Zagreb","Hajduk Split","Étoile Rouge de Belgrade","Partizan Belgrade","PAOK Salonique","AEK Athènes","Bodo/Glimt","Molde","Malmö","Copenhague","Young Boys Berne","Servette","Bâle","Salzbourg","Sturm Graz","Nottingham Forest","Leeds United","Burnley","Sheffield United","Luton Town","Almería","Grenade","Las Palmas","Majorque","Alavés","Rayo Vallecano","Cádiz","Hellas Vérone","Lecce","Cagliari","Empoli","Frosinone","Salernitana","Nantes","Strasbourg","Le Havre","Metz","Clermont","Toulouse","Borussia Mönchengladbach","Union Berlin","Bochum","Heidenheim","Darmstadt","Köln","Corinthians","Cruzeiro","Vasco da Gama","Bahia","Fortaleza","RB Bragantino","Athletico Paranaense","Vélez Sarsfield","Lanús","Defensa y Justicia","San Lorenzo","Colo-Colo","Universidad de Chile","Olimpia","Cerro Porteño","Libertad","Nacional (URU)","Peñarol","Junior Barranquilla","Millonarios","Atlético Nacional","Sporting Cristal","TP Mazembe","Simba SC","Young Africans","Petro Luanda","Horoya AC","ASEC Mimosas","Orlando Pirates","Kaizer Chiefs","Inter Miami","Pachuca","Chivas Guadalajara","Santos Laguna","Cruz Azul","Pumas UNAM","Toluca","León","Necaxa","Atlas","Shanghai Port","Shanghai Shenhua","Shandong Taishan","Beijing Guoan","Zhejiang FC","Chengdu Rongcheng","Al-Wasl","Al-Jazira","Sharjah FC","Al-Wahda","Shabab Al-Ahli","Al-Taawoun","Al-Ettifaq","Al-Shabab","Damac FC","Al-Raed","Abha Club","Al-Tai","Al-Riyadh","Al-Fateh","Al-Okhdood","Al-Hazem"];
+const LEVEL3 = ["Brentford","Ipswich Town","Southampton","Leicester City","Coventry City","Middlesbrough","Sunderland","West Brom","Stoke City","Swansea City","Plymouth Argyle","Huddersfield Town","Birmingham City","Rotherham United","QPR","Cardiff City","Blackburn Rovers","Millwall","Preston North End","Bristol City","Valladolid","Leganés","Espanyol Barcelone","Elche","Levante","Sporting Gijón","Oviedo","Zaragoza","Tenerife","Eibar","Mirandés","FC Andorra","Parme","Como","Venezia","Catanzaro","Palermo","Sampdoria","Bari","Reggiana","Modena","Cosenza","Spezia","Pise","Brescia","FC Nantes","Strasbourg","FC Lorient","Auxerre","Brest","Saint-Étienne","Bordeaux","Guingamp","Caen","Amiens","Dunkerque","Laval","Pau FC","Düsseldorf","Hamburger SV","Hertha Berlin","Schalke 04","Greuther Fürth","Paderborn","Karlsruher SC","Magdeburg","Hansa Rostock","NEC Nimègue","Heerenveen","Heracles","Vitesse","Sparta Rotterdam","Go Ahead Eagles","Excelsior","Waalwijk","Almere City","Courtrai","Westerlo","Charleroi","Mechelen","Cercle Bruges","OH Leuven","Saint-Trond","Eupen","Molenbeek","Kilmarnock","St. Mirren","Dundee FC","Hibernian","Aberdeen","Motherwell","Ross County","Austria Vienne","LASK","Grasshopper","Lucerne","FC Zurich","Saint-Gall","Winterthour","Yverdon","Cuiabá","Vitória","Juventude","Criciúma","Atlético Goianiense","Sport Recife","Platense","Tigre","Banfield","Coquimbo Unido","Everton (CHI)","Palestino","Guaraní","Nacional (PAR)","Montevideo City Torque","Santa Fe","Deportivo Cali","Once Caldas","AS Vita Club","Maniema Union","Dauphins Noirs","Don Bosco","JS Kabylie","ES Sétif","MC Alger","Club Africain","Étoile du Sahel","Al-Hilal Omdurman","Al-Merrikh","Enyimba","Rivers United","Al-Sadd","Al-Duhail","Persepolis","Esteghlal","Buriram United","BG Pathum United","Johor Darul Ta'zim","Sydney FC","Melbourne City","Central Coast Mariners","Wellington Phoenix"];
+const LEVEL4 = ["Le Havre","FC Metz","Burnley","Watford","Hull City","Schalke 04","Hertha Berlin","Bordeaux","Saint-Étienne","Espanyol Barcelone","Sampdoria","Bari","Palermo","Sheffield United","Leeds","Norwich","Malaga","Elche","Levante","Hamburger SV","Bolivar","The Strongest","Caracas FC","Universidad Católica (CHI)","Hearts of Oak","Asante Kotoko","1º de Agosto","Auckland City","Sydney FC","Mumbai City","Odisha FC","Hyderabad FC","East Bengal","Mohammedan SC","Churchill Brothers","Gokulam Kerala","Punjab FC","Namdhari FC","Shillong Lajong","Rajasthan United","Sudeva Delhi","Kenkre FC","Delhi FC","Bengaluru United","Bhawanipore FC","Kickstart FC","Sreenidi Deccan","Real Kashmir","Aizawl FC","TRAU FC","Neroca FC","AS Douanes (Mauritanie)","Coton Sport (Bénin)","AS Otôho","Teungueth FC","Jaraaf","Buffles du Borgou","ASKO Kara","ASCK","AS FAN","AS Police (Mali)","Real Bamako","Binga FC","Lincoln Red Imps","Europa FC","Tre Penne","La Fiorita","Hamrun Spartans","Dudelange","Ballkani"];
+const LEVEL5 = ["San Marino Academy","AS Pirae","Hienghène Sport","Lupe o le Soaga","Kiwi FC","Tupapa Maraerenga","Pago Youth","Vaivase-Tai","Tonga FC","Lotoha'apai United","Navutoka FC","Marist FC","Solomon Warriors","Hekari United","Lae City","Toti City","Madang FC","Morobe Wawens","Gulf Komara","Port Moresby","Ba FC","Suva FC","Rewa FC","Labasa FC","Nadi FC","Lautoka FC","Navua FC","Nasinu FC","Tavua FC","Dreketi FC"];
 
 const NATIONS_TIER5 = ["France","Argentine","Brésil","Angleterre","Espagne","Portugal","Allemagne","Italie","Pays-Bas","Belgique","Uruguay","Croatie","Maroc","Sénégal","Colombie"];
 const NATIONS_TIER4 = ["Danemark","Suisse","Serbie","Pologne","États-Unis","Mexique","Japon","Corée du Sud","Australie","Iran","Arabie Saoudite","Qatar","Canada","Chili","Pérou","Paraguay","Équateur","Venezuela","Nigeria","Cameroun","Ghana","Algérie","Égypte","Tunisie","Mali","Côte d'Ivoire","Afrique du Sud","Burkina Faso"];
@@ -355,30 +378,21 @@ const NATIONS_TIER2 = ["Niger","Tchad","Somalie","Djibouti","Érythrée","Soudan
 const NATIONS_TIER1 = ["Sao Tomé-et-Principe","Guinée-Bissau","Guinée équatoriale","Cap-Vert","Seychelles","Maurice","Comores","Lesotho","Eswatini","Botswana","Namibie","Malawi","Burundi","Rwanda","Soudan","Mauritanie","Sierra Leone","Liberia","Gambie","Centrafrique","Somaliland","Zanzibar","Timor oriental","Brunei","Macao","Mongolie intérieure","Tibet","Cachemire","Palestine","Chypre du Nord"];
 
 const ALL_TEAMS = [...new Set([...LEVEL1, ...LEVEL2, ...LEVEL3, ...LEVEL4, ...LEVEL5, ...NATIONS_TIER5, ...NATIONS_TIER4, ...NATIONS_TIER3, ...NATIONS_TIER2, ...NATIONS_TIER1])];
-const ELITE_PLUS = ["Real Madrid", "Manchester City", "Bayern Munich", "Liverpool", "Arsenal", "FC Barcelone", "Inter Milan", "Paris Saint-Germain","Bayer Leverkusen", "Inter Milan","Borussia Dortmund", "Atlético Madrid", "Juventus", "AC Milan", 
-    "RB Leipzig", "Napoli", "Aston Villa","Crystal Palace", "Wolves", "Bournemouth", "Getafe", "Osasuna", "Valence", "Celta Vigo", 
-    "Torino", "Udinese", "Monza", "Genoa", "Sassuolo"];
+const ELITE_PLUS = ["Real Madrid", "Manchester City", "Bayern Munich", "Liverpool", "Arsenal", "FC Barcelone", "Inter Milan", "Paris Saint-Germain","Bayer Leverkusen","Borussia Dortmund", "Atlético Madrid", "Juventus", "AC Milan", "RB Leipzig", "Napoli", "Aston Villa"];
 const AFRICA_ELITE = ["Al Ahly", "Wydad Casablanca", "Espérance de Tunis", "Mamelodi Sundowns", "Raja Casablanca"];
 
-function getBaseStrength(team) {
-    if (LEVEL1.includes(team) || NATIONS_TIER5.includes(team)) return 10;
-    if (LEVEL2.includes(team) || NATIONS_TIER4.includes(team)) return 8;
-    if (LEVEL3.includes(team) || NATIONS_TIER3.includes(team)) return 6;
-    if (LEVEL4.includes(team) || NATIONS_TIER2.includes(team)) return 4;
-    if (LEVEL5.includes(team) || NATIONS_TIER1.includes(team)) return 2;
-    return 5;
+function getBaseStrength(team) { 
+    if (LEVEL1.includes(team) || NATIONS_TIER5.includes(team)) return 10; 
+    if (LEVEL2.includes(team) || NATIONS_TIER4.includes(team)) return 8; 
+    if (LEVEL3.includes(team) || NATIONS_TIER3.includes(team)) return 6; 
+    if (LEVEL4.includes(team) || NATIONS_TIER2.includes(team)) return 4; 
+    if (LEVEL5.includes(team) || NATIONS_TIER1.includes(team)) return 2; 
+    return 5; 
 }
-function getAdjustedStrength(team, isHome, opponent) {
-    let strength = getBaseStrength(team);
-    if (isHome) strength += 0.8;
-    if (ELITE_PLUS.includes(team)) strength += 0.5;
-    if (AFRICA_ELITE.includes(team)) strength += 0.3;
-    return strength;
-}
+function getAdjustedStrength(team, isHome, opponent) { let strength = getBaseStrength(team); if (isHome) strength += 0.8; if (ELITE_PLUS.includes(team)) strength += 0.5; if (AFRICA_ELITE.includes(team)) strength += 0.3; return strength; }
 
-// ---------- SCORES DE RÉFÉRENCE (45) ----------
 const SCORE_POOL = ["0-0","1-0","0-1","1-1","2-1","1-2","2-0","0-2","2-2","3-0","0-3","3-1","1-3","3-2","2-3","4-0","0-4","4-1","1-4","4-2","2-4","4-3","3-4","5-0","0-5","5-1","1-5","5-2","2-5","3-3","6-0","0-6","6-1","1-6","5-3","3-5","6-2","2-6","4-4","7-0","0-7","7-1","1-7","8-0","0-8","9-0","0-9","10-0","0-10"];
-function generateScoreFromDiff(diff) {
+function generateScoreFromDiff(diff) { 
     let possible = [];
     if (diff >= 6) possible = [{s:"3-0",p:0.15},{s:"4-0",p:0.15},{s:"4-1",p:0.1},{s:"5-0",p:0.12},{s:"5-1",p:0.1},{s:"3-1",p:0.08},{s:"2-0",p:0.08},{s:"6-0",p:0.07},{s:"7-0",p:0.05},{s:"8-0",p:0.05},{s:"9-0",p:0.03},{s:"10-0",p:0.02}];
     else if (diff >= 4) possible = [{s:"2-0",p:0.12},{s:"3-0",p:0.15},{s:"3-1",p:0.12},{s:"2-1",p:0.12},{s:"4-1",p:0.1},{s:"4-0",p:0.1},{s:"1-0",p:0.08},{s:"5-1",p:0.07},{s:"5-0",p:0.07},{s:"6-0",p:0.04},{s:"6-1",p:0.03}];
@@ -390,181 +404,45 @@ function generateScoreFromDiff(diff) {
     else if (diff >= -2.5) possible = [{s:"1-2",p:0.18},{s:"0-1",p:0.12},{s:"0-2",p:0.12},{s:"1-1",p:0.1},{s:"1-3",p:0.12},{s:"0-0",p:0.08},{s:"2-3",p:0.1},{s:"1-0",p:0.05},{s:"0-3",p:0.08},{s:"1-4",p:0.05}];
     else if (diff >= -4) possible = [{s:"0-2",p:0.12},{s:"0-3",p:0.15},{s:"1-3",p:0.12},{s:"1-2",p:0.12},{s:"0-1",p:0.08},{s:"0-4",p:0.1},{s:"1-4",p:0.1},{s:"1-5",p:0.07},{s:"0-5",p:0.07},{s:"0-6",p:0.04},{s:"1-6",p:0.03}];
     else possible = [{s:"0-3",p:0.15},{s:"0-4",p:0.15},{s:"1-4",p:0.1},{s:"0-5",p:0.12},{s:"1-5",p:0.1},{s:"0-2",p:0.08},{s:"0-6",p:0.07},{s:"0-7",p:0.05},{s:"0-8",p:0.05},{s:"0-9",p:0.03},{s:"0-10",p:0.02}];
-    
-    const rand = Math.random();
-    let cum = 0, chosen = possible[0].s;
-    for (let p of possible) { 
-        cum += p.p; 
-        if (rand <= cum) { chosen = p.s; break; } 
-    }
-    const [h,a] = chosen.split('-').map(Number);
-    if (Math.random()<0.1) { 
-        const surprise = SCORE_POOL[Math.floor(Math.random()*SCORE_POOL.length)]; 
-        const [sh,sa] = surprise.split('-').map(Number); 
-        return {home:sh, away:sa}; 
-    }
+    const rand = Math.random(); let cum = 0, chosen = possible[0].s;
+    for (let p of possible) { cum += p.p; if (rand <= cum) { chosen = p.s; break; } }
+    const [h,a] = chosen.split('-').map(Number); 
     return {home:h, away:a};
 }
-
-// ---------- MARCHÉS (22) + SYNCHRONISATION ----------
 const ALL_MARKETS = ["1","2","X","Première mi-temps +1.5 buts","Première mi-temps +2 buts","Première mi-temps -2 buts","Première mi-temps -1.5 buts","Première mi-temps domicile gagne","Première mi-temps extérieur gagne","Première mi-temps match nul","Plus de buts en première mi-temps","Plus de buts en deuxième mi-temps","Deuxième mi-temps domicile gagne","Deuxième mi-temps extérieur gagne","Deux mi-temps égalité","Over 1.5","Over 2","Over 2.5","Over 3","Under 2","All teams win Yes","All teams win No"];
-function isMarketCompatible(market, homeScore, awayScore, homeTier, awayTier, diff) {
-    const total = homeScore+awayScore;
-    const htHome = Math.floor(homeScore*0.45), htAway = Math.floor(awayScore*0.45);
-    if (market==="1" && homeScore>awayScore) return true;
-    if (market==="2" && awayScore>homeScore) return true;
-    if (market==="X" && homeScore===awayScore) return true;
-    if (market==="Over 1.5" && total>1.5) return true;
-    if (market==="Over 2" && total>2) return true;
-    if (market==="Over 2.5" && total>2.5) return true;
-    if (market==="Over 3" && total>3) return true;
-    if (market==="Under 2" && total<2) return true;
-    if (market==="All teams win Yes" && homeScore>0 && awayScore>0) return true;
-    if (market==="All teams win No" && (homeScore===0 || awayScore===0)) return true;
-    if (market.includes("Première mi-temps")) {
-        if (market.includes("+1.5") && (htHome+htAway)>1.5) return true;
-        if (market.includes("+2") && (htHome+htAway)>2) return true;
-        if (market.includes("-2") && (htHome+htAway)<2) return true;
-        if (market.includes("-1.5") && (htHome+htAway)<1.5) return true;
-        if (market.includes("domicile gagne") && htHome>htAway) return true;
-        if (market.includes("extérieur gagne") && htAway>htHome) return true;
-        if (market.includes("match nul") && htHome===htAway) return true;
-    }
-    if (market==="Plus de buts en première mi-temps" && (htHome+htAway) > (homeScore+awayScore)/2) return true;
-    if (market==="Plus de buts en deuxième mi-temps" && (homeScore+awayScore - (htHome+htAway)) > (htHome+htAway)) return true;
-    if (market.includes("Deuxième mi-temps")) {
-        const sh = homeScore-htHome, sa = awayScore-htAway;
-        if (market.includes("domicile gagne") && sh>sa) return true;
-        if (market.includes("extérieur gagne") && sa>sh) return true;
-    }
-    if (market==="Deux mi-temps égalité" && (htHome+htAway) === (homeScore-htHome + awayScore-htAway)) return true;
-    return false;
-}
-function selectMarket(homeScore, awayScore, homeTier, awayTier, diff) {
-    const compatible = ALL_MARKETS.filter(m => isMarketCompatible(m, homeScore, awayScore, homeTier, awayTier, diff));
-    if (compatible.length===0) return "Over 1.5";
-    if (diff>=5 && compatible.includes("Première mi-temps +1.5 buts")) return "Première mi-temps +1.5 buts";
-    if (diff===0 && compatible.includes("X")) return "X";
-    return compatible[Math.floor(Math.random()*compatible.length)];
-}
+function selectMarket(homeScore, awayScore, homeTier, awayTier, diff) { return ALL_MARKETS[Math.floor(Math.random()*ALL_MARKETS.length)]; }
+function predictMatch(home, away) { const homeStrength = getAdjustedStrength(home, true, away); const awayStrength = getAdjustedStrength(away, false, home); const diff = homeStrength - awayStrength; const scoreObj = generateScoreFromDiff(diff); const market = selectMarket(scoreObj.home, scoreObj.away, getBaseStrength(home), getBaseStrength(away), diff); return { finalScore: `${scoreObj.home}-${scoreObj.away}`, market, homeTier: getBaseStrength(home), awayTier: getBaseStrength(away) }; }
 
-// ---------- PRÉDICTION PRINCIPALE ----------
-function predictMatch(home, away) {
-    const homeStrength = getAdjustedStrength(home, true, away);
-    const awayStrength = getAdjustedStrength(away, false, home);
-    const diff = homeStrength - awayStrength;
-    const scoreObj = generateScoreFromDiff(diff);
-    const market = selectMarket(scoreObj.home, scoreObj.away, getBaseStrength(home), getBaseStrength(away), diff);
-    return { finalScore: `${scoreObj.home}-${scoreObj.away}`, market, homeTier: getBaseStrength(home), awayTier: getBaseStrength(away) };
-}
-
-// ---------- STOCKAGE / UTILISATEUR (avec historique 48h) ----------
 let db = { users: {}, currentUser: null, usedCodes: new Set() };
 let currentPredictions = [], ticketsToday = 0;
 const MAX_TICKETS = 4, MAX_EVENTS = 20, GOURMAND = 12, PREMIUM_DAYS = 7;
-
-function loadStorage() {
-    const s = localStorage.getItem('wise03_pro_db');
-    if(s) try { 
-        const p=JSON.parse(s); 
-        db.users=p.users||{}; 
-        db.usedCodes=new Set(p.usedCodes||[]); 
-        db.currentUser=p.currentUser||null; 
-    } catch(e){}
-    Object.values(db.users).forEach(u => { if (!u.matchHistory) u.matchHistory = []; });
-    checkTodayTickets();
-}
-function saveStorage() {
-    localStorage.setItem('wise03_pro_db', JSON.stringify({users:db.users, usedCodes:Array.from(db.usedCodes), currentUser:db.currentUser}));
-}
-function checkTodayTickets() {
-    const u=getCurrentUser(); if(!u) return;
-    const today=new Date().toLocaleDateString();
-    ticketsToday=u.tickets.filter(t=>new Date(t.date).toLocaleDateString()===today).length;
-}
-function createUser(phone,name,pwd) {
-    if(db.users[phone]) { showMessage('signupStatus', t('phoneExists'), false); return false; }
-    db.users[phone]={name,phone,password:pwd,isActive:false,premiumExpiryDate:null,tickets:[],matchHistory:[],createdDate:new Date().toLocaleString()};
-    db.currentUser=phone; saveStorage(); return true;
-}
-function loginUser(phone,pwd) {
-    if(!db.users[phone]) { showMessage('loginStatus', t('accountNotFound'), false); return false; }
-    if(db.users[phone].password!==pwd) { showMessage('loginStatus', t('wrongPassword'), false); return false; }
-    db.currentUser=phone; saveStorage(); return true;
-}
+function loadStorage() { const s = localStorage.getItem('wise03_pro_db'); if(s) try { const p=JSON.parse(s); db.users=p.users||{}; db.usedCodes=new Set(p.usedCodes||[]); db.currentUser=p.currentUser||null; } catch(e){} Object.values(db.users).forEach(u => { if (!u.matchHistory) u.matchHistory = []; if (!u.ticketIdCounter) u.ticketIdCounter = 0; }); checkTodayTickets(); }
+function saveStorage() { localStorage.setItem('wise03_pro_db', JSON.stringify({users:db.users, usedCodes:Array.from(db.usedCodes), currentUser:db.currentUser})); }
+function checkTodayTickets() { const u=getCurrentUser(); if(!u) return; const today=new Date().toLocaleDateString(); ticketsToday=u.tickets.filter(t=>new Date(t.date).toLocaleDateString()===today).length; }
+function createUser(phone,name,pwd) { if(db.users[phone]) { showMessage('signupStatus', t('phoneExists'), false); return false; } db.users[phone]={name,phone,password:pwd,isActive:false,premiumExpiryDate:null,tickets:[],matchHistory:[],createdDate:new Date().toLocaleString(), ticketIdCounter:0}; db.currentUser=phone; saveStorage(); return true; }
+function loginUser(phone,pwd) { if(!db.users[phone]) { showMessage('loginStatus', t('accountNotFound'), false); return false; } if(db.users[phone].password!==pwd) { showMessage('loginStatus', t('wrongPassword'), false); return false; } db.currentUser=phone; saveStorage(); return true; }
 function getCurrentUser() { return db.currentUser && db.users[db.currentUser] ? db.users[db.currentUser] : null; }
-function isPremiumActive() {
-    const u=getCurrentUser(); if(!u||!u.isActive||!u.premiumExpiryDate) return false;
-    return new Date() < new Date(u.premiumExpiryDate);
-}
-function getPremiumDaysLeft() {
-    const u=getCurrentUser(); if(!u||!u.premiumExpiryDate) return 0;
-    const now=new Date(), exp=new Date(u.premiumExpiryDate);
-    return now>=exp?0:Math.ceil((exp-now)/(1000*60*60*24));
-}
-
-// Vérification 48h pour un match
-function canAnalyzeMatch(home, away) {
-    const u = getCurrentUser();
-    if (!u) return false;
-    const now = Date.now();
-    const key = `${home.toLowerCase().trim()}|${away.toLowerCase().trim()}`;
-    const history = u.matchHistory || [];
-    u.matchHistory = history.filter(entry => (now - entry.timestamp) < 48 * 60 * 60 * 1000);
-    const exists = u.matchHistory.some(entry => entry.key === key);
-    if (exists) {
-        showMessage('analysisResult', t('matchAlreadyAnalyzed'), false);
-        return false;
-    }
-    return true;
-}
-function addMatchToHistory(home, away) {
-    const u = getCurrentUser();
-    if (!u) return;
-    if (!u.matchHistory) u.matchHistory = [];
-    const key = `${home.toLowerCase().trim()}|${away.toLowerCase().trim()}`;
-    u.matchHistory.push({ key, timestamp: Date.now() });
-    saveStorage();
-}
-
-function processActivationCode(code) {
-    const u=getCurrentUser(); if(!u) return false;
-    if(!/^\d{15}$/.test(code)) { showMessage('codeStatus', t('validError'), false); return false; }
-    if(db.usedCodes.has(code)) { showMessage('codeStatus', t('usedCodeError'), false); return false; }
-    const count3=(code.match(/3/g)||[]).length, count0=(code.match(/0/g)||[]).length;
-    let msg='';
-    if(count3===3) { u.isActive=true; msg=t('accountActivated'); }
-    if(count0===2 && count3===1) {
-        const now=new Date(), exp=new Date(now.getTime()+PREMIUM_DAYS*24*60*60*1000);
-        u.premiumExpiryDate=exp.toISOString(); msg+=(msg?' ':'')+t('premiumAdded');
-    }
-    if(!msg) { showMessage('codeStatus', t('invalidCode'), false); return false; }
-    db.usedCodes.add(code); saveStorage(); showMessage('codeStatus', msg, true);
-    updateUIByStatus(); return true;
-}
+function isPremiumActive() { const u=getCurrentUser(); if(!u||!u.isActive||!u.premiumExpiryDate) return false; return new Date() < new Date(u.premiumExpiryDate); }
+function getPremiumDaysLeft() { const u=getCurrentUser(); if(!u||!u.premiumExpiryDate) return 0; const now=new Date(), exp=new Date(u.premiumExpiryDate); return now>=exp?0:Math.ceil((exp-now)/(1000*60*60*24)); }
+function canAnalyzeMatch(home, away) { const u = getCurrentUser(); if (!u) return false; const now = Date.now(); const key = `${home.toLowerCase().trim()}|${away.toLowerCase().trim()}`; const history = u.matchHistory || []; u.matchHistory = history.filter(entry => (now - entry.timestamp) < 48 * 60 * 60 * 1000); const exists = u.matchHistory.some(entry => entry.key === key); if (exists) { showMessage('analysisResult', t('matchAlreadyAnalyzed'), false); return false; } return true; }
+function addMatchToHistory(home, away) { const u = getCurrentUser(); if (!u) return; if (!u.matchHistory) u.matchHistory = []; const key = `${home.toLowerCase().trim()}|${away.toLowerCase().trim()}`; u.matchHistory.push({ key, timestamp: Date.now() }); saveStorage(); }
 
 function updateUIByStatus() {
     const u=getCurrentUser(), dash=document.getElementById('dashboardPanel');
-    const activationHint = document.getElementById('activationHint');
     if(u) {
         document.getElementById('loginScreen').style.display='none';
         document.getElementById('signupScreen').style.display='none';
         dash.style.display='block';
+        document.getElementById('userNameDisplay').innerText = u.name;
+        document.getElementById('userPhoneBadge').innerText = u.phone;
         if (u.isActive) {
             const days=isPremiumActive()?getPremiumDaysLeft():0;
-            document.getElementById('premiumStatusBadge').innerHTML=isPremiumActive()?`💎 PREMIUM (${days}j)`:'✅ COMPTE ACTIF';
-            document.getElementById('userInfoBlock').innerHTML=isPremiumActive()?`📊 Statut: PREMIUM | ${days}j restants`:`📊 Statut: ACTIF | Premium inactif`;
-            activationHint.style.display='none';
+            document.getElementById('premiumStatusInline').innerHTML=isPremiumActive()?`💎 PREMIUM (${days}j)`:'✅ COMPTE ACTIF';
+            document.getElementById('activationHintInline').style.display='none';
         } else {
-            document.getElementById('premiumStatusBadge').innerHTML='⏳ EN ATTENTE D\'ACTIVATION';
-            document.getElementById('userInfoBlock').innerHTML=`⏳ Statut: En attente d'activation`;
-            activationHint.style.display='block';
+            document.getElementById('premiumStatusInline').innerHTML='⏳ EN ATTENTE';
+            document.getElementById('activationHintInline').style.display='block';
         }
-        if(isPremiumActive() && getPremiumDaysLeft()<=3) {
-            const w=document.getElementById('premiumExpiryWarning');
-            w.innerHTML=`⏰ ${t('premiumExpiresIn')} ${getPremiumDaysLeft()} ${t('premiumDays')}`;
-            w.style.display='block';
-        } else document.getElementById('premiumExpiryWarning').style.display='none';
     } else {
         document.getElementById('loginScreen').style.display='block';
         document.getElementById('signupScreen').style.display='none';
@@ -573,173 +451,135 @@ function updateUIByStatus() {
     renderTickets(); populateTeamsDatalist(); updateTicketCounter();
 }
 
-function updateTicketCounter() {
-    document.getElementById('eventCount').textContent=currentPredictions.length;
-    document.getElementById('ticketsLeft').textContent=MAX_TICKETS-ticketsToday;
-    document.getElementById('gourmandWarning').style.display=currentPredictions.length>GOURMAND?'block':'none';
+function updateTicketCounter() { 
+    document.getElementById('eventCount').textContent=currentPredictions.length; 
+    document.getElementById('ticketsLeft').textContent=MAX_TICKETS-ticketsToday; 
+    document.getElementById('ticketCountBadge').innerText = `${ticketsToday}/${MAX_TICKETS}`;
+    document.getElementById('gourmandWarning').style.display=currentPredictions.length>GOURMAND?'block':'none'; 
 }
-function showMessage(elId, msg, success) {
-    const c=document.getElementById(elId); if(c) { c.innerHTML=`<div class="alert ${success?'alert-success':''}">${msg}</div>`; setTimeout(()=>c.innerHTML='',4000); }
-}
-function renderPredictionList() {
-    const cont=document.getElementById('predictionList');
-    cont.innerHTML=currentPredictions.map((p,i)=>`<div class="prediction-item"><div class="prediction-item-text"><strong>⚽ ${p.home} vs ${p.away}</strong><br>📊 ${p.market} | 🎯 ${p.score}</div><button class="prediction-item-remove" onclick="removePrediction(${i})">✕</button></div>`).join('');
-    updateTicketCounter();
-}
-
-// CORRECTION ICI - Fonction globale pour removePrediction
-window.removePrediction = function(idx) {
-    currentPredictions.splice(idx,1);
-    if(currentPredictions.length===0) { 
-        document.getElementById('predictionListContainer').style.display='none'; 
-        document.getElementById('analysisResult').innerHTML=''; 
-    } else {
-        renderPredictionList();
-    }
-};
+function showMessage(elId, msg, success) { const c=document.getElementById(elId); if(c) { c.innerHTML=`<div class="alert ${success?'alert-success':''}">${msg}</div>`; setTimeout(()=>c.innerHTML='',4000); } }
+function renderPredictionList() { const cont=document.getElementById('predictionList'); cont.innerHTML=currentPredictions.map((p,i)=>`<div class="prediction-item"><div class="prediction-item-text"><strong>⚽ ${p.home} vs ${p.away}</strong><br>📊 ${p.market} | 🎯 ${p.score}</div><button class="prediction-item-remove" onclick="removePrediction(${i})">✕</button></div>`).join(''); updateTicketCounter(); }
+window.removePrediction = function(idx) { currentPredictions.splice(idx,1); if(currentPredictions.length===0) { document.getElementById('predictionListContainer').style.display='none'; document.getElementById('analysisResult').innerHTML=''; } else { renderPredictionList(); } };
 
 function renderTickets() {
-    const u=getCurrentUser(), cont=document.getElementById('ticketHistoryList');
+    const u=getCurrentUser(), cont=document.getElementById('ticketHistoryListInline');
     if(!u||!u.tickets.length) { cont.innerHTML=`<div class="info-text">${t('noTickets')}</div>`; return; }
-    cont.innerHTML=u.tickets.map((t,i)=>{
+    cont.innerHTML=u.tickets.slice(0,3).map((t,idx)=>{
+        if(!t.id) t.id = `WISE-${String(u.ticketIdCounter++).padStart(4,'0')}`; 
         const isG=t.matches.length>GOURMAND, isD=t.isDouble===true;
         let cls='ticket-details', badge='';
-        if(isG&&isD) { cls='ticket-double'; badge='<span class="badge-gourmand">🍽️ GOURMAND</span><span class="badge-double">🔄 DOUBLE</span>'; }
-        else if(isG) { cls='ticket-gourmand'; badge='<span class="badge-gourmand">🍽️ GOURMAND</span>'; }
-        else if(isD) { cls='ticket-double'; badge='<span class="badge-double">🔄 DOUBLE</span>'; }
-        return `<div class="${cls}"><div class="ticket-header"><strong>📅 ${t.date}</strong><div class="ticket-badges">${badge}</div></div><div>(${t.matches.length} matchs)</div><div style="margin-top:8px;">${t.matches.map(m=>`⚽ ${m.home} vs ${m.away} → ${m.market}`).join('<br>')}</div>${!isD&&t.matches.length>0?`<button class="btn btn-outline btn-small" style="margin-top:8px;" onclick="prepareDoubleTicket(${i})">🔄 Doublon</button>`:''}</div>`;
+        if(isG&&isD) { cls='ticket-double'; badge='<span class="badge-gourmand">🍽️</span><span class="badge-double">🔄</span>'; }
+        else if(isG) { cls='ticket-gourmand'; badge='<span class="badge-gourmand">🍽️</span>'; }
+        else if(isD) { cls='ticket-double'; badge='<span class="badge-double">🔄</span>'; }
+        return `<div class="${cls}" onclick="openTicketDetail(${idx})">
+            <div class="ticket-header"><strong>🎟️ ${t.id}</strong> <span>📅 ${t.date.split(' ')[0]}</span></div>
+            <div class="ticket-badges">${badge}</div>
+            <div style="margin-top:4px; font-size:12px;">⚽ ${t.matches.length} matchs</div>
+        </div>`;
     }).join('');
+    if(u.tickets.length>3) cont.innerHTML += `<div class="info-text" style="margin-top:8px;">+${u.tickets.length-3} autre(s) ticket(s)</div>`;
+    saveStorage();
 }
 
-// CORRECTION ICI - Fonction globale pour prepareDoubleTicket
+window.openTicketDetail = function(idx) {
+    const u=getCurrentUser(); if(!u||!u.tickets[idx]) return;
+    const ticket = u.tickets[idx];
+    const modal = document.getElementById('ticketDetailModal');
+    const content = document.getElementById('ticketDetailContent');
+    const matchesHtml = ticket.matches.map(m => {
+        const homeTier = getBaseStrength(m.home), awayTier = getBaseStrength(m.away);
+        return `<div class="match-card-detail">
+            <div class="match-teams"><span>${m.home}</span> <span class="match-vs-badge">VS</span> <span>${m.away}</span></div>
+            <div class="match-analysis-row"><span>📊 Marché</span> <span class="market-badge-large">${m.market}</span></div>
+            <div class="match-analysis-row"><span>🎯 Score exact</span> <span class="score-badge-large">${m.score}</span></div>
+            <div class="strength-detail"><span>💪 Force ${homeTier}/10</span> <span>⚡ Force ${awayTier}/10</span></div>
+        </div>`;
+    }).join('');
+    content.innerHTML = `
+        <div class="ticket-detail-header">
+            <div class="ticket-detail-title">${ticket.id}</div>
+            <div class="ticket-id-badge">${ticket.date}</div>
+            <div class="ticket-meta-grid"><span class="meta-chip">${ticket.matches.length} événements</span>${ticket.isDouble?'<span class="meta-chip">🔄 DOUBLÉ</span>':''}</div>
+        </div>
+        <div class="match-detail-list">${matchesHtml}</div>
+    `;
+    modal.classList.add('active');
+    document.getElementById('doubleFromDetailBtn').onclick = ()=> { prepareDoubleTicket(idx); modal.classList.remove('active'); };
+};
+
 window.prepareDoubleTicket = function(idx) {
-    const u=getCurrentUser(); 
-    if(!u||!u.tickets[idx]) return;
+    const u=getCurrentUser(); if(!u||!u.tickets[idx]) return;
     const orig=u.tickets[idx];
-    if(orig.isDouble) { 
-        showMessage('analysisResult',"❌ Ce ticket est déjà un doublon.",false); 
-        return; 
-    }
+    if(orig.isDouble) { showMessage('analysisResult',"❌ Ce ticket est déjà un doublon.",false); return; }
     if(currentPredictions.length>0 && !confirm("Remplacer les prédictions en cours ?")) return;
     currentPredictions=[];
     document.getElementById('analysisResult').innerHTML=`<div class="waiting-animation">🔄 Génération double ticket...</div>`;
     setTimeout(()=>{
-        for(let m of orig.matches) { 
-            const p=predictMatch(m.home, m.away); 
-            currentPredictions.push({home:m.home, away:m.away, market:p.market, score:p.finalScore}); 
-        }
+        for(let m of orig.matches) { const p=predictMatch(m.home, m.away); currentPredictions.push({home:m.home, away:m.away, market:p.market, score:p.finalScore}); }
         document.getElementById('analysisResult').innerHTML=`<div class="alert alert-success">✅ ${orig.matches.length} analyses régénérées!</div>`;
         document.getElementById('predictionListContainer').style.display='block';
         renderPredictionList();
-        orig.isDouble=true; 
-        saveStorage(); 
-        renderTickets();
+        orig.isDouble=true; saveStorage(); renderTickets();
     },1500);
 };
 
-function doubleCurrentTicket() {
-    if(currentPredictions.length===0) { showMessage('analysisResult', t('doubleTicketError'), false); return; }
-    if(ticketsToday>=MAX_TICKETS) { showMessage('analysisResult', t('maxTicketsReached'), false); return; }
-    const u=getCurrentUser(); if(!u) return;
-    document.getElementById('analysisResult').innerHTML=`<div class="waiting-animation">🔄 Doublage en cours...</div>`;
-    setTimeout(()=>{
-        const newPreds=currentPredictions.map(p=>{ const np=predictMatch(p.home,p.away); return {home:p.home, away:p.away, market:np.market, score:np.finalScore}; });
-        u.tickets.unshift({date:new Date().toLocaleString(), matches:newPreds, isDouble:true});
-        ticketsToday++; saveStorage();
-        showMessage('analysisResult', t('doubleTicketSuccess'), true);
-        renderTickets(); updateTicketCounter();
-    },2000);
-}
 function saveTicket() {
     const u=getCurrentUser(); if(!u||currentPredictions.length===0) return;
     if(ticketsToday>=MAX_TICKETS) { showMessage('analysisResult', t('maxTicketsReached'), false); return; }
-    u.tickets.unshift({date:new Date().toLocaleString(), matches:currentPredictions.map(p=>({...p})), isDouble:false});
+    if (u.ticketIdCounter === undefined) u.ticketIdCounter = 0;
+    const newId = `WISE-${String(u.ticketIdCounter++).padStart(4,'0')}`;
+    u.tickets.unshift({id: newId, date:new Date().toLocaleString(), matches:currentPredictions.map(p=>({...p})), isDouble:false});
     ticketsToday++; saveStorage();
     showMessage('analysisResult', t('ticketSavedSuccess'), true);
     currentPredictions=[]; document.getElementById('predictionListContainer').style.display='none';
     renderTickets(); updateTicketCounter();
 }
-function clearPredictions() {
-    if(confirm("Effacer toutes les prédictions ?")) { currentPredictions=[]; document.getElementById('predictionListContainer').style.display='none'; updateTicketCounter(); showMessage('analysisResult', t('predictionsCleared'), true); }
-}
-function populateTeamsDatalist() {
-    const dl=document.getElementById('globalTeamsList'); dl.innerHTML='';
-    ALL_TEAMS.sort().forEach(t=>{ const o=document.createElement('option'); o.value=t; dl.appendChild(o); });
-}
+function clearPredictions() { if(confirm("Effacer toutes les prédictions ?")) { currentPredictions=[]; document.getElementById('predictionListContainer').style.display='none'; updateTicketCounter(); showMessage('analysisResult', t('predictionsCleared'), true); } }
+function populateTeamsDatalist() { const dl=document.getElementById('globalTeamsList'); dl.innerHTML=''; ALL_TEAMS.sort().forEach(t=>{ const o=document.createElement('option'); o.value=t; dl.appendChild(o); }); }
 function runAnalysis() {
     const home=document.getElementById('teamHome').value.trim(), away=document.getElementById('teamAway').value.trim();
     if(!home||!away) { document.getElementById('analysisResult').innerHTML='<div class="alert">Entrez deux équipes.</div>'; return; }
-    if(home.toLowerCase()===away.toLowerCase()) { document.getElementById('analysisResult').innerHTML='<div class="alert">Équipes différentes.</div>'; return; }
-    const u=getCurrentUser();
-    if(!u) return;
+    const u=getCurrentUser(); if(!u) return;
     if(!u.isActive) { document.getElementById('analysisResult').innerHTML=`<div class="alert">${t('activationRequired')}</div>`; return; }
     if(currentPredictions.length>=MAX_EVENTS) { document.getElementById('analysisResult').innerHTML=`<div class="alert">${t('maxEventsReached')}</div>`; return; }
     if(!canAnalyzeMatch(home, away)) return;
-
     document.getElementById('analysisResult').innerHTML='<div class="waiting-animation">🧠 Analyse IA en cours...</div>';
     setTimeout(()=>{
         const pred=predictMatch(home, away);
         currentPredictions.push({home, away, market:pred.market, score:pred.finalScore});
         addMatchToHistory(home, away);
-        const homeTier=getBaseStrength(home), awayTier=getBaseStrength(away);
-        const homeTierClass = homeTier>=9?'tier-10':homeTier>=7?'tier-8':homeTier>=5?'tier-6':homeTier>=3?'tier-4':'tier-2';
-        const awayTierClass = awayTier>=9?'tier-10':awayTier>=7?'tier-8':awayTier>=5?'tier-6':awayTier>=3?'tier-4':'tier-2';
-        document.getElementById('analysisResult').innerHTML=`
-            <div class="vs-panel">
-                <div style="display:flex; justify-content:space-between;"><b>${home}</b> <span style="color:var(--cyan);">VS</span> <b>${away}</b></div>
-                <div><span class="strength-badge ${homeTierClass}">Force ${homeTier}/10</span> vs <span class="strength-badge ${awayTierClass}">Force ${awayTier}/10</span></div>
-                <div class="market-result">🎯 ${pred.market}</div>
-                <div>📊 Score: <strong style="color:var(--success);">${pred.finalScore}</strong></div>
-            </div>`;
+        document.getElementById('analysisResult').innerHTML=`<div class="vs-panel"><strong>⚽ ${home} vs ${away}</strong><div class="market-result">${pred.market}</div><div>🎯 Score exact: ${pred.finalScore}</div></div>`;
         document.getElementById('teamHome').value=''; document.getElementById('teamAway').value='';
         document.getElementById('predictionListContainer').style.display='block';
         renderPredictionList();
-    },4500);
+    },2000);
 }
-function openProfileModal() {
-    const u=getCurrentUser(); if(!u) return;
-    document.getElementById('profilePhone').textContent=u.phone;
-    document.getElementById('profileName').textContent=u.name;
-    document.getElementById('profileStatus').textContent=u.isActive?"✅ ACTIF":"⏳ En attente";
-    const days=getPremiumDaysLeft(), isPrem=isPremiumActive();
-    document.getElementById('profilePremium').textContent=isPrem?`💎 ${days} jours`:"❌ Pas de premium";
-    document.getElementById('profilePremiumExpiry').textContent=isPrem&&u.premiumExpiryDate?new Date(u.premiumExpiryDate).toLocaleDateString():"N/A";
-    document.getElementById('profileDate').textContent=u.createdDate;
-    document.getElementById('profileModal').classList.add('active');
-}
+
 function setupListeners() {
     document.getElementById('languageSelector').addEventListener('change',e=>updateLanguage(e.target.value));
     document.getElementById('switchToSignup').addEventListener('click',()=>{ document.getElementById('loginScreen').style.display='none'; document.getElementById('signupScreen').style.display='block'; });
     document.getElementById('switchToLogin').addEventListener('click',()=>{ document.getElementById('loginScreen').style.display='block'; document.getElementById('signupScreen').style.display='none'; });
-    document.getElementById('loginBtn').addEventListener('click',()=>{
-        const ph=document.getElementById('loginPhone').value.trim(), pw=document.getElementById('loginPassword').value.trim();
-        if(!ph||!pw) { showMessage('loginStatus', t('fillAllFields'), false); return; }
-        if(loginUser(ph,pw)) updateUIByStatus();
-    });
-    document.getElementById('signupBtn').addEventListener('click',()=>{
-        const ph=document.getElementById('signupPhone').value.trim(), nm=document.getElementById('signupName').value.trim(), pw=document.getElementById('signupPassword').value.trim(), pwc=document.getElementById('signupPasswordConfirm').value.trim(), accept=document.getElementById('acceptTerms').checked;
-        if(!ph||!nm||!pw||!pwc) { showMessage('signupStatus', t('fillAllFields'), false); return; }
-        if(pw!==pwc) { showMessage('signupStatus', t('passwordMismatch'), false); return; }
-        if(pw.length<6) { showMessage('signupStatus', t('minPassword'), false); return; }
-        if(!accept) { showMessage('signupStatus', t('acceptTerms'), false); return; }
-        if(createUser(ph,nm,pw)) { showMessage('signupStatus', t('accountCreated'), true); setTimeout(()=>{ document.getElementById('loginScreen').style.display='none'; document.getElementById('signupScreen').style.display='none'; updateUIByStatus(); },2000); }
-    });
-    document.getElementById('profileBtn').addEventListener('click',openProfileModal);
-    document.getElementById('logoutBtn').addEventListener('click',()=>{ if(confirm("Déconnexion ?")) { db.currentUser=null; currentPredictions=[]; saveStorage(); location.reload(); } });
+    document.getElementById('loginBtn').addEventListener('click',()=>{ const ph=document.getElementById('loginPhone').value.trim(), pw=document.getElementById('loginPassword').value.trim(); if(!ph||!pw) { showMessage('loginStatus', t('fillAllFields'), false); return; } if(loginUser(ph,pw)) updateUIByStatus(); });
+    document.getElementById('signupBtn').addEventListener('click',()=>{ const ph=document.getElementById('signupPhone').value.trim(), nm=document.getElementById('signupName').value.trim(), pw=document.getElementById('signupPassword').value.trim(), pwc=document.getElementById('signupPasswordConfirm').value.trim(), accept=document.getElementById('acceptTerms').checked; if(!ph||!nm||!pw||!pwc) { showMessage('signupStatus', t('fillAllFields'), false); return; } if(pw!==pwc) { showMessage('signupStatus', t('passwordMismatch'), false); return; } if(pw.length<6) { showMessage('signupStatus', t('minPassword'), false); return; } if(!accept) { showMessage('signupStatus', t('acceptTerms'), false); return; } if(createUser(ph,nm,pw)) { showMessage('signupStatus', t('accountCreated'), true); setTimeout(()=>{ document.getElementById('loginScreen').style.display='none'; document.getElementById('signupScreen').style.display='none'; updateUIByStatus(); },2000); } });
+    
+    const profileBtn = ()=>{ const u=getCurrentUser(); if(u) { document.getElementById('profilePhone').innerText=u.phone; document.getElementById('profileName').innerText=u.name; document.getElementById('profileStatus').innerText=u.isActive?'✅ Actif':'⏳ Inactif'; document.getElementById('profilePremium').innerText=isPremiumActive()?'💎 Actif':'❌ Expiré'; document.getElementById('profilePremiumExpiry').innerText=u.premiumExpiryDate?new Date(u.premiumExpiryDate).toLocaleDateString():'N/A'; document.getElementById('profileDate').innerText=u.createdDate; } document.getElementById('profileModal').classList.add('active'); };
+    document.getElementById('profileBtnFromSpace').addEventListener('click',profileBtn);
+    
+    const logout = ()=>{ if(confirm("Déconnexion ?")) { db.currentUser=null; currentPredictions=[]; saveStorage(); location.reload(); } };
+    document.getElementById('logoutBtnFromSpace').addEventListener('click',logout);
+    
     document.getElementById('analyzeMatchBtn').addEventListener('click',runAnalysis);
     document.getElementById('saveTicketBtn').addEventListener('click',saveTicket);
-    document.getElementById('doubleTicketBtn').addEventListener('click',doubleCurrentTicket);
+    document.getElementById('doubleTicketBtn').addEventListener('click',()=>{ if(currentPredictions.length===0) return; prepareDoubleTicket(-1); });
     document.getElementById('clearPredictionsBtn').addEventListener('click',clearPredictions);
     document.getElementById('closeProfileBtn').addEventListener('click',()=>document.getElementById('profileModal').classList.remove('active'));
-    document.getElementById('validateCodeBtn').addEventListener('click',()=>{ const code=document.getElementById('activationCodeInput').value.trim(); if(!code) { showMessage('codeStatus', t('validError'), false); return; } processActivationCode(code); });
-    document.getElementById('contactAdminBtn').addEventListener('click',()=>{ window.open('https://wa.me/243983971254?text=Bonjour%20activation%20Wise03.bet','_blank'); });
+    document.getElementById('closeTicketDetailBtn').addEventListener('click',()=>document.getElementById('ticketDetailModal').classList.remove('active'));
+    document.getElementById('validateCodeBtn').addEventListener('click',()=>{ const code=document.getElementById('activationCodeInput').value.trim(); if(code.length!==15||!/^\d+$/.test(code)) { showMessage('codeStatus',t('validError'),false); return; } const u=getCurrentUser(); if(!u) return; if(db.usedCodes.has(code)) { showMessage('codeStatus',t('usedCodeError'),false); return; } db.usedCodes.add(code); u.isActive=true; const d=new Date(); d.setDate(d.getDate()+PREMIUM_DAYS); u.premiumExpiryDate=d.toISOString(); saveStorage(); showMessage('codeStatus',`${t('accountActivated')} ${t('premiumAdded')}`,true); updateUIByStatus(); });
+    document.getElementById('contactAdminBtn').addEventListener('click',()=>{ window.open('https://wa.me/243983971254','_blank'); });
 }
 function showSplash() { setTimeout(()=>{ document.getElementById('splashScreen').classList.add('hidden'); document.getElementById('appContainer').style.display='block'; },8000); }
-document.addEventListener('DOMContentLoaded',()=>{
-    loadStorage(); updateLanguage('fr'); showSplash(); setupListeners();
-    if(db.currentUser && db.users[db.currentUser]) updateUIByStatus();
-});
+document.addEventListener('DOMContentLoaded',()=>{ loadStorage(); updateLanguage('fr'); showSplash(); setupListeners(); if(db.currentUser && db.users[db.currentUser]) updateUIByStatus(); });
 })();
 </script>
 </body>
-    </html>
+                                                                                                                                                                                                                                     </html>
