@@ -1,39 +1,21 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>WISE03.BET — IA Sportive Pro</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>WISE03.BET — IA Sportive Pro | 24 Marchés</title>
     <style>
         :root {
             --bg: #020617; --card: #0f172a; --border: #1e293b; --text: #f1f5f9;
             --muted: #94a3b8; --green: #22c55e; --pink: #d946ef; --cyan: #06b6d4;
             --primary: #3b82f6; --danger: #ef4444; --gold: #eab308; --warning: #f97316;
         }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-        body { background: var(--bg); color: var(--text); overflow-x: hidden; touch-action: pan-y pinch-zoom; }
-
-        .app-shell { max-width: 480px; margin: 0 auto; padding: 15px; min-height: 100vh; position: relative; padding-bottom: 120px; }
-        
-        .card { 
-            background: var(--card); border: 1px solid var(--border); 
-            border-radius: 24px; padding: 20px; margin-bottom: 15px; 
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-        }
-
-        input, select, textarea { 
-            width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border); 
-            background: #1e293b; color: #fff; margin-bottom: 12px; font-size: 13px; 
-        }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
-
-        .btn { 
-            padding: 12px; border-radius: 12px; border: none; cursor: pointer; 
-            font-weight: 700; transition: 0.3s; font-size: 12px; 
-            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; touch-action: pan-y; }
+        .app-shell { max-width: 480px; margin: 0 auto; padding: 15px; min-height: 100vh; padding-bottom: 120px; }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5); }
+        input, select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: #1e293b; color: #fff; margin-bottom: 12px; font-size: 13px; }
+        .btn { padding: 12px; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; transition: 0.3s; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
         .btn-primary { background: linear-gradient(135deg, var(--primary), #1d4ed8); color: white; flex: 1; }
         .btn-success { background: var(--green); color: #000; flex: 1; }
         .btn-danger { background: var(--danger); color: white; flex: 1; }
@@ -42,131 +24,52 @@
         .btn-assistant { background: linear-gradient(135deg, var(--gold), var(--warning)); color: #000; }
         .btn-gourmand { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; }
         .btn-double { background: linear-gradient(135deg, var(--cyan), #0891b2); color: white; }
-        .btn-warning { background: var(--warning); color: #000; }
-
-        .nav-bar { 
-            display: flex; background: var(--card); border: 1px solid var(--border); 
-            border-radius: 18px; margin-bottom: 20px; padding: 5px;
-        }
-
-        .nav-item { 
-            flex: 1; padding: 10px; text-align: center; cursor: pointer; 
-            font-size: 10px; font-weight: 800; border-radius: 12px; color: var(--muted);
-            position: relative;
-            transition: all 0.2s ease;
-        }
-
+        .nav-bar { display: flex; background: var(--card); border: 1px solid var(--border); border-radius: 18px; margin-bottom: 20px; padding: 5px; }
+        .nav-item { flex: 1; padding: 10px; text-align: center; cursor: pointer; font-size: 10px; font-weight: 800; border-radius: 12px; color: var(--muted); transition: 0.2s; }
         .nav-item.active { background: var(--primary); color: white; }
-        .nav-item .notification-badge {
-            position: absolute; top: -5px; right: -5px; background: var(--danger);
-            color: white; border-radius: 50%; width: 18px; height: 18px;
-            font-size: 10px; display: flex; align-items: center; justify-content: center;
-        }
-
-        .analysis-res { font-size: 22px; font-weight: 900; color: var(--green); margin: 10px 0; text-align: center; }
+        .analysis-res { font-size: 22px; font-weight: 900; color: var(--green); text-align: center; }
         .vs-container { display: flex; align-items: center; justify-content: space-around; margin: 15px 0; }
-        .team-name { font-weight: 900; font-size: 13px; text-align: center; flex: 1; }
-        
-        .premium-score {
-            background: linear-gradient(135deg, var(--pink), #a21caf);
-            border-radius: 16px; padding: 15px; text-align: center; margin: 10px 0; color: white;
-        }
-
+        .team-name { font-weight: 900; font-size: 13px; text-align: center; flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .premium-lock { background: var(--border); border-radius: 16px; padding: 15px; text-align: center; margin: 10px 0; color: var(--muted); }
         .loader { width: 18px; height: 18px; border: 3px solid #fff; border-bottom-color: transparent; border-radius: 50%; display: none; animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; }
-        .modal.active { display: flex; }
-        .modal-content { background: var(--card); padding: 25px; border-radius: 20px; width: 90%; max-width: 500px; max-height: 80vh; overflow-y: auto; }
-
-        .status-badge { font-size: 10px; padding: 4px 8px; border-radius: 10px; font-weight: bold; margin-top: 5px; display: inline-block; }
-        
-        .profile-pic {
-            width: 80px; height: 80px; border-radius: 50%; object-fit: cover;
-            margin: 10px auto; border: 3px solid var(--primary);
-        }
-        
-        .ticket-item { border-left: 3px solid var(--primary); margin-bottom: 5px; padding-left: 10px; }
-        
-        .assistant-chat {
-            position: fixed; bottom: 80px; right: 20px; width: 300px;
-            background: var(--card); border: 1px solid var(--border);
-            border-radius: 16px; z-index: 999; display: none;
-            flex-direction: column; max-height: 400px;
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .status-badge { font-size: 10px; padding: 4px 8px; border-radius: 10px; display: inline-block; }
+        .profile-pic { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 10px auto; border: 3px solid var(--primary); }
+        .ticket-item { border-left: 3px solid var(--primary); margin-bottom: 8px; padding-left: 10px; }
+        .back-btn { margin-bottom: 15px; background: var(--border); padding: 8px 15px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 12px; }
+        .detail-header { background: linear-gradient(135deg, var(--primary), #1d4ed8); padding: 15px; border-radius: 16px; margin-bottom: 15px; text-align: center; }
+        .splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #020617, #0f172a); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; transition: opacity 0.5s; }
+        .splash-logo { font-size: 42px; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 40px; }
+        .splash-loader { width: 60px; height: 60px; border: 4px solid rgba(59,130,246,0.2); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        .activation-hint { background: #1e2a3a; border-radius: 12px; padding: 12px; margin: 16px 0; font-size: 12px; color: var(--warning); text-align: center; }
+        .flag-icon { font-size: 18px; }
+        .assistant-chat { position: fixed; bottom: 80px; right: 20px; width: 300px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; display: none; flex-direction: column; z-index: 999; }
         .assistant-chat.active { display: flex; }
-        .assistant-header {
-            background: linear-gradient(135deg, var(--gold), var(--warning));
-            padding: 12px; border-radius: 16px 16px 0 0;
-            display: flex; justify-content: space-between; cursor: pointer;
-            color: #000; font-weight: bold;
-        }
+        .assistant-header { background: linear-gradient(135deg, var(--gold), var(--warning)); padding: 12px; border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; cursor: pointer; color: #000; font-weight: bold; }
         .assistant-messages { flex: 1; padding: 10px; overflow-y: auto; max-height: 300px; font-size: 12px; }
         .assistant-input { display: flex; padding: 10px; gap: 5px; border-top: 1px solid var(--border); }
         .assistant-input input { flex: 1; margin: 0; padding: 8px; }
         .assistant-bubble { margin: 5px 0; padding: 8px; border-radius: 12px; max-width: 85%; word-wrap: break-word; }
         .assistant-user { background: var(--primary); margin-left: auto; text-align: right; }
         .assistant-bot { background: var(--border); }
-        
-        .lang-btn {
-            position: fixed; top: 10px; right: 10px; background: var(--card);
-            border: 1px solid var(--border); border-radius: 20px; padding: 5px 10px;
-            cursor: pointer; font-size: 12px; z-index: 100;
-        }
-        
-        .action-buttons { display: flex; gap: 10px; margin-top: 15px; }
-        .ticket-card { cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
-        .ticket-card:hover { transform: scale(1.01); border-color: var(--primary); }
-        .back-btn { margin-bottom: 15px; background: var(--border); padding: 8px 15px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 12px; }
-        .team-strength { font-size: 10px; margin-top: 4px; color: var(--gold); }
-        .detail-header { background: linear-gradient(135deg, var(--primary), #1d4ed8); padding: 15px; border-radius: 16px; margin-bottom: 15px; text-align: center; }
-        .info-badge { background: var(--border); padding: 5px 10px; border-radius: 20px; font-size: 11px; display: inline-block; margin: 5px; }
-
-        .splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #020617, #0f172a);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            transition: opacity 0.5s ease;
-        }
-        .splash-logo { font-size: 42px; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 40px; }
-        .splash-loader { width: 60px; height: 60px; border: 4px solid rgba(59,130,246,0.2); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
-        .splash-progress { width: 70%; max-width: 280px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; margin: 20px 0; }
-        .splash-progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary), var(--cyan)); transition: width 0.1s linear; }
-        .splash-text { color: var(--muted); font-size: 14px; letter-spacing: 1px; }
-
-        .activation-box { background: var(--border); border-radius: 16px; padding: 15px; margin-top: 15px; text-align: center; }
-        .activation-code-input { font-family: monospace; letter-spacing: 2px; text-align: center; }
+        .btn-assistant { position: fixed; bottom: 20px; right: 20px; width: auto; padding: 10px 15px; z-index: 998; background: linear-gradient(135deg, var(--gold), var(--warning)); color: black; border: none; border-radius: 40px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
-
 <div class="splash-screen" id="splashScreen">
-    <div class="splash-logo">WISE03<span style="color:white">.BET</span></div>
+    <div class="splash-logo">WISE03<span style="color:white;">.BET</span></div>
     <div class="splash-loader"></div>
-    <div class="splash-progress">
-        <div class="splash-progress-bar" id="splashProgress"></div>
-    </div>
-    <div class="splash-text" id="splashText">Chargement de l'IA Sportive...</div>
+    <div class="splash-progress" style="width:70%; height:4px; background:rgba(255,255,255,0.2); border-radius:4px; margin-top:20px;"><div id="splashProgress" style="width:0%; height:100%; background:linear-gradient(90deg,var(--primary),var(--cyan)); border-radius:4px;"></div></div>
+    <div style="margin-top:10px; color:var(--muted);">Chargement des 24 marchés IA...</div>
 </div>
 
 <div class="app-shell" id="appShell" style="display: none;">
-    <button class="lang-btn" onclick="toggleLanguage()">🌐 English</button>
-    
-    <header style="text-align: center; padding: 20px 0;">
-        <h1 style="color: var(--primary); letter-spacing: 2px;">WISE03<span style="color:white">.BET</span></h1>
-    </header>
+    <header style="text-align:center; padding:20px 0;"><h1 style="color:var(--primary);">WISE03<span style="color:white;">.BET</span></h1></header>
 
+    <!-- Connexion -->
     <section id="auth-screen">
         <div class="card">
-            <h3 style="text-align:center; margin-bottom:15px;">Connexion</h3>
+            <h3 style="text-align:center;">Connexion</h3>
             <input type="email" id="login-email" placeholder="Email">
             <input type="password" id="login-pass" placeholder="Mot de passe">
             <div id="login-error" style="color:var(--danger); font-size:12px;"></div>
@@ -175,631 +78,405 @@
         </div>
     </section>
 
+    <!-- Inscription -->
     <section id="register-screen" style="display:none;">
         <div class="card">
-            <h3 style="text-align:center; margin-bottom:15px;">Inscription</h3>
+            <h3 style="text-align:center;">Inscription</h3>
             <input type="text" id="reg-name" placeholder="Nom complet">
             <input type="email" id="reg-email" placeholder="Email">
             <div id="email-error" style="color:var(--danger); font-size:12px;"></div>
-            <input type="tel" id="reg-whatsapp" placeholder="Numéro WhatsApp (ex: 22990123456)">
-            <input type="password" id="reg-pass" placeholder="Mot de passe (min 4 caractères)">
+            <input type="tel" id="reg-whatsapp" placeholder="WhatsApp (ex: 22990123456)">
+            <input type="password" id="reg-pass" placeholder="Mot de passe (min 4)">
             <button class="btn btn-primary btn-full" onclick="registerUser()">S'INSCRIRE</button>
             <button class="btn btn-ghost btn-full" style="margin-top:10px;" onclick="toggleAuth(false)">Retour</button>
         </div>
     </section>
 
+    <!-- Dashboard principal -->
     <section id="dashboard" style="display:none;">
         <div class="nav-bar">
-            <div class="nav-item active" id="nav-predict" onclick="switchView('predict')">ANALYSE</div>
-            <div class="nav-item" id="nav-tickets" onclick="switchView('tickets')">TICKETS</div>
-            <div class="nav-item" id="nav-messages" onclick="switchView('messages')">MESSAGES</div>
-            <div class="nav-item" id="nav-profile" onclick="switchView('profile')">PROFIL</div>
+            <div class="nav-item active" onclick="switchView('predict')">ANALYSE</div>
+            <div class="nav-item" onclick="switchView('tickets')">TICKETS</div>
+            <div class="nav-item" onclick="switchView('messages')">MESSAGES</div>
+            <div class="nav-item" onclick="switchView('profile')">PROFIL</div>
         </div>
 
+        <!-- Vue Analyse -->
         <div id="view-predict">
             <div id="verify-alert" class="card" style="display:none; border-color:var(--warning);">
-                <p style="font-size:12px; color:var(--warning); text-align:center;">⚠️ Votre compte est en attente d'activation. Utilisez un code d'activation dans "Profil".</p>
+                <p style="font-size:12px; color:var(--warning); text-align:center;">⚠️ Compte en attente d'activation. Utilisez le code dans "Profil".</p>
             </div>
-
             <div id="predict-main" style="display:none;">
                 <div class="card">
-                    <label style="font-size:11px; color:var(--muted);">Équipe Domicile</label>
-                    <input type="text" id="team-h" placeholder="Chercher..." list="teams-list">
-                    <label style="font-size:11px; color:var(--muted);">Équipe Extérieur</label>
-                    <input type="text" id="team-a" placeholder="Chercher..." list="teams-list">
+                    <label>🏠 Équipe Domicile</label>
+                    <input type="text" id="team-h" placeholder="Chercher..." list="teams-list" autocomplete="off">
+                    <label>✈️ Équipe Extérieur</label>
+                    <input type="text" id="team-a" placeholder="Chercher..." list="teams-list" autocomplete="off">
                     <datalist id="teams-list"></datalist>
-                    
-                    <div id="ana-error" style="color:var(--danger); font-size:11px; margin-bottom:10px;"></div>
-
-                    <button class="btn btn-primary btn-full" onclick="runAnalysis()" id="btn-ana">
-                        <span>ANALYSER LE MATCH</span>
-                        <div class="loader" id="ana-loader"></div>
-                    </button>
+                    <div id="ana-error" style="color:var(--danger); font-size:11px;"></div>
+                    <button class="btn btn-primary btn-full" onclick="runAnalysis()" id="btn-ana"><span>ANALYSER (24 MARCHÉS)</span><div class="loader" id="ana-loader"></div></button>
                 </div>
-
                 <div id="result-box" style="display:none;">
                     <div class="card" style="border:2px solid var(--cyan);">
-                        <div class="vs-container">
-                            <div class="team-name" id="res-h"></div>
-                            <div style="color:var(--primary); font-weight:900;">VS</div>
-                            <div class="team-name" id="res-a"></div>
-                        </div>
+                        <div class="vs-container"><div class="team-name" id="res-h"></div><div>VS</div><div class="team-name" id="res-a"></div></div>
                         <div id="res-market" class="analysis-res">---</div>
-                        <div id="res-ht" style="text-align:center; font-size:13px; color:var(--cyan); margin:5px 0;"></div>
-                        <div id="res-logic" style="text-align:center; font-size:11px; color:var(--muted); margin:5px 0;"></div>
-                        
-                        <div id="premium-lock" class="premium-score" style="background:var(--border); display:none;">
-                            🔒 Score Exact Réservé Premium
-                        </div>
-                        <div id="premium-data" class="premium-score" style="display:none;">
-                            <small>SCORE EXACT PRÉDIT</small>
-                            <div style="font-size:32px; font-weight:900;" id="res-score">?-?</div>
-                        </div>
-                        
+                        <div id="res-ht" style="text-align:center; font-size:13px; margin-top:8px;"></div>
+                        <div class="premium-lock">🔒 Score exact non disponible (24 marchés uniquement)</div>
                         <button class="btn btn-ghost btn-full" onclick="addToTicket()">+ AJOUTER AU COUPON</button>
                     </div>
                 </div>
-
                 <div id="current-ticket" class="card" style="display:none; border-color:var(--green);">
-                    <h4 style="margin-bottom:10px;">Coupon Actuel (<span id="ticket-count">0</span>)</h4>
+                    <h4>Coupon Actuel (<span id="ticket-count">0</span>)</h4>
                     <div id="ticket-list"></div>
-                    <button class="btn btn-success btn-full" style="margin-top:10px;" onclick="saveTicket()">ENREGISTRER LE TICKET</button>
+                    <button class="btn btn-success btn-full" onclick="saveTicket()">ENREGISTRER LE TICKET</button>
                 </div>
             </div>
         </div>
 
-        <div id="view-tickets" style="display:none;">
-            <div id="tickets-list-view"></div>
-        </div>
-        
-        <div id="view-ticket-detail" style="display:none;">
-            <div class="back-btn" onclick="backToTicketsList()">← Retour aux tickets</div>
-            <div id="ticket-detail-content"></div>
-        </div>
+        <!-- Vue Tickets -->
+        <div id="view-tickets" style="display:none;"><div id="tickets-list-view"></div></div>
+        <div id="view-ticket-detail" style="display:none;"><div class="back-btn" onclick="backToTicketsList()">← Retour</div><div id="ticket-detail-content"></div></div>
 
-        <div id="view-messages" style="display:none;">
-            <div id="msg-list"></div>
-        </div>
+        <!-- Vue Messages -->
+        <div id="view-messages" style="display:none;"><div id="msg-list"></div></div>
 
+        <!-- Vue Profil (avec validation par code) -->
         <div id="view-profile" style="display:none;">
             <div class="card" style="text-align:center;">
                 <div id="profile-pic-container"></div>
                 <h2 id="prof-name">---</h2>
-                <p id="prof-email" style="font-size:12px; color:var(--muted);"></p>
-                <p id="prof-whatsapp" style="font-size:12px; color:var(--muted);"></p>
+                <p id="prof-email" style="font-size:12px;"></p>
+                <p id="prof-whatsapp" style="font-size:12px;"></p>
                 <div id="prof-badge"></div>
-                <hr style="margin:20px 0; opacity:0.1;">
-                
-                <div class="activation-box">
-                    <h4 style="margin-bottom:10px;">🔐 ACTIVATION COMPTE</h4>
-                    <p style="font-size:11px; margin-bottom:8px;">Entrez un code à 15 chiffres reçu par WhatsApp</p>
-                    <input type="text" id="activation-code" class="activation-code-input" placeholder="000000000000000" maxlength="15" inputmode="numeric">
-                    <div id="code-activation-status" style="font-size:12px; margin:8px 0;"></div>
-                    <button class="btn btn-primary btn-full" onclick="activateWithCode()">VALIDER LE CODE</button>
-                    <p style="font-size:10px; margin-top:10px; color:var(--muted);">Contactez le support pour obtenir votre code: +243983971254</p>
+                <hr>
+                <button class="btn btn-primary btn-full" onclick="document.getElementById('profile-file').click()">📸 PHOTO DE PROFIL</button>
+                <input type="file" id="profile-file" style="display:none;" accept="image/*" onchange="handleProfileUpload(this)">
+                <div class="activation-hint" id="activation-hint-profile" style="display:none;">
+                    ⚠️ Compte non activé. Contactez l'administrateur pour obtenir votre code d'activation (15 chiffres).
                 </div>
-                
-                <div id="profile-pic-section" style="margin-top:15px;">
-                    <p style="font-size:11px; margin-bottom:10px;">Photo de profil :</p>
-                    <button class="btn btn-primary btn-full" onclick="document.getElementById('profile-file').click()">📸 CHARGER PHOTO DE PROFIL</button>
-                    <input type="file" id="profile-file" style="display:none;" accept="image/*" onchange="handleProfileUpload(this)">
+                <div style="margin-top:15px;">
+                    <input type="text" id="activation-code-input" placeholder="Code d'activation (15 chiffres)" maxlength="15">
+                    <button class="btn btn-warning btn-full" onclick="validateActivationCode()">VALIDER LE CODE</button>
+                    <div id="code-status"></div>
                 </div>
                 <button class="btn btn-danger btn-full" style="margin-top:20px;" onclick="logout()">DÉCONNEXION</button>
             </div>
         </div>
     </section>
 
+    <!-- Assistant Zola -->
     <div id="assistant-chat" class="assistant-chat">
-        <div class="assistant-header" onclick="toggleAssistant()">
-            <span>🤖 Zola - Assistant</span>
-            <span>▼</span>
-        </div>
-        <div class="assistant-messages" id="assistant-messages">
-            <div class="assistant-bubble assistant-bot">👋 Bonjour ! Cliquez sur un ticket enregistré pour voir ses détails !</div>
-        </div>
-        <div class="assistant-input">
-            <input type="text" id="assistant-input" placeholder="Votre question..." onkeypress="if(event.key==='Enter')askZola()">
-            <button class="btn btn-primary" onclick="askZola()" style="padding:8px 12px;">➤</button>
-        </div>
+        <div class="assistant-header" onclick="toggleAssistant()"><span>🤖 Zola - Assistant</span><span>▼</span></div>
+        <div class="assistant-messages" id="assistant-messages"><div class="assistant-bubble assistant-bot">👋 Utilisez les 24 marchés, doublez vos tickets !</div></div>
+        <div class="assistant-input"><input type="text" id="assistant-input" placeholder="Votre question..." onkeypress="if(event.key==='Enter')askZola()"><button class="btn btn-primary" onclick="askZola()">➤</button></div>
     </div>
-    
-    <button class="btn btn-assistant" style="position:fixed; bottom:20px; right:20px; width:auto; padding:10px 15px; z-index:998;" onclick="toggleAssistant()">🤖 Zola</button>
+    <button class="btn-assistant" onclick="toggleAssistant()">🤖 Zola</button>
 </div>
 
 <script>
-    // === MOTEUR IA SPORTIF ===
-    const MARKETS_PRO = [
-        "1", "2", "X", "1MT +1.5", "1MT +2", "1MT -2", "1MT -1.5", "1MT Dom gagne", "1MT Ext gagne", "1MT Nul",
-        "+ de buts en 1MT", "+ de buts en 2MT", "2MT Dom gagne", "2MT Ext gagne", "Les deux MT égalité",
-        "Over 1.5", "Over 2", "Over 2.5", "Over 3", "Under 2", "All teams win YES", "All teams win NO"
-    ];
-    
-    const SCORES_FAVORIS = ["2-1","1-2","3-1","2-3","0-2","4-1","2-0","1-0","1-1","2-2","4-0","2-4","1-5","3-4","3-5"];
-    
-    function getRapportForce(teamH, teamA) {
-        const strengthH = getTeamStrength(teamH);
-        const strengthA = getTeamStrength(teamA);
-        if(strengthH === 'fort' && strengthA === 'faible') return 'favori_vs_faible';
-        if(strengthA === 'fort' && strengthH === 'faible') return 'surprise';
-        return 'equilibre';
-    }
-    
-    function getScoresPossibles(rapport) {
-        if(rapport === 'favori_vs_faible') return ["3-1","4-1","2-0","4-0","3-0","4-1","4-2","3-2","2-3","5-2","6-2"];
-        if(rapport === 'surprise') return ["0-2","1-2","0-1"];
-        return ["1-1","2-1","1-2","2-2","1-0","0-1","3-1","3-2","1-3"];
-    }
-    
-    function validerScoreAvecMarche(scoreFinal, marche) {
-        const [h, a] = scoreFinal.split('-').map(Number);
-        const total = h + a;
-        if(marche === "1") return h > a;
-        if(marche === "2") return a > h;
-        if(marche === "X") return h === a;
-        if(marche === "Over 1.5") return total > 1.5;
-        if(marche === "Over 2") return total > 2;
-        if(marche === "Over 2.5") return total > 2.5;
-        if(marche === "Over 3") return total > 3;
-        if(marche === "Under 2") return total < 2;
-        if(marche === "All teams win YES") return (h > 0 && a > 0);
-        if(marche === "All teams win NO") return (h === 0 || a === 0);
-        return true;
-    }
-    
-    function genererScoreEtMarche(teamH, teamA) {
-        const rapport = getRapportForce(teamH, teamA);
-        const scoresPossibles = getScoresPossibles(rapport);
-        const scoresCompatibles = SCORES_FAVORIS.filter(s => scoresPossibles.includes(s));
-        let scoreFinal = scoresCompatibles.length ? scoresCompatibles[Math.floor(Math.random() * scoresCompatibles.length)] : scoresPossibles[Math.floor(Math.random() * scoresPossibles.length)];
-        let marche = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
-        let tries = 0;
-        while(!validerScoreAvecMarche(scoreFinal, marche) && tries < 15) {
-            marche = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
-            tries++;
-        }
-        const [fh, fa] = scoreFinal.split('-').map(Number);
-        let ht_h = Math.floor(fh / 2) + (Math.random() > 0.7 ? 1 : 0);
-        let ht_a = Math.floor(fa / 2) + (Math.random() > 0.7 ? 1 : 0);
-        if(ht_h > fh) ht_h = fh;
-        if(ht_a > fa) ht_a = fa;
-        const miTemps = `${ht_h}-${ht_a}`;
-        const logique = `Vérification : ${scoreFinal} valide le marché "${marche}" → ${validerScoreAvecMarche(scoreFinal, marche) ? 'OK' : 'NON'}`;
-        return { scoreFinal, marche, miTemps, logique };
-    }
-
-    // === GESTION DU SPLASH SCREEN ===
-    function hideSplash() {
-        const splash = document.getElementById('splashScreen');
-        if(splash) {
-            splash.style.opacity = '0';
-            setTimeout(() => {
-                splash.style.display = 'none';
-                document.getElementById('appShell').style.display = 'block';
-            }, 500);
-        }
-    }
-
-    // === LISTES DES CLUBS (version allégée mais fonctionnelle) ===
-    const LEVEL1 = [ 
-    "Real Madrid", "Manchester City", "Liverpool", "Arsenal", "Bayern Munich", "Bayer Leverkusen", "Inter Milan", 
-    "Paris Saint-Germain", "FC Barcelone", "Borussia Dortmund", "Atlético Madrid", "Juventus", "AC Milan", 
-    "RB Leipzig", "Napoli", "Aston Villa", "Sporting CP", "Benfica", "FC Porto", "Atalanta", "Newcastle", 
-    "Tottenham", "Chelsea", "Manchester United", "Real Sociedad", "Athletic Bilbao", "Girona", "AS Monaco", 
-    "Lille OSC", "Olympique de Marseille", "OGC Nice", "Stuttgart", "Eintracht Frankfurt", "Ajax Amsterdam", 
-    "PSV Eindhoven", "Feyenoord", "Galatasaray", "Fenerbahçe", "Besiktas", "Celtic Glasgow", "Glasgow Rangers", 
-    "Sporting Braga", "Lazio Rome", "AS Roma", "Fiorentina", "Bologne", "Séville FC", "Villarreal", "Real Betis", 
-    "West Ham", "Brighton", "Wolfsburg", "Fribourg", "AZ Alkmaar", "Club Bruges", "Union Saint-Gilloise", 
-    "Anderlecht", "Olympiakos", "Panathinaikos", "Sparta Prague", "Flamengo", "Palmeiras", "River Plate", 
-    "Atlético Mineiro", "Fluminense", "Botafogo", "São Paulo", "Grêmio", "Internacional", "Boca Juniors", 
-    "Racing Club", "Estudiantes", "Talleres", "Independiente del Valle", "LDU Quito", "Al Ahly", "Mamelodi Sundowns", 
-    "Wydad Casablanca", "Raja Casablanca", "Espérance de Tunis", "Zamalek", "RS Berkane", "Pyramids FC", 
-    "CR Belouizdad", "USM Alger", "Al-Hilal", "Al-Nassr", "Al-Ittihad", "Al-Ahli", "Yokohama F. Marinos", 
-    "Vissel Kobe", "Urawa Reds", "Jeonbuk", "Pohang Steelers", "Al-Ain", "Club América", "Monterrey", 
-    "Tigres UANL", "Columbus Crew", "LAFC", "Al-Sadd", "Al-Duhail", "Persepolis", "Esteghlal", "Buriram United",
-    "Ulsan HD", "Kawasaki Frontale", "Al-Rayyan", "Sepahan", "Pakhtakor", "Al-Shorta", "Navbahor", "Al-Fayha",
-    "Mumbai City", "Odisha FC", "ATK Mohun Bagan", "Melbourne City", "Central Coast Mariners", "Wellington Phoenix"
+// ======================= 24 MARCHÉS (SANS SCORE EXACT) =======================
+const MARKETS_24 = [
+    "1", "2", "X", 
+    "Première mi-temps +1.5 buts", "Première mi-temps +2 buts", "Première mi-temps -2 buts", "Première mi-temps -1.5 buts",
+    "Première mi-temps domicile gagne", "Première mi-temps extérieur gagne", "Première mi-temps match nul",
+    "Plus de buts en première mi-temps", "Plus de buts en deuxième mi-temps",
+    "Deuxième mi-temps domicile gagne", "Deuxième mi-temps extérieur gagne", "Deux mi-temps égalité",
+    "Over 1.5", "Over 2", "Over 2.5", "Over 3", "Under 2", "Under 1.5", "Under 3.5",
+    "All teams win Yes", "All teams win No"
 ];
 
-const LEVEL2 = [ 
-    "Everton", "Fulham", "Crystal Palace", "Wolves", "Bournemouth", "Getafe", "Osasuna", "Valence", "Celta Vigo", 
-    "Torino", "Udinese", "Monza", "Genoa", "Sassuolo", "Stade Rennais", "RC Lens", "Stade de Reims", 
-    "Olympique Lyonnais", "Montpellier", "Werder Brême", "Hoffenheim", "Mayence", "Augsbourg", "Twente", 
-    "Utrecht", "Slavia Prague", "Dinamo Zagreb", "Hajduk Split", "Étoile Rouge de Belgrade", "Partizan Belgrade", 
-    "PAOK Salonique", "AEK Athènes", "Bodo/Glimt", "Molde", "Malmö", "Copenhague", "Young Boys Berne", 
-    "Servette", "Bâle", "Salzbourg", "Sturm Graz", "Corinthians", "Cruzeiro", "Vasco da Gama", "Bahia", 
-    "Fortaleza", "RB Bragantino", "Athletico Paranaense", "Vélez Sarsfield", "Lanús", "Defensa y Justicia", 
-    "San Lorenzo", "Colo-Colo", "Universidad de Chile", "Olimpia", "Cerro Porteño", "Libertad", "Nacional (URU)", 
-    "Peñarol", "Junior Barranquilla", "Millonarios", "Atlético Nacional", "Sporting Cristal", "TP Mazembe", 
-    "Simba SC", "Young Africans", "Petro Luanda", "Horoya AC", "ASEC Mimosas", "Orlando Pirates", 
-    "Kaizer Chiefs", "Inter Miami", "Pachuca", "Chivas Guadalajara", "Santos Laguna", "Cruz Azul", "Pumas UNAM",
-    "Toluca", "León", "Necaxa", "Atlas", "Shanghai Port", "Shanghai Shenhua", "Shandong Taishan", "Beijing Guoan",
-    "Zhejiang FC", "Chengdu Rongcheng", "Al-Wasl", "Al-Jazira", "Sharjah FC", "Al-Wahda", "Shabab Al-Ahli",
-    "Al-Taawoun", "Al-Ettifaq", "Al-Shabab", "Damac FC", "Al-Raed", "Abha Club", "Al-Tai", "Al-Riyadh"
-];
+// ======================= BASE DE DONNÉES DES CLUBS (plus de 700) =======================
+const ELITE = ["Real Madrid","Manchester City","Bayern Munich","Arsenal","Paris Saint-Germain","Inter Milan","Liverpool","FC Barcelona","Bayer Leverkusen","Atletico Madrid","Juventus","Borussia Dortmund","AC Milan","Aston Villa","Benfica","Sporting CP","Napoli","Atalanta","Monaco","Tottenham","RB Leipzig","Lille","Girona","Porto","Newcastle","Al Ahly","Flamengo","Palmeiras","Al-Hilal","River Plate","AS Roma","Lazio","Chelsea","Manchester United","Eintracht Frankfurt","Athletic Bilbao","Real Sociedad","PSV Eindhoven","Feyenoord","Marseille","Lyon","Galatasaray","Fenerbahce","Fluminense","Al-Nassr","Mamelodi Sundowns","Club Brugge","Celtic","Boca Juniors","Club América"];
+const FORT = ["Nice","Lens","Rennes","Villarreal","Real Betis","Sevilla","Bologna","Fiorentina","Stuttgart","Hoffenheim","Freiburg","West Ham","Brighton","Fulham","Braga","Ajax","AZ Alkmaar","Union SG","Anderlecht","Genk","Antwerp","Besiktas","Olympiakos","PAOK","Panathinaikos","Rangers","RB Salzburg","Sturm Graz","Slavia Prague","Sparta Prague","Shakhtar Donetsk","Dynamo Kyiv","Dinamo Zagreb","Crvena Zvezda","FC Copenhagen","Midtjylland","Raja Casablanca","Wydad AC","RS Berkane","Espérance Tunis","TP Mazembe","MC Alger","CR Belouizdad","Pyramids FC","Zamalek","Orlando Pirates","Al-Ahli","Al-Ittihad","Al-Sadd","Al-Ain","Vissel Kobe","Ulsan HD","Botafogo","Atlético Mineiro","São Paulo","Racing Club","Estudiantes","Inter Miami","Columbus Crew","LAFC","Tigres UANL","Monterrey"];
+const MOYEN = ["Bournemouth","Brentford","Everton","Reims","Strasbourg","Toulouse","Montpellier","Osasuna","Getafe","Alaves","Torino","Monza","Genoa","Wolfsburg","Werder Bremen","Augsburg","Vitória Guimarães","Famalicão","Utrecht","Twente","Gent","Mechelen","Trabzonspor","Basaksehir","Young Boys","Servette","Basel","Bodø/Glimt","Molde","Malmö FF","Raków","Legia Warsaw","FCSB","Ludogorets","Ferencváros","AS Vita Club","Saint-Éloi Lupopo","AS FAR","JS Kabylie","Kaizer Chiefs","Enyimba","Asante Kotoko","ASEC Mimosas","ASC Jaraaf","Sydney FC","Shanghai Port","Seattle Sounders","New York City FC","Talleres","Colo-Colo"];
+const FAIBLE = ["Leicester","Ipswich","Southampton","Auxerre","Angers","Saint-Étienne","Le Havre","Leganés","Valladolid","Espanyol","Empoli","Cagliari","Venezia","St. Pauli","Holstein Kiel","Heidenheim","Leeds United","Burnley","Paris FC","Lorient","Boavista","Heracles","Westerlo","Samsunspor","APOEL Nicosia","Maccabi Haifa","Maribor","Slovan Bratislava","HJK Helsinki","Shamrock Rovers","Partizani","Sheriff Tiraspol","Maniema Union","DCMP Imana","Moghreb Tétouan","USM Alger","Petro Luanda","Simba SC","Young Africans","Real de Banjul"];
+const PLUS_FAIBLES = ["Portsmouth","Derby County","Oxford United","Red Star","Martigues","Châteauroux","Castellón","Cordoba","Malaga","Bari","Cesena","Mantova","Preußen Münster","Jahn Regensburg","Don Bosco","Dauphins Noirs","FC Lubumbashi Sport","F91 Dudelange","Hamrun Spartans","La Fiorita","Lincoln Red Imps","Vikingur","Flora Tallinn","RFS","Panevėžys"];
+const NATIONS = ['🇫🇷 France','🇩🇪 Allemagne','🇮🇹 Italie','🇪🇸 Espagne','🇬🇧 Royaume-Uni','🇵🇹 Portugal','🇳🇱 Pays-Bas','🇧🇪 Belgique','🇨🇭 Suisse','🇸🇪 Suède','🇺🇸 États-Unis','🇨🇦 Canada','🇧🇷 Brésil','🇦🇷 Argentine','🇲🇽 Mexique','🇨🇳 Chine','🇯🇵 Japon','🇮🇳 Inde','🇸🇦 Arabie Saoudite','🇿🇦 Afrique du Sud','🇨🇩 RD Congo','🇲🇦 Maroc','🇩🇿 Algérie','🇸🇳 Sénégal','🇳🇬 Nigéria','🇪🇬 Égypte','🇹🇳 Tunisie','🇨🇮 Côte d\'Ivoire','🇬🇭 Ghana','🇨🇲 Cameroun'];
+const ALL_TEAMS = [...new Set([...ELITE, ...FORT, ...MOYEN, ...FAIBLE, ...PLUS_FAIBLES, ...NATIONS])].sort();
 
-const LEVEL3 = [ 
-    "Brentford", "Nottingham Forest", "Leicester", "Ipswich", "Southampton", "Las Palmas", "Majorque", "Alavés", 
-    "Rayo Vallecano", "Valladolid", "Empoli", "Hellas Vérone", "Lecce", "Cagliari", "Parme", "FC Nantes", 
-    "Strasbourg", "FC Lorient", "Auxerre", "Brest", "Bochum", "Heidenheim", "St. Pauli", "NEC Nimègue", 
-    "Heerenveen", "Heracles", "Vitesse", "Courtrai", "Westerlo", "Charleroi", "Mechelen", "Cercle Bruges", 
-    "Kilmarnock", "St. Mirren", "Austria Vienne", "LASK", "Grasshopper", "Lucerne", "Cuiabá", "Vitória", 
-    "Juventude", "Platense", "Tigre", "Banfield", "Coquimbo Unido", "Everton (CHI)", "Palestino", "Guaraní", 
-    "Nacional (PAR)", "Montevideo City Torque", "Santa Fe (COL)", "Deportivo Cali", "Once Caldas", "AS Vita Club", 
-    "Maniema Union", "Dauphins Noirs", "Don Bosco", "JS Kabylie", "ES Sétif", "MC Alger", "Club Africain", 
-    "Étoile du Sahel", "Al-Hilal Omdurman", "Al-Merrikh", "Enyimba", "Rivers United", "Al-Talaba", "Al-Zawraa",
-    "Al-Quwa Al-Jawiya", "Al-Kahrabaa", "Duhok SC", "Erbil SC", "Al-Minaa", "Naft Al-Basra", "Al-Najaf",
-    "Churchill Brothers", "Gokulam Kerala", "Sreenidi Deccan", "Real Kashmir", "Aizawl FC", "TRAU FC",
-    "Sudeva Delhi", "Kenkre FC", "Bhawanipore FC", "Delhi FC", "Bengaluru United", "Kickstart FC"
-];
-
-const LEVEL4 = [ 
-    "Le Havre", "FC Metz", "Burnley", "Watford", "Hull City", "Schalke 04", "Hertha Berlin", "Bordeaux", 
-    "Saint-Étienne", "Espanyol Barcelone", "Sampdoria", "Bari", "Palermo", "Sheffield United", "Leeds", 
-    "Norwich", "Malaga", "Elche", "Levante", "Hamburger SV", "Bolivar", "The Strongest", "Caracas FC", 
-    "Universidad Católica (CHI)", "Hearts of Oak", "Asante Kotoko", "1º de Agosto", "Auckland City", 
-    "Sydney FC", "Mumbai City", "Odisha FC", "Hyderabad FC", "East Bengal", "Mohammedan SC", "Churchill Brothers",
-    "Gokulam Kerala", "Punjab FC", "Namdhari FC", "Shillong Lajong", "Rajasthan United", "Sudeva Delhi",
-    "Kenkre FC", "Delhi FC", "Bengaluru United", "Bhawanipore FC", "Kickstart FC", "Sreenidi Deccan",
-    "Real Kashmir", "Aizawl FC", "TRAU FC", "Neroca FC", "Sreenidi Deccan", "Gokulam Kerala"
-];
-
-const LEVEL5 = [ 
-    "AS Douanes", "Coton Sport", "AS Otôho", "Teungueth FC", "Jaraaf", "Buffles du Borgou", "ASKO Kara", 
-    "ASCK", "AS FAN", "AS Police (Mali)", "Real Bamako", "Binga FC", "Lincoln Red Imps", "Europa FC", 
-    "Tre Penne", "La Fiorita", "Hamrun Spartans", "Dudelange", "Ballkani", "San Marino Academy", "AS Pirae", 
-    "Hienghène Sport", "Lupe o le Soaga", "Kiwi FC", "Tupapa Maraerenga", "Pago Youth", "Vaivase-Tai",
-    "Tonga FC", "Lotoha'apai United", "Navutoka FC", "Marist FC", "Solomon Warriors", "Central Coast",
-    "Hekari United", "Lae City", "Toti City", "Madang FC", "Morobe Wawens", "Gulf Komara", "Port Moresby",
-    "Ba FC", "Suva FC", "Rewa FC", "Labasa FC", "Nadi FC", "Lautoka FC", "Navua FC", "Nasinu FC",
-    "Tavua FC", "Dreketi FC", "Rakiraki FC", "Seaqaqa FC", "Savusavu FC", "Bua FC", "Nadroga FC"
-];
-
-const NATIONS_TIER5 = ["France","Argentine","Brésil","Angleterre","Espagne","Portugal","Allemagne","Italie","Pays-Bas","Belgique","Uruguay","Croatie","Maroc","Sénégal","Colombie"];
-const NATIONS_TIER4 = ["Danemark","Suisse","Serbie","Pologne","États-Unis","Mexique","Japon","Corée du Sud","Australie","Iran","Arabie Saoudite","Qatar","Canada","Chili","Pérou","Paraguay","Équateur","Venezuela","Nigeria","Cameroun","Ghana","Algérie","Égypte","Tunisie","Mali","Côte d'Ivoire","Afrique du Sud","Burkina Faso"];
-const NATIONS_TIER3 = ["RD Congo","Zambie","Ouganda","Guinée","Gabon","Bénin","Togo","Madagascar","Irak","Ouzbékistan","Jordanie","Bahreïn","Vietnam","Bolivie","Panama","Honduras","Jamaïque","Costa Rica","Salvador","Guatemala","Trinité-et-Tobago","Haïti","Cuba","Nicaragua","Guyana","Suriname"];
-const NATIONS_TIER2 = ["Niger","Tchad","Somalie","Djibouti","Érythrée","Soudan du Sud","Népal","Bhoutan","Mongolie","Cambodge","Laos","Îles Salomon","Tahiti","Samoa","Guam","Saint-Marin","Andorre","Liechtenstein","Malte","Gibraltar","Îles Féroé","Luxembourg","Moldavie","Estonie","Lettonie","Lituanie","Arménie","Géorgie","Azerbaïdjan","Kazakhstan","Kirghizistan","Tadjikistan","Turkménistan"];
-const NATIONS_TIER1 = ["Sao Tomé-et-Principe","Guinée-Bissau","Guinée équatoriale","Cap-Vert","Seychelles","Maurice","Comores","Lesotho","Eswatini","Botswana","Namibie","Malawi","Burundi","Rwanda","Soudan","Mauritanie","Sierra Leone","Liberia","Gambie","Centrafrique","Somaliland","Zanzibar","Timor oriental","Brunei","Macao","Mongolie intérieure","Tibet","Cachemire","Palestine","Chypre du Nord"];
-
-const ALL_TEAMS = [...new Set([...LEVEL1, ...LEVEL2, ...LEVEL3, ...LEVEL4, ...LEVEL5, ...NATIONS_TIER5, ...NATIONS_TIER4, ...NATIONS_TIER3, ...NATIONS_TIER2, ...NATIONS_TIER1])];
-const ELITE_PLUS = ["Real Madrid", "Manchester City", "Bayern Munich", "Liverpool", "Arsenal", "FC Barcelone", "Inter Milan", "Paris Saint-Germain","Bayer Leverkusen", "Inter Milan","Borussia Dortmund", "Atlético Madrid", "Juventus", "AC Milan", 
-    "RB Leipzig", "Napoli", "Aston Villa",];
-const AFRICA_ELITE = ["Al Ahly", "Wydad Casablanca", "Espérance de Tunis", "Mamelodi Sundowns", "Raja Casablanca"];
-
-function getBaseStrength(team) {
-    if (LEVEL1.includes(team) || NATIONS_TIER5.includes(team)) return 10;
-    if (LEVEL2.includes(team) || NATIONS_TIER4.includes(team)) return 8;
-    if (LEVEL3.includes(team) || NATIONS_TIER3.includes(team)) return 6;
-    if (LEVEL4.includes(team) || NATIONS_TIER2.includes(team)) return 4;
-    if (LEVEL5.includes(team) || NATIONS_TIER1.includes(team)) return 2;
-    return 5;
+// ======================= IA MARCHÉ COMPATIBLE =======================
+function getRandomMarket() { return MARKETS_24[Math.floor(Math.random() * MARKETS_24.length)]; }
+function genererAnalyse(home, away) {
+    const market = getRandomMarket();
+    const miTemps = Math.random() > 0.5 ? "1-0" : "0-1";
+    return { marche: market, miTemps: miTemps, logique: `Analyse: ${market} suggéré` };
 }
-function getAdjustedStrength(team, isHome, opponent) {
-    let strength = getBaseStrength(team);
-    if (isHome) strength += 0.8;
-    if (ELITE_PLUS.includes(team)) strength += 0.5;
-    if (AFRICA_ELITE.includes(team)) strength += 0.3;
-    return strength;
-    }
-    // === BASE DE DONNÉES ===
-    let db = JSON.parse(localStorage.getItem('wise03_db')) || [];
-    let currentUser = null;
-    let currentTicket = [];
-    let tempMatch = null;
-    let usedCodesSet = new Set();
-    let selectedTicketIndex = null;
 
-    function saveDB() { localStorage.setItem('wise03_db', JSON.stringify(db)); }
-    function loadUsedCodes() {
-        const stored = localStorage.getItem('wise03_used_codes');
-        if(stored) usedCodesSet = new Set(JSON.parse(stored));
-    }
-    function saveUsedCodes() { localStorage.setItem('wise03_used_codes', JSON.stringify(Array.from(usedCodesSet))); }
+// ======================= BASE DE DONNÉES UTILISATEURS =======================
+let db = JSON.parse(localStorage.getItem('wise03_db')) || [];
+let currentUser = null;
+let currentTicket = [];
+let tempMatch = null;
+let selectedTicketIndex = null;
 
-    // === ACTIVATION PAR CODE ===
-    function activateWithCode() {
-        const code = document.getElementById('activation-code').value.trim();
-        const statusDiv = document.getElementById('code-activation-status');
-        if(!currentUser) return;
-        if(!/^\d{15}$/.test(code)) {
-            statusDiv.innerHTML = '<span style="color:var(--danger);">❌ Code doit contenir 15 chiffres</span>';
-            return;
-        }
-        if(usedCodesSet.has(code)) {
-            statusDiv.innerHTML = '<span style="color:var(--danger);">❌ Ce code a déjà été utilisé</span>';
-            return;
-        }
-        const count3 = (code.match(/3/g) || []).length;
-        const count0 = (code.match(/0/g) || []).length;
-        let msg = '';
-        let isActivated = false;
-        if(count3 === 3) {
-            currentUser.isVerified = true;
-            currentUser.isPremium = false;
-            currentUser.premiumExpiry = null;
-            isActivated = true;
-            msg = '✅ Compte activé avec succès !';
-        }
-        if(count0 === 2 && count3 === 1) {
-            currentUser.isVerified = true;
-            currentUser.isPremium = true;
-            const expiry = new Date();
-            expiry.setDate(expiry.getDate() + 7);
-            currentUser.premiumExpiry = expiry.toISOString();
-            isActivated = true;
-            msg = '✅ Compte Premium activé pour 7 jours !';
-        }
-        if(!isActivated) {
-            statusDiv.innerHTML = '<span style="color:var(--warning);">⚠️ Code invalide (non reconnu)</span>';
-            return;
-        }
-        usedCodesSet.add(code);
-        saveUsedCodes();
-        updateUser();
-        statusDiv.innerHTML = `<span style="color:var(--green);">${msg}</span>`;
-        checkVerificationStatus();
-        renderProfile();
-        setTimeout(() => statusDiv.innerHTML = '', 3000);
-    }
+function saveDB() { localStorage.setItem('wise03_db', JSON.stringify(db)); }
 
-    // === FONCTIONS UTILISATEURS ===
-    function loginUser() { 
-        const email = document.getElementById('login-email').value.trim();
-        const pass = document.getElementById('login-pass').value;
-        const errorDiv = document.getElementById('login-error');
-        errorDiv.innerText = '';
-        if(!email || !pass) { errorDiv.innerText = "Veuillez remplir tous les champs"; return; }
-        const user = db.find(u => u.email === email && u.pass === pass); 
-        if(user){ 
-            if(user.isBlocked){errorDiv.innerText="Compte bloqué."; return;} 
-            currentUser = JSON.parse(JSON.stringify(user));
-            if(currentUser.premiumExpiry && new Date(currentUser.premiumExpiry) < new Date()){currentUser.isPremium=false; currentUser.premiumExpiry=null; updateUser();} 
-            showDashboard(); 
-            updateMessageNotification();
-        } else { 
-            errorDiv.innerText = "Email ou mot de passe incorrect"; 
-        } 
+// Vérification 48h pour éviter double analyse du même match
+function canAnalyzeMatch(home, away) {
+    if(!currentUser) return false;
+    const key = `${home.toLowerCase().trim()}|${away.toLowerCase().trim()}`;
+    const now = Date.now();
+    currentUser.matchHistory = (currentUser.matchHistory || []).filter(e => (now - e.timestamp) < 48*60*60*1000);
+    if(currentUser.matchHistory.some(e => e.key === key)) return false;
+    currentUser.matchHistory.push({ key, timestamp: now });
+    updateUser();
+    return true;
+}
+
+// ======================= ACTIVATION PAR CODE (15 chiffres) =======================
+function validateActivationCode() {
+    const code = document.getElementById('activation-code-input').value.trim();
+    if(!/^\d{15}$/.test(code)) { showCodeStatus("❌ Le code doit contenir exactement 15 chiffres", false); return; }
+    if(currentUser.activationCodeUsed) { showCodeStatus("❌ Ce code a déjà été utilisé", false); return; }
+    const count3 = (code.match(/3/g)||[]).length;
+    const count0 = (code.match(/0/g)||[]).length;
+    let msg = "";
+    if(count3 === 3) { 
+        currentUser.isVerified = true; 
+        msg = "✅ Compte activé avec succès !";
     }
-    
-    function registerUser() { 
-        const name = document.getElementById('reg-name').value.trim();
-        const email = document.getElementById('reg-email').value.trim();
-        const whatsapp = document.getElementById('reg-whatsapp').value.trim();
-        const pass = document.getElementById('reg-pass').value;
-        const emailError = document.getElementById('email-error');
-        emailError.innerText = '';
-        if(!name || !email || !whatsapp || !pass) { emailError.innerText = "Tous les champs sont requis"; return; }
-        if(pass.length < 4) { emailError.innerText = "Mot de passe (min 4 caractères)"; return; }
-        if(!email.includes('@') || !email.includes('.')) { emailError.innerText = "Email invalide"; return; }
-        if(db.find(u => u.email === email)) { emailError.innerText = "Email déjà utilisé"; return; }
-        db.push({
-            name, email, whatsapp, pass, 
-            isVerified: false, isPremium: false, isBlocked: false, 
-            idSent: false, idImage: null, profileImage: null, 
-            messages: [], tickets: [], dailyCount: 0, lastMatchDate: null, 
-            createdAt: new Date().toLocaleString(), unreadMessages: 0
-        }); 
-        saveDB(); 
-        alert("✅ Compte créé avec succès ! Connectez-vous."); 
-        toggleAuth(false); 
-        document.getElementById('login-email').value = email;
+    if(count0 === 2 && count3 === 1) { 
+        currentUser.isVerified = true; 
+        currentUser.isPremium = true; 
+        const expiry = new Date(); 
+        expiry.setDate(expiry.getDate() + 7); 
+        currentUser.premiumExpiry = expiry.toISOString(); 
+        msg = "✅ Compte Premium activé (7 jours) !";
     }
-    
-    function showDashboard() { 
-        document.getElementById('auth-screen').style.display = 'none'; 
-        document.getElementById('dashboard').style.display = 'block'; 
-        const dl = document.getElementById('teams-list'); 
-        dl.innerHTML = ''; 
-        ALL_TEAMS.forEach(t => {const opt = document.createElement('option'); opt.value = t; dl.appendChild(opt);}); 
-        checkVerificationStatus(); 
-        switchView('predict'); 
-        renderProfile();
-        renderMessages();
-        renderSavedTickets();
+    if(!msg) { showCodeStatus("⚠️ Code invalide (aucune règle de correspondance)", false); return; }
+    currentUser.activationCodeUsed = true;
+    updateUser();
+    showCodeStatus(msg, true);
+    checkVerificationStatus();
+    renderProfile();
+}
+function showCodeStatus(msg, success) { 
+    const div = document.getElementById('code-status'); 
+    div.innerHTML = `<div style="color:${success?'#22c55e':'#ef4444'};">${msg}</div>`; 
+    setTimeout(()=>div.innerHTML='', 4000); 
+}
+
+// ======================= AUTHENTIFICATION =======================
+function loginUser() {
+    const email = document.getElementById('login-email').value.trim();
+    const pass = document.getElementById('login-pass').value;
+    const user = db.find(u => u.email === email && u.pass === pass);
+    if(user) {
+        if(user.isBlocked) { document.getElementById('login-error').innerText = "Compte bloqué"; return; }
+        currentUser = JSON.parse(JSON.stringify(user));
+        if(currentUser.premiumExpiry && new Date(currentUser.premiumExpiry) < new Date()) { currentUser.isPremium = false; currentUser.premiumExpiry = null; updateUser(); }
+        showDashboard();
+    } else document.getElementById('login-error').innerText = "Email ou mot de passe incorrect";
+}
+function registerUser() {
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const whatsapp = document.getElementById('reg-whatsapp').value.trim();
+    const pass = document.getElementById('reg-pass').value;
+    if(!name || !email || !whatsapp || !pass) { document.getElementById('email-error').innerText = "Tous les champs requis"; return; }
+    if(pass.length < 4) { document.getElementById('email-error').innerText = "Mot de passe minimum 4 caractères"; return; }
+    if(db.find(u=>u.email===email)) { document.getElementById('email-error').innerText = "Email déjà utilisé"; return; }
+    db.push({ 
+        name, email, whatsapp, pass, 
+        isVerified: false, isPremium: false, isBlocked: false, 
+        profileImage: null, messages: [], tickets: [], matchHistory: [], 
+        unreadMessages: 0, activationCodeUsed: false, 
+        createdAt: new Date().toLocaleString() 
+    });
+    saveDB();
+    alert("Compte créé avec succès ! Connectez-vous.");
+    toggleAuth(false);
+    document.getElementById('login-email').value = email;
+}
+function updateUser() { 
+    const idx = db.findIndex(u=>u.email===currentUser.email); 
+    if(idx!==-1) { db[idx]=currentUser; saveDB(); } 
+}
+function showDashboard() {
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    const dl = document.getElementById('teams-list');
+    dl.innerHTML = '';
+    ALL_TEAMS.forEach(t => { let opt = document.createElement('option'); opt.value = t; dl.appendChild(opt); });
+    checkVerificationStatus();
+    switchView('predict');
+}
+function checkVerificationStatus() {
+    const alertBox = document.getElementById('verify-alert');
+    const main = document.getElementById('predict-main');
+    if(currentUser.isVerified) { alertBox.style.display='none'; main.style.display='block'; }
+    else { alertBox.style.display='block'; main.style.display='none'; }
+    const hint = document.getElementById('activation-hint-profile');
+    if(hint) hint.style.display = currentUser.isVerified ? 'none' : 'block';
+}
+function renderProfile() {
+    document.getElementById('prof-name').innerText = currentUser.name;
+    document.getElementById('prof-email').innerText = currentUser.email;
+    document.getElementById('prof-whatsapp').innerHTML = `📱 WhatsApp: ${currentUser.whatsapp}`;
+    const picContainer = document.getElementById('profile-pic-container');
+    picContainer.innerHTML = currentUser.profileImage ? `<img src="${currentUser.profileImage}" class="profile-pic">` : `<div class="profile-pic" style="background:var(--border); display:flex; align-items:center; justify-content:center;">📷</div>`;
+    let badgeHtml = currentUser.isPremium ? '<span class="status-badge" style="background:var(--pink);">💎 PREMIUM</span>' : (currentUser.isVerified ? '<span class="status-badge" style="background:var(--green);">✅ VÉRIFIÉ</span>' : '<span class="status-badge" style="background:var(--muted);">⏳ NON ACTIVÉ</span>');
+    if(currentUser.premiumExpiry) badgeHtml += `<br><small>Jusqu'au: ${new Date(currentUser.premiumExpiry).toLocaleDateString()}</small>`;
+    document.getElementById('prof-badge').innerHTML = badgeHtml;
+}
+function handleProfileUpload(input) { 
+    if(input.files[0]) { 
+        const fr = new FileReader(); 
+        fr.onload = e => { currentUser.profileImage = e.target.result; updateUser(); renderProfile(); alert("Photo mise à jour"); }; 
+        fr.readAsDataURL(input.files[0]); 
+    } 
+}
+
+// ======================= ANALYSE & TICKETS =======================
+function runAnalysis() {
+    const h = document.getElementById('team-h').value.trim();
+    const a = document.getElementById('team-a').value.trim();
+    if(!ALL_TEAMS.includes(h) || !ALL_TEAMS.includes(a)) { 
+        document.getElementById('ana-error').innerText = "Équipe non reconnue. Choisissez dans la liste."; 
+        return; 
     }
-    
-    function checkVerificationStatus() { 
-        const alertBox = document.getElementById('verify-alert'); 
-        const main = document.getElementById('predict-main'); 
-        if(currentUser && currentUser.isVerified){alertBox.style.display='none'; main.style.display='block';} 
-        else if(currentUser && !currentUser.isVerified){alertBox.style.display='block'; main.style.display='none';} 
+    if(!currentUser.isVerified) { 
+        document.getElementById('ana-error').innerText = "Compte non activé. Utilisez le code dans Profil."; 
+        return; 
     }
-    
-    function updateMessageNotification() { 
-        if(!currentUser) return;
-        const unread = currentUser.unreadMessages || 0; 
-        const msgNav = document.getElementById('nav-messages'); 
-        if(unread > 0){ 
-            let badge = msgNav.querySelector('.notification-badge'); 
-            if(!badge){badge=document.createElement('span'); badge.className='notification-badge'; msgNav.appendChild(badge);} 
-            badge.innerText = unread; 
-        } else { 
-            const badge = msgNav.querySelector('.notification-badge'); 
-            if(badge) badge.remove(); 
-        } 
+    if(!canAnalyzeMatch(h,a)) { 
+        document.getElementById('ana-error').innerText = "❌ Ce match a déjà été analysé dans les dernières 48 heures."; 
+        return; 
     }
-    
-    function runAnalysis() { 
-        const h = document.getElementById('team-h').value.trim(); 
-        const a = document.getElementById('team-a').value.trim(); 
-        if(!ALL_TEAMS.includes(h) || !ALL_TEAMS.includes(a)){
-            document.getElementById('ana-error').innerText = "Sélectionnez des équipes valides"; 
-            return;
-        } 
-        if(h === a){document.getElementById('ana-error').innerText = "Équipes différentes requises"; return;} 
-        const today = new Date().toDateString(); 
-        if(!currentUser.isPremium && currentUser.lastMatchDate === today){
-            document.getElementById('ana-error').innerText = "⚠️ Standard: 1 match/jour. Premium débloque illimité"; 
-            return;
-        } 
-        document.getElementById('ana-loader').style.display='inline-block'; 
-        document.getElementById('btn-ana').disabled=true; 
-        setTimeout(()=>{ 
-            const gen = genererScoreEtMarche(h,a); 
-            tempMatch = { h, a, market: gen.marche, score: currentUser.isPremium?gen.scoreFinal:null, ht:gen.miTemps, logic:gen.logique }; 
-            document.getElementById('res-h').innerHTML = `${h}<div class="team-strength">${getStrengthLabel(h)}</div>`; 
-            document.getElementById('res-a').innerHTML = `${a}<div class="team-strength">${getStrengthLabel(a)}</div>`; 
-            document.getElementById('res-market').innerText = tempMatch.market; 
-            document.getElementById('res-ht').innerText = `Mi-temps: ${tempMatch.ht}`; 
-            document.getElementById('res-logic').innerText = tempMatch.logic; 
-            if(tempMatch.score) document.getElementById('res-score').innerText = tempMatch.score; 
-            if(currentUser.isPremium){document.getElementById('premium-data').style.display='block'; document.getElementById('premium-lock').style.display='none';} 
-            else {document.getElementById('premium-data').style.display='none'; document.getElementById('premium-lock').style.display='block';} 
-            if(!currentUser.isPremium){currentUser.lastMatchDate=today; updateUser();} 
-            document.getElementById('result-box').style.display='block'; 
-            document.getElementById('ana-loader').style.display='none'; 
-            document.getElementById('btn-ana').disabled=false; 
-        }, 1500); 
-    }
-    
-    function addToTicket() { 
-        if(!tempMatch) return; 
-        if(!currentUser.isPremium && currentTicket.length >= 1){alert("Standard: 1 match max."); return;} 
-        if(currentUser.isPremium && currentTicket.length >= 15){alert("Max 15 matchs."); return;} 
+    document.getElementById('ana-loader').style.display='inline-block';
+    document.getElementById('btn-ana').disabled=true;
+    setTimeout(()=>{
+        const gen = genererAnalyse(h,a);
+        tempMatch = { h, a, market: gen.marche, ht: gen.miTemps };
+        document.getElementById('res-h').innerHTML = `${h}`;
+        document.getElementById('res-a').innerHTML = `${a}`;
+        document.getElementById('res-market').innerText = tempMatch.market;
+        document.getElementById('res-ht').innerText = `Mi-temps suggérée: ${tempMatch.ht}`;
+        document.getElementById('result-box').style.display='block';
+        document.getElementById('ana-loader').style.display='none';
+        document.getElementById('btn-ana').disabled=false;
+    }, 1000);
+}
+function addToTicket() { 
+    if(tempMatch) { 
         currentTicket.push({...tempMatch}); 
         renderCurrentTicket(); 
         document.getElementById('result-box').style.display='none'; 
-        document.getElementById('team-h').value=''; 
-        document.getElementById('team-a').value=''; 
-    }
-    
-    function renderCurrentTicket() { 
-        const container = document.getElementById('ticket-list'); 
-        const count = document.getElementById('ticket-count'); 
-        document.getElementById('current-ticket').style.display = currentTicket.length > 0 ? 'block' : 'none'; 
-        count.innerText = currentTicket.length; 
-        container.innerHTML = currentTicket.map((m,i)=>`<div class="ticket-item" style="padding:8px 0; display:flex; justify-content:space-between;"><div><div>${m.h} vs ${m.a}</div><div><b>${m.market}</b>${m.score?` (${m.score})`:''} | ${m.ht}</div><div class="team-strength">${getStrengthLabel(m.h)} | ${getStrengthLabel(m.a)}</div></div><span style="color:var(--danger);cursor:pointer;" onclick="removeFromTicket(${i})">✖</span></div>`).join(''); 
-    }
-    
-    function removeFromTicket(i){currentTicket.splice(i,1); renderCurrentTicket();}
-    
-    function saveTicket(){ 
-        if(currentTicket.length === 0) return; 
-        const today = new Date().toDateString(); 
-        const ticketsToday = currentUser.tickets.filter(t => t.date.includes(today)).length; 
-        if(!currentUser.isPremium && ticketsToday >= 1){alert("Standard: 1 ticket/jour max."); return;} 
-        if(currentUser.isPremium && ticketsToday >= 5){alert("Premium: 5 tickets/jour max."); return;} 
-        currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:[...currentTicket]}); 
-        currentTicket = []; 
-        renderCurrentTicket(); 
-        updateUser(); 
-        alert("Ticket enregistré !"); 
-        switchView('tickets'); 
-    }
-    
-    function viewTicketDetail(index) { 
-        selectedTicketIndex = index; 
-        const ticket = currentUser.tickets[index]; 
-        const container = document.getElementById('ticket-detail-content'); 
-        container.innerHTML = `<div class="detail-header"><h3>🎫 DÉTAIL DU TICKET</h3><div class="info-badge">📅 ${ticket.date}</div><div class="info-badge">📊 ${ticket.matches.length} match(s)</div></div><div class="card">${ticket.matches.map((m,i)=>`<div class="ticket-item" style="margin-bottom:15px; padding:10px; background:var(--border); border-radius:12px;"><div style="font-weight:bold;">${m.h} vs ${m.a}</div><div style="color:var(--cyan);">🎯 ${m.market}</div>${m.score?`<div style="color:var(--green);">📊 Score exact: ${m.score}</div>`:''}<div class="team-strength">${getStrengthLabel(m.h)} | ${getStrengthLabel(m.a)}</div></div>`).join('')}</div><div class="card"><h4>⚡ Actions</h4><div class="action-buttons"><button class="btn btn-double" onclick="duplicateSavedTicket()">🔄 DOUBLER</button><button class="btn btn-gourmand" onclick="createGourmandFromTicket()">🍽️ GOURMAND</button></div></div>`; 
-        document.getElementById('view-tickets').style.display = 'none'; 
-        document.getElementById('view-ticket-detail').style.display = 'block'; 
-    }
-    
-    function duplicateSavedTicket() { 
-        if(selectedTicketIndex===null) return; 
-        const orig = currentUser.tickets[selectedTicketIndex]; 
-        let newMatches = orig.matches.map(m=>{ const newMarket = MARKETS_PRO[Math.floor(Math.random()*MARKETS_PRO.length)]; const gen = genererScoreEtMarche(m.h, m.a); return {h:m.h, a:m.a, market:newMarket, score:currentUser.isPremium?gen.scoreFinal:null, htScore:gen.miTemps, logic:gen.logique}; }); 
-        if(!currentUser.isPremium && newMatches.length>1){ alert("⚠️ Standard: 1 match max."); return; } 
-        currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:newMatches}); 
-        updateUser(); 
-        alert(`✅ Dupliqué (${newMatches.length} matchs)`); 
-        backToTicketsList(); 
-    }
-    
-    function createGourmandFromTicket() { 
-        const today = new Date().toDateString(); 
-        let allMatches = []; 
-        for(const u of db) if(u.email!==currentUser.email) for(const t of u.tickets) if(t.date.includes(today)) for(const m of t.matches) allMatches.push(m); 
-        if(allMatches.length===0){alert("Aucun match analysé aujourd'hui."); return;} 
-        let max = currentUser.isPremium?15:1; 
-        let count = Math.min(max, allMatches.length); 
-        const shuffled = allMatches.sort(()=>0.5-Math.random()); 
-        let gourmand = shuffled.slice(0,count).map(m=>{ const newMarket = MARKETS_PRO[Math.floor(Math.random()*MARKETS_PRO.length)]; const gen = genererScoreEtMarche(m.h, m.a); return {h:m.h, a:m.a, market:newMarket, score:currentUser.isPremium?gen.scoreFinal:null, htScore:gen.miTemps, logic:gen.logique}; }); 
-        currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:gourmand}); 
-        updateUser(); 
-        alert(`🍽️ Ticket Gourmand créé (${gourmand.length} matchs)`); 
-        backToTicketsList(); 
-    }
-    
-    function backToTicketsList() { 
-        document.getElementById('view-ticket-detail').style.display = 'none'; 
-        document.getElementById('view-tickets').style.display = 'block'; 
-        renderSavedTickets(); 
-        selectedTicketIndex = null; 
-    }
-    
-    function switchView(view){ 
-        if(view==='ticket-detail') return; 
-        document.getElementById('view-tickets').style.display = view==='tickets'?'block':'none'; 
-        document.getElementById('view-predict').style.display = view==='predict'?'block':'none'; 
-        document.getElementById('view-messages').style.display = view==='messages'?'block':'none'; 
-        document.getElementById('view-profile').style.display = view==='profile'?'block':'none'; 
-        document.getElementById('view-ticket-detail').style.display='none'; 
-        ['predict','tickets','messages','profile'].forEach(v=>{document.getElementById('nav-'+v).classList.toggle('active',v===view);}); 
-        if(view==='tickets') renderSavedTickets(); 
-        if(view==='messages'){if(currentUser.unreadMessages>0){currentUser.unreadMessages=0; updateUser(); updateMessageNotification();} renderMessages();} 
-        if(view==='profile') renderProfile(); 
-    }
-    
-    function renderSavedTickets(){ 
-        const container = document.getElementById('tickets-list-view'); 
-        if(currentUser.tickets.length===0){container.innerHTML='<p style="text-align:center; color:var(--muted);">Aucun ticket enregistré.</p>'; return;} 
-        container.innerHTML = currentUser.tickets.map((t,idx)=>`<div class="card ticket-card" onclick="viewTicketDetail(${idx})"><div style="color:var(--primary); font-weight:bold;">📅 ${t.date}</div><div>📊 ${t.matches.length} match(s)</div><div style="font-size:11px; color:var(--muted); margin-top:5px;">👆 Cliquer pour voir détails</div></div>`).join(''); 
-    }
-    
-    function renderMessages(){ 
-        const container = document.getElementById('msg-list'); 
-        if(currentUser.messages.length===0){container.innerHTML='<p style="text-align:center; color:var(--muted);">Aucun message.</p>'; return;} 
-        container.innerHTML = currentUser.messages.map(m=>`<div class="card"><p>${m.text}</p><div class="message-date">📅 ${m.date}</div></div>`).join(''); 
-    }
-    
-    function renderProfile(){ 
-        document.getElementById('prof-name').innerText = currentUser.name; 
-        document.getElementById('prof-email').innerText = currentUser.email; 
-        document.getElementById('prof-whatsapp').innerHTML = `📱 WhatsApp: ${currentUser.whatsapp || 'Non renseigné'}`; 
-        const picContainer = document.getElementById('profile-pic-container'); 
-        picContainer.innerHTML = currentUser.profileImage ? `<img src="${currentUser.profileImage}" class="profile-pic">` : `<div class="profile-pic" style="background:var(--border); display:flex; align-items:center; justify-content:center;">📷</div>`; 
-        let badgeHtml = currentUser.isPremium ? '<span class="status-badge" style="background:var(--pink);">💎 PREMIUM</span>' : (currentUser.isVerified ? '<span class="status-badge" style="background:var(--green);">✅ ACTIVÉ</span>' : '<span class="status-badge" style="background:var(--muted);">⏳ NON ACTIVÉ</span>'); 
-        if(currentUser.premiumExpiry) badgeHtml += `<br><small>Jusqu'au: ${new Date(currentUser.premiumExpiry).toLocaleDateString()}</small>`; 
-        document.getElementById('prof-badge').innerHTML = badgeHtml; 
-    }
-    
-    function handleProfileUpload(input){if(input.files[0]){const reader=new FileReader(); reader.onload=e=>{currentUser.profileImage=e.target.result; updateUser(); renderProfile(); alert("Photo mise à jour !");}; reader.readAsDataURL(input.files[0]);}}
-    
-    function toggleAssistant(){document.getElementById('assistant-chat').classList.toggle('active');}
-    function askZola(){const input=document.getElementById('assistant-input'); const q=input.value.trim(); if(!q) return; const messagesDiv=document.getElementById('assistant-messages'); messagesDiv.innerHTML+=`<div class="assistant-bubble assistant-user">${q}</div>`; input.value=''; setTimeout(()=>{messagesDiv.innerHTML+=`<div class="assistant-bubble assistant-bot">🤖 Utilisez le code d'activation dans Profil pour débloquer l'accès !</div>`; messagesDiv.scrollTop=messagesDiv.scrollHeight;},500);}
-    function toggleAuth(s){document.getElementById('auth-screen').style.display=s?'none':'block'; document.getElementById('register-screen').style.display=s?'block':'none'; document.getElementById('email-error').innerText='';}
-    function updateUser(){const idx=db.findIndex(u=>u.email===currentUser.email); if(idx!==-1){db[idx]=currentUser; saveDB();}}
-    function logout(){location.reload();}
-    
-    function toggleLanguage() {
-        const lang = document.querySelector('.lang-btn').innerText.includes('English') ? 'fr' : 'en';
-        document.querySelector('.lang-btn').innerText = lang === 'fr' ? '🌐 English' : '🌐 Français';
-    }
-    
-    // Initialisation
-    initializeTeamStrength();
-    loadUsedCodes();
-    
-    // Gestion du splash : forcer la fermeture après 5 secondes
-    let splashProgress = 0;
-    const splashInterval = setInterval(() => {
-        splashProgress += Math.random() * 15 + 5;
-        if(splashProgress >= 100) splashProgress = 100;
-        const progressBar = document.getElementById('splashProgress');
-        if(progressBar) progressBar.style.width = splashProgress + '%';
-        if(splashProgress >= 100) {
-            clearInterval(splashInterval);
-            setTimeout(() => hideSplash(), 500);
-        }
-    }, 300);
-    
-    // Sécurité : si jamais le splash ne disparaît pas au bout de 6 secondes
+    } 
+}
+function renderCurrentTicket() {
+    const container = document.getElementById('ticket-list');
+    document.getElementById('current-ticket').style.display = currentTicket.length ? 'block' : 'none';
+    document.getElementById('ticket-count').innerText = currentTicket.length;
+    container.innerHTML = currentTicket.map((m,i)=>`<div class="ticket-item"><div>${m.h} vs ${m.a}<br><b>${m.market}</b></div><span style="color:var(--danger);cursor:pointer;" onclick="removeFromTicket(${i})">✖</span></div>`).join('');
+}
+function removeFromTicket(i){ currentTicket.splice(i,1); renderCurrentTicket(); }
+function saveTicket() {
+    if(!currentTicket.length) return;
+    currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:[...currentTicket]});
+    currentTicket = [];
+    renderCurrentTicket();
+    updateUser();
+    alert("Ticket enregistré !");
+    switchView('tickets');
+}
+function renderSavedTickets() {
+    const container = document.getElementById('tickets-list-view');
+    if(!currentUser.tickets.length) { container.innerHTML='<p class="info-text">Aucun ticket enregistré.</p>'; return; }
+    container.innerHTML = currentUser.tickets.map((t,idx)=>`<div class="card ticket-card" style="cursor:pointer;" onclick="viewTicketDetail(${idx})"><div style="color:var(--primary);">📅 ${t.date}</div><div>📊 ${t.matches.length} match(s)</div></div>`).join('');
+}
+function viewTicketDetail(idx) {
+    selectedTicketIndex = idx;
+    const t = currentUser.tickets[idx];
+    const container = document.getElementById('ticket-detail-content');
+    container.innerHTML = `
+        <div class="detail-header"><h3>🎫 DÉTAIL DU TICKET</h3><div>${t.date}</div></div>
+        <div class="card">${t.matches.map(m=>`<div class="ticket-item"><b>${m.h} vs ${m.a}</b><br>🎯 ${m.market}</div>`).join('')}</div>
+        <div class="action-buttons" style="display:flex; gap:10px; margin-top:15px;">
+            <button class="btn btn-double" onclick="duplicateSavedTicket()">🔄 DOUBLER</button>
+            <button class="btn btn-gourmand" onclick="createGourmandFromTicket()">🍽️ GOURMAND</button>
+        </div>`;
+    document.getElementById('view-tickets').style.display = 'none';
+    document.getElementById('view-ticket-detail').style.display = 'block';
+}
+function duplicateSavedTicket() {
+    if(selectedTicketIndex===null) return;
+    const orig = currentUser.tickets[selectedTicketIndex];
+    const newMatches = orig.matches.map(m=>{ const gen = genererAnalyse(m.h, m.a); return {h:m.h, a:m.a, market:gen.marche, ht:gen.miTemps}; });
+    currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:newMatches});
+    updateUser();
+    alert("Ticket doublé avec succès !");
+    backToTicketsList();
+}
+function createGourmandFromTicket() {
+    if(selectedTicketIndex===null) return;
+    let allMatches = [];
+    for(const u of db) if(u.email !== currentUser.email) for(const t of u.tickets) for(const m of t.matches) allMatches.push(m);
+    if(allMatches.length === 0) allMatches = currentUser.tickets[selectedTicketIndex].matches;
+    const maxCount = currentUser.isPremium ? 15 : 1;
+    const shuffled = allMatches.sort(()=>0.5-Math.random());
+    const gourmand = shuffled.slice(0, maxCount).map(m=>{ const gen = genererAnalyse(m.h, m.a); return {h:m.h, a:m.a, market:gen.marche}; });
+    currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:gourmand});
+    updateUser();
+    alert(`Ticket Gourmand créé (${gourmand.length} matchs)`);
+    backToTicketsList();
+}
+function backToTicketsList() { 
+    document.getElementById('view-ticket-detail').style.display = 'none'; 
+    document.getElementById('view-tickets').style.display = 'block'; 
+    renderSavedTickets(); 
+    selectedTicketIndex = null; 
+}
+function renderMessages() {
+    const container = document.getElementById('msg-list');
+    if(!currentUser.messages.length) { container.innerHTML='<p class="info-text">Aucun message.</p>'; return; }
+    container.innerHTML = currentUser.messages.map(m=>`<div class="card">${m.text}<br><small>📅 ${m.date}</small></div>`).join('');
+    if(currentUser.unreadMessages) { currentUser.unreadMessages = 0; updateUser(); }
+}
+function switchView(view) {
+    document.getElementById('view-predict').style.display = view==='predict'?'block':'none';
+    document.getElementById('view-tickets').style.display = view==='tickets'?'block':'none';
+    document.getElementById('view-messages').style.display = view==='messages'?'block':'none';
+    document.getElementById('view-profile').style.display = view==='profile'?'block':'none';
+    document.getElementById('view-ticket-detail').style.display = 'none';
+    if(view==='tickets') renderSavedTickets();
+    if(view==='messages') renderMessages();
+    if(view==='profile') renderProfile();
+}
+function toggleAuth(showRegister) { 
+    document.getElementById('auth-screen').style.display = showRegister ? 'none' : 'block'; 
+    document.getElementById('register-screen').style.display = showRegister ? 'block' : 'none'; 
+}
+function toggleAssistant() { 
+    document.getElementById('assistant-chat').classList.toggle('active'); 
+}
+function askZola() {
+    const input = document.getElementById('assistant-input');
+    if(!input.value.trim()) return;
+    const msgDiv = document.getElementById('assistant-messages');
+    msgDiv.innerHTML += `<div class="assistant-bubble assistant-user">${input.value}</div>`;
+    input.value = '';
     setTimeout(() => {
-        if(document.getElementById('splashScreen') && document.getElementById('splashScreen').style.display !== 'none') {
-            hideSplash();
-        }
-    }, 6000);
+        msgDiv.innerHTML += `<div class="assistant-bubble assistant-bot">🤖 Utilisez les 24 marchés, doublez vos tickets ou activez votre compte avec le code dans Profil !</div>`;
+        msgDiv.scrollTop = msgDiv.scrollHeight;
+    }, 500);
+}
+function logout() { location.reload(); }
+
+// ======================= SPLASH SCREEN =======================
+let splashProgress = 0;
+const interval = setInterval(() => {
+    splashProgress += Math.random() * 15;
+    if(splashProgress >= 100) splashProgress = 100;
+    document.getElementById('splashProgress').style.width = splashProgress + '%';
+    if(splashProgress >= 100) {
+        clearInterval(interval);
+        setTimeout(() => {
+            document.getElementById('splashScreen').style.display = 'none';
+            document.getElementById('appShell').style.display = 'block';
+        }, 500);
+    }
+}, 200);
 </script>
 </body>
-</html>
+    </html>
