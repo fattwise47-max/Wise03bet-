@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>WISE03.BET — IA Sportive Pro | 24 Marchés</title>
+    <title>WISE03.BET — IA Sportive Pro</title>
     <style>
         :root {
             --bg: #020617; --card: #0f172a; --border: #1e293b; --text: #f1f5f9;
@@ -11,48 +11,44 @@
             --primary: #3b82f6; --danger: #ef4444; --gold: #eab308; --warning: #f97316;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
-        body { background: var(--bg); color: var(--text); overflow-x: hidden; touch-action: pan-y; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; touch-action: pan-y pinch-zoom; }
         .app-shell { max-width: 480px; margin: 0 auto; padding: 15px; min-height: 100vh; padding-bottom: 120px; }
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5); }
         input, select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: #1e293b; color: #fff; margin-bottom: 12px; font-size: 13px; }
         .btn { padding: 12px; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; transition: 0.3s; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
         .btn-primary { background: linear-gradient(135deg, var(--primary), #1d4ed8); color: white; flex: 1; }
         .btn-success { background: var(--green); color: #000; flex: 1; }
-        .btn-danger { background: var(--danger); color: white; flex: 1; }
         .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); flex: 1; }
         .btn-full { width: 100%; }
-        .btn-assistant { background: linear-gradient(135deg, var(--gold), var(--warning)); color: #000; }
-        .btn-gourmand { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; }
         .btn-double { background: linear-gradient(135deg, var(--cyan), #0891b2); color: white; }
+        .btn-gourmand { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; }
         .nav-bar { display: flex; background: var(--card); border: 1px solid var(--border); border-radius: 18px; margin-bottom: 20px; padding: 5px; }
-        .nav-item { flex: 1; padding: 10px; text-align: center; cursor: pointer; font-size: 10px; font-weight: 800; border-radius: 12px; color: var(--muted); transition: 0.2s; }
+        .nav-item { flex: 1; padding: 10px; text-align: center; cursor: pointer; font-size: 10px; font-weight: 800; border-radius: 12px; color: var(--muted); transition: all 0.2s; }
         .nav-item.active { background: var(--primary); color: white; }
         .analysis-res { font-size: 22px; font-weight: 900; color: var(--green); text-align: center; }
         .vs-container { display: flex; align-items: center; justify-content: space-around; margin: 15px 0; }
         .team-name { font-weight: 900; font-size: 13px; text-align: center; flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .premium-lock { background: var(--border); border-radius: 16px; padding: 15px; text-align: center; margin: 10px 0; color: var(--muted); }
+        .premium-score { background: linear-gradient(135deg, var(--pink), #a21caf); border-radius: 16px; padding: 15px; text-align: center; color: white; }
         .loader { width: 18px; height: 18px; border: 3px solid #fff; border-bottom-color: transparent; border-radius: 50%; display: none; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: var(--card); padding: 25px; border-radius: 20px; width: 90%; max-width: 500px; }
         .status-badge { font-size: 10px; padding: 4px 8px; border-radius: 10px; display: inline-block; }
         .profile-pic { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 10px auto; border: 3px solid var(--primary); }
         .ticket-item { border-left: 3px solid var(--primary); margin-bottom: 8px; padding-left: 10px; }
         .back-btn { margin-bottom: 15px; background: var(--border); padding: 8px 15px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 12px; }
+        .team-strength { font-size: 10px; margin-top: 4px; color: var(--gold); }
         .detail-header { background: linear-gradient(135deg, var(--primary), #1d4ed8); padding: 15px; border-radius: 16px; margin-bottom: 15px; text-align: center; }
         .splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #020617, #0f172a); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; transition: opacity 0.5s; }
         .splash-logo { font-size: 42px; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 40px; }
         .splash-loader { width: 60px; height: 60px; border: 4px solid rgba(59,130,246,0.2); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
         .activation-hint { background: #1e2a3a; border-radius: 12px; padding: 12px; margin: 16px 0; font-size: 12px; color: var(--warning); text-align: center; }
         .flag-icon { font-size: 18px; }
-        .assistant-chat { position: fixed; bottom: 80px; right: 20px; width: 300px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; display: none; flex-direction: column; z-index: 999; }
-        .assistant-chat.active { display: flex; }
-        .assistant-header { background: linear-gradient(135deg, var(--gold), var(--warning)); padding: 12px; border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; cursor: pointer; color: #000; font-weight: bold; }
-        .assistant-messages { flex: 1; padding: 10px; overflow-y: auto; max-height: 300px; font-size: 12px; }
-        .assistant-input { display: flex; padding: 10px; gap: 5px; border-top: 1px solid var(--border); }
-        .assistant-input input { flex: 1; margin: 0; padding: 8px; }
-        .assistant-bubble { margin: 5px 0; padding: 8px; border-radius: 12px; max-width: 85%; word-wrap: break-word; }
-        .assistant-user { background: var(--primary); margin-left: auto; text-align: right; }
-        .assistant-bot { background: var(--border); }
-        .btn-assistant { position: fixed; bottom: 20px; right: 20px; width: auto; padding: 10px 15px; z-index: 998; background: linear-gradient(135deg, var(--gold), var(--warning)); color: black; border: none; border-radius: 40px; font-weight: bold; cursor: pointer; }
+        .ad-banner { position: fixed; bottom: 0; left: 0; right: 0; background: #0a0f18; border-top: 2px solid var(--gold); padding: 12px; z-index: 900; overflow-x: auto; white-space: nowrap; display: flex; gap: 12px; backdrop-filter: blur(10px); }
+        .ad-item { display: inline-flex; flex-direction: column; align-items: center; background: rgba(0,0,0,0.6); padding: 8px 12px; border-radius: 12px; min-width: 130px; position: relative; }
+        .ad-item img { max-height: 55px; border-radius: 8px; cursor: pointer; }
+        .close-ad { position: absolute; right: -8px; top: -8px; background: black; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -60,7 +56,7 @@
     <div class="splash-logo">WISE03<span style="color:white;">.BET</span></div>
     <div class="splash-loader"></div>
     <div class="splash-progress" style="width:70%; height:4px; background:rgba(255,255,255,0.2); border-radius:4px; margin-top:20px;"><div id="splashProgress" style="width:0%; height:100%; background:linear-gradient(90deg,var(--primary),var(--cyan)); border-radius:4px;"></div></div>
-    <div style="margin-top:10px; color:var(--muted);">Chargement des 24 marchés IA...</div>
+    <div class="splash-text" style="margin-top:10px;">Chargement IA Sportive...</div>
 </div>
 
 <div class="app-shell" id="appShell" style="display: none;">
@@ -92,16 +88,14 @@
         </div>
     </section>
 
-    <!-- Dashboard principal -->
+    <!-- Dashboard -->
     <section id="dashboard" style="display:none;">
         <div class="nav-bar">
             <div class="nav-item active" onclick="switchView('predict')">ANALYSE</div>
             <div class="nav-item" onclick="switchView('tickets')">TICKETS</div>
-            <div class="nav-item" onclick="switchView('messages')">MESSAGES</div>
             <div class="nav-item" onclick="switchView('profile')">PROFIL</div>
         </div>
 
-        <!-- Vue Analyse -->
         <div id="view-predict">
             <div id="verify-alert" class="card" style="display:none; border-color:var(--warning);">
                 <p style="font-size:12px; color:var(--warning); text-align:center;">⚠️ Compte en attente d'activation. Utilisez le code dans "Profil".</p>
@@ -114,14 +108,14 @@
                     <input type="text" id="team-a" placeholder="Chercher..." list="teams-list" autocomplete="off">
                     <datalist id="teams-list"></datalist>
                     <div id="ana-error" style="color:var(--danger); font-size:11px;"></div>
-                    <button class="btn btn-primary btn-full" onclick="runAnalysis()" id="btn-ana"><span>ANALYSER (24 MARCHÉS)</span><div class="loader" id="ana-loader"></div></button>
+                    <button class="btn btn-primary btn-full" onclick="runAnalysis()" id="btn-ana"><span>ANALYSER LE MATCH</span><div class="loader" id="ana-loader"></div></button>
                 </div>
                 <div id="result-box" style="display:none;">
                     <div class="card" style="border:2px solid var(--cyan);">
                         <div class="vs-container"><div class="team-name" id="res-h"></div><div>VS</div><div class="team-name" id="res-a"></div></div>
                         <div id="res-market" class="analysis-res">---</div>
-                        <div id="res-ht" style="text-align:center; font-size:13px; margin-top:8px;"></div>
-                        <div class="premium-lock">🔒 Score exact non disponible (24 marchés uniquement)</div>
+                        <div id="res-ht" style="text-align:center; font-size:13px;"></div>
+                        <div id="res-score-exact" class="premium-score" style="display:none;"><small>SCORE EXACT</small><div style="font-size:28px;" id="res-score">?-?</div></div>
                         <button class="btn btn-ghost btn-full" onclick="addToTicket()">+ AJOUTER AU COUPON</button>
                     </div>
                 </div>
@@ -133,14 +127,9 @@
             </div>
         </div>
 
-        <!-- Vue Tickets -->
         <div id="view-tickets" style="display:none;"><div id="tickets-list-view"></div></div>
         <div id="view-ticket-detail" style="display:none;"><div class="back-btn" onclick="backToTicketsList()">← Retour</div><div id="ticket-detail-content"></div></div>
 
-        <!-- Vue Messages -->
-        <div id="view-messages" style="display:none;"><div id="msg-list"></div></div>
-
-        <!-- Vue Profil (avec validation par code) -->
         <div id="view-profile" style="display:none;">
             <div class="card" style="text-align:center;">
                 <div id="profile-pic-container"></div>
@@ -151,11 +140,9 @@
                 <hr>
                 <button class="btn btn-primary btn-full" onclick="document.getElementById('profile-file').click()">📸 PHOTO DE PROFIL</button>
                 <input type="file" id="profile-file" style="display:none;" accept="image/*" onchange="handleProfileUpload(this)">
-                <div class="activation-hint" id="activation-hint-profile" style="display:none;">
-                    ⚠️ Compte non activé. Contactez l'administrateur pour obtenir votre code d'activation (15 chiffres).
-                </div>
+                <div class="activation-hint" id="activation-hint-profile" style="display:none;">⚠️ Code d'activation 15 chiffres : contactez l'admin.</div>
                 <div style="margin-top:15px;">
-                    <input type="text" id="activation-code-input" placeholder="Code d'activation (15 chiffres)" maxlength="15">
+                    <input type="text" id="activation-code-input" placeholder="Code 15 chiffres" maxlength="15">
                     <button class="btn btn-warning btn-full" onclick="validateActivationCode()">VALIDER LE CODE</button>
                     <div id="code-status"></div>
                 </div>
@@ -164,45 +151,195 @@
         </div>
     </section>
 
-    <!-- Assistant Zola -->
-    <div id="assistant-chat" class="assistant-chat">
-        <div class="assistant-header" onclick="toggleAssistant()"><span>🤖 Zola - Assistant</span><span>▼</span></div>
-        <div class="assistant-messages" id="assistant-messages"><div class="assistant-bubble assistant-bot">👋 Utilisez les 24 marchés, doublez vos tickets !</div></div>
-        <div class="assistant-input"><input type="text" id="assistant-input" placeholder="Votre question..." onkeypress="if(event.key==='Enter')askZola()"><button class="btn btn-primary" onclick="askZola()">➤</button></div>
+    <div id="assistant-chat" style="position:fixed; bottom:80px; right:20px; width:300px; background:var(--card); border:1px solid var(--border); border-radius:16px; display:none; flex-direction:column; z-index:999;">
+        <div class="assistant-header" style="background:linear-gradient(135deg,var(--gold),var(--warning)); padding:12px; border-radius:16px 16px 0 0; display:flex; justify-content:space-between; cursor:pointer;" onclick="toggleAssistant()"><span>🤖 Zola</span><span>▼</span></div>
+        <div class="assistant-messages" id="assistant-messages" style="padding:10px; max-height:300px; overflow-y:auto; font-size:12px;"><div class="assistant-bubble assistant-bot" style="background:var(--border); margin:5px 0; padding:8px; border-radius:12px;">👋 Doublez vos tickets !</div></div>
+        <div class="assistant-input" style="display:flex; padding:10px; gap:5px;"><input type="text" id="assistant-input" style="flex:1; margin:0; padding:8px;" placeholder="Question..."><button class="btn btn-primary" onclick="askZola()" style="padding:8px;">➤</button></div>
     </div>
-    <button class="btn-assistant" onclick="toggleAssistant()">🤖 Zola</button>
+    <button class="btn btn-assistant" style="position:fixed; bottom:20px; right:20px; z-index:998; background:linear-gradient(135deg,var(--gold),var(--warning)); color:black; border:none; border-radius:40px; padding:10px 15px; font-weight:bold;" onclick="toggleAssistant()">🤖 Zola</button>
+    <div id="global-ad-banner" class="ad-banner" style="display:none;"></div>
 </div>
 
 <script>
-// ======================= 24 MARCHÉS (SANS SCORE EXACT) =======================
-const MARKETS_24 = [
+// ======================= 24 MARCHÉS (sans score exact comme marché séparé) =======================
+const MARKETS_PRO = [
     "1", "2", "X", 
-    "Première mi-temps +1.5 buts", "Première mi-temps +2 buts", "Première mi-temps -2 buts", "Première mi-temps -1.5 buts",
-    "Première mi-temps domicile gagne", "Première mi-temps extérieur gagne", "Première mi-temps match nul",
-    "Plus de buts en première mi-temps", "Plus de buts en deuxième mi-temps",
-    "Deuxième mi-temps domicile gagne", "Deuxième mi-temps extérieur gagne", "Deux mi-temps égalité",
-    "Over 1.5", "Over 2", "Over 2.5", "Over 3", "Under 2", "Under 1.5", "Under 3.5",
-    "All teams win Yes", "All teams win No"
+    "1MT Domicile gagne", "1MT Extérieur gagne", "1MT Nul",
+    "2MT Domicile gagne", "2MT Extérieur gagne", "2MT Nul",
+    "1MT +1.5 buts", "1MT +2 buts", "1MT -1.5 buts", "1MT -2 buts",
+    "Plus de buts en 1MT", "Plus de buts en 2MT",
+    "Over 1.5", "Over 2", "Over 2.5", "Over 3", "Under 2",
+    "Les deux équipes marquent YES", "Les deux équipes marquent NO",
+    "All teams win YES", "All teams win NO"
 ];
 
-// ======================= BASE DE DONNÉES DES CLUBS (plus de 700) =======================
-const ELITE = ["Real Madrid","Manchester City","Bayern Munich","Arsenal","Paris Saint-Germain","Inter Milan","Liverpool","FC Barcelona","Bayer Leverkusen","Atletico Madrid","Juventus","Borussia Dortmund","AC Milan","Aston Villa","Benfica","Sporting CP","Napoli","Atalanta","Monaco","Tottenham","RB Leipzig","Lille","Girona","Porto","Newcastle","Al Ahly","Flamengo","Palmeiras","Al-Hilal","River Plate","AS Roma","Lazio","Chelsea","Manchester United","Eintracht Frankfurt","Athletic Bilbao","Real Sociedad","PSV Eindhoven","Feyenoord","Marseille","Lyon","Galatasaray","Fenerbahce","Fluminense","Al-Nassr","Mamelodi Sundowns","Club Brugge","Celtic","Boca Juniors","Club América"];
-const FORT = ["Nice","Lens","Rennes","Villarreal","Real Betis","Sevilla","Bologna","Fiorentina","Stuttgart","Hoffenheim","Freiburg","West Ham","Brighton","Fulham","Braga","Ajax","AZ Alkmaar","Union SG","Anderlecht","Genk","Antwerp","Besiktas","Olympiakos","PAOK","Panathinaikos","Rangers","RB Salzburg","Sturm Graz","Slavia Prague","Sparta Prague","Shakhtar Donetsk","Dynamo Kyiv","Dinamo Zagreb","Crvena Zvezda","FC Copenhagen","Midtjylland","Raja Casablanca","Wydad AC","RS Berkane","Espérance Tunis","TP Mazembe","MC Alger","CR Belouizdad","Pyramids FC","Zamalek","Orlando Pirates","Al-Ahli","Al-Ittihad","Al-Sadd","Al-Ain","Vissel Kobe","Ulsan HD","Botafogo","Atlético Mineiro","São Paulo","Racing Club","Estudiantes","Inter Miami","Columbus Crew","LAFC","Tigres UANL","Monterrey"];
-const MOYEN = ["Bournemouth","Brentford","Everton","Reims","Strasbourg","Toulouse","Montpellier","Osasuna","Getafe","Alaves","Torino","Monza","Genoa","Wolfsburg","Werder Bremen","Augsburg","Vitória Guimarães","Famalicão","Utrecht","Twente","Gent","Mechelen","Trabzonspor","Basaksehir","Young Boys","Servette","Basel","Bodø/Glimt","Molde","Malmö FF","Raków","Legia Warsaw","FCSB","Ludogorets","Ferencváros","AS Vita Club","Saint-Éloi Lupopo","AS FAR","JS Kabylie","Kaizer Chiefs","Enyimba","Asante Kotoko","ASEC Mimosas","ASC Jaraaf","Sydney FC","Shanghai Port","Seattle Sounders","New York City FC","Talleres","Colo-Colo"];
-const FAIBLE = ["Leicester","Ipswich","Southampton","Auxerre","Angers","Saint-Étienne","Le Havre","Leganés","Valladolid","Espanyol","Empoli","Cagliari","Venezia","St. Pauli","Holstein Kiel","Heidenheim","Leeds United","Burnley","Paris FC","Lorient","Boavista","Heracles","Westerlo","Samsunspor","APOEL Nicosia","Maccabi Haifa","Maribor","Slovan Bratislava","HJK Helsinki","Shamrock Rovers","Partizani","Sheriff Tiraspol","Maniema Union","DCMP Imana","Moghreb Tétouan","USM Alger","Petro Luanda","Simba SC","Young Africans","Real de Banjul"];
-const PLUS_FAIBLES = ["Portsmouth","Derby County","Oxford United","Red Star","Martigues","Châteauroux","Castellón","Cordoba","Malaga","Bari","Cesena","Mantova","Preußen Münster","Jahn Regensburg","Don Bosco","Dauphins Noirs","FC Lubumbashi Sport","F91 Dudelange","Hamrun Spartans","La Fiorita","Lincoln Red Imps","Vikingur","Flora Tallinn","RFS","Panevėžys"];
-const NATIONS = ['🇫🇷 France','🇩🇪 Allemagne','🇮🇹 Italie','🇪🇸 Espagne','🇬🇧 Royaume-Uni','🇵🇹 Portugal','🇳🇱 Pays-Bas','🇧🇪 Belgique','🇨🇭 Suisse','🇸🇪 Suède','🇺🇸 États-Unis','🇨🇦 Canada','🇧🇷 Brésil','🇦🇷 Argentine','🇲🇽 Mexique','🇨🇳 Chine','🇯🇵 Japon','🇮🇳 Inde','🇸🇦 Arabie Saoudite','🇿🇦 Afrique du Sud','🇨🇩 RD Congo','🇲🇦 Maroc','🇩🇿 Algérie','🇸🇳 Sénégal','🇳🇬 Nigéria','🇪🇬 Égypte','🇹🇳 Tunisie','🇨🇮 Côte d\'Ivoire','🇬🇭 Ghana','🇨🇲 Cameroun'];
-const ALL_TEAMS = [...new Set([...ELITE, ...FORT, ...MOYEN, ...FAIBLE, ...PLUS_FAIBLES, ...NATIONS])].sort();
+// ======================= 500+ CLUBS AVEC FORCES =======================
+const LEVEL1 = [ 
+    "Real Madrid", "Manchester City", "Liverpool", "Arsenal", "Bayern Munich", "Bayer Leverkusen", "Inter Milan", 
+    "Paris Saint-Germain", "FC Barcelone", "Borussia Dortmund", "Atlético Madrid", "Juventus", "AC Milan", 
+    "RB Leipzig", "Napoli", "Aston Villa", "Sporting CP", "Benfica", "FC Porto", "Atalanta", "Newcastle", 
+    "Tottenham", "Chelsea", "Manchester United", "Real Sociedad", "Athletic Bilbao", "Girona", "AS Monaco", 
+    "Lille OSC", "Olympique de Marseille", "OGC Nice", "Stuttgart", "Eintracht Frankfurt", "Ajax Amsterdam", 
+    "PSV Eindhoven", "Feyenoord", "Galatasaray", "Fenerbahçe", "Besiktas", "Celtic Glasgow", "Glasgow Rangers", 
+    "Sporting Braga", "Lazio Rome", "AS Roma", "Fiorentina", "Bologne", "Séville FC", "Villarreal", "Real Betis", 
+    "West Ham", "Brighton", "Wolfsburg", "Fribourg", "AZ Alkmaar", "Club Bruges", "Union Saint-Gilloise", 
+    "Anderlecht", "Olympiakos", "Panathinaikos", "Sparta Prague", "Flamengo", "Palmeiras", "River Plate", 
+    "Atlético Mineiro", "Fluminense", "Botafogo", "São Paulo", "Grêmio", "Internacional", "Boca Juniors", 
+    "Racing Club", "Estudiantes", "Talleres", "Independiente del Valle", "LDU Quito", "Al Ahly", "Mamelodi Sundowns", 
+    "Wydad Casablanca", "Raja Casablanca", "Espérance de Tunis", "Zamalek", "RS Berkane", "Pyramids FC", 
+    "CR Belouizdad", "USM Alger", "Al-Hilal", "Al-Nassr", "Al-Ittihad", "Al-Ahli", "Yokohama F. Marinos", 
+    "Vissel Kobe", "Urawa Reds", "Jeonbuk", "Pohang Steelers", "Al-Ain", "Club América", "Monterrey", 
+    "Tigres UANL", "Columbus Crew", "LAFC", "Al-Sadd", "Al-Duhail", "Persepolis", "Esteghlal", "Buriram United",
+    "Ulsan HD", "Kawasaki Frontale", "Al-Rayyan", "Sepahan", "Pakhtakor", "Al-Shorta", "Navbahor", "Al-Fayha",
+    "Mumbai City", "Odisha FC", "ATK Mohun Bagan", "Melbourne City", "Central Coast Mariners", "Wellington Phoenix"
+];
 
-// ======================= IA MARCHÉ COMPATIBLE =======================
-function getRandomMarket() { return MARKETS_24[Math.floor(Math.random() * MARKETS_24.length)]; }
-function genererAnalyse(home, away) {
-    const market = getRandomMarket();
-    const miTemps = Math.random() > 0.5 ? "1-0" : "0-1";
-    return { marche: market, miTemps: miTemps, logique: `Analyse: ${market} suggéré` };
+const LEVEL2 = [ 
+    "Everton", "Fulham", "Crystal Palace", "Wolves", "Bournemouth", "Getafe", "Osasuna", "Valence", "Celta Vigo", 
+    "Torino", "Udinese", "Monza", "Genoa", "Sassuolo", "Stade Rennais", "RC Lens", "Stade de Reims", 
+    "Olympique Lyonnais", "Montpellier", "Werder Brême", "Hoffenheim", "Mayence", "Augsbourg", "Twente", 
+    "Utrecht", "Slavia Prague", "Dinamo Zagreb", "Hajduk Split", "Étoile Rouge de Belgrade", "Partizan Belgrade", 
+    "PAOK Salonique", "AEK Athènes", "Bodo/Glimt", "Molde", "Malmö", "Copenhague", "Young Boys Berne", 
+    "Servette", "Bâle", "Salzbourg", "Sturm Graz", "Corinthians", "Cruzeiro", "Vasco da Gama", "Bahia", 
+    "Fortaleza", "RB Bragantino", "Athletico Paranaense", "Vélez Sarsfield", "Lanús", "Defensa y Justicia", 
+    "San Lorenzo", "Colo-Colo", "Universidad de Chile", "Olimpia", "Cerro Porteño", "Libertad", "Nacional (URU)", 
+    "Peñarol", "Junior Barranquilla", "Millonarios", "Atlético Nacional", "Sporting Cristal", "TP Mazembe", 
+    "Simba SC", "Young Africans", "Petro Luanda", "Horoya AC", "ASEC Mimosas", "Orlando Pirates", 
+    "Kaizer Chiefs", "Inter Miami", "Pachuca", "Chivas Guadalajara", "Santos Laguna", "Cruz Azul", "Pumas UNAM",
+    "Toluca", "León", "Necaxa", "Atlas", "Shanghai Port", "Shanghai Shenhua", "Shandong Taishan", "Beijing Guoan",
+    "Zhejiang FC", "Chengdu Rongcheng", "Al-Wasl", "Al-Jazira", "Sharjah FC", "Al-Wahda", "Shabab Al-Ahli",
+    "Al-Taawoun", "Al-Ettifaq", "Al-Shabab", "Damac FC", "Al-Raed", "Abha Club", "Al-Tai", "Al-Riyadh"
+];
+
+const LEVEL3 = [ 
+    "Brentford", "Nottingham Forest", "Leicester", "Ipswich", "Southampton", "Las Palmas", "Majorque", "Alavés", 
+    "Rayo Vallecano", "Valladolid", "Empoli", "Hellas Vérone", "Lecce", "Cagliari", "Parme", "FC Nantes", 
+    "Strasbourg", "FC Lorient", "Auxerre", "Brest", "Bochum", "Heidenheim", "St. Pauli", "NEC Nimègue", 
+    "Heerenveen", "Heracles", "Vitesse", "Courtrai", "Westerlo", "Charleroi", "Mechelen", "Cercle Bruges", 
+    "Kilmarnock", "St. Mirren", "Austria Vienne", "LASK", "Grasshopper", "Lucerne", "Cuiabá", "Vitória", 
+    "Juventude", "Platense", "Tigre", "Banfield", "Coquimbo Unido", "Everton (CHI)", "Palestino", "Guaraní", 
+    "Nacional (PAR)", "Montevideo City Torque", "Santa Fe (COL)", "Deportivo Cali", "Once Caldas", "AS Vita Club", 
+    "Maniema Union", "Dauphins Noirs", "Don Bosco", "JS Kabylie", "ES Sétif", "MC Alger", "Club Africain", 
+    "Étoile du Sahel", "Al-Hilal Omdurman", "Al-Merrikh", "Enyimba", "Rivers United", "Al-Talaba", "Al-Zawraa",
+    "Al-Quwa Al-Jawiya", "Al-Kahrabaa", "Duhok SC", "Erbil SC", "Al-Minaa", "Naft Al-Basra", "Al-Najaf",
+    "Churchill Brothers", "Gokulam Kerala", "Sreenidi Deccan", "Real Kashmir", "Aizawl FC", "TRAU FC",
+    "Sudeva Delhi", "Kenkre FC", "Bhawanipore FC", "Delhi FC", "Bengaluru United", "Kickstart FC"
+];
+
+const LEVEL4 = [ 
+    "Le Havre", "FC Metz", "Burnley", "Watford", "Hull City", "Schalke 04", "Hertha Berlin", "Bordeaux", 
+    "Saint-Étienne", "Espanyol Barcelone", "Sampdoria", "Bari", "Palermo", "Sheffield United", "Leeds", 
+    "Norwich", "Malaga", "Elche", "Levante", "Hamburger SV", "Bolivar", "The Strongest", "Caracas FC", 
+    "Universidad Católica (CHI)", "Hearts of Oak", "Asante Kotoko", "1º de Agosto", "Auckland City", 
+    "Sydney FC", "Mumbai City", "Odisha FC", "Hyderabad FC", "East Bengal", "Mohammedan SC", "Churchill Brothers",
+    "Gokulam Kerala", "Punjab FC", "Namdhari FC", "Shillong Lajong", "Rajasthan United", "Sudeva Delhi",
+    "Kenkre FC", "Delhi FC", "Bengaluru United", "Bhawanipore FC", "Kickstart FC", "Sreenidi Deccan",
+    "Real Kashmir", "Aizawl FC", "TRAU FC", "Neroca FC", "Sreenidi Deccan", "Gokulam Kerala"
+];
+
+const LEVEL5 = [ 
+    "AS Douanes", "Coton Sport", "AS Otôho", "Teungueth FC", "Jaraaf", "Buffles du Borgou", "ASKO Kara", 
+    "ASCK", "AS FAN", "AS Police (Mali)", "Real Bamako", "Binga FC", "Lincoln Red Imps", "Europa FC", 
+    "Tre Penne", "La Fiorita", "Hamrun Spartans", "Dudelange", "Ballkani", "San Marino Academy", "AS Pirae", 
+    "Hienghène Sport", "Lupe o le Soaga", "Kiwi FC", "Tupapa Maraerenga", "Pago Youth", "Vaivase-Tai",
+    "Tonga FC", "Lotoha'apai United", "Navutoka FC", "Marist FC", "Solomon Warriors", "Central Coast",
+    "Hekari United", "Lae City", "Toti City", "Madang FC", "Morobe Wawens", "Gulf Komara", "Port Moresby",
+    "Ba FC", "Suva FC", "Rewa FC", "Labasa FC", "Nadi FC", "Lautoka FC", "Navua FC", "Nasinu FC",
+    "Tavua FC", "Dreketi FC", "Rakiraki FC", "Seaqaqa FC", "Savusavu FC", "Bua FC", "Nadroga FC"
+];
+
+const NATIONS_TIER5 = ["France","Argentine","Brésil","Angleterre","Espagne","Portugal","Allemagne","Italie","Pays-Bas","Belgique","Uruguay","Croatie","Maroc","Sénégal","Colombie"];
+const NATIONS_TIER4 = ["Danemark","Suisse","Serbie","Pologne","États-Unis","Mexique","Japon","Corée du Sud","Australie","Iran","Arabie Saoudite","Qatar","Canada","Chili","Pérou","Paraguay","Équateur","Venezuela","Nigeria","Cameroun","Ghana","Algérie","Égypte","Tunisie","Mali","Côte d'Ivoire","Afrique du Sud","Burkina Faso"];
+const NATIONS_TIER3 = ["RD Congo","Zambie","Ouganda","Guinée","Gabon","Bénin","Togo","Madagascar","Irak","Ouzbékistan","Jordanie","Bahreïn","Vietnam","Bolivie","Panama","Honduras","Jamaïque","Costa Rica","Salvador","Guatemala","Trinité-et-Tobago","Haïti","Cuba","Nicaragua","Guyana","Suriname"];
+const NATIONS_TIER2 = ["Niger","Tchad","Somalie","Djibouti","Érythrée","Soudan du Sud","Népal","Bhoutan","Mongolie","Cambodge","Laos","Îles Salomon","Tahiti","Samoa","Guam","Saint-Marin","Andorre","Liechtenstein","Malte","Gibraltar","Îles Féroé","Luxembourg","Moldavie","Estonie","Lettonie","Lituanie","Arménie","Géorgie","Azerbaïdjan","Kazakhstan","Kirghizistan","Tadjikistan","Turkménistan"];
+const NATIONS_TIER1 = ["Sao Tomé-et-Principe","Guinée-Bissau","Guinée équatoriale","Cap-Vert","Seychelles","Maurice","Comores","Lesotho","Eswatini","Botswana","Namibie","Malawi","Burundi","Rwanda","Soudan","Mauritanie","Sierra Leone","Liberia","Gambie","Centrafrique","Somaliland","Zanzibar","Timor oriental","Brunei","Macao","Mongolie intérieure","Tibet","Cachemire","Palestine","Chypre du Nord"];
+
+const ALL_TEAMS = [...new Set([...LEVEL1, ...LEVEL2, ...LEVEL3, ...LEVEL4, ...LEVEL5, ...NATIONS_TIER5, ...NATIONS_TIER4, ...NATIONS_TIER3, ...NATIONS_TIER2, ...NATIONS_TIER1])];
+const ELITE_PLUS = ["Real Madrid", "Manchester City", "Bayern Munich", "Liverpool", "Arsenal", "FC Barcelone", "Inter Milan", "Paris Saint-Germain","Bayer Leverkusen", "Inter Milan","Borussia Dortmund", "Atlético Madrid", "Juventus", "AC Milan", 
+    "RB Leipzig", "Napoli", "Aston Villa",];
+const AFRICA_ELITE = ["Al Ahly", "Wydad Casablanca", "Espérance de Tunis", "Mamelodi Sundowns", "Raja Casablanca"];
+
+function getBaseStrength(team) {
+    if (LEVEL1.includes(team) || NATIONS_TIER5.includes(team)) return 10;
+    if (LEVEL2.includes(team) || NATIONS_TIER4.includes(team)) return 8;
+    if (LEVEL3.includes(team) || NATIONS_TIER3.includes(team)) return 6;
+    if (LEVEL4.includes(team) || NATIONS_TIER2.includes(team)) return 4;
+    if (LEVEL5.includes(team) || NATIONS_TIER1.includes(team)) return 2;
+    return 5;
+}
+function getAdjustedStrength(team, isHome, opponent) {
+    let strength = getBaseStrength(team);
+    if (isHome) strength += 0.8;
+    if (ELITE_PLUS.includes(team)) strength += 0.5;
+    if (AFRICA_ELITE.includes(team)) strength += 0.3;
+    return strength;
+    }
+// Nations
+const AFRICA_COUNTRIES = ['Algérie','Angola','Bénin','Botswana','Burkina Faso','Burundi','Cameroun','Cap-Vert','Comores','Congo','RDC','Côte d\'Ivoire','Djibouti','Égypte','Érythrée','Éthiopie','Gabon','Gambie','Ghana','Guinée','Guinée-Bissau','Kenya','Lesotho','Libéria','Libye','Madagascar','Malawi','Mali','Maroc','Maurice','Mauritanie','Mozambique','Namibie','Niger','Nigéria','Ouganda','Rwanda','Sao Tomé','Sénégal','Seychelles','Sierra Leone','Somalie','Soudan','Soudan du Sud','Afrique du Sud','Tanzanie','Togo','Tunisie','Zambie','Zimbabwe'];
+const EUROPE_COUNTRIES = ['France','Allemagne','Italie','Espagne','Angleterre','Portugal','Pays-Bas','Belgique','Suisse','Suède'];
+const AMERICA_COUNTRIES = ['États-Unis','Canada','Brésil','Argentine','Mexique'];
+const ASIA_COUNTRIES = ['Chine','Japon','Inde','Arabie Saoudite','Corée du Sud'];
+const ALL_TEAMS = [...new Set([...ELITE_CLUBS, ...FORT_CLUBS, ...MOYEN_CLUBS, ...FAIBLE_CLUBS, ...AFRICA_COUNTRIES, ...EUROPE_COUNTRIES, ...AMERICA_COUNTRIES, ...ASIA_COUNTRIES])].sort();
+
+function getTeamStrength(team) {
+    if(ELITE_CLUBS.includes(team)) return 10;
+    if(FORT_CLUBS.includes(team)) return 8;
+    if(MOYEN_CLUBS.includes(team)) return 6;
+    if(FAIBLE_CLUBS.includes(team)) return 4;
+    return 5;
+}
+function getTeamFlag(team) { return "⚽"; }
+
+// ======================= SCORES COMPATIBLES AVEC CHAQUE MARCHÉ =======================
+function getScoresForMarket(market) {
+    const scoresMap = {
+        "1": ["1-0","2-1","2-0","3-1","3-0","4-1","4-0","3-2","5-2","4-3"],
+        "2": ["0-1","1-2","0-2","1-3","0-3","1-4","0-4","2-3","2-4","3-5"],
+        "X": ["0-0","1-1","2-2","3-3","4-4"],
+        "1MT Domicile gagne": ["1-0","2-1","2-0","3-1","3-0","4-0"],
+        "1MT Extérieur gagne": ["0-1","1-2","0-2","1-3","0-3","0-4"],
+        "1MT Nul": ["0-0","1-1","2-2"],
+        "2MT Domicile gagne": ["1-0","2-1","3-2","2-0","3-1","4-2"],
+        "2MT Extérieur gagne": ["0-1","1-2","2-3","0-2","1-3","2-4"],
+        "2MT Nul": ["0-0","1-1","2-2","3-3"],
+        "1MT +1.5 buts": ["2-0","3-0","2-1","3-1","4-0","4-1","3-2","4-2","5-0","5-1"],
+        "1MT +2 buts": ["3-0","4-0","3-1","4-1","5-0","5-1","4-2","5-2","6-0"],
+        "1MT -1.5 buts": ["0-0","1-0","0-1","1-0","0-0","0-1","0-1","1-0","0-0","1-1"],
+        "1MT -2 buts": ["0-0","1-0","0-1","1-1","2-0","0-2","1-0","0-1","0-0"],
+        "Plus de buts en 1MT": ["2-1","3-0","3-1","4-0","4-1","5-0","2-2","3-2","4-2","5-1"],
+        "Plus de buts en 2MT": ["0-2","1-3","0-3","1-4","2-3","2-4","3-4","0-4","1-5","2-5"],
+        "Over 1.5": ["2-0","1-1","2-1","1-2","2-2","3-0","3-1","4-0","4-1","3-2","0-2","1-3","2-3","3-3"],
+        "Over 2": ["2-1","3-0","2-2","3-1","1-2","0-3","3-2","4-0","4-1","3-3","4-2","2-3","1-3","4-4"],
+        "Over 2.5": ["3-0","2-2","3-1","1-2","0-3","3-2","4-1","4-2","3-3","4-0","2-3","4-3","5-1","5-2"],
+        "Over 3": ["3-1","4-0","4-1","3-2","4-2","4-3","5-1","5-2","3-3","5-0","6-0","6-1"],
+        "Under 2": ["0-0","1-0","0-1","1-1","2-0","0-2","2-1","1-2"],
+        "Les deux équipes marquent YES": ["1-1","2-1","1-2","2-2","3-1","1-3","3-2","2-3","3-3","4-2","2-4","4-3"],
+        "Les deux équipes marquent NO": ["1-0","2-0","3-0","4-0","0-1","0-2","0-3","0-4","2-0","3-0"],
+        "All teams win YES": ["1-1","2-1","1-2","2-2","3-1","1-3","3-2","2-3","3-3","4-2","2-4"],
+        "All teams win NO": ["1-0","2-0","3-0","0-1","0-2","0-3","4-0","0-4","5-0","0-5"]
+    };
+    return scoresMap[market] || ["1-1","2-1","1-2"];
 }
 
-// ======================= BASE DE DONNÉES UTILISATEURS =======================
+function genererScoreEtMarche(teamH, teamA) {
+    const strengthH = getTeamStrength(teamH);
+    const strengthA = getTeamStrength(teamA);
+    const diff = strengthH - strengthA;
+    let market;
+    if(diff >= 3) market = "1";
+    else if(diff <= -3) market = "2";
+    else if(Math.abs(diff) <= 1) market = "X";
+    else market = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
+    const possibleScores = getScoresForMarket(market);
+    const scoreFinal = possibleScores[Math.floor(Math.random() * possibleScores.length)];
+    const [h,a] = scoreFinal.split('-').map(Number);
+    const ht_h = Math.floor(h / 2) + (Math.random() > 0.6 ? 1 : 0);
+    const ht_a = Math.floor(a / 2) + (Math.random() > 0.6 ? 1 : 0);
+    const miTemps = `${Math.min(ht_h, h)}-${Math.min(ht_a, a)}`;
+    return { scoreFinal, marche: market, miTemps, logique: `Score ${scoreFinal} compatible avec ${market}` };
+}
+
+// ======================= BASE DE DONNÉES =======================
 let db = JSON.parse(localStorage.getItem('wise03_db')) || [];
 let currentUser = null;
 let currentTicket = [];
@@ -210,53 +347,40 @@ let tempMatch = null;
 let selectedTicketIndex = null;
 
 function saveDB() { localStorage.setItem('wise03_db', JSON.stringify(db)); }
+function updateUser() { const idx = db.findIndex(u=>u.email===currentUser.email); if(idx!==-1) { db[idx]=currentUser; saveDB(); } }
 
-// Vérification 48h pour éviter double analyse du même match
+// Vérification 48h
 function canAnalyzeMatch(home, away) {
     if(!currentUser) return false;
-    const key = `${home.toLowerCase().trim()}|${away.toLowerCase().trim()}`;
+    const key = `${home.toLowerCase()}|${away.toLowerCase()}`;
     const now = Date.now();
-    currentUser.matchHistory = (currentUser.matchHistory || []).filter(e => (now - e.timestamp) < 48*60*60*1000);
+    if(!currentUser.matchHistory) currentUser.matchHistory = [];
+    currentUser.matchHistory = currentUser.matchHistory.filter(e => (now - e.timestamp) < 48*60*60*1000);
     if(currentUser.matchHistory.some(e => e.key === key)) return false;
     currentUser.matchHistory.push({ key, timestamp: now });
     updateUser();
     return true;
 }
 
-// ======================= ACTIVATION PAR CODE (15 chiffres) =======================
+// Activation par code 15 chiffres
 function validateActivationCode() {
     const code = document.getElementById('activation-code-input').value.trim();
-    if(!/^\d{15}$/.test(code)) { showCodeStatus("❌ Le code doit contenir exactement 15 chiffres", false); return; }
-    if(currentUser.activationCodeUsed) { showCodeStatus("❌ Ce code a déjà été utilisé", false); return; }
+    if(!/^\d{15}$/.test(code)) { showCodeStatus("❌ 15 chiffres requis", false); return; }
+    if(currentUser.activationCodeUsed) { showCodeStatus("❌ Code déjà utilisé", false); return; }
     const count3 = (code.match(/3/g)||[]).length;
     const count0 = (code.match(/0/g)||[]).length;
     let msg = "";
-    if(count3 === 3) { 
-        currentUser.isVerified = true; 
-        msg = "✅ Compte activé avec succès !";
-    }
-    if(count0 === 2 && count3 === 1) { 
-        currentUser.isVerified = true; 
-        currentUser.isPremium = true; 
-        const expiry = new Date(); 
-        expiry.setDate(expiry.getDate() + 7); 
-        currentUser.premiumExpiry = expiry.toISOString(); 
-        msg = "✅ Compte Premium activé (7 jours) !";
-    }
-    if(!msg) { showCodeStatus("⚠️ Code invalide (aucune règle de correspondance)", false); return; }
+    if(count3 === 3) { currentUser.isVerified = true; msg = "✅ Compte activé !"; }
+    if(count0 === 2 && count3 === 1) { currentUser.isVerified = true; currentUser.isPremium = true; const exp = new Date(); exp.setDate(exp.getDate()+7); currentUser.premiumExpiry = exp.toISOString(); msg = "✅ Premium 7 jours activé !"; }
+    if(!msg) { showCodeStatus("⚠️ Code invalide", false); return; }
     currentUser.activationCodeUsed = true;
     updateUser();
     showCodeStatus(msg, true);
     checkVerificationStatus();
     renderProfile();
 }
-function showCodeStatus(msg, success) { 
-    const div = document.getElementById('code-status'); 
-    div.innerHTML = `<div style="color:${success?'#22c55e':'#ef4444'};">${msg}</div>`; 
-    setTimeout(()=>div.innerHTML='', 4000); 
-}
+function showCodeStatus(msg, success) { const div = document.getElementById('code-status'); div.innerHTML = `<div style="color:${success?'#22c55e':'#ef4444'};">${msg}</div>`; setTimeout(()=>div.innerHTML='',3000); }
 
-// ======================= AUTHENTIFICATION =======================
 function loginUser() {
     const email = document.getElementById('login-email').value.trim();
     const pass = document.getElementById('login-pass').value;
@@ -266,6 +390,7 @@ function loginUser() {
         currentUser = JSON.parse(JSON.stringify(user));
         if(currentUser.premiumExpiry && new Date(currentUser.premiumExpiry) < new Date()) { currentUser.isPremium = false; currentUser.premiumExpiry = null; updateUser(); }
         showDashboard();
+        renderGlobalAds();
     } else document.getElementById('login-error').innerText = "Email ou mot de passe incorrect";
 }
 function registerUser() {
@@ -274,23 +399,13 @@ function registerUser() {
     const whatsapp = document.getElementById('reg-whatsapp').value.trim();
     const pass = document.getElementById('reg-pass').value;
     if(!name || !email || !whatsapp || !pass) { document.getElementById('email-error').innerText = "Tous les champs requis"; return; }
-    if(pass.length < 4) { document.getElementById('email-error').innerText = "Mot de passe minimum 4 caractères"; return; }
+    if(pass.length<4) { document.getElementById('email-error').innerText = "Min 4 caractères"; return; }
     if(db.find(u=>u.email===email)) { document.getElementById('email-error').innerText = "Email déjà utilisé"; return; }
-    db.push({ 
-        name, email, whatsapp, pass, 
-        isVerified: false, isPremium: false, isBlocked: false, 
-        profileImage: null, messages: [], tickets: [], matchHistory: [], 
-        unreadMessages: 0, activationCodeUsed: false, 
-        createdAt: new Date().toLocaleString() 
-    });
+    db.push({ name, email, whatsapp, pass, isVerified: false, isPremium: false, isBlocked: false, profileImage: null, messages: [], tickets: [], matchHistory: [], unreadMessages: 0, globalAds: [], activationCodeUsed: false, createdAt: new Date().toLocaleString() });
     saveDB();
-    alert("Compte créé avec succès ! Connectez-vous.");
+    alert("Compte créé ! Connectez-vous.");
     toggleAuth(false);
     document.getElementById('login-email').value = email;
-}
-function updateUser() { 
-    const idx = db.findIndex(u=>u.email===currentUser.email); 
-    if(idx!==-1) { db[idx]=currentUser; saveDB(); } 
 }
 function showDashboard() {
     document.getElementById('auth-screen').style.display = 'none';
@@ -312,63 +427,42 @@ function checkVerificationStatus() {
 function renderProfile() {
     document.getElementById('prof-name').innerText = currentUser.name;
     document.getElementById('prof-email').innerText = currentUser.email;
-    document.getElementById('prof-whatsapp').innerHTML = `📱 WhatsApp: ${currentUser.whatsapp}`;
-    const picContainer = document.getElementById('profile-pic-container');
-    picContainer.innerHTML = currentUser.profileImage ? `<img src="${currentUser.profileImage}" class="profile-pic">` : `<div class="profile-pic" style="background:var(--border); display:flex; align-items:center; justify-content:center;">📷</div>`;
-    let badgeHtml = currentUser.isPremium ? '<span class="status-badge" style="background:var(--pink);">💎 PREMIUM</span>' : (currentUser.isVerified ? '<span class="status-badge" style="background:var(--green);">✅ VÉRIFIÉ</span>' : '<span class="status-badge" style="background:var(--muted);">⏳ NON ACTIVÉ</span>');
-    if(currentUser.premiumExpiry) badgeHtml += `<br><small>Jusqu'au: ${new Date(currentUser.premiumExpiry).toLocaleDateString()}</small>`;
-    document.getElementById('prof-badge').innerHTML = badgeHtml;
+    document.getElementById('prof-whatsapp').innerHTML = `📱 ${currentUser.whatsapp}`;
+    const pic = document.getElementById('profile-pic-container');
+    pic.innerHTML = currentUser.profileImage ? `<img src="${currentUser.profileImage}" class="profile-pic">` : `<div class="profile-pic" style="background:var(--border); display:flex; align-items:center; justify-content:center;">📷</div>`;
+    let badge = currentUser.isPremium ? '<span class="status-badge" style="background:var(--pink);">💎 PREMIUM</span>' : (currentUser.isVerified ? '<span class="status-badge" style="background:var(--green);">✅ VÉRIFIÉ</span>' : '<span class="status-badge" style="background:var(--muted);">⏳ NON ACTIVÉ</span>');
+    if(currentUser.premiumExpiry) badge += `<br><small>Jusqu'au ${new Date(currentUser.premiumExpiry).toLocaleDateString()}</small>`;
+    document.getElementById('prof-badge').innerHTML = badge;
 }
-function handleProfileUpload(input) { 
-    if(input.files[0]) { 
-        const fr = new FileReader(); 
-        fr.onload = e => { currentUser.profileImage = e.target.result; updateUser(); renderProfile(); alert("Photo mise à jour"); }; 
-        fr.readAsDataURL(input.files[0]); 
-    } 
-}
-
-// ======================= ANALYSE & TICKETS =======================
+function handleProfileUpload(input) { if(input.files[0]) { const fr = new FileReader(); fr.onload = e => { currentUser.profileImage = e.target.result; updateUser(); renderProfile(); alert("Photo mise à jour"); }; fr.readAsDataURL(input.files[0]); } }
 function runAnalysis() {
     const h = document.getElementById('team-h').value.trim();
     const a = document.getElementById('team-a').value.trim();
-    if(!ALL_TEAMS.includes(h) || !ALL_TEAMS.includes(a)) { 
-        document.getElementById('ana-error').innerText = "Équipe non reconnue. Choisissez dans la liste."; 
-        return; 
-    }
-    if(!currentUser.isVerified) { 
-        document.getElementById('ana-error').innerText = "Compte non activé. Utilisez le code dans Profil."; 
-        return; 
-    }
-    if(!canAnalyzeMatch(h,a)) { 
-        document.getElementById('ana-error').innerText = "❌ Ce match a déjà été analysé dans les dernières 48 heures."; 
-        return; 
-    }
+    if(!ALL_TEAMS.includes(h) || !ALL_TEAMS.includes(a)) { document.getElementById('ana-error').innerText = "Équipe non reconnue. Choisissez dans la liste."; return; }
+    if(!currentUser.isVerified) { document.getElementById('ana-error').innerText = "Compte non activé."; return; }
+    if(!canAnalyzeMatch(h,a)) { document.getElementById('ana-error').innerText = "❌ Match déjà analysé dans les 48h."; return; }
     document.getElementById('ana-loader').style.display='inline-block';
     document.getElementById('btn-ana').disabled=true;
     setTimeout(()=>{
-        const gen = genererAnalyse(h,a);
-        tempMatch = { h, a, market: gen.marche, ht: gen.miTemps };
-        document.getElementById('res-h').innerHTML = `${h}`;
-        document.getElementById('res-a').innerHTML = `${a}`;
+        const gen = genererScoreEtMarche(h,a);
+        tempMatch = { h, a, market: gen.marche, score: gen.scoreFinal, ht: gen.miTemps };
+        document.getElementById('res-h').innerHTML = `${h}<div class="team-strength">Force: ${getTeamStrength(h)}/10</div>`;
+        document.getElementById('res-a').innerHTML = `${a}<div class="team-strength">Force: ${getTeamStrength(a)}/10</div>`;
         document.getElementById('res-market').innerText = tempMatch.market;
-        document.getElementById('res-ht').innerText = `Mi-temps suggérée: ${tempMatch.ht}`;
+        document.getElementById('res-ht').innerText = `Mi-temps estimée: ${tempMatch.ht}`;
+        document.getElementById('res-score').innerText = tempMatch.score;
+        document.getElementById('res-score-exact').style.display = 'block';
         document.getElementById('result-box').style.display='block';
         document.getElementById('ana-loader').style.display='none';
         document.getElementById('btn-ana').disabled=false;
     }, 1000);
 }
-function addToTicket() { 
-    if(tempMatch) { 
-        currentTicket.push({...tempMatch}); 
-        renderCurrentTicket(); 
-        document.getElementById('result-box').style.display='none'; 
-    } 
-}
+function addToTicket() { if(tempMatch) { currentTicket.push({...tempMatch}); renderCurrentTicket(); document.getElementById('result-box').style.display='none'; } }
 function renderCurrentTicket() {
     const container = document.getElementById('ticket-list');
     document.getElementById('current-ticket').style.display = currentTicket.length ? 'block' : 'none';
     document.getElementById('ticket-count').innerText = currentTicket.length;
-    container.innerHTML = currentTicket.map((m,i)=>`<div class="ticket-item"><div>${m.h} vs ${m.a}<br><b>${m.market}</b></div><span style="color:var(--danger);cursor:pointer;" onclick="removeFromTicket(${i})">✖</span></div>`).join('');
+    container.innerHTML = currentTicket.map((m,i)=>`<div class="ticket-item"><div>${m.h} vs ${m.a}<br><b>${m.market}</b> | Score: ${m.score}<br>Mi-temps: ${m.ht}</div><span style="color:var(--danger);cursor:pointer;" onclick="removeFromTicket(${i})">✖</span></div>`).join('');
 }
 function removeFromTicket(i){ currentTicket.splice(i,1); renderCurrentTicket(); }
 function saveTicket() {
@@ -382,101 +476,59 @@ function saveTicket() {
 }
 function renderSavedTickets() {
     const container = document.getElementById('tickets-list-view');
-    if(!currentUser.tickets.length) { container.innerHTML='<p class="info-text">Aucun ticket enregistré.</p>'; return; }
+    if(!currentUser.tickets.length) { container.innerHTML='<p style="text-align:center; color:var(--muted);">Aucun ticket.</p>'; return; }
     container.innerHTML = currentUser.tickets.map((t,idx)=>`<div class="card ticket-card" style="cursor:pointer;" onclick="viewTicketDetail(${idx})"><div style="color:var(--primary);">📅 ${t.date}</div><div>📊 ${t.matches.length} match(s)</div></div>`).join('');
 }
 function viewTicketDetail(idx) {
     selectedTicketIndex = idx;
     const t = currentUser.tickets[idx];
     const container = document.getElementById('ticket-detail-content');
-    container.innerHTML = `
-        <div class="detail-header"><h3>🎫 DÉTAIL DU TICKET</h3><div>${t.date}</div></div>
-        <div class="card">${t.matches.map(m=>`<div class="ticket-item"><b>${m.h} vs ${m.a}</b><br>🎯 ${m.market}</div>`).join('')}</div>
-        <div class="action-buttons" style="display:flex; gap:10px; margin-top:15px;">
-            <button class="btn btn-double" onclick="duplicateSavedTicket()">🔄 DOUBLER</button>
-            <button class="btn btn-gourmand" onclick="createGourmandFromTicket()">🍽️ GOURMAND</button>
-        </div>`;
+    container.innerHTML = `<div class="detail-header"><h3>🎫 Détail</h3><div>${t.date}</div></div><div class="card">${t.matches.map(m=>`<div class="ticket-item"><b>${m.h} vs ${m.a}</b><br>🎯 ${m.market}<br>📊 Score: ${m.score}<br>⏱️ Mi-temps: ${m.ht}</div>`).join('')}</div><div style="display:flex; gap:10px; margin-top:10px;"><button class="btn btn-double" onclick="duplicateSavedTicket()">🔄 DOUBLER</button><button class="btn btn-gourmand" onclick="createGourmandFromTicket()">🍽️ GOURMAND</button></div>`;
     document.getElementById('view-tickets').style.display = 'none';
     document.getElementById('view-ticket-detail').style.display = 'block';
 }
 function duplicateSavedTicket() {
     if(selectedTicketIndex===null) return;
     const orig = currentUser.tickets[selectedTicketIndex];
-    const newMatches = orig.matches.map(m=>{ const gen = genererAnalyse(m.h, m.a); return {h:m.h, a:m.a, market:gen.marche, ht:gen.miTemps}; });
+    const newMatches = orig.matches.map(m=>{ const gen = genererScoreEtMarche(m.h, m.a); return {h:m.h, a:m.a, market:gen.marche, score:gen.scoreFinal, ht:gen.miTemps}; });
     currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:newMatches});
     updateUser();
-    alert("Ticket doublé avec succès !");
+    alert("Ticket doublé !");
     backToTicketsList();
 }
 function createGourmandFromTicket() {
     if(selectedTicketIndex===null) return;
     let allMatches = [];
-    for(const u of db) if(u.email !== currentUser.email) for(const t of u.tickets) for(const m of t.matches) allMatches.push(m);
-    if(allMatches.length === 0) allMatches = currentUser.tickets[selectedTicketIndex].matches;
-    const maxCount = currentUser.isPremium ? 15 : 1;
+    for(const u of db) if(u.email!==currentUser.email) for(const t of u.tickets) for(const m of t.matches) allMatches.push(m);
+    if(allMatches.length===0) allMatches = currentUser.tickets[selectedTicketIndex].matches;
     const shuffled = allMatches.sort(()=>0.5-Math.random());
-    const gourmand = shuffled.slice(0, maxCount).map(m=>{ const gen = genererAnalyse(m.h, m.a); return {h:m.h, a:m.a, market:gen.marche}; });
+    const gourmand = shuffled.slice(0, currentUser.isPremium ? 15 : 1).map(m=>{ const gen = genererScoreEtMarche(m.h, m.a); return {h:m.h, a:m.a, market:gen.marche, score:gen.scoreFinal, ht:gen.miTemps}; });
     currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:gourmand});
     updateUser();
     alert(`Ticket Gourmand créé (${gourmand.length} matchs)`);
     backToTicketsList();
 }
-function backToTicketsList() { 
-    document.getElementById('view-ticket-detail').style.display = 'none'; 
-    document.getElementById('view-tickets').style.display = 'block'; 
-    renderSavedTickets(); 
-    selectedTicketIndex = null; 
-}
-function renderMessages() {
-    const container = document.getElementById('msg-list');
-    if(!currentUser.messages.length) { container.innerHTML='<p class="info-text">Aucun message.</p>'; return; }
-    container.innerHTML = currentUser.messages.map(m=>`<div class="card">${m.text}<br><small>📅 ${m.date}</small></div>`).join('');
-    if(currentUser.unreadMessages) { currentUser.unreadMessages = 0; updateUser(); }
-}
+function backToTicketsList() { document.getElementById('view-ticket-detail').style.display = 'none'; document.getElementById('view-tickets').style.display = 'block'; renderSavedTickets(); selectedTicketIndex = null; }
 function switchView(view) {
     document.getElementById('view-predict').style.display = view==='predict'?'block':'none';
     document.getElementById('view-tickets').style.display = view==='tickets'?'block':'none';
-    document.getElementById('view-messages').style.display = view==='messages'?'block':'none';
     document.getElementById('view-profile').style.display = view==='profile'?'block':'none';
     document.getElementById('view-ticket-detail').style.display = 'none';
     if(view==='tickets') renderSavedTickets();
-    if(view==='messages') renderMessages();
     if(view==='profile') renderProfile();
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    if(view==='predict') document.querySelector('.nav-item:first-child').classList.add('active');
+    else if(view==='tickets') document.querySelector('.nav-item:nth-child(2)').classList.add('active');
+    else document.querySelector('.nav-item:last-child').classList.add('active');
 }
-function toggleAuth(showRegister) { 
-    document.getElementById('auth-screen').style.display = showRegister ? 'none' : 'block'; 
-    document.getElementById('register-screen').style.display = showRegister ? 'block' : 'none'; 
-}
-function toggleAssistant() { 
-    document.getElementById('assistant-chat').classList.toggle('active'); 
-}
-function askZola() {
-    const input = document.getElementById('assistant-input');
-    if(!input.value.trim()) return;
-    const msgDiv = document.getElementById('assistant-messages');
-    msgDiv.innerHTML += `<div class="assistant-bubble assistant-user">${input.value}</div>`;
-    input.value = '';
-    setTimeout(() => {
-        msgDiv.innerHTML += `<div class="assistant-bubble assistant-bot">🤖 Utilisez les 24 marchés, doublez vos tickets ou activez votre compte avec le code dans Profil !</div>`;
-        msgDiv.scrollTop = msgDiv.scrollHeight;
-    }, 500);
-}
-function logout() { location.reload(); }
+function toggleAuth(reg) { document.getElementById('auth-screen').style.display = reg?'none':'block'; document.getElementById('register-screen').style.display = reg?'block':'none'; }
+function toggleAssistant() { document.getElementById('assistant-chat').style.display = document.getElementById('assistant-chat').style.display === 'flex' ? 'none' : 'flex'; }
+function askZola() { const inp=document.getElementById('assistant-input'); if(!inp.value.trim()) return; const msgDiv=document.getElementById('assistant-messages'); msgDiv.innerHTML+=`<div class="assistant-bubble assistant-user" style="background:var(--primary); margin:5px 0 5px auto; padding:8px; border-radius:12px; max-width:85%;">${inp.value}</div>`; inp.value=''; setTimeout(()=>{ msgDiv.innerHTML+=`<div class="assistant-bubble assistant-bot" style="background:var(--border); margin:5px 0; padding:8px; border-radius:12px;">🤖 Utilisez "Doubler" ou "Gourmand" sur vos tickets !</div>`; msgDiv.scrollTop=msgDiv.scrollHeight; },500); }
+function logout(){ location.reload(); }
+function renderGlobalAds() { const banner=document.getElementById('global-ad-banner'); if(currentUser && currentUser.globalAds && currentUser.globalAds.length) { banner.style.display='flex'; banner.innerHTML=currentUser.globalAds.map(ad=>`<div class="ad-item"><img src="${ad.media}" onclick="window.open('${ad.url||'#'}','_blank')"><span>${ad.title}</span><div class="close-ad" onclick="removeAd(${ad.id})">✖</div></div>`).join(''); } else banner.style.display='none'; }
+function removeAd(id){ if(currentUser){ currentUser.globalAds=currentUser.globalAds.filter(a=>a.id!==id); updateUser(); renderGlobalAds(); } }
 
-// ======================= SPLASH SCREEN =======================
-let splashProgress = 0;
-const interval = setInterval(() => {
-    splashProgress += Math.random() * 15;
-    if(splashProgress >= 100) splashProgress = 100;
-    document.getElementById('splashProgress').style.width = splashProgress + '%';
-    if(splashProgress >= 100) {
-        clearInterval(interval);
-        setTimeout(() => {
-            document.getElementById('splashScreen').style.display = 'none';
-            document.getElementById('appShell').style.display = 'block';
-        }, 500);
-    }
-}, 200);
+let splashProgress=0; const interval=setInterval(()=>{ splashProgress+=Math.random()*15; if(splashProgress>=100) splashProgress=100; document.getElementById('splashProgress').style.width=splashProgress+'%'; if(splashProgress>=100){ clearInterval(interval); setTimeout(()=>{ document.getElementById('splashScreen').style.display='none'; document.getElementById('appShell').style.display='block'; },500); } },200);
 </script>
 </body>
-    </html>
+                        </html>
