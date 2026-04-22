@@ -174,106 +174,18 @@ const MARKETS_PRO = [
 ];
 
 // ======================= 500+ CLUBS AVEC FORCES =======================
-const LEVEL1 = [ 
-    "Real Madrid", "Manchester City", "Liverpool", "Arsenal", "Bayern Munich", "Bayer Leverkusen", "Inter Milan", 
-    "Paris Saint-Germain", "FC Barcelone", "Borussia Dortmund", "Atlético Madrid", "Juventus", "AC Milan", 
-    "RB Leipzig", "Napoli", "Aston Villa", "Sporting CP", "Benfica", "FC Porto", "Atalanta", "Newcastle", 
-    "Tottenham", "Chelsea", "Manchester United", "Real Sociedad", "Athletic Bilbao", "Girona", "AS Monaco", 
-    "Lille OSC", "Olympique de Marseille", "OGC Nice", "Stuttgart", "Eintracht Frankfurt", "Ajax Amsterdam", 
-    "PSV Eindhoven", "Feyenoord", "Galatasaray", "Fenerbahçe", "Besiktas", "Celtic Glasgow", "Glasgow Rangers", 
-    "Sporting Braga", "Lazio Rome", "AS Roma", "Fiorentina", "Bologne", "Séville FC", "Villarreal", "Real Betis", 
-    "West Ham", "Brighton", "Wolfsburg", "Fribourg", "AZ Alkmaar", "Club Bruges", "Union Saint-Gilloise", 
-    "Anderlecht", "Olympiakos", "Panathinaikos", "Sparta Prague", "Flamengo", "Palmeiras", "River Plate", 
-    "Atlético Mineiro", "Fluminense", "Botafogo", "São Paulo", "Grêmio", "Internacional", "Boca Juniors", 
-    "Racing Club", "Estudiantes", "Talleres", "Independiente del Valle", "LDU Quito", "Al Ahly", "Mamelodi Sundowns", 
-    "Wydad Casablanca", "Raja Casablanca", "Espérance de Tunis", "Zamalek", "RS Berkane", "Pyramids FC", 
-    "CR Belouizdad", "USM Alger", "Al-Hilal", "Al-Nassr", "Al-Ittihad", "Al-Ahli", "Yokohama F. Marinos", 
-    "Vissel Kobe", "Urawa Reds", "Jeonbuk", "Pohang Steelers", "Al-Ain", "Club América", "Monterrey", 
-    "Tigres UANL", "Columbus Crew", "LAFC", "Al-Sadd", "Al-Duhail", "Persepolis", "Esteghlal", "Buriram United",
-    "Ulsan HD", "Kawasaki Frontale", "Al-Rayyan", "Sepahan", "Pakhtakor", "Al-Shorta", "Navbahor", "Al-Fayha",
-    "Mumbai City", "Odisha FC", "ATK Mohun Bagan", "Melbourne City", "Central Coast Mariners", "Wellington Phoenix"
+const ELITE_CLUBS = [
+    "Real Madrid","FC Barcelona","Atlético Madrid","Manchester City","Liverpool","Arsenal","Manchester United","Chelsea","Tottenham","Newcastle","Aston Villa","West Ham","Bayern Munich","Borussia Dortmund","RB Leipzig","Bayer Leverkusen","Eintracht Frankfurt","Paris Saint-Germain","AS Monaco","Olympique Marseille","Olympique Lyonnais","Lille","Nice","Rennes","Lens","Inter Milan","AC Milan","Juventus","AS Roma","Napoli","Lazio","Atalanta","Fiorentina","Bologna","Ajax","PSV Eindhoven","Feyenoord","FC Porto","Benfica","Sporting CP","Celtic","Rangers","Galatasaray","Fenerbahçe","Beşiktaş","Club Brugge","Anderlecht","Al Ahly","Wydad Casablanca","Raja Casablanca","Espérance Tunis","Mamelodi Sundowns","Flamengo","Palmeiras","River Plate","Boca Juniors","Fluminense","São Paulo","Al-Hilal","Al-Nassr","Al-Ittihad"
 ];
-
-const LEVEL2 = [ 
-    "Everton", "Fulham", "Crystal Palace", "Wolves", "Bournemouth", "Getafe", "Osasuna", "Valence", "Celta Vigo", 
-    "Torino", "Udinese", "Monza", "Genoa", "Sassuolo", "Stade Rennais", "RC Lens", "Stade de Reims", 
-    "Olympique Lyonnais", "Montpellier", "Werder Brême", "Hoffenheim", "Mayence", "Augsbourg", "Twente", 
-    "Utrecht", "Slavia Prague", "Dinamo Zagreb", "Hajduk Split", "Étoile Rouge de Belgrade", "Partizan Belgrade", 
-    "PAOK Salonique", "AEK Athènes", "Bodo/Glimt", "Molde", "Malmö", "Copenhague", "Young Boys Berne", 
-    "Servette", "Bâle", "Salzbourg", "Sturm Graz", "Corinthians", "Cruzeiro", "Vasco da Gama", "Bahia", 
-    "Fortaleza", "RB Bragantino", "Athletico Paranaense", "Vélez Sarsfield", "Lanús", "Defensa y Justicia", 
-    "San Lorenzo", "Colo-Colo", "Universidad de Chile", "Olimpia", "Cerro Porteño", "Libertad", "Nacional (URU)", 
-    "Peñarol", "Junior Barranquilla", "Millonarios", "Atlético Nacional", "Sporting Cristal", "TP Mazembe", 
-    "Simba SC", "Young Africans", "Petro Luanda", "Horoya AC", "ASEC Mimosas", "Orlando Pirates", 
-    "Kaizer Chiefs", "Inter Miami", "Pachuca", "Chivas Guadalajara", "Santos Laguna", "Cruz Azul", "Pumas UNAM",
-    "Toluca", "León", "Necaxa", "Atlas", "Shanghai Port", "Shanghai Shenhua", "Shandong Taishan", "Beijing Guoan",
-    "Zhejiang FC", "Chengdu Rongcheng", "Al-Wasl", "Al-Jazira", "Sharjah FC", "Al-Wahda", "Shabab Al-Ahli",
-    "Al-Taawoun", "Al-Ettifaq", "Al-Shabab", "Damac FC", "Al-Raed", "Abha Club", "Al-Tai", "Al-Riyadh"
+const FORT_CLUBS = [
+    "Sevilla","Villarreal","Real Betis","Athletic Bilbao","Real Sociedad","Valence","Getafe","Osasuna","Brighton","Fulham","Brentford","Crystal Palace","Wolves","Bournemouth","Everton","Stuttgart","Hoffenheim","Fribourg","Wolfsburg","Werder Bremen","Augsburg","Mainz","Lazio","Torino","Monza","Genoa","Udinese","Lens","Strasbourg","Reims","Toulouse","Montpellier","Braga","Vitória Guimarães","AZ Alkmaar","Utrecht","Twente","Gent","Genk","Antwerp","Union SG","Trabzonspor","Başakşehir","Olympiakos","PAOK","Panathinaikos","Salzbourg","Sturm Graz","Slavia Prague","Sparta Prague","Shakhtar Donetsk","Dynamo Kyiv","Dinamo Zagreb","Crvena Zvezda","Copenhague","Midtjylland","Malmö FF","Bodø/Glimt","Molde"
 ];
-
-const LEVEL3 = [ 
-    "Brentford", "Nottingham Forest", "Leicester", "Ipswich", "Southampton", "Las Palmas", "Majorque", "Alavés", 
-    "Rayo Vallecano", "Valladolid", "Empoli", "Hellas Vérone", "Lecce", "Cagliari", "Parme", "FC Nantes", 
-    "Strasbourg", "FC Lorient", "Auxerre", "Brest", "Bochum", "Heidenheim", "St. Pauli", "NEC Nimègue", 
-    "Heerenveen", "Heracles", "Vitesse", "Courtrai", "Westerlo", "Charleroi", "Mechelen", "Cercle Bruges", 
-    "Kilmarnock", "St. Mirren", "Austria Vienne", "LASK", "Grasshopper", "Lucerne", "Cuiabá", "Vitória", 
-    "Juventude", "Platense", "Tigre", "Banfield", "Coquimbo Unido", "Everton (CHI)", "Palestino", "Guaraní", 
-    "Nacional (PAR)", "Montevideo City Torque", "Santa Fe (COL)", "Deportivo Cali", "Once Caldas", "AS Vita Club", 
-    "Maniema Union", "Dauphins Noirs", "Don Bosco", "JS Kabylie", "ES Sétif", "MC Alger", "Club Africain", 
-    "Étoile du Sahel", "Al-Hilal Omdurman", "Al-Merrikh", "Enyimba", "Rivers United", "Al-Talaba", "Al-Zawraa",
-    "Al-Quwa Al-Jawiya", "Al-Kahrabaa", "Duhok SC", "Erbil SC", "Al-Minaa", "Naft Al-Basra", "Al-Najaf",
-    "Churchill Brothers", "Gokulam Kerala", "Sreenidi Deccan", "Real Kashmir", "Aizawl FC", "TRAU FC",
-    "Sudeva Delhi", "Kenkre FC", "Bhawanipore FC", "Delhi FC", "Bengaluru United", "Kickstart FC"
+const MOYEN_CLUBS = [
+    "Leicester","Ipswich","Southampton","Leeds United","Burnley","Norwich","Watford","Hull City","Celta Vigo","Alavés","Leganés","Valladolid","Espanyol","Empoli","Cagliari","Lecce","Venezia","Parme","St. Pauli","Heidenheim","Holstein Kiel","Bochum","Nantes","Auxerre","Angers","Saint-Étienne","Le Havre","Paris FC","Lorient","Boavista","Famalicão","Heracles","NEC","Westerlo","Samsunspor","APOEL Nicosia","Maccabi Haifa","Ferencváros","Ludogorets","FCSB","Legia Warsaw","Raków","Slovan Bratislava","HJK Helsinki","Shamrock Rovers","Sheriff Tiraspol"
 ];
-
-const LEVEL4 = [ 
-    "Le Havre", "FC Metz", "Burnley", "Watford", "Hull City", "Schalke 04", "Hertha Berlin", "Bordeaux", 
-    "Saint-Étienne", "Espanyol Barcelone", "Sampdoria", "Bari", "Palermo", "Sheffield United", "Leeds", 
-    "Norwich", "Malaga", "Elche", "Levante", "Hamburger SV", "Bolivar", "The Strongest", "Caracas FC", 
-    "Universidad Católica (CHI)", "Hearts of Oak", "Asante Kotoko", "1º de Agosto", "Auckland City", 
-    "Sydney FC", "Mumbai City", "Odisha FC", "Hyderabad FC", "East Bengal", "Mohammedan SC", "Churchill Brothers",
-    "Gokulam Kerala", "Punjab FC", "Namdhari FC", "Shillong Lajong", "Rajasthan United", "Sudeva Delhi",
-    "Kenkre FC", "Delhi FC", "Bengaluru United", "Bhawanipore FC", "Kickstart FC", "Sreenidi Deccan",
-    "Real Kashmir", "Aizawl FC", "TRAU FC", "Neroca FC", "Sreenidi Deccan", "Gokulam Kerala"
+const FAIBLE_CLUBS = [
+    "Portsmouth","Derby County","Oxford United","Red Star","Martigues","Châteauroux","Castellón","Cordoba","Malaga","Bari","Cesena","Mantova","Preußen Münster","Jahn Regensburg","F91 Dudelange","Hamrun Spartans","La Fiorita","Lincoln Red Imps","Vikingur","Flora Tallinn","RFS","Panevėžys","Don Bosco","Dauphins Noirs","FC Lubumbashi Sport","Maniema Union","DCMP Imana","AS Vita Club","Saint-Éloi Lupopo","Moghreb Tétouan","USM Alger","JS Kabylie","Petro Luanda","Simba SC","Young Africans","Real de Banjul","ASEC Mimosas","ASC Jaraaf","Enyimba","Asante Kotoko","Kaizer Chiefs","Orlando Pirates"
 ];
-
-const LEVEL5 = [ 
-    "AS Douanes", "Coton Sport", "AS Otôho", "Teungueth FC", "Jaraaf", "Buffles du Borgou", "ASKO Kara", 
-    "ASCK", "AS FAN", "AS Police (Mali)", "Real Bamako", "Binga FC", "Lincoln Red Imps", "Europa FC", 
-    "Tre Penne", "La Fiorita", "Hamrun Spartans", "Dudelange", "Ballkani", "San Marino Academy", "AS Pirae", 
-    "Hienghène Sport", "Lupe o le Soaga", "Kiwi FC", "Tupapa Maraerenga", "Pago Youth", "Vaivase-Tai",
-    "Tonga FC", "Lotoha'apai United", "Navutoka FC", "Marist FC", "Solomon Warriors", "Central Coast",
-    "Hekari United", "Lae City", "Toti City", "Madang FC", "Morobe Wawens", "Gulf Komara", "Port Moresby",
-    "Ba FC", "Suva FC", "Rewa FC", "Labasa FC", "Nadi FC", "Lautoka FC", "Navua FC", "Nasinu FC",
-    "Tavua FC", "Dreketi FC", "Rakiraki FC", "Seaqaqa FC", "Savusavu FC", "Bua FC", "Nadroga FC"
-];
-
-const NATIONS_TIER5 = ["France","Argentine","Brésil","Angleterre","Espagne","Portugal","Allemagne","Italie","Pays-Bas","Belgique","Uruguay","Croatie","Maroc","Sénégal","Colombie"];
-const NATIONS_TIER4 = ["Danemark","Suisse","Serbie","Pologne","États-Unis","Mexique","Japon","Corée du Sud","Australie","Iran","Arabie Saoudite","Qatar","Canada","Chili","Pérou","Paraguay","Équateur","Venezuela","Nigeria","Cameroun","Ghana","Algérie","Égypte","Tunisie","Mali","Côte d'Ivoire","Afrique du Sud","Burkina Faso"];
-const NATIONS_TIER3 = ["RD Congo","Zambie","Ouganda","Guinée","Gabon","Bénin","Togo","Madagascar","Irak","Ouzbékistan","Jordanie","Bahreïn","Vietnam","Bolivie","Panama","Honduras","Jamaïque","Costa Rica","Salvador","Guatemala","Trinité-et-Tobago","Haïti","Cuba","Nicaragua","Guyana","Suriname"];
-const NATIONS_TIER2 = ["Niger","Tchad","Somalie","Djibouti","Érythrée","Soudan du Sud","Népal","Bhoutan","Mongolie","Cambodge","Laos","Îles Salomon","Tahiti","Samoa","Guam","Saint-Marin","Andorre","Liechtenstein","Malte","Gibraltar","Îles Féroé","Luxembourg","Moldavie","Estonie","Lettonie","Lituanie","Arménie","Géorgie","Azerbaïdjan","Kazakhstan","Kirghizistan","Tadjikistan","Turkménistan"];
-const NATIONS_TIER1 = ["Sao Tomé-et-Principe","Guinée-Bissau","Guinée équatoriale","Cap-Vert","Seychelles","Maurice","Comores","Lesotho","Eswatini","Botswana","Namibie","Malawi","Burundi","Rwanda","Soudan","Mauritanie","Sierra Leone","Liberia","Gambie","Centrafrique","Somaliland","Zanzibar","Timor oriental","Brunei","Macao","Mongolie intérieure","Tibet","Cachemire","Palestine","Chypre du Nord"];
-
-const ALL_TEAMS = [...new Set([...LEVEL1, ...LEVEL2, ...LEVEL3, ...LEVEL4, ...LEVEL5, ...NATIONS_TIER5, ...NATIONS_TIER4, ...NATIONS_TIER3, ...NATIONS_TIER2, ...NATIONS_TIER1])];
-const ELITE_PLUS = ["Real Madrid", "Manchester City", "Bayern Munich", "Liverpool", "Arsenal", "FC Barcelone", "Inter Milan", "Paris Saint-Germain","Bayer Leverkusen", "Inter Milan","Borussia Dortmund", "Atlético Madrid", "Juventus", "AC Milan", 
-    "RB Leipzig", "Napoli", "Aston Villa",];
-const AFRICA_ELITE = ["Al Ahly", "Wydad Casablanca", "Espérance de Tunis", "Mamelodi Sundowns", "Raja Casablanca"];
-
-function getBaseStrength(team) {
-    if (LEVEL1.includes(team) || NATIONS_TIER5.includes(team)) return 10;
-    if (LEVEL2.includes(team) || NATIONS_TIER4.includes(team)) return 8;
-    if (LEVEL3.includes(team) || NATIONS_TIER3.includes(team)) return 6;
-    if (LEVEL4.includes(team) || NATIONS_TIER2.includes(team)) return 4;
-    if (LEVEL5.includes(team) || NATIONS_TIER1.includes(team)) return 2;
-    return 5;
-}
-function getAdjustedStrength(team, isHome, opponent) {
-    let strength = getBaseStrength(team);
-    if (isHome) strength += 0.8;
-    if (ELITE_PLUS.includes(team)) strength += 0.5;
-    if (AFRICA_ELITE.includes(team)) strength += 0.3;
-    return strength;
-    }
 // Nations
 const AFRICA_COUNTRIES = ['Algérie','Angola','Bénin','Botswana','Burkina Faso','Burundi','Cameroun','Cap-Vert','Comores','Congo','RDC','Côte d\'Ivoire','Djibouti','Égypte','Érythrée','Éthiopie','Gabon','Gambie','Ghana','Guinée','Guinée-Bissau','Kenya','Lesotho','Libéria','Libye','Madagascar','Malawi','Mali','Maroc','Maurice','Mauritanie','Mozambique','Namibie','Niger','Nigéria','Ouganda','Rwanda','Sao Tomé','Sénégal','Seychelles','Sierra Leone','Somalie','Soudan','Soudan du Sud','Afrique du Sud','Tanzanie','Togo','Tunisie','Zambie','Zimbabwe'];
 const EUROPE_COUNTRIES = ['France','Allemagne','Italie','Espagne','Angleterre','Portugal','Pays-Bas','Belgique','Suisse','Suède'];
@@ -304,8 +216,8 @@ function getScoresForMarket(market) {
         "2MT Nul": ["0-0","1-1","2-2","3-3"],
         "1MT +1.5 buts": ["2-0","3-0","2-1","3-1","4-0","4-1","3-2","4-2","5-0","5-1"],
         "1MT +2 buts": ["3-0","4-0","3-1","4-1","5-0","5-1","4-2","5-2","6-0"],
-        "1MT -1.5 buts": ["0-0","1-0","0-1","1-0","0-0","0-1","0-1","1-0","0-0","1-1"],
-        "1MT -2 buts": ["0-0","1-0","0-1","1-1","2-0","0-2","1-0","0-1","0-0"],
+        "1MT -1.5 buts": ["0-0","1-0","0-1","1-1","2-0","0-2","2-1","1-2","0-0","1-1"],
+        "1MT -2 buts": ["0-0","1-0","0-1","1-1","2-0","0-2","1-2","2-1","0-0"],
         "Plus de buts en 1MT": ["2-1","3-0","3-1","4-0","4-1","5-0","2-2","3-2","4-2","5-1"],
         "Plus de buts en 2MT": ["0-2","1-3","0-3","1-4","2-3","2-4","3-4","0-4","1-5","2-5"],
         "Over 1.5": ["2-0","1-1","2-1","1-2","2-2","3-0","3-1","4-0","4-1","3-2","0-2","1-3","2-3","3-3"],
@@ -531,4 +443,4 @@ function removeAd(id){ if(currentUser){ currentUser.globalAds=currentUser.global
 let splashProgress=0; const interval=setInterval(()=>{ splashProgress+=Math.random()*15; if(splashProgress>=100) splashProgress=100; document.getElementById('splashProgress').style.width=splashProgress+'%'; if(splashProgress>=100){ clearInterval(interval); setTimeout(()=>{ document.getElementById('splashScreen').style.display='none'; document.getElementById('appShell').style.display='block'; },500); } },200);
 </script>
 </body>
-                        </html>
+    </html>
