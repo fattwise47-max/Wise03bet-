@@ -185,7 +185,7 @@ const CLUB_DATABASE = {
     ],
     moyen: [
         "Bournemouth","Fulham","Nottingham Forest","Crystal Palace","Brentford","Montpellier","Reims","Lens","Strasbourg","Getafe",
-        "Osasuna","Rayo Vallecano","Udinese","Monza","Genoa","Werder Brême","Mainz","Augsbourg","Heerenveen","Twente",
+        "Osasuna","Rayo Vallecano","Udinese","Monza","Genoa","Werder Brême","Mainz","Augsbourg","Heerenveen","Twente","Nantes",
         "Anderlecht","Genk","Anvers","Sparta Prague","Dinamo Zagreb","Steaua Bucarest","Malmö FF","Legia Varsovie","Ferencváros","Ludogorets",
         "Maccabi Tel Aviv","Grêmio","Internacional","Cruzeiro","Colo-Colo","Peñarol","Nacional","Toronto FC","Galaxy","Columbus Crew",
         "FC Séoul","Guangzhou FC","Sydney FC","Al-Ettifaq","Pyramids FC","TP Mazembe","Simba SC","Young Africans"
@@ -243,7 +243,7 @@ function getScoresForMarket(market) {
         "2MT Nul": ["0-0","1-1","2-2","3-3"],
         "1MT +1.5 buts": ["2-0","3-0","2-1","3-1","4-0"],
         "1MT +2 buts": ["3-0","4-0","3-1","4-1","5-0"],
-        "1MT -1.5 buts": ["0-0","1-0","0-1","1-1"],
+        "1MT -1.5 buts": ["0-0","1-0","0-1"],
         "1MT -2 buts": ["0-0","1-0","0-1","1-1","2-0"],
         "Plus de buts en 1MT": ["2-1","3-0","3-1","4-0","4-1"],
         "Plus de buts en 2MT": ["0-2","1-3","0-3","1-4","2-3"],
@@ -260,34 +260,151 @@ function getScoresForMarket(market) {
     return scoresMap[market] || ["1-1","2-1","1-2"];
 }
 
+// ===================== FONCTION MODIFIÉE =====================
 function generatePrediction(teamH, teamA) {
     const levelH = getTeamLevel(teamH);
     const levelA = getTeamLevel(teamA);
     const diff = levelH.strength - levelA.strength;
     
-    // Choix du marché basé sur la différence de niveau
-    let market;
-    if(diff >= 3) market = "1";
-    else if(diff <= -3) market = "2";
-    else if(Math.abs(diff) <= 1) market = "X";
-    else if(Math.random() > 0.6) market = diff > 0 ? "1" : "2";
-    else market = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
+    // NOUVEAU : Détection des deux équipes connues ou non
+    const isTeamHUnknown = !ALL_TEAMS.includes(teamH);
+    const isTeamAUnknown = !ALL_TEAMS.includes(teamA);
     
-    // Score avec prise en compte du niveau et possibilité de surprise (10% de résultat inattendu)
+    // Si les deux équipes ne sont pas dans la base, on génère quand même un marché aléatoire
+    if (isTeamHUnknown && isTeamAUnknown) {
+        const randomMarket = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
+        let possibleScores = getScoresForMarket(randomMarket);
+        const scoreFinal = possibleScores[Math.floor(Math.random() * possibleScores.length)];
+        const [h, a] = scoreFinal.split('-').map(Number);
+        const ht_h = Math.floor(h / 2) + (Math.random() > 0.7 ? (h > 0 ? 1 : 0) : 0);
+        const ht_a = Math.floor(a / 2) + (Math.random() > 0.7 ? (a > 0 ? 1 : 0) : 0);
+        const miTemps = `${ht_h}-${ht_a}`;
+        return { 
+            scoreFinal, 
+            market: randomMarket, 
+            miTemps, 
+            niveauH: "INCONNU", 
+            niveauA: "INCONNU" 
+        };
+    }
+    
+    // Si une seule équipe est inconnue, avantage à l'équipe connue
+    if (isTeamHUnknown && !isTeamAUnknown) {
+        // Avantage à l'équipe A (connue)
+        const randomMarket = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
+        let possibleScores = getScoresForMarket(randomMarket);
+        // On favorise les scores où l'équipe A gagne ou match nul
+        if (Math.random() < 0.7) {
+            possibleScores = getScoresForMarket("2");
+        }
+        const scoreFinal = possibleScores[Math.floor(Math.random() * possibleScores.length)];
+        const [h, a] = scoreFinal.split('-').map(Number);
+        const ht_h = Math.floor(h / 2) + (Math.random() > 0.7 ? (h > 0 ? 1 : 0) : 0);
+        const ht_a = Math.floor(a / 2) + (Math.random() > 0.7 ? (a > 0 ? 1 : 0) : 0);
+        const miTemps = `${ht_h}-${ht_a}`;
+        return { 
+            scoreFinal, 
+            market: randomMarket, 
+            miTemps, 
+            niveauH: "INCONNU", 
+            niveauA: levelA.level 
+        };
+    }
+    
+    if (!isTeamHUnknown && isTeamAUnknown) {
+        // Avantage à l'équipe H (connue)
+        const randomMarket = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
+        let possibleScores = getScoresForMarket(randomMarket);
+        // On favorise les scores où l'équipe H gagne ou match nul
+        if (Math.random() < 0.7) {
+            possibleScores = getScoresForMarket("1");
+        }
+        const scoreFinal = possibleScores[Math.floor(Math.random() * possibleScores.length)];
+        const [h, a] = scoreFinal.split('-').map(Number);
+        const ht_h = Math.floor(h / 2) + (Math.random() > 0.7 ? (h > 0 ? 1 : 0) : 0);
+        const ht_a = Math.floor(a / 2) + (Math.random() > 0.7 ? (a > 0 ? 1 : 0) : 0);
+        const miTemps = `${ht_h}-${ht_a}`;
+        return { 
+            scoreFinal, 
+            market: randomMarket, 
+            miTemps, 
+            niveauH: levelH.level, 
+            niveauA: "INCONNU" 
+        };
+    }
+    
+    // MODIFICATION ICI : Suppression de la règle qui forçait "X" pour les forts vs forts
+    // Désormais on utilise un système de probabilité plus large
+    let market;
+    
+    // Calcul de probabilité pour chaque famille de marché (1, X, 2, ou autre marché)
+    const randomVal = Math.random();
+    
+    // Fort vs Fort (écart de force faible) → équilibre, mais pas uniquement X
+    if (Math.abs(diff) <= 1) {
+        // 40% pour 1 ou 2 (également réparti), 20% pour X, 40% pour un autre marché
+        if (randomVal < 0.2) {
+            market = "X";
+        } else if (randomVal < 0.4) {
+            market = "1";
+        } else if (randomVal < 0.6) {
+            market = "2";
+        } else {
+            // Autre marché parmi les 23
+            market = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
+        }
+    } 
+    // Différence significative (>= 2) → avantage net
+    else if (diff >= 2) {
+        if (randomVal < 0.7) {
+            market = "1";
+        } else if (randomVal < 0.85) {
+            market = "X";
+        } else {
+            market = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
+        }
+    } 
+    else if (diff <= -2) {
+        if (randomVal < 0.7) {
+            market = "2";
+        } else if (randomVal < 0.85) {
+            market = "X";
+        } else {
+            market = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
+        }
+    }
+    // Différence modérée
+    else {
+        if (randomVal < 0.4) {
+            market = diff > 0 ? "1" : "2";
+        } else if (randomVal < 0.6) {
+            market = "X";
+        } else {
+            market = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
+        }
+    }
+    
+    // Score avec prise en compte du niveau et possibilité de surprise (15% de résultat inattendu)
     let possibleScores = getScoresForMarket(market);
-    if(Math.random() < 0.1) { // 10% de surprise (grand club peut perdre)
-        if(market === "1") possibleScores = getScoresForMarket("2");
-        else if(market === "2") possibleScores = getScoresForMarket("1");
+    if (Math.random() < 0.15) { // 15% de surprise (grand club peut perdre)
+        if (market === "1") possibleScores = getScoresForMarket("2");
+        else if (market === "2") possibleScores = getScoresForMarket("1");
+        else if (market === "X") {
+            // Surprise : on prend un autre marché aléatoire
+            const altMarket = MARKETS_PRO[Math.floor(Math.random() * MARKETS_PRO.length)];
+            possibleScores = getScoresForMarket(altMarket);
+        }
     }
     
     const scoreFinal = possibleScores[Math.floor(Math.random() * possibleScores.length)];
-    const [h,a] = scoreFinal.split('-').map(Number);
-    const ht_h = Math.floor(h / 2) + (Math.random() > 0.7 ? (h>0?1:0) : 0);
-    const ht_a = Math.floor(a / 2) + (Math.random() > 0.7 ? (a>0?1:0) : 0);
+    const [h, a] = scoreFinal.split('-').map(Number);
+    const ht_h = Math.floor(h / 2) + (Math.random() > 0.7 ? (h > 0 ? 1 : 0) : 0);
+    const ht_a = Math.floor(a / 2) + (Math.random() > 0.7 ? (a > 0 ? 1 : 0) : 0);
     const miTemps = `${ht_h}-${ht_a}`;
     
     return { scoreFinal, market, miTemps, niveauH: levelH.level, niveauA: levelA.level };
 }
+// ===================== FIN MODIFICATION =====================
 
 // ======================= BASE DE DONNÉES =======================
 let db = JSON.parse(localStorage.getItem('wise03_db')) || [];
@@ -475,7 +592,7 @@ function toggleAuth(reg) { document.getElementById('auth-screen').style.display 
 function toggleAssistant() { document.getElementById('assistant-chat').style.display = document.getElementById('assistant-chat').style.display === 'flex' ? 'none' : 'flex'; }
 function askZola() { const inp=document.getElementById('assistant-input'); if(!inp.value.trim()) return; const msgDiv=document.getElementById('assistant-messages'); msgDiv.innerHTML+=`<div class="assistant-bubble assistant-user" style="background:var(--primary); margin:5px 0 5px auto; padding:8px; border-radius:12px; max-width:85%;">${inp.value}</div>`; inp.value=''; setTimeout(()=>{ msgDiv.innerHTML+=`<div class="assistant-bubble assistant-bot" style="background:var(--border); margin:5px 0; padding:8px; border-radius:12px;">🤖 Utilisez "Doubler" ou "Gourmand" sur vos tickets ! Contactez l'admin pour votre code d'activation.</div>`; msgDiv.scrollTop=msgDiv.scrollHeight; },500); }
 function logout(){ location.reload(); }
-function renderGlobalAds() { const banner=document.getElementById('global-ad-banner'); if(currentUser && currentUser.globalAds && currentUser.globalAds.length) { banner.style.display='flex'; banner.innerHTML=currentUser.globalAds.map(ad=>`<div class="ad-item"><img src="${ad.media}" onclick="window.open('${ad.url||'#'}','_blank')"><span>${ad.title}</span><div class="close-ad" onclick="removeAd(${ad.id})">✖</div></div>`).join(''); } else banner.style.display='none'; }
+function renderGlobalAds() { const banner=document.getElementById('global-ad-banner'); if(currentUser && currentUser.globalAds && currentUser.globalAds.length) { banner.style.display='flex'; banner.innerHTML=currentUser.globalAds.map(ad=>`<div class="ad-item"><img src="${ad.media}" onclick="window.open('${ad.url||'#}','_blank')"><span>${ad.title}</span><div class="close-ad" onclick="removeAd(${ad.id})">✖</div></div>`).join(''); } else banner.style.display='none'; }
 function removeAd(id){ if(currentUser){ currentUser.globalAds=currentUser.globalAds.filter(a=>a.id!==id); updateUser(); renderGlobalAds(); } }
 
 let splashProgress=0; const interval=setInterval(()=>{ splashProgress+=Math.random()*15; if(splashProgress>=100) splashProgress=100; document.getElementById('splashProgress').style.width=splashProgress+'%'; if(splashProgress>=100){ clearInterval(interval); setTimeout(()=>{ document.getElementById('splashScreen').style.display='none'; document.getElementById('appShell').style.display='block'; },500); } },200);
