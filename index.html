@@ -51,6 +51,7 @@
         .delete-ticket-btn { background: var(--danger); border: none; color: white; padding: 4px 8px; border-radius: 8px; cursor: pointer; font-size: 10px; margin-left: 10px; }
         .ticket-header { display: flex; justify-content: space-between; align-items: center; }
         .clear-ticket-btn { background: var(--danger); color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 11px; margin-left: 10px; }
+        .days-left { background: var(--gold); color: black; padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-top: 8px; display: inline-block; }
     </style>
 </head>
 <body>
@@ -143,6 +144,7 @@
                 <p id="prof-email" style="font-size:12px;"></p>
                 <p id="prof-whatsapp" style="font-size:12px;"></p>
                 <div id="prof-badge"></div>
+                <div id="premium-expiry-info"></div>
                 <hr>
                 <button class="btn btn-primary btn-full" onclick="document.getElementById('profile-file').click()">📸 PHOTO DE PROFIL</button>
                 <input type="file" id="profile-file" style="display:none;" accept="image/*" onchange="handleProfileUpload(this)">
@@ -167,10 +169,8 @@
 </div>
 
 <script>
-// === INITIALISATION RAPIDE - PAS DE SPLASH SCREEN BLOQUANT ===
-// On cache le splash screen immédiatement après le chargement
+// === INITIALISATION RAPIDE ===
 window.addEventListener('load', function() {
-    // Attendre un court instant pour l'animation
     setTimeout(function() {
         var splash = document.getElementById('splashScreen');
         var appShell = document.getElementById('appShell');
@@ -182,10 +182,16 @@ window.addEventListener('load', function() {
 // ======================= 700 CLUBS =======================
 const CLUB_DATABASE = {
     elite: ["Real Madrid","Manchester City","Paris SG","Bayern Munich","Arsenal","Liverpool","Inter Milan","Barcelona","Atletico Madrid","Bayer Leverkusen","Juventus","Napoli","Benfica","Porto","Sporting CP","Borussia Dortmund","RB Leipzig","Aston Villa","Newcastle United","Chelsea","Manchester United","Tottenham","AC Milan","AS Roma","Lazio","Atalanta","Monaco","Lille","Marseille","PSV Eindhoven","Feyenoord","Ajax","Flamengo","Palmeiras","River Plate","Boca Juniors","Al-Hilal","Al-Nassr","Al-Ittihad","Al-Ahly","Mamelodi Sundowns","Wydad AC","Raja CA","Monterrey","Club América","Tigres UANL","LAFC","Inter Miami"],
-    fort: ["Lyon","Nice","Rennes","Real Sociedad","Athletic Bilbao","Villarreal","Betis Séville","Brighton","West Ham","Everton","Eintracht Francfort","Wolfsburg","Stuttgart","Fiorentina","Bologne","Torino","Braga","AZ Alkmaar","Union Saint-Gilloise","Club Bruges","Celtic","Rangers","Galatasaray","Fenerbahçe","Beşiktaş","Olympiakos","PAOK","Shakhtar Donetsk","RB Salzbourg","Slavia Prague","FC Copenhague","Bodø/Glimt","Fluminense","São Paulo","Atlético Mineiro","Estudiantes","Independiente del Valle","LDU Quito","Orlando City","Seattle Sounders","Yokohama F. Marinos","Vissel Kobe","Jeonbuk Motors","Ulsan HD","Al-Ahli","Espérance Tunis","Zamalek","Berkane"],
+    fort: ["Lyon","Nice","Rennes","Real Sociedad","Athletic Bilbao","Villarreal","Betis Séville","Brighton","West Ham","Everton","Eintracht Francfort","Wolfsburg","Stuttgart","Fiorentina","Bologne","Torino","Braga","AZ Alkmaar","Union Saint-Gilloise","Club Bruges","Celtic","Rangers","Galatasaray","Fenerbahçe","Beşiktaş","Olympiakos","PAOK","Shakhtar Donetsk","RB Salzbourg","Slavia Prague","FC Copenhague","Bodø/Glimt","Fluminense","São Paulo","Atlético Mineiro","Estudiantes","Independiente del Valle","LDU Quito","Orlando City","Seattle Sounders","Yokohama F. Marinos","Vissel Kobe","Jeonbuk Motors","Ulsan HD","Al-Ahli","Espérance Tunis","Zamalek","Berkane",
+    "AEK Athens", "AIK", "Amiens", "Angers", "Austria Vienne", "Barnsley", "Bastia", "BATE Borisov", "Blackburn Rovers", "Blackpool", "Boavista", "Bolton Wanderers", "Bordeaux", "Brøndby", "Caen", "Cardiff City", "CFR Cluj", "Charlton Athletic", "Crvena Zvezda", "Derby County", "Dinamo Bucarest", "Dinamo Zagreb", "Djurgården", "Espanyol", "FCSB", "Genoa", "Guingamp", "Hajduk Split", "Hamburger SV", "HJK Helsinki", "Hull City", "Ipswich Town", "Leeds United", "Legia Warsaw", "Leicester", "Lorient", "Middlesbrough", "Molde", "Norwich City", "Olympiacos", "Panathinaikos", "PAOK", "Parma", "Portsmouth", "Queens Park Rangers", "Rapid Vienne", "Reading", "Rosenborg", "Sampdoria", "Schalke 04", "Sheffield Wednesday", "Sheriff Tiraspol", "Slavia Prague", "Slovan Bratislava", "Southampton", "Sparta Prague", "Standard de Liège", "Stoke City", "Sunderland", "Swansea City", "Vålerenga", "Venezia", "Vitoria Guimarães", "Watford", "West Bromwich", "Wigan Athletic", "Young Boys", "Zurich"];
     moyen: ["Bournemouth","Fulham","Nottingham Forest","Crystal Palace","Brentford","Montpellier","Reims","Lenre","Brest","Strasbourg","Getafe","Osasuna","Rayo Vallecano","Udinese","Monza","Genoa","Werder Brême","Mainz","Augsbourg","Heerenveen","Twente","Nantes","Anderlecht","Genk","Anvers","Sparta Prague","Dinamo Zagreb","Steaua Bucarest","Malmö FF","Legia Varsovie","Ferencváros","Ludogorets","Maccabi Tel Aviv","Grêmio","Internacional","Cruzeiro","Colo-Colo","Peñarol","Nacional","Toronto FC","Galaxy","Columbus Crew","FC Séoul","Guangzhou FC","Sydney FC","Al-Ettifaq","Pyramids FC","TP Mazembe","Simba SC","Young Africans"],
-    faible: [ "Ajaccio", "Alanyaspor", "Almeria", "Annecy", "Antalyaspor", "Ascoli", "Auda", "Avellino", "Bari", "Benevento", "Brescia", "Bristol City", "Burton Albion", "Cagliari", "Catanzaro", "Cesena", "Châteauroux", "Cittadella", "Como", "Concarneau", "Cosenza", "Cremonese", "Crotone", "Darmstadt", "Dunkerque", "Eibar", "Elche", "Exeter City", "Frosinone", "Girona", "Granada", "Grenoble", "Heidenheim", "Hermannstadt", "Kaiserslautern", "Laval", "Le Mans", "Leganés", "Levante", "Leyton Orient", "Luzern", "Malaga", "Millwall", "Modena", "Nancy", "Niort", "Nîmes", "Orléans", "Oxford United", "Paderborn 07", "Palermo", "Paris FC", "Pau FC", "Peterborough", "Pisa", "Plymouth Argyle", "Preston North End", "Quevilly-Rouen", "Rodez", "Rotherham United", "Sochaux", "Spezia", "Tenerife", "Troyes", "Valenciennes", "Verona", "Vicenza", "Wycombe", "Zaragoza","Burnley","Leeds","Leicester","Lorient","Metz","Auxerre","Grenade","Cadix","Valladolid","Salernitana","Cagliari","Vérone","Schalke 04","Hertha Berlin","Vitesse Arnhem","KV Mechelen","Aberdeen","Hearts","Panathinaikos","AEK Athènes","Maribor","Sheriff Tiraspol","HJK Helsinki","Flora Tallinn","Velez Sarsfield","Talleres","Universidad de Chile","Millonarios","Portland Timbers","New England Revolution","Gamba Osaka","Sanfrecce Hiroshima","Johor DT","Al-Duhail","Al-Sadd","Al-Shabab","AEK Athens", "AIK", "Amiens", "Angers", "Austria Vienne", "Barnsley", "Bastia", "BATE Borisov", "Blackburn Rovers", "Blackpool", "Boavista", "Bolton Wanderers", "Bordeaux", "Brøndby", "Caen", "Cardiff City", "CFR Cluj", "Charlton Athletic", "Crvena Zvezda", "Derby County", "Dinamo Bucarest", "Dinamo Zagreb", "Djurgården", "Espanyol", "FCSB", "Genoa", "Guingamp", "Hajduk Split", "Hamburger SV", "HJK Helsinki", "Hull City", "Ipswich Town", "Leeds United", "Legia Warsaw", "Leicester", "Lorient", "Middlesbrough", "Molde", "Norwich City", "Olympiacos", "Panathinaikos", "PAOK", "Parma", "Portsmouth", "Queens Park Rangers", "Rapid Vienne", "Reading", "Rosenborg", "Sampdoria", "Schalke 04", "Sheffield Wednesday", "Sheriff Tiraspol", "Slavia Prague", "Slovan Bratislava", "Southampton", "Sparta Prague", "Standard de Liège", "Stoke City", "Sunderland", "Swansea City", "Vålerenga", "Venezia", "Vitoria Guimarães", "Watford", "West Bromwich", "Wigan Athletic", "Young Boys", "Zurich"],
-    plusFaible: [    "Aberystwyth Town", "Aksu", "Alashkert", "Algeciras", "Amorebieta", "Andorra FC", "Antequera", "Arbroath", "Auda", "Bala Town", "Banga", "Barry Town", "Belshina", "BKMA Yerevan", "Breidablik", "Caernarfon Town", "Cholet", "Colwyn Bay", "Connah's Quay", "Dainava", "Daugavpils", "Derry City", "Diddeleng", "Differdange 03", "Drita", "Drogheda United", "Dundalk", "Epinal", "Eversley", "Fola Esch", "Gagra", "Galway United", "Gomel", "Harju", "Haverfordwest", "Klaksvik", "Kuressaare", "La Fiorita", "Larne", "Liepaja", "Lincoln Red Imps", "Linfield", "Loughgall", "Martigues", "Milsami Orhei", "Newry City", "Newtown", "Noah", "Penybont", "Petrocub Hîncesti", "Pontypridd United", "Prishtina", "RFS", "Riga FC", "Rouen", "Samsunspor", "Shamrock Rovers", "Shirak", "Shukura", "Sligo Rovers", "St Joseph's", "St Patricks Athletic", "Struga", "Tammeka", "The New Saints", "Trans Narva", "Tre Penne", "Urartu", "Valur Reykjavik", "Vaprus", "Villefranche", "Waterford", "Zimbru Chisinau","Sheffield Wednesday","Sunderland","Ajaccio","Pau FC","Alcorcon","Ternana","Hansa Rostock","Belouizdad","ASEC Mimosas","Kaizer Chiefs","Orlando Pirates","Jamshedpur FC","Kerala Blasters","Central Coast Mariners","Wellington Phoenix","Montreal Impact","Austin FC","APOEL Nicosie","Maccabi Haïfa","Ferencváros"]
+    faible: [ 
+    "Ajaccio", "Alanyaspor", "Almeria", "Annecy", "Antalyaspor", "Ascoli", "Auda", "Avellino", "Bari", "Benevento", "Brescia", "Bristol City", "Burton Albion", "Cagliari", "Catanzaro", "Cesena", "Châteauroux", "Cittadella", "Como", "Concarneau", "Cosenza", "Cremonese", "Crotone", "Darmstadt", "Dunkerque", "Eibar", "Elche", "Exeter City", "Frosinone", "Girona", "Granada", "Grenoble", "Heidenheim", "Hermannstadt", "Kaiserslautern", "Laval", "Le Mans", "Leganés", "Levante", "Leyton Orient", "Luzern", "Malaga", "Millwall", "Modena", "Nancy", "Niort", "Nîmes", "Orléans", "Oxford United", "Paderborn 07", "Palermo", "Paris FC", "Pau FC", "Peterborough", "Pisa", "Plymouth Argyle", "Preston North End", "Quevilly-Rouen", "Rodez", "Rotherham United", "Sochaux", "Spezia", "Tenerife", "Troyes", "Valenciennes", "Verona", "Vicenza", "Wycombe", "Zaragoza"
+
+,"Ajaccio", "Alanyaspor", "Almeria", "Annecy", "Antalyaspor", "Ascoli", "Auda", "Avellino", "Bari", "Benevento", "Brescia", "Bristol City", "Burton Albion", "Cagliari", "Catanzaro", "Cesena", "Châteauroux", "Cittadella", "Como", "Concarneau", "Cosenza", "Cremonese", "Crotone", "Darmstadt", "Dunkerque", "Eibar", "Elche", "Exeter City", "Frosinone", "Girona", "Granada", "Grenoble", "Heidenheim", "Hermannstadt", "Kaiserslautern", "Laval", "Le Mans", "Leganés", "Levante", "Leyton Orient", "Luzern", "Malaga", "Millwall", "Modena", "Nancy", "Niort", "Nîmes", "Orléans", "Oxford United", "Paderborn 07", "Palermo", "Paris FC", "Pau FC", "Peterborough", "Pisa", "Plymouth Argyle", "Preston North End", "Quevilly-Rouen", "Rodez", "Rotherham United", "Sochaux", "Spezia", "Tenerife", "Troyes", "Valenciennes", "Verona", "Vicenza", "Wycombe", "Zaragoza","Burnley","Leeds","Leicester","Lorient","Metz","Auxerre","Grenade","Cadix","Valladolid","Salernitana","Cagliari","Vérone","Schalke 04","Hertha Berlin","Vitesse Arnhem","KV Mechelen","Aberdeen","Hearts","Panathinaikos","AEK Athènes","Maribor","Sheriff Tiraspol","HJK Helsinki","Flora Tallinn","Velez Sarsfield","Talleres","Universidad de Chile","Millonarios","Portland Timbers","New England Revolution","Gamba Osaka","Sanfrecce Hiroshima","Johor DT","Al-Duhail","Al-Sadd","Al-Shabab","AEK Athens", "AIK", "Amiens", "Angers", "Austria Vienne", "Barnsley", "Bastia", "BATE Borisov", "Blackburn Rovers", "Blackpool", "Boavista", "Bolton Wanderers", "Bordeaux", "Brøndby", "Caen", "Cardiff City", "CFR Cluj", "Charlton Athletic", "Crvena Zvezda", "Derby County", "Dinamo Bucarest", "Dinamo Zagreb", "Djurgården", "Espanyol", "FCSB", "Genoa", "Guingamp", "Hajduk Split", "Hamburger SV", "HJK Helsinki", "Hull City", "Ipswich Town", "Leeds United", "Legia Warsaw", "Leicester", "Lorient", "Middlesbrough", "Molde", "Norwich City", "Olympiacos", "Panathinaikos", "PAOK", "Parma", "Portsmouth", "Queens Park Rangers", "Rapid Vienne", "Reading", "Rosenborg", "Sampdoria", "Schalke 04", "Sheffield Wednesday", "Sheriff Tiraspol", "Slavia Prague", "Slovan Bratislava", "Southampton", "Sparta Prague", "Standard de Liège", "Stoke City", "Sunderland", "Swansea City", "Vålerenga", "Venezia", "Vitoria Guimarães", "Watford", "West Bromwich", "Wigan Athletic", "Young Boys", "Zurich"],
+    plusFaible: [   
+    "Aberystwyth Town", "Aksu", "Alashkert", "Algeciras", "Amorebieta", "Andorra FC", "Antequera", "Arbroath", "Auda", "Bala Town", "Banga", "Barry Town", "Belshina", "BKMA Yerevan", "Breidablik", "Caernarfon Town", "Cholet", "Colwyn Bay", "Connah's Quay", "Dainava", "Daugavpils", "Derry City", "Diddeleng", "Differdange 03", "Drita", "Drogheda United", "Dundalk", "Epinal", "Eversley", "Fola Esch", "Gagra", "Galway United", "Gomel", "Harju", "Haverfordwest", "Klaksvik", "Kuressaare", "La Fiorita", "Larne", "Liepaja", "Lincoln Red Imps", "Linfield", "Loughgall", "Martigues", "Milsami Orhei", "Newry City", "Newtown", "Noah", "Penybont", "Petrocub Hîncesti", "Pontypridd United", "Prishtina", "RFS", "Riga FC", "Rouen", "Samsunspor", "Shamrock Rovers", "Shirak", "Shukura", "Sligo Rovers", "St Joseph's", "St Patricks Athletic", "Struga", "Tammeka", "The New Saints", "Trans Narva", "Tre Penne", "Urartu", "Valur Reykjavik", "Vaprus", "Villefranche", "Waterford", "Zimbru Chisinau"
+, "Aberystwyth Town", "Aksu", "Alashkert", "Algeciras", "Amorebieta", "Andorra FC", "Antequera", "Arbroath", "Auda", "Bala Town", "Banga", "Barry Town", "Belshina", "BKMA Yerevan", "Breidablik", "Caernarfon Town", "Cholet", "Colwyn Bay", "Connah's Quay", "Dainava", "Daugavpils", "Derry City", "Diddeleng", "Differdange 03", "Drita", "Drogheda United", "Dundalk", "Epinal", "Eversley", "Fola Esch", "Gagra", "Galway United", "Gomel", "Harju", "Haverfordwest", "Klaksvik", "Kuressaare", "La Fiorita", "Larne", "Liepaja", "Lincoln Red Imps", "Linfield", "Loughgall", "Martigues", "Milsami Orhei", "Newry City", "Newtown", "Noah", "Penybont", "Petrocub Hîncesti", "Pontypridd United", "Prishtina", "RFS", "Riga FC", "Rouen", "Samsunspor", "Shamrock Rovers", "Shirak", "Shukura", "Sligo Rovers", "St Joseph's", "St Patricks Athletic", "Struga", "Tammeka", "The New Saints", "Trans Narva", "Tre Penne", "Urartu", "Valur Reykjavik", "Vaprus", "Villefranche", "Waterford", "Zimbru Chisinau","Sheffield Wednesday","Sunderland","Ajaccio","Pau FC","Alcorcon","Ternana","Hansa Rostock","Belouizdad","ASEC Mimosas","Kaizer Chiefs","Orlando Pirates","Jamshedpur FC","Kerala Blasters","Central Coast Mariners","Wellington Phoenix","Montreal Impact","Austin FC","APOEL Nicosie","Maccabi Haïfa","Ferencváros"]
 };
 const EXTRA_AFRICAN = ["AS Vita Club","DCMP","Maniema Union","Saint-Éloi Lupopo","Lubumbashi Sport","Dauphins Noirs","Don Bosco","Moghreb Tétouan","USM Alger","JS Kabylie","Petro Luanda","Real de Banjul","ASC Jaraaf","Enyimba","Asante Kotoko","Orlando Pirates","Kaizer Chiefs","Simba SC","Young Africans","Zamalek"];
 const ALL_TEAMS = [...new Set([...CLUB_DATABASE.elite, ...CLUB_DATABASE.fort, ...CLUB_DATABASE.moyen, ...CLUB_DATABASE.faible, ...CLUB_DATABASE.plusFaible, ...EXTRA_AFRICAN])].sort();
@@ -207,7 +213,15 @@ function getScoresForMarket(market) {
     return map[market] || ["1-1","2-1","1-2","2-0"];
 }
 
+// Stockage des prédictions par match
+let matchPredictionCache = {};
+
 function generatePrediction(teamH, teamA) {
+    const cacheKey = `${teamH}|${teamA}`;
+    if (matchPredictionCache[cacheKey]) {
+        return JSON.parse(JSON.stringify(matchPredictionCache[cacheKey]));
+    }
+    
     const levelH = getTeamLevel(teamH);
     const levelA = getTeamLevel(teamA);
     const diff = levelH.strength - levelA.strength;
@@ -236,7 +250,9 @@ function generatePrediction(teamH, teamA) {
     const [h,a] = scoreFinal.split('-').map(Number);
     const ht_h = Math.floor(h/2) + (Math.random()>0.7?1:0);
     const ht_a = Math.floor(a/2) + (Math.random()>0.7?1:0);
-    return { scoreFinal, market, miTemps: `${ht_h}-${ht_a}`, niveauH: levelH.level, niveauA: levelA.level };
+    const result = { scoreFinal, market, miTemps: `${ht_h}-${ht_a}`, niveauH: levelH.level, niveauA: levelA.level };
+    matchPredictionCache[cacheKey] = JSON.parse(JSON.stringify(result));
+    return result;
 }
 
 // ======================= BASE DE DONNÉES =======================
@@ -249,7 +265,6 @@ let selectedTicketIndex = null;
 function saveDB() { localStorage.setItem('wise03_db', JSON.stringify(db)); }
 function updateUser() { const idx = db.findIndex(u=>u.email===currentUser.email); if(idx!==-1) { db[idx]=currentUser; saveDB(); } }
 
-// Fonction pour effacer le ticket actuel
 function clearCurrentTicket() {
     if (currentTicket.length > 0) {
         if (confirm("Voulez-vous vraiment effacer tous les matchs du coupon ?")) {
@@ -260,7 +275,6 @@ function clearCurrentTicket() {
     }
 }
 
-// Fonction pour supprimer un ticket enregistré
 function deleteSavedTicket(index) {
     if (confirm("Voulez-vous vraiment supprimer ce ticket ?")) {
         currentUser.tickets.splice(index, 1);
@@ -348,17 +362,50 @@ function renderProfile() {
     const pic = document.getElementById('profile-pic-container');
     pic.innerHTML = currentUser.profileImage ? `<img src="${currentUser.profileImage}" class="profile-pic">` : `<div class="profile-pic" style="background:var(--border); display:flex; align-items:center; justify-content:center;">📷</div>`;
     let badge = currentUser.isPremium ? '<span class="status-badge" style="background:var(--pink);">💎 PREMIUM</span>' : (currentUser.isVerified ? '<span class="status-badge" style="background:var(--green);">✅ VÉRIFIÉ</span>' : '<span class="status-badge" style="background:var(--muted);">⏳ NON ACTIVÉ</span>');
-    if(currentUser.premiumExpiry) badge += `<br><small>Jusqu'au ${new Date(currentUser.premiumExpiry).toLocaleDateString()}</small>`;
+    
+    // Afficher le nombre de jours restants pour le premium
+    let daysLeftHtml = '';
+    if(currentUser.isPremium && currentUser.premiumExpiry) {
+        const expiryDate = new Date(currentUser.premiumExpiry);
+        const today = new Date();
+        const diffTime = expiryDate - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        if(diffDays > 0) {
+            daysLeftHtml = `<div class="days-left">⏰ Premium valide encore ${diffDays} jour(s)</div>`;
+        } else {
+            daysLeftHtml = `<div class="days-left" style="background:var(--danger);">⚠️ Premium expiré</div>`;
+        }
+    }
+    
     document.getElementById('prof-badge').innerHTML = badge;
+    document.getElementById('premium-expiry-info').innerHTML = daysLeftHtml;
 }
 function handleProfileUpload(input) { if(input.files[0]) { const fr = new FileReader(); fr.onload = e => { currentUser.profileImage = e.target.result; updateUser(); renderProfile(); alert("Photo mise à jour"); }; fr.readAsDataURL(input.files[0]); } }
+
 function runAnalysis() {
     const h = document.getElementById('team-h').value.trim();
     const a = document.getElementById('team-a').value.trim();
-    if(!isValidTeam(h)) { document.getElementById('ana-error').innerText = `"${h}" non reconnue.`; return; }
-    if(!isValidTeam(a)) { document.getElementById('ana-error').innerText = `"${a}" non reconnue.`; return; }
-    if(!currentUser.isVerified) { document.getElementById('ana-error').innerText = "Compte non activé."; return; }
-    if(!canAnalyzeMatch(h,a)) { document.getElementById('ana-error').innerText = "❌ Match déjà analysé dans les 48h."; return; }
+    
+    // Vérifier si au moins un des deux clubs est dans la base de données
+    const isHValid = isValidTeam(h);
+    const isAValid = isValidTeam(a);
+    
+    if(!isHValid && !isAValid) {
+        document.getElementById('ana-error').innerHTML = `❌ "${h}" et "${a}" ne sont pas reconnus. Au moins une équipe doit être dans notre base de données.`;
+        return;
+    }
+    if(!isHValid && isAValid) {
+        document.getElementById('ana-error').innerHTML = `❌ "${h}" n'est pas reconnu. Wise03.bet faitde son pour réglé ça"${a}" qui est dans notre base. Veuillez entrer un adversaire valide.`;
+        return;
+    }
+    if(isHValid && !isAValid) {
+        document.getElementById('ana-error').innerHTML = `❌ "${a}" n'est pas reconnu. pas de score exact pris en compte "${h}" qui est dans notre base. Veuillez entrer un adversaire valide.`;
+        return;
+    }
+    
+    if(!currentUser.isVerified) { document.getElementById('ana-error').innerHTML = "Compte non activé."; return; }
+    if(!canAnalyzeMatch(h,a)) { document.getElementById('ana-error').innerHTML = "❌ Match déjà analysé dans les 48h."; return; }
+    
     document.getElementById('ana-loader').style.display='inline-block';
     document.getElementById('btn-ana').disabled=true;
     setTimeout(()=>{
@@ -373,7 +420,7 @@ function runAnalysis() {
         document.getElementById('result-box').style.display='block';
         document.getElementById('ana-loader').style.display='none';
         document.getElementById('btn-ana').disabled=false;
-        document.getElementById('ana-error').innerText = '';
+        document.getElementById('ana-error').innerHTML = '';
     }, 800);
 }
 function addToTicket() { if(tempMatch) { currentTicket.push({...tempMatch}); renderCurrentTicket(); document.getElementById('result-box').style.display='none'; } }
@@ -416,10 +463,17 @@ function deleteThisTicket() {
 function duplicateSavedTicket() {
     if(selectedTicketIndex===null) return;
     const orig = currentUser.tickets[selectedTicketIndex];
-    const newMatches = orig.matches.map(m=>{ const gen = generatePrediction(m.h, m.a); return {h:m.h, a:m.a, market:gen.market, score:gen.scoreFinal, ht:gen.miTemps}; });
+    // Le nombre de matchs pour le doublon varie entre 3 et 5
+    const matchCount = Math.floor(Math.random() * 3) + 3; // 3, 4 ou 5
+    const newMatches = [];
+    for(let i = 0; i < matchCount && i < orig.matches.length; i++) {
+        const m = orig.matches[i];
+        const gen = generatePrediction(m.h, m.a);
+        newMatches.push({h:m.h, a:m.a, market:gen.market, score:gen.scoreFinal, ht:gen.miTemps});
+    }
     currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:newMatches});
     updateUser();
-    alert("Ticket doublé !");
+    alert(`Ticket doublé avec ${newMatches.length} match(s) !`);
     backToTicketsList();
 }
 function createGourmandFromTicket() {
@@ -456,4 +510,4 @@ function askZola() { const inp=document.getElementById('assistant-input'); if(!i
 function logout(){ location.reload(); }
 </script>
 </body>
-                    </html>
+    </html>
