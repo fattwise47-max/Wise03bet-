@@ -52,6 +52,8 @@
         .ticket-header { display: flex; justify-content: space-between; align-items: center; }
         .clear-ticket-btn { background: var(--danger); color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 11px; margin-left: 10px; }
         .days-left { background: var(--gold); color: black; padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-top: 8px; display: inline-block; }
+        .expiry-card { background: linear-gradient(135deg, #1e293b, #0f172a); border-radius: 16px; padding: 12px; margin-top: 10px; text-align: center; }
+        .expiry-days { font-size: 24px; font-weight: 900; color: var(--gold); }
     </style>
 </head>
 <body>
@@ -190,23 +192,8 @@ const ALL_TEAMS = [
     "TP Mazembe", "AS Vita Club", "FC Saint-Éloi Lupopo", "Maniema Union", "DC Motema Pembe", "FC Lubumbashi Sport", "Don Bosco", "Sanga Balende", "JS Bazano", "Blessing Lualaba",
     "Al Ahly", "Zamalek", "Pyramids FC", "Al Masry", "Modern Future", "Raja Casablanca", "Wydad AC", "AS FAR", "RS Berkane", "FUS Rabat",
     "Espérance de Tunis", "Étoile du Sahel", "Club Africain", "CS Sfaxien", "Stade Tunisien", "Mamelodi Sundowns", "Orlando Pirates", "Kaizer Chiefs", "SuperSport United", "Cape Town City",
-    "Simba SC", "Young Africans", "Azam FC", "Gor Mahia", "Tusker FC", "ZESCO United", "Red Arrows", "Petro Luanda", "Sagrada Esperança", "Primeiro de Agosto",
-    "JS Kabylie", "CR Belouizdad", "USM Alger", "MC Alger", "ES Sétif", "CS Constantine", "ASEC Mimosas", "FC San Pedro", "Enyimba", "Remo Stars",
-    "Hearts of Oak", "Asante Kotoko", "Al-Hilal Omdurman", "Al-Merrikh", "Horoya AC", "Hafia FC", "Djiba AC", "Nouadhibou", "Coton Sport", "Union Douala",
-    "Palmeiras", "Flamengo", "Botafogo", "Atlético Mineiro", "Fluminense", "São Paulo", "Grêmio", "Internacional", "Corinthians", "Athletico Paranaense",
-    "River Plate", "Boca Juniors", "Racing Club", "Independiente", "San Lorenzo", "Estudiantes", "Talleres", "Peñarol", "Nacional", "Libertad",
-    "Cerro Porteño", "Olimpia", "Colo-Colo", "Universidad de Chile", "Universidad Católica", "LDU Quito", "Independiente del Valle", "Barcelona SC", "Emelec", "Millonarios",
-    "Atlético Nacional", "Junior FC", "América de Cali", "Santa Fe", "Inter Miami", "Columbus Crew", "LAFC", "LA Galaxy", "Seattle Sounders", "FC Cincinnati",
-    "Club América", "Tigres UANL", "Monterrey", "Chivas Guadalajara", "Cruz Azul", "Pachuca", "León", "Saprissa", "Alajuelense", "Herediano",
-    "Al-Hilal", "Al-Nassr", "Al-Ittihad", "Al-Ahli (KSA)", "Al-Shabab", "Al-Ettifaq", "Al-Sadd", "Al-Duhail", "Al-Rayyan", "Al-Ain",
-    "Ulsan Hyundai", "Jeonbuk Motors", "Pohang Steelers", "Vissel Kobe", "Yokohama F. Marinos", "Kawasaki Frontale", "Urawa Red Diamonds", "Shanghai Port", "Shandong Taishan", "Johor Darul Ta'zim",
-    "Celtic", "Rangers", "Hearts", "Kilmarnock", "Salzburg", "Sturm Graz", "LASK", "Rapid Wien", "Young Boys", "Servette",
-    "Sparta Prague", "Slavia Prague", "Viktoria Plzen", "Dinamo Zagreb", "Hajduk Split", "AEK Athens", "PAOK", "Olympiakos", "Panathinaikos", "Copenhagen",
-    "Galatasaray", "Fenerbahçe", "Beşiktaş", "Trabzonspor", "Shakhtar Donetsk", "Dynamo Kyiv", "Steaua Bucuresti", "CFR Cluj", "Ferencváros", "Legia Warsaw",
-    "Leicester City", "Ipswich Town", "Leeds United", "Southampton", "West Brom", "Norwich City", "Middlesbrough", "Coventry City", "Preston North End", "Blackburn Rovers",
-    "Espanyol", "Valladolid", "Leganés", "Sporting Gijón", "Elche", "Levante", "Parma", "Como", "Venezia", "Sampdoria",
-    "Auxerre", "Angers", "Saint-Étienne", "Paris FC", "Rodez", "Hamburger SV", "Hertha Berlin", "St. Pauli", "Fortuna Düsseldorf", "Schalke 04"
-];
+    "Simba SC", "Young Africans", "Azam FC", "Gor Mahia", "Tusker FC", "ZESCO United", "Red Arrows", "Petro Luanda", "Sagrada Esperança", "Primeiro de Agosto"
+"Leicester City", "Leeds United", "Southampton", "Ipswich Town", "West Bromwich Albion", "Norwich City", "Hull City", "Coventry City", "Middlesbrough", "Cardiff City", "Preston North End", "Bristol City", "Sunderland", "Swansea City", "Watford", "Millwall", "Blackburn Rovers", "Plymouth Argyle", "Huddersfield Town", "Sheffield Wednesday", "Birmingham City", "Portsmouth", "Derby County", "Bolton Wanderers", "Peterborough United", "Barnsley", "Oxford United", "Lincoln City", "Leganés", "Real Valladolid", "Eibar", "Espanyol", "Real Oviedo", "Racing Santander", "Elche", "Levante", "Sporting Gijón", "Burgos CF", "Racing Ferrol", "Tenerife", "Eldense", "Huesca", "Real Zaragoza", "Mirandés", "Parma", "Como", "Venezia", "Cremonese", "Catanzaro", "Palermo", "Sampdoria", "Brescia", "Südtirol", "Reggiana", "Pisa", "Cittadella", "Modena", "Bari", "Cosenza", "Spezia", "Ternana", "Ascoli", "St. Pauli", "Holstein Kiel", "Fortuna Düsseldorf", "Hamburger SV", "Karlsruher SC", "Hannover 96", "Paderborn 07", "Greuther Fürth", "Hertha BSC", "Schalke 04", "Elversberg", "Nuremberg", "Kaiserslautern", "Magdeburg", "Braunschweig", "Hansa Rostock", "Auxerre", "Angers", "Saint-Étienne", "Rodez", "Paris FC", "Caen", "Laval", "Guingamp", "Pau FC", "Amiens", "Grenoble", "Ajaccio", "Bordeaux", "Bastia", "Annecy", "Dunkerque", "Troyes", "Quevilly-Rouen", "Concarneau", "Valenciennes", "Anderlecht", "Club Brugge", "Union SG", "Genk", "Gent", "Royal Antwerp", "Cercle Brugge", "Celtic Glasgow", "Rangers FC", "Hearts", "Aberdeen", "Galatasaray", "Fenerbahçe", "Beşiktaş", "Trabzonspor", "Olympiakos", "Panathinaikos", "PAOK Salonique", "AEK Athènes", "BSC Young Boys", "Servette FC", "FC Lugano", "FC Bâle", "FC Zurich", "Red Bull Salzburg", "Sturm Graz", "LASK", "Rapid Wien", "FC Copenhagen", "Midtjylland", "Brøndby", "Nordsjælland", "AS Dauphin Noir", "FC Simba Kamaze", "US Panda B52", "AC Kuya Sport", "Étoile de Kivu", "FC Les Aigles du Congo", "OC Renaissance du Congo", "Celeste FC", "MC Alger", "CR Belouizdad", "CS Constantine", "USM Alger", "ES Sétif", "JS Kabylie", "Paradou AC", "Al-Ahly Tripoli", "Al-Ittihad Tripoli", "Al-Nasr Benghazi", "ASC Diaraf", "Teungueth FC", "Casa Sports", "Génération Foot", "ASEC Mimosas", "San Pédro", "AFAD Djékanou", "SC Gagnoa", "Enyimba FC", "Remo Stars", "Rivers United", "Kano Pillars", "Rangers International", "Asante Kotoko", "Hearts of Oak", "Medeama SC", "Aduana Stars", "Stade Malien", "Djoliba AC", "Real Bamako", "Horoya AC", "Hafia FC", "AS Kaloum", "Coton Sport de Garoua", "Canon Yaoundé", "Union Douala", "Bamboutos FC", "AS Mangasport", "CMS Libreville", "Saint George SA", "Ethiopian Coffee", "Al-Hilal Omdurman", "Al-Merrikh", "Vipers SC", "KCCA FC", "Villa SC", "Bravos do Maquis", "Académica do Lobito", "Kabwe Warriors", "Power Dynamos", "Nkana FC", "Dynamos FC", "Highlanders FC", "Jwaneng Galaxy", "Township Rollers", "Palmeiras", "Flamengo", "Grêmio", "Atlético Mineiro", "Botafogo", "RB Bragantino", "Fluminense", "Athletico Paranaense", "Internacional", "Fortaleza", "São Paulo", "Cuiabá", "Corinthians", "Cruzeiro", "Vasco da Gama", "Bahia", "Vitória", "Juventude", "River Plate", "Boca Juniors", "Racing Club", "Independiente", "San Lorenzo", "Estudiantes La Plata", "Talleres", "Defensa y Justicia", "Lanús", "Newell’s Old Boys", "Rosario Central", "Vélez Sarsfield", "Argentinos Juniors", "Atletico Nacional", "Millonarios", "Junior FC", "Independiente Medellín", "Colo-Colo", "Universidad de Chile", "Universidad Católica", "Peñarol", "Nacional", "Defensor Sporting", "Club América", "Tigres UANL", "Monterrey", "Chivas Guadalajara", "Cruz Azul", "Inter Miami", "Columbus Crew", "LAFC", "LA Galaxy", "Seattle Sounders", "New York City FC", "Atlanta United", "Al-Hilal", "Al-Nassr", "Al-Ittihad", "Al-Ahli", "Al-Ettifaq", "Al-Shabab", "Al-Ain", "Al-Wasl", "Al-Sadd", "Al-Duhail", "Al-Rayyan", "Shanghai Port", "Shandong Taishan", "Yokohama F. Marinos", "Vissel Kobe", "Kawasaki Frontale", "Urawa Reds", "Ulsan HD", "Jeonbuk Hyundai Motors", "FC Seoul", "Stade Rennais", "Montpellier HSC", "Lorient", "Standard de Liège", "Sporting Charleroi", "KV Mechelen", "KVC Westerlo", "Kortrijk", "Eupen", "FC Emmen", "Vitesse Arnhem", "Heracles Almelo", "PEC Zwolle", "Excelsior Rotterdam", "RKC Waalwijk", "Alanyaspor", "Antalyaspor", "Gaziantep FK", "Hatayspor", "Kasımpaşa", "Konyaspor", "Sivasspor", "Ankaragücü", "Rizespor", "Samsunspor", "Pendikspor", "Fatih Karagümrük", "Aris Salonique", "Asteras Tripolis", "OFI Crète", "Lamia", "Volos", "Kifisia", "Panetolikos", "PAS Giannina", "FC Winterthur", "FC St. Gallen", "Yverdon Sport", "Lausanne-Sport", "Grasshopper Zurich", "Stade Lausanne Ouchy", "Austria Wien", "Wolfsberger AC", "Hartberg", "Austria Klagenfurt", "Blau-Weiß Linz", "WSG Tirol", "Austria Lustenau", "Silkeborg IF", "Viborg FF", "Randers FC", "Odense Boldklub", "Vejle Boldklub", "Hvidovre IF", "Molde FK", "Bodø/Glimt", "Rosenborg BK", "Brann", "Viking FK", "Lillestrøm", "Tromsø IL", "Malmö FF", "IFK Göteborg", "AIK Solna", "Djurgårdens IF", "Hammarby IF", "BK Häcken", "IF Elfsborg", "Sparta Prague", "Slavia Prague", "Viktoria Plzeň", "FK Jablonec", "Baník Ostrava", "Mladá Boleslav", "Slovan Bratislava", "Spartak Trnava", "MŠK Žilina", "Dunajská Streda", "Ferencváros", "Fehérvár FC", "Puskás Akadémia", "Debrecen", "Legia Varsovie", "Lech Poznań", "Raków Częstochowa", "Pogoń Szczecin", "Śląsk Wrocław", "Widzew Łódź", "Dinamo Zagreb", "Hajduk Split", "Rijeka", "NK Osijek", "Lokomotiva Zagreb", "Steaua Bucarest", "CFR Cluj", "Universitatea Craiova", "Rapid Bucarest", "Farul Constanța", "Sepsi OSK", "Ludogorets Razgrad", "CSKA Sofia", "Levski Sofia", "Lokomotiv Plovdiv", "Cherno More", "Sheriff Tiraspol", "Qarabağ FK", "Neftçi Bakou", "Sabah FK", "Astana FC", "Kairat Almaty", "Ordabasy", "Pyunik Erevan", "Urartu FC", "Ararat-Armenia", "Dinamo Tbilissi", "Torpedo Koutaïssi", "Dinamo Batoumi", "HJK Helsinki", "KuPS Kuopio", "SJK Seinäjoki", "Flora Tallinn", "Levadia Tallinn", "Riga FC", "RFS Riga", "FK Panevėžys", "Žalgiris Vilnius", "Partizan Belgrade", "Étoile Rouge Belgrade", "TSC Bačka Topola", "Čukarički", "Vojvodina Novi Sad", "Maribor", "Olimpija Ljubljana", "Celje", "Zrinjski Mostar", "FK Sarajevo", "Željezničar", "Borac Banja Luka", "Shakhtar Donetsk", "Dynamo Kiev", "Dnipro-1", "Zorya Louhansk", "Kryvbas", "Maccabi Tel-Aviv", "Maccabi Haïfa", "Hapoël Beer-Sheva", "Beitar Jérusalem", "Hapoël Tel-Aviv", "APOEL Nicosie", "AEK Larnaca", "Omonia Nicosie", "Aris Limassol", "Apollon Limassol", "Paphos FC", "Shamrock Rovers", "Derry City", "St Patrick's Athletic", "Dundalk FC", "The New Saints", "Connah's Quay", "Linfield FC", "Glentoran", "Larne FC", "Cliftonville", "USM Khenchela", "MC El Bayadh", "JS Saoura", "ASO Chlef", "NC Magra", "ES Ben Aknoun", "WA Tlemcen", "JSM Béjaïa", "MO Béjaïa", "CS Hammam-Lif", "CA Bizertin", "US Monastir", "AS Soliman", "Olympique de Béja", "US Tataouine", "Ben Guerdane", "Gafsa", "RSB Berkane", "Moghreb Tétouan", "Union Touarga", "Olympic Safi", "Chabab Mohammédia", "Ittihad Tanger", "Maghreb Fès", "Jeunesse Soualem", "Youssoufia Berrechid", "Mouloudia Oujda", "Al-Ahly Benghazi", "Al-Nasr", "Al-Hilal Benghazi", "Al-Akhdar", "Olympic Azzaweya", "Tusker FC", "Bandari FC", "Ulinzi Stars", "Kakamega Homeboyz", "Kenya Police", "Kigali FC", "APR FC", "Rayon Sports", "Mukura Victory", "AS Arta/Solar7", "FC Nouadhibou", "AS Douanes", "Teungueth FC", "Jaraaf", "US Gorée", "Stade de Mbour", "Guédiawaye FC", "Dakar Sacré-Cœur", "Milo FC", "SOAR", "ASM Sangarédi", "Fello Star", "Bo Rangers", "East End Lions", "Mighty Blackpool", "LPRC Oilers", "Watanga FC", "Mighty Barrolle", "LISCR FC", "FC Kallon", "Ports Authority", "Stade d'Abidjan", "Stella Club d'Adjamé", "SOA", "Racing Club d'Abidjan", "LYS Sassandra", "CO Korhogo", "Medeama", "Bechem United", "Berekum Chelsea", "Bibiani Gold Stars", "Dreams FC", "Nsoatreman", "Great Olympics", "Bendel Insurance", "Lobi Stars", "Sporting Lagos", "Abia Warriors", "Sunshine Stars", "Akwa United", "Kwara United", "Plateau United", "Doma United", "Heartland FC", "Ifeanyi Ubah", "Stade Malien", "Djoliba", "Onze Créateurs", "USC Kita", "Afrique Football Élite", "Binga FC", "AS Real", "Coton Sport", "Canon Yaoundé", "Les Astres FC", "PWD Bamenda", "Young Sports Academy", "Fovu Baham", "Avion Academy", "Stade Renard", "UMS de Loum", "Union Douala", "Gazelle FA", "Colombe du Dja", "AS Fortuna", "Eding Sport", "Victoria United", "Aigle Royal", "Dragon Yaoundé", "Tonnerre Yaoundé", "Mount Cameroon FC", "Tiko United", "Panthère du Ndé", "Unisport Bafang", "New Star de Douala", "Apejes de Mfou", "Feutcheu FC", "Renaissance de Ngoumou", "Sable de Batié", "Kumbo Strikers", "Racing de Bafoussam"];
 
 function getTeamLevel(team) {
     const elite = ["Manchester City","Real Madrid","Bayern Munich","Paris Saint-Germain","Inter Milan","Liverpool","Arsenal","FC Barcelone","Bayer Leverkusen"];
@@ -218,7 +205,7 @@ function getTeamLevel(team) {
 }
 function isValidTeam(team) { return ALL_TEAMS.includes(team); }
 
-const MARKETS_PRO = ["1","2","X","1MT Domicile gagne","1MT Extérieur gagne","1MT Nul","Over 1.5","Over 2.5","Under 2","Les deux équipes marquent YES","Les deux équipes marquent NO"];
+const MARKETS_PRO = ["1","2","X","Over 1.5","Over 2.5","Under 2","Les deux équipes marquent YES","Les deux équipes marquent NO"];
 
 function getScoresForMarket(market) {
     const map = {"1":["1-0","2-1","2-0","3-1"],"2":["0-1","1-2","0-2","1-3"],"X":["0-0","1-1","2-2"],"Over 1.5":["2-0","1-1","2-1"],"Over 2.5":["3-0","2-2","3-1"],"Under 2":["0-0","1-0","0-1"],"Les deux équipes marquent YES":["1-1","2-1","1-2"],"Les deux équipes marquent NO":["1-0","2-0","3-0"]};
@@ -357,6 +344,15 @@ function checkVerificationStatus() {
     const hint = document.getElementById('activation-hint-profile');
     if(hint) hint.style.display = currentUser.isVerified ? 'none' : 'block';
 }
+
+function getDaysRemaining() {
+    if(!currentUser.premiumExpiry) return null;
+    const expiryDate = new Date(currentUser.premiumExpiry);
+    const today = new Date();
+    const diffTime = expiryDate - today;
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+}
+
 function renderProfile() {
     document.getElementById('prof-name').innerText = currentUser.name;
     document.getElementById('prof-email').innerText = currentUser.email;
@@ -367,15 +363,14 @@ function renderProfile() {
     
     let daysLeftHtml = '';
     if(currentUser.isPremium && currentUser.premiumExpiry) {
-        const expiryDate = new Date(currentUser.premiumExpiry);
-        const today = new Date();
-        const diffTime = expiryDate - today;
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        if(diffDays > 0) {
-            daysLeftHtml = `<div class="days-left">⏰ Premium valide encore ${diffDays} jour(s)</div>`;
+        const daysRemaining = getDaysRemaining();
+        if(daysRemaining !== null && daysRemaining > 0) {
+            daysLeftHtml = `<div class="expiry-card"><div style="font-size:12px; color:var(--muted);">⏰ Jours restants avant expiration</div><div class="expiry-days">${daysRemaining} jour${daysRemaining > 1 ? 's' : ''}</div><div style="font-size:10px; color:var(--gold);">Valable jusqu'au ${new Date(currentUser.premiumExpiry).toLocaleDateString()}</div></div>`;
         } else {
-            daysLeftHtml = `<div class="days-left" style="background:var(--danger);">⚠️ Premium expiré</div>`;
+            daysLeftHtml = `<div class="expiry-card" style="background:linear-gradient(135deg,#7f1a1a,#0f172a);"><div style="color:var(--danger);">⚠️ Premium expiré</div><div style="font-size:10px;">Contactez l'admin pour renouveler</div></div>`;
         }
+    } else if(currentUser.isVerified) {
+        daysLeftHtml = `<div class="expiry-card" style="background:#1e293b;"><div style="color:var(--muted);">📋 Compte vérifié</div><div style="font-size:10px;">Activez le Premium pour plus de fonctionnalités</div></div>`;
     }
     
     document.getElementById('prof-badge').innerHTML = badge;
@@ -390,17 +385,22 @@ function runAnalysis() {
     const isHValid = isValidTeam(h);
     const isAValid = isValidTeam(a);
     
+    // Cas 1: Les deux ne sont pas valides
     if(!isHValid && !isAValid) {
         document.getElementById('ana-error').innerHTML = `❌ "${h}" et "${a}" ne sont pas reconnus. Veuillez entrer des équipes valides.`;
         return;
     }
-    if(!isHValid) {
-        document.getElementById('ana-error').innerHTML = `❌ "${h}" n'est pas reconnu. L'avantage va à "${a}".`;
-        return;
-    }
-    if(!isAValid) {
-        document.getElementById('ana-error').innerHTML = `❌ "${a}" n'est pas reconnu. L'avantage va à "${h}".`;
-        return;
+    
+    // Cas 2: Un seul est valide - on analyse mais sans donner 1,2,X
+    let useRestrictedMarkets = false;
+    if((isHValid && !isAValid) || (!isHValid && isAValid)) {
+        useRestrictedMarkets = true;
+        const validTeam = isHValid ? h : a;
+        const invalidTeam = !isHValid ? h : a;
+        document.getElementById('ana-error').innerHTML = `⚠️ "${invalidTeam}" n'est pas reconnu. Analyse limitée (pas de pari 1,2,X). Avantage à "${validTeam}".`;
+        setTimeout(() => { document.getElementById('ana-error').innerHTML = ''; }, 3000);
+    } else {
+        document.getElementById('ana-error').innerHTML = '';
     }
     
     if(!currentUser.isVerified) { document.getElementById('ana-error').innerHTML = "Compte non activé."; return; }
@@ -409,7 +409,29 @@ function runAnalysis() {
     document.getElementById('ana-loader').style.display='inline-block';
     document.getElementById('btn-ana').disabled=true;
     setTimeout(()=>{
-        const pred = generatePrediction(h,a);
+        let pred;
+        if(useRestrictedMarkets) {
+            // Analyse restreinte: pas de 1,2,X
+            const levelH = getTeamLevel(h);
+            const levelA = getTeamLevel(a);
+            const allowedMarkets = MARKETS_PRO.filter(m => !['1','2','X'].includes(m));
+            const randomMarket = allowedMarkets[Math.floor(Math.random() * allowedMarkets.length)];
+            const scores = getScoresForMarket(randomMarket);
+            const scoreFinal = scores[Math.floor(Math.random() * scores.length)];
+            const [hGoal, aGoal] = scoreFinal.split('-').map(Number);
+            const ht_h = Math.floor(hGoal/2);
+            const ht_a = Math.floor(aGoal/2);
+            pred = { 
+                scoreFinal, 
+                market: randomMarket, 
+                miTemps: `${ht_h}-${ht_a}`, 
+                niveauH: levelH.level, 
+                niveauA: levelA.level 
+            };
+            matchPredictionCache[`${h}|${a}`] = JSON.parse(JSON.stringify(pred));
+        } else {
+            pred = generatePrediction(h,a);
+        }
         tempMatch = { h, a, market: pred.market, score: pred.scoreFinal, ht: pred.miTemps, niveauH: pred.niveauH, niveauA: pred.niveauA };
         document.getElementById('res-h').innerHTML = `${h}<div class="team-strength">${pred.niveauH}</div>`;
         document.getElementById('res-a').innerHTML = `${a}<div class="team-strength">${pred.niveauA}</div>`;
@@ -420,7 +442,6 @@ function runAnalysis() {
         document.getElementById('result-box').style.display='block';
         document.getElementById('ana-loader').style.display='none';
         document.getElementById('btn-ana').disabled=false;
-        document.getElementById('ana-error').innerHTML = '';
     }, 800);
 }
 function addToTicket() { if(tempMatch) { currentTicket.push({...tempMatch}); renderCurrentTicket(); document.getElementById('result-box').style.display='none'; } }
