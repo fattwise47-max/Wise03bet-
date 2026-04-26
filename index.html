@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -1190,37 +1189,52 @@ function validateActivationCode() {
         return;
     }
 
-    // Analyser le code
-    const count3 = (code.match(/3/g) || []).length;
+    // Compter les occurrences
     const count0 = (code.match(/0/g) || []).length;
+    const count2 = (code.match(/2/g) || []).length;
+    const count3 = (code.match(/3/g) || []).length;
 
-    if (count3 === 3) {
-        // Code standard → activation 30 jours
+    // RÈGLE 1 : 3 fois le chiffre 3 ET 2 fois le chiffre 0 → Compte vérifié (sans abonnement)
+    if (count3 === 3 && count0 === 2) {
         currentUser.isVerified = true;
         currentUser.isPremium = false;
-        const exp = new Date();
-        exp.setDate(exp.getDate() + 30);
-        currentUser.premiumExpiry = exp.toISOString();
+        currentUser.premiumExpiry = null;
         currentUser.activationDate = new Date().toISOString();
-        currentUser.subscriptionType = "STANDARD (30 jours)";
+        currentUser.subscriptionType = "🔓 COMPTE VÉRIFIÉ";
         usedCodes.push(code);
         saveUsedCodes();
-        showCodeStatus("✅ Compte activé pour 30 jours !", true);
-        showToast("🎉 Compte activé ! 30 jours d'accès");
-    } else if (count0 === 2 && count3 === 1) {
-        // Code premium → activation 7 jours premium
+        showCodeStatus("✅ Compte vérifié ! Accès aux analyses.", true);
+        showToast("🎉 Compte vérifié avec succès !");
+    }
+    // RÈGLE 2 : 1 fois le chiffre 3 ET 0 fois le chiffre 0 → Abonnement 7 JOURS
+    else if (count3 === 1 && count0 === 0) {
         currentUser.isVerified = true;
         currentUser.isPremium = true;
         const exp = new Date();
         exp.setDate(exp.getDate() + 7);
         currentUser.premiumExpiry = exp.toISOString();
         currentUser.activationDate = new Date().toISOString();
-        currentUser.subscriptionType = "💎 PREMIUM (7 jours)";
+        currentUser.subscriptionType = "⭐ ABONNEMENT 7 JOURS";
         usedCodes.push(code);
         saveUsedCodes();
-        showCodeStatus("💎 Premium activé pour 7 jours !", true);
-        showToast("🎉 Mode Premium 7 jours activé !");
-    } else {
+        showCodeStatus("⭐ Abonnement 7 jours activé !", true);
+        showToast("🎉 Abonnement 7 jours activé !");
+    }
+    // RÈGLE 3 : 2 fois le chiffre 3 ET 2 fois le chiffre 0 ET 2 fois le chiffre 2 → Abonnement 30 JOURS
+    else if (count3 === 2 && count0 === 2 && count2 === 2) {
+        currentUser.isVerified = true;
+        currentUser.isPremium = true;
+        const exp = new Date();
+        exp.setDate(exp.getDate() + 30);
+        currentUser.premiumExpiry = exp.toISOString();
+        currentUser.activationDate = new Date().toISOString();
+        currentUser.subscriptionType = "📅 ABONNEMENT 30 JOURS";
+        usedCodes.push(code);
+        saveUsedCodes();
+        showCodeStatus("📅 Abonnement 30 jours activé !", true);
+        showToast("🎉 Abonnement 30 jours activé !");
+    }
+    else {
         showCodeStatus("❌ Code invalide. Contactez l'admin WhatsApp.", false);
         showToast("Code invalide", true);
         return;
@@ -1829,4 +1843,4 @@ function logout() {
 }
 </script>
 </body>
-</html>
+                </html>
