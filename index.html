@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -19,7 +20,6 @@
             touch-action: pan-y pinch-zoom;
         }
 
-        /* VARIABLES */
         :root {
             --bg: #020617;
             --card: #0f172a;
@@ -52,7 +52,7 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
             transition: transform 0.2s, box-shadow 0.2s;
         }
-        
+
         .card:hover {
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
         }
@@ -68,7 +68,7 @@
             font-size: 13px;
             transition: border 0.2s, box-shadow 0.2s;
         }
-        
+
         input:focus, select:focus {
             outline: none;
             border-color: var(--primary);
@@ -88,11 +88,8 @@
             justify-content: center;
             gap: 6px;
         }
-        
-        .btn:active {
-            transform: scale(0.97);
-        }
 
+        .btn:active { transform: scale(0.97); }
         .btn-primary { background: linear-gradient(135deg, var(--primary), #1d4ed8); color: white; flex: 1; }
         .btn-success { background: var(--green); color: #000; flex: 1; }
         .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); flex: 1; }
@@ -154,7 +151,7 @@
             gap: 6px;
             flex-direction: column;
         }
-        
+
         .team-strength {
             font-size: 9px;
             background: rgba(255,255,255,0.1);
@@ -181,9 +178,7 @@
             animation: spin 1s linear infinite;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .status-badge {
             font-size: 10px;
@@ -292,8 +287,7 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-        
-        /* Custom Toast / Alert UI (élégant sans alert box native) */
+
         .custom-toast {
             position: fixed;
             bottom: 20px;
@@ -310,23 +304,16 @@
             box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5);
             z-index: 3000;
             animation: fadeUp 0.3s ease;
-            white-space: nowrap;
             max-width: 90%;
             white-space: normal;
             text-align: center;
         }
-        
+
         @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translate(-50%, 20px);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, 0);
-            }
+            from { opacity: 0; transform: translate(-50%, 20px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
         }
-        
+
         .btn-assistant {
             position: fixed;
             bottom: 20px;
@@ -342,11 +329,9 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             transition: transform 0.2s;
         }
-        
-        .btn-assistant:active {
-            transform: scale(0.95);
-        }
-        
+
+        .btn-assistant:active { transform: scale(0.95); }
+
         .status-message {
             background: rgba(0,0,0,0.8);
             border-radius: 12px;
@@ -354,7 +339,7 @@
             text-align: center;
             font-size: 12px;
         }
-        
+
         .back-btn {
             background: var(--border);
             padding: 8px 15px;
@@ -366,15 +351,63 @@
             margin-bottom: 15px;
             transition: background 0.2s;
         }
-        .back-btn:active {
-            background: #334155;
+        .back-btn:active { background: #334155; }
+
+        .markets-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-top: 10px;
         }
-        
-        .team-strength-badge {
+        .market-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 6px 8px;
+            font-size: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .market-val-yes { color: var(--green); font-weight: 700; }
+        .market-val-no { color: var(--danger); font-weight: 700; }
+
+        .countdown-timer {
+            background: linear-gradient(135deg, #065f46, #064e3b);
+            border: 1px solid #10b981;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .countdown-timer.expired {
+            background: linear-gradient(135deg, #7f1d1d, #991b1b);
+            border-color: var(--danger);
+        }
+        .countdown-value {
+            font-size: 28px;
+            font-weight: 900;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 2px;
+        }
+        .countdown-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+        .entity-badge {
             font-size: 9px;
-            background: #1e293b;
-            border-radius: 12px;
             padding: 2px 6px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 2px;
+        }
+        .entity-club { background: #1e3a5f; color: #60a5fa; }
+        .entity-national { background: #3b1f1f; color: #fca5a5; }
+
+        .incompatibility-alert {
+            background: linear-gradient(135deg, #7f1d1d, #991b1b);
+            border: 1px solid var(--danger);
+            border-radius: 16px;
+            padding: 15px;
+            margin-top: 10px;
+            text-align: center;
         }
     </style>
 </head>
@@ -386,23 +419,31 @@
 </div>
 
 <div class="app-shell" id="appShell" style="display: none;">
-    <header style="text-align:center; padding:20px 0;"><h1 style="color:var(--primary);">WISE03<span style="color:white;">.BET</span></h1></header>
+    <header style="text-align:center; padding:20px 0;">
+        <h1 style="color:var(--primary);">WISE03<span style="color:white;">.BET</span></h1>
+        <p style="font-size:11px; color:var(--muted);">IA Sportive Pro v3.0 — 23 Marchés</p>
+    </header>
 
+    <!-- AUTH SCREEN -->
     <section id="auth-screen">
         <div class="card">
-            <h3 style="text-align:center;">Connexion</h3>
+            <h3 style="text-align:center;">🔐 Connexion</h3>
             <input type="email" id="login-email" placeholder="Email">
             <input type="password" id="login-pass" placeholder="Mot de passe">
             <div id="login-error" style="color:var(--danger); font-size:12px;"></div>
             <button class="btn btn-primary btn-full" onclick="loginUser()">SE CONNECTER</button>
             <button class="btn btn-ghost btn-full" style="margin-top:10px;" onclick="toggleAuth(true)">Créer un compte</button>
-            <div class="admin-contact"><span>📞 Admin WhatsApp: </span><a href="https://wa.me/243983971254" target="_blank">+243 983 971 254</a></div>
+            <div class="admin-contact">
+                <span>📞 Admin WhatsApp: </span>
+                <a href="https://wa.me/243983971254" target="_blank" style="color:var(--gold);">+243 983 971 254</a>
+            </div>
         </div>
     </section>
 
+    <!-- REGISTER SCREEN -->
     <section id="register-screen" style="display:none;">
         <div class="card">
-            <h3 style="text-align:center;">Inscription</h3>
+            <h3 style="text-align:center;">📝 Inscription</h3>
             <input type="text" id="reg-name" placeholder="Nom complet">
             <input type="email" id="reg-email" placeholder="Email">
             <div id="email-error" style="color:var(--danger); font-size:12px;"></div>
@@ -410,54 +451,89 @@
             <input type="password" id="reg-pass" placeholder="Mot de passe (min 4)">
             <button class="btn btn-primary btn-full" onclick="registerUser()">S'INSCRIRE</button>
             <button class="btn btn-ghost btn-full" style="margin-top:10px;" onclick="toggleAuth(false)">Retour</button>
-            <div class="admin-contact"><span>📞 Admin WhatsApp: </span><a href="https://wa.me/243983971254" target="_blank">+243 983 971 254</a></div>
+            <div class="admin-contact">
+                <span>📞 Admin WhatsApp: </span>
+                <a href="https://wa.me/243983971254" target="_blank" style="color:var(--gold);">+243 983 971 254</a>
+            </div>
         </div>
     </section>
 
+    <!-- DASHBOARD -->
     <section id="dashboard" style="display:none;">
         <div class="nav-bar">
-            <div class="nav-item active" onclick="switchView('predict')">ANALYSE</div>
-            <div class="nav-item" onclick="switchView('tickets')">TICKETS</div>
-            <div class="nav-item" onclick="switchView('profile')">PROFIL</div>
+            <div class="nav-item active" onclick="switchView('predict')">⚽ ANALYSE</div>
+            <div class="nav-item" onclick="switchView('tickets')">🎫 TICKETS</div>
+            <div class="nav-item" onclick="switchView('profile')">👤 PROFIL</div>
         </div>
 
+        <!-- PREDICT VIEW -->
         <div id="view-predict">
             <div id="verify-alert" class="card" style="display:none; border-color:var(--warning);">
-                <p style="font-size:12px; color:var(--warning); text-align:center;">⚠️ Compte en attente d'activation. Contactez l'admin WhatsApp pour votre code 15 chiffres.</p>
+                <p style="font-size:12px; color:var(--warning); text-align:center;">
+                    ⚠️ Compte en attente d'activation.<br>Contactez l'admin WhatsApp pour votre code 15 chiffres.
+                </p>
             </div>
             <div id="predict-main" style="display:none;">
                 <div class="card">
                     <label>🏠 Équipe Domicile</label>
-                    <input type="text" id="team-h" placeholder="Chercher..." list="teams-list" autocomplete="off">
+                    <input type="text" id="team-h" placeholder="Chercher une équipe..." list="teams-list" autocomplete="off">
+                    <div id="entity-info-h" style="font-size:10px; color:var(--muted); margin-top:-8px; margin-bottom:8px;"></div>
                     <label>✈️ Équipe Extérieur</label>
-                    <input type="text" id="team-a" placeholder="Chercher..." list="teams-list" autocomplete="off">
+                    <input type="text" id="team-a" placeholder="Chercher une équipe..." list="teams-list" autocomplete="off">
+                    <div id="entity-info-a" style="font-size:10px; color:var(--muted); margin-top:-8px; margin-bottom:8px;"></div>
                     <datalist id="teams-list"></datalist>
                     <div id="ana-error" style="color:var(--danger); font-size:11px;"></div>
-                    <button class="btn btn-primary btn-full" onclick="runAnalysis()" id="btn-ana"><span>ANALYSER LE MATCH</span><div class="loader" id="ana-loader"></div></button>
+                    <div id="incompatibility-alert" style="display:none;"></div>
+                    <button class="btn btn-primary btn-full" onclick="runAnalysis()" id="btn-ana">
+                        <span>🔍 ANALYSER LE MATCH</span>
+                        <div class="loader" id="ana-loader"></div>
+                    </button>
                 </div>
+
                 <div id="result-box" style="display:none;">
                     <div class="card" style="border:2px solid var(--cyan);">
-                        <div class="vs-container"><div class="team-name" id="res-h"></div><div>VS</div><div class="team-name" id="res-a"></div></div>
+                        <div class="vs-container">
+                            <div class="team-name" id="res-h"></div>
+                            <div style="font-weight:900; color:var(--cyan);">VS</div>
+                            <div class="team-name" id="res-a"></div>
+                        </div>
                         <div id="res-market" class="analysis-res">---</div>
-                        <div id="res-ht" style="text-align:center; font-size:13px;"></div>
-                        <div id="res-score-exact" class="premium-score" style="display:none;"><small>SCORE PRÉDIT</small><div style="font-size:28px;" id="res-score">?-?</div></div>
-                        <button class="btn btn-ghost btn-full" onclick="addToTicket()">+ AJOUTER AU COUPON</button>
+                        <div id="res-ht" style="text-align:center; font-size:13px; color:var(--muted);"></div>
+                        <div id="res-score-exact" class="premium-score" style="display:none;">
+                            <small>SCORE PRÉDIT</small>
+                            <div style="font-size:28px;" id="res-score">?-?</div>
+                        </div>
+                        <div id="markets-display" style="display:none;">
+                            <div style="font-size:11px; font-weight:700; color:var(--cyan); margin:10px 0 5px;">📊 23 MARCHÉS</div>
+                            <div class="markets-grid" id="markets-grid"></div>
+                        </div>
+                        <button class="btn btn-ghost btn-full" style="margin-top:10px;" onclick="addToTicket()">+ AJOUTER AU COUPON</button>
                     </div>
                 </div>
+
                 <div id="current-ticket" class="card" style="display:none; border-color:var(--green);">
                     <div class="ticket-header">
-                        <h4>Coupon Actuel (<span id="ticket-count">0</span>)</h4>
-                        <button class="clear-ticket-btn" onclick="clearCurrentTicket()">🗑️ EFFACER TOUT</button>
+                        <h4>🎫 Coupon Actuel (<span id="ticket-count">0</span>)</h4>
+                        <button class="clear-ticket-btn" onclick="clearCurrentTicket()">🗑️ EFFACER</button>
                     </div>
                     <div id="ticket-list"></div>
-                    <button class="btn btn-success btn-full" onclick="saveTicket()">ENREGISTRER LE TICKET</button>
+                    <button class="btn btn-success btn-full" onclick="saveTicket()">💾 ENREGISTRER LE TICKET</button>
                 </div>
             </div>
         </div>
 
-        <div id="view-tickets" style="display:none;"><div id="tickets-list-view"></div></div>
-        <div id="view-ticket-detail" style="display:none;"><div class="back-btn" onclick="backToTicketsList()">← Retour</div><div id="ticket-detail-content"></div></div>
+        <!-- TICKETS VIEW -->
+        <div id="view-tickets" style="display:none;">
+            <div id="tickets-list-view"></div>
+        </div>
 
+        <!-- TICKET DETAIL VIEW -->
+        <div id="view-ticket-detail" style="display:none;">
+            <div class="back-btn" onclick="backToTicketsList()">← Retour</div>
+            <div id="ticket-detail-content"></div>
+        </div>
+
+        <!-- PROFILE VIEW -->
         <div id="view-profile" style="display:none;">
             <div class="card" style="text-align:center;">
                 <div id="profile-pic-container"></div>
@@ -466,64 +542,71 @@
                 <p id="prof-whatsapp" style="font-size:12px;"></p>
                 <div id="prof-badge"></div>
                 <div id="premium-expiry-info"></div>
-                <hr>
+                <div id="countdown-display"></div>
+                <hr style="border-color:var(--border); margin:15px 0;">
                 <button class="btn btn-primary btn-full" onclick="document.getElementById('profile-file').click()">📸 PHOTO DE PROFIL</button>
                 <input type="file" id="profile-file" style="display:none;" accept="image/*" onchange="handleProfileUpload(this)">
-                <div class="activation-hint" id="activation-hint-profile" style="display:none;">⚠️ Code d'activation 15 chiffres : contactez l'admin WhatsApp +243983971254</div>
+                <div class="activation-hint" id="activation-hint-profile" style="display:none;">
+                    ⚠️ Code d'activation 15 chiffres : contactez l'admin WhatsApp<br>
+                    <a href="https://wa.me/243983971254" style="color:var(--gold);">+243 983 971 254</a>
+                </div>
                 <div style="margin-top:15px;">
                     <input type="text" id="activation-code-input" placeholder="Code 15 chiffres" maxlength="15">
-                    <button class="btn btn-warning btn-full" onclick="validateActivationCode()">VALIDER LE CODE</button>
+                    <button class="btn btn-warning btn-full" onclick="validateActivationCode()">🔓 VALIDER LE CODE</button>
                     <div id="code-status"></div>
                 </div>
-                <div class="admin-contact" style="margin-top:15px;"><span>📞 Admin WhatsApp: </span><a href="https://wa.me/243983971254" target="_blank">+243 983 971 254</a></div>
-                <button class="btn btn-danger btn-full" style="margin-top:20px;" onclick="logout()">DÉCONNEXION</button>
+                <div class="admin-contact" style="margin-top:15px;">
+                    <span>📞 Admin WhatsApp: </span>
+                    <a href="https://wa.me/243983971254" target="_blank" style="color:var(--gold);">+243 983 971 254</a>
+                </div>
+                <button class="btn btn-danger btn-full" style="margin-top:20px;" onclick="logout()">🚪 DÉCONNEXION</button>
             </div>
         </div>
     </section>
 
+    <!-- ASSISTANT ZOLA -->
     <div id="assistant-chat" style="position:fixed; bottom:80px; right:20px; width:300px; background:var(--card); border:1px solid var(--border); border-radius:16px; display:none; flex-direction:column; z-index:999;">
-        <div class="assistant-header" style="background:linear-gradient(135deg,var(--gold),var(--warning)); padding:12px; border-radius:16px 16px 0 0; display:flex; justify-content:space-between; cursor:pointer;" onclick="toggleAssistant()"><span>🤖 Zola</span><span>▼</span></div>
-        <div class="assistant-messages" id="assistant-messages" style="padding:10px; max-height:300px; overflow-y:auto; font-size:12px;"><div class="assistant-bubble" style="background:var(--border); margin:5px 0; padding:8px; border-radius:12px;">👋 Doublez vos tickets avec l'option gourmande !</div></div>
-        <div class="assistant-input" style="display:flex; padding:10px; gap:5px;"><input type="text" id="assistant-input" style="flex:1; margin:0; padding:8px;" placeholder="Question..."><button class="btn btn-primary" onclick="askZola()" style="padding:8px;">➤</button></div>
+        <div class="assistant-header" style="background:linear-gradient(135deg,var(--gold),var(--warning)); padding:12px; border-radius:16px 16px 0 0; display:flex; justify-content:space-between; cursor:pointer;" onclick="toggleAssistant()">
+            <span>🤖 Zola — Assistant IA</span><span>▼</span>
+        </div>
+        <div class="assistant-messages" id="assistant-messages" style="padding:10px; max-height:300px; overflow-y:auto; font-size:12px;">
+            <div style="background:var(--border); margin:5px 0; padding:8px; border-radius:12px;">
+                👋 Bonjour ! Je suis Zola. Posez-moi vos questions sur les matchs, marchés, ou stratégies !
+            </div>
+        </div>
+        <div style="display:flex; padding:10px; gap:5px;">
+            <input type="text" id="assistant-input" style="flex:1; margin:0; padding:8px;" placeholder="Votre question..." onkeypress="if(event.key==='Enter')askZola()">
+            <button class="btn btn-primary" onclick="askZola()" style="padding:8px;">➤</button>
+        </div>
     </div>
     <button class="btn-assistant" onclick="toggleAssistant()">🤖 Zola</button>
 </div>
 
 <script>
-// ----- SPLASH SCREEN PARFAITEMENT FONCTIONNEL -----
+// ============================================================
+// SPLASH SCREEN
+// ============================================================
 (function() {
     const splash = document.getElementById('splashScreen');
     const appShell = document.getElementById('appShell');
-    if (splash && appShell) {
-        // Attendre que tout le contenu soit chargé
-        window.addEventListener('load', function() {
-            // Minimum 1.2 secondes pour un affichage correct
-            setTimeout(function() {
-                splash.style.transition = 'opacity 0.5s ease';
-                splash.style.opacity = '0';
-                setTimeout(function() {
-                    splash.style.display = 'none';
-                    appShell.style.display = 'block';
-                }, 500);
-            }, 1200);
-        });
-        // Fallback au cas où load ne se déclencherait pas rapidement
-        setTimeout(function() {
-            if (splash.style.display !== 'none') {
-                splash.style.opacity = '0';
-                setTimeout(function() {
-                    splash.style.display = 'none';
-                    if(appShell) appShell.style.display = 'block';
-                }, 400);
-            }
-        }, 2500);
+    function hideSplash() {
+        splash.style.transition = 'opacity 0.5s ease';
+        splash.style.opacity = '0';
+        setTimeout(() => {
+            splash.style.display = 'none';
+            appShell.style.display = 'block';
+        }, 500);
     }
+    window.addEventListener('load', () => setTimeout(hideSplash, 1200));
+    setTimeout(hideSplash, 2500);
 })();
 
-// ======================= NOTIFICATION TOAST ÉLÉGANTE (remplace alert)
+// ============================================================
+// TOAST NOTIFICATION
+// ============================================================
 function showToast(message, isError = false) {
-    const existingToast = document.querySelector('.custom-toast');
-    if(existingToast) existingToast.remove();
+    const existing = document.querySelector('.custom-toast');
+    if (existing) existing.remove();
     const toast = document.createElement('div');
     toast.className = 'custom-toast';
     toast.style.borderLeftColor = isError ? '#ef4444' : '#22c55e';
@@ -535,131 +618,723 @@ function showToast(message, isError = false) {
     }, 2800);
 }
 
-// ======================= CLASSIFICATION DES CLUBS (version complète)
-const teamTiers = {
-    elite: ["Argentine", "France", "Brésil", "Angleterre", "Espagne", "Portugal", "Allemagne", "PaysBas","Manchester City","Real Madrid","Bayern Munich","Paris Saint-Germain","Inter Milan","Liverpool","Arsenal","FC Barcelone","Bayer Leverkusen","Borussia Dortmund","RB Leipzig","Atlético Madrid"],
-    fort: ["Italie", "Belgique", "Uruguay", "Croatie", "Maroc", "Sénégal", "Colombie", "Japon", "Suisse", "Danemark", "États-Unis","Aston Villa","Tottenham","Chelsea","Manchester United","Newcastle","Juventus","AC Milan","AS Roma","Atalanta","Napoli","Sevilla","Villarreal","Real Sociedad","Athletic Bilbao","West Ham","Brighton","Marseille","Lyon","Benfica","Porto","Sporting CP","PSV Eindhoven","Feyenoord"],
-    moyen: ["Mexique", "Nigeria", "Corée du Sud", "Égypte", "Côte d'Ivoire", "Algérie", "Équateur", "Cameroun", "Iran", "Tunisie", "Pologne", "Serbie", "Autriche", "Turquie", "Ukraine", "Chili", "Suède", "Norvège", "Hongrie","Fulham","Wolves","Brentford","Everton","Nottingham Forest","Bournemouth","Crystal Palace","Valencia","Betis","Osasuna","Getafe","Lazio","Fiorentina","Bologna","Monza","Genoa","Lille","Nice","Monaco","Rennes","Strasbourg","Ajax","Twente","Braga","Celtic","Rangers","Galatasaray","Fenerbahçe","TP Mazembe","Al Ahly","Wydad","Espérance Tunis"],
-    faible: ["RD Congo", "Arabie Saoudite", "Ghana", "Canada", "Costa Rica", "Australie", "Panama", "Mali", "Pérou", "Afrique du Sud", "Nouvelle-Zélande", "Qatar", "Paraguay", "Venezuela", "Bolivie", "Irak", "Ouzbékistan", "Émirats Arabes Unis", "Jordanie", "Honduras", "Jamaïque", "Burkina Faso", "Guinée", "Gabon", "Zambie", "Angola","Sheffield United","Burnley","Luton Town","Cádiz","Granada","Almería","Salernitana","Frosinone","Empoli","Le Havre","Clermont","Metz","Nantes","Congo's AS Vita Club","Saint-Éloi Lupopo","Maniema Union","Zamalek","Raja Casablanca","Orlando Pirates","Kaizer Chiefs","Young Africans","Simba SC","Leicester City", "Leeds United", "Southampton", "Ipswich Town", "West Bromwich Albion", "Norwich City", "Hull City", "Coventry City", "Middlesbrough", "Cardiff City", "Preston North End", "Bristol City", "Sunderland", "Swansea City", "Watford", "Millwall", "Blackburn Rovers", "Plymouth Argyle", "Huddersfield Town", "Sheffield Wednesday", "Birmingham City", "Portsmouth", "Derby County", "Bolton Wanderers", "Peterborough United", "Barnsley", "Oxford United", "Lincoln City", "Leganés", "Real Valladolid", "Eibar", "Espanyol", "Real Oviedo", "Racing Santander", "Elche", "Levante", "Sporting Gijón", "Burgos CF", "Racing Ferrol", "Tenerife", "Eldense", "Huesca", "Real Zaragoza", "Mirandés", "Parma", "Como", "Venezia", "Cremonese", "Catanzaro", "Palermo", "Sampdoria", "Brescia", "Südtirol", "Reggiana", "Pisa", "Cittadella", "Modena", "Bari", "Cosenza", "Spezia", "Ternana", "Ascoli", "St. Pauli", "Holstein Kiel", "Fortuna Düsseldorf", "Hamburger SV", "Karlsruher SC", "Hannover 96", "Paderborn 07", "Greuther Fürth", "Hertha BSC", "Schalke 04", "Elversberg", "Nuremberg", "Kaiserslautern", "Magdeburg", "Braunschweig", "Hansa Rostock", "Auxerre", "Angers", "Saint-Étienne", "Rodez", "Paris FC", "Caen", "Laval", "Guingamp", "Pau FC", "Amiens", "Grenoble", "Ajaccio", "Bordeaux", "Bastia", "Annecy", "Dunkerque", "Troyes", "Quevilly-Rouen", "Concarneau", "Valenciennes", "Anderlecht", "Club Brugge", "Union SG", "Genk", "Gent", "Royal Antwerp", "Cercle Brugge", "Celtic Glasgow", "Rangers FC", "Hearts", "Aberdeen", "Galatasaray", "Fenerbahçe", "Beşiktaş", "Trabzonspor", "Olympiakos", "Panathinaikos", "PAOK Salonique", "AEK Athènes", "BSC Young Boys", "Servette FC", "FC Lugano", "FC Bâle", "FC Zurich", "Red Bull Salzburg", "Sturm Graz", "LASK", "Rapid Wien", "FC Copenhagen", "Midtjylland", "Brøndby", "Nordsjælland", "AS Dauphin Noir", "FC Simba Kamaze", "US Panda B52", "AC Kuya Sport", "Étoile de Kivu", "FC Les Aigles du Congo", "OC Renaissance du Congo", "Celeste FC", "MC Alger", "CR Belouizdad", "Al-Ahly Tripoli", "ASC Diaraf", "Teungueth FC", "ASEC Mimosas", "Enyimba FC", "Asante Kotoko", "Stade Malien", "Horoya AC", "Coton Sport"],
-    tresFaible: ["Don Bosco","JS Bazano","Blessing Lualaba","Sanga Balende","AS Dauphin Noir","FC Simba Kamaze","US Panda B52","OC Renaissance","Stade Malien","Djoliba","Kano Pillars","Enyimba","Horoya","Coton Sport","ASEC Mimosas","Dynamos","Highlanders","Township Rollers","FC Nouadhibou","Teungueth FC","Milo FC","LPRC Oilers","Watanga FC"]
+// ============================================================
+// BASE DE DONNÉES COMPLÈTE DES ÉQUIPES
+// Chaque entrée: { name, type: "club"|"national", country, competition, tier, strength, attack, defense, homeBonus }
+// ============================================================
+const TEAM_DB = {
+    // ============ SÉLECTIONS NATIONALES ============
+    "Argentine":       { type:"national", country:"Argentine", competition:"CONMEBOL / FIFA", tier:"elite", strength:95, attack:92, defense:90, homeBonus:0.40 },
+    "France":          { type:"national", country:"France", competition:"UEFA / FIFA", tier:"elite", strength:94, attack:91, defense:89, homeBonus:0.38 },
+    "Brésil":          { type:"national", country:"Brésil", competition:"CONMEBOL / FIFA", tier:"elite", strength:93, attack:93, defense:86, homeBonus:0.42 },
+    "Angleterre":      { type:"national", country:"Angleterre", competition:"UEFA / FIFA", tier:"elite", strength:92, attack:90, defense:88, homeBonus:0.35 },
+    "Espagne":         { type:"national", country:"Espagne", competition:"UEFA / FIFA", tier:"elite", strength:92, attack:90, defense:88, homeBonus:0.36 },
+    "Portugal":        { type:"national", country:"Portugal", competition:"UEFA / FIFA", tier:"elite", strength:91, attack:89, defense:87, homeBonus:0.34 },
+    "Allemagne":       { type:"national", country:"Allemagne", competition:"UEFA / FIFA", tier:"elite", strength:91, attack:88, defense:88, homeBonus:0.37 },
+    "Pays-Bas":        { type:"national", country:"Pays-Bas", competition:"UEFA / FIFA", tier:"elite", strength:90, attack:88, defense:86, homeBonus:0.33 },
+    "Italie":          { type:"national", country:"Italie", competition:"UEFA / FIFA", tier:"fort", strength:87, attack:84, defense:90, homeBonus:0.35 },
+    "Belgique":        { type:"national", country:"Belgique", competition:"UEFA / FIFA", tier:"fort", strength:85, attack:85, defense:82, homeBonus:0.30 },
+    "Uruguay":         { type:"national", country:"Uruguay", competition:"CONMEBOL / FIFA", tier:"fort", strength:84, attack:84, defense:83, homeBonus:0.36 },
+    "Croatie":         { type:"national", country:"Croatie", competition:"UEFA / FIFA", tier:"fort", strength:83, attack:82, defense:84, homeBonus:0.32 },
+    "Maroc":           { type:"national", country:"Maroc", competition:"CAF / FIFA", tier:"fort", strength:82, attack:80, defense:86, homeBonus:0.38 },
+    "Sénégal":         { type:"national", country:"Sénégal", competition:"CAF / FIFA", tier:"fort", strength:80, attack:80, defense:80, homeBonus:0.35 },
+    "Colombie":        { type:"national", country:"Colombie", competition:"CONMEBOL / FIFA", tier:"fort", strength:80, attack:80, defense:78, homeBonus:0.36 },
+    "Japon":           { type:"national", country:"Japon", competition:"AFC / FIFA", tier:"fort", strength:80, attack:79, defense:80, homeBonus:0.32 },
+    "Suisse":          { type:"national", country:"Suisse", competition:"UEFA / FIFA", tier:"fort", strength:79, attack:76, defense:82, homeBonus:0.30 },
+    "Danemark":        { type:"national", country:"Danemark", competition:"UEFA / FIFA", tier:"fort", strength:79, attack:78, defense:80, homeBonus:0.30 },
+    "États-Unis":      { type:"national", country:"États-Unis", competition:"CONCACAF / FIFA", tier:"fort", strength:78, attack:78, defense:76, homeBonus:0.28 },
+    "Mexique":         { type:"national", country:"Mexique", competition:"CONCACAF / FIFA", tier:"moyen", strength:75, attack:74, defense:74, homeBonus:0.32 },
+    "Nigeria":         { type:"national", country:"Nigeria", competition:"CAF / FIFA", tier:"moyen", strength:74, attack:75, defense:72, homeBonus:0.35 },
+    "Corée du Sud":    { type:"national", country:"Corée du Sud", competition:"AFC / FIFA", tier:"moyen", strength:74, attack:73, defense:74, homeBonus:0.30 },
+    "Égypte":          { type:"national", country:"Égypte", competition:"CAF / FIFA", tier:"moyen", strength:73, attack:74, defense:72, homeBonus:0.35 },
+    "Côte d'Ivoire":   { type:"national", country:"Côte d'Ivoire", competition:"CAF / FIFA", tier:"moyen", strength:73, attack:73, defense:72, homeBonus:0.34 },
+    "Algérie":         { type:"national", country:"Algérie", competition:"CAF / FIFA", tier:"moyen", strength:72, attack:72, defense:72, homeBonus:0.34 },
+    "Équateur":        { type:"national", country:"Équateur", competition:"CONMEBOL / FIFA", tier:"moyen", strength:72, attack:71, defense:72, homeBonus:0.36 },
+    "Cameroun":        { type:"national", country:"Cameroun", competition:"CAF / FIFA", tier:"moyen", strength:71, attack:71, defense:70, homeBonus:0.33 },
+    "Iran":            { type:"national", country:"Iran", competition:"AFC / FIFA", tier:"moyen", strength:71, attack:70, defense:74, homeBonus:0.32 },
+    "Tunisie":         { type:"national", country:"Tunisie", competition:"CAF / FIFA", tier:"moyen", strength:70, attack:69, defense:72, homeBonus:0.33 },
+    "Pologne":         { type:"national", country:"Pologne", competition:"UEFA / FIFA", tier:"moyen", strength:70, attack:70, defense:70, homeBonus:0.28 },
+    "Serbie":          { type:"national", country:"Serbie", competition:"UEFA / FIFA", tier:"moyen", strength:70, attack:72, defense:68, homeBonus:0.28 },
+    "Autriche":        { type:"national", country:"Autriche", competition:"UEFA / FIFA", tier:"moyen", strength:70, attack:70, defense:70, homeBonus:0.28 },
+    "Turquie":         { type:"national", country:"Turquie", competition:"UEFA / FIFA", tier:"moyen", strength:70, attack:71, defense:68, homeBonus:0.30 },
+    "Ukraine":         { type:"national", country:"Ukraine", competition:"UEFA / FIFA", tier:"moyen", strength:69, attack:68, defense:70, homeBonus:0.28 },
+    "Chili":           { type:"national", country:"Chili", competition:"CONMEBOL / FIFA", tier:"moyen", strength:68, attack:68, defense:68, homeBonus:0.32 },
+    "Suède":           { type:"national", country:"Suède", competition:"UEFA / FIFA", tier:"moyen", strength:68, attack:67, defense:70, homeBonus:0.26 },
+    "Norvège":         { type:"national", country:"Norvège", competition:"UEFA / FIFA", tier:"moyen", strength:68, attack:70, defense:66, homeBonus:0.26 },
+    "Hongrie":         { type:"national", country:"Hongrie", competition:"UEFA / FIFA", tier:"moyen", strength:67, attack:66, defense:68, homeBonus:0.28 },
+    "RD Congo":        { type:"national", country:"RD Congo", competition:"CAF / FIFA", tier:"faible", strength:60, attack:60, defense:58, homeBonus:0.32 },
+    "Ghana":           { type:"national", country:"Ghana", competition:"CAF / FIFA", tier:"faible", strength:64, attack:64, defense:62, homeBonus:0.32 },
+    "Australie":       { type:"national", country:"Australie", competition:"AFC / FIFA", tier:"faible", strength:65, attack:64, defense:64, homeBonus:0.28 },
+    "Canada":          { type:"national", country:"Canada", competition:"CONCACAF / FIFA", tier:"faible", strength:64, attack:64, defense:62, homeBonus:0.26 },
+    "Costa Rica":      { type:"national", country:"Costa Rica", competition:"CONCACAF / FIFA", tier:"faible", strength:62, attack:58, defense:66, homeBonus:0.28 },
+    "Panama":          { type:"national", country:"Panama", competition:"CONCACAF / FIFA", tier:"faible", strength:60, attack:58, defense:62, homeBonus:0.26 },
+    "Mali":            { type:"national", country:"Mali", competition:"CAF / FIFA", tier:"faible", strength:62, attack:62, defense:60, homeBonus:0.30 },
+    "Pérou":           { type:"national", country:"Pérou", competition:"CONMEBOL / FIFA", tier:"faible", strength:62, attack:60, defense:62, homeBonus:0.30 },
+    "Afrique du Sud":  { type:"national", country:"Afrique du Sud", competition:"CAF / FIFA", tier:"faible", strength:61, attack:60, defense:62, homeBonus:0.30 },
+    "Nouvelle-Zélande":{ type:"national", country:"Nouvelle-Zélande", competition:"OFC / FIFA", tier:"faible", strength:58, attack:56, defense:58, homeBonus:0.22 },
+    "Qatar":           { type:"national", country:"Qatar", competition:"AFC / FIFA", tier:"faible", strength:60, attack:60, defense:60, homeBonus:0.28 },
+    "Paraguay":        { type:"national", country:"Paraguay", competition:"CONMEBOL / FIFA", tier:"faible", strength:60, attack:58, defense:62, homeBonus:0.30 },
+    "Venezuela":       { type:"national", country:"Venezuela", competition:"CONMEBOL / FIFA", tier:"faible", strength:59, attack:58, defense:60, homeBonus:0.28 },
+    "Arabie Saoudite": { type:"national", country:"Arabie Saoudite", competition:"AFC / FIFA", tier:"faible", strength:62, attack:62, defense:60, homeBonus:0.28 },
+    "Burkina Faso":    { type:"national", country:"Burkina Faso", competition:"CAF / FIFA", tier:"faible", strength:61, attack:60, defense:60, homeBonus:0.30 },
+    "Guinée":          { type:"national", country:"Guinée", competition:"CAF / FIFA", tier:"faible", strength:60, attack:60, defense:58, homeBonus:0.30 },
+    "Gabon":           { type:"national", country:"Gabon", competition:"CAF / FIFA", tier:"faible", strength:58, attack:58, defense:56, homeBonus:0.28 },
+    "Zambie":          { type:"national", country:"Zambie", competition:"CAF / FIFA", tier:"faible", strength:57, attack:56, defense:56, homeBonus:0.28 },
+    "Angola":          { type:"national", country:"Angola", competition:"CAF / FIFA", tier:"faible", strength:57, attack:56, defense:56, homeBonus:0.28 },
+    "Bolivie":         { type:"national", country:"Bolivie", competition:"CONMEBOL / FIFA", tier:"faible", strength:55, attack:54, defense:54, homeBonus:0.35 },
+    "Jamaïque":        { type:"national", country:"Jamaïque", competition:"CONCACAF / FIFA", tier:"faible", strength:56, attack:56, defense:54, homeBonus:0.26 },
+    "Honduras":        { type:"national", country:"Honduras", competition:"CONCACAF / FIFA", tier:"faible", strength:55, attack:54, defense:54, homeBonus:0.26 },
+
+    // ============ CLUBS — PREMIER LEAGUE (ANGLETERRE) ============
+    "Manchester City":    { type:"club", country:"Angleterre", competition:"Premier League", tier:"elite", strength:94, attack:95, defense:90, homeBonus:0.38 },
+    "Arsenal":            { type:"club", country:"Angleterre", competition:"Premier League", tier:"elite", strength:91, attack:90, defense:88, homeBonus:0.36 },
+    "Liverpool":          { type:"club", country:"Angleterre", competition:"Premier League", tier:"elite", strength:91, attack:92, defense:86, homeBonus:0.38 },
+    "Manchester United":  { type:"club", country:"Angleterre", competition:"Premier League", tier:"fort", strength:82, attack:80, defense:78, homeBonus:0.34 },
+    "Chelsea":            { type:"club", country:"Angleterre", competition:"Premier League", tier:"fort", strength:82, attack:81, defense:80, homeBonus:0.32 },
+    "Tottenham":          { type:"club", country:"Angleterre", competition:"Premier League", tier:"fort", strength:80, attack:82, defense:76, homeBonus:0.32 },
+    "Aston Villa":        { type:"club", country:"Angleterre", competition:"Premier League", tier:"fort", strength:80, attack:80, defense:78, homeBonus:0.32 },
+    "Newcastle":          { type:"club", country:"Angleterre", competition:"Premier League", tier:"fort", strength:80, attack:78, defense:80, homeBonus:0.34 },
+    "West Ham":           { type:"club", country:"Angleterre", competition:"Premier League", tier:"moyen", strength:75, attack:74, defense:74, homeBonus:0.30 },
+    "Brighton":           { type:"club", country:"Angleterre", competition:"Premier League", tier:"moyen", strength:75, attack:76, defense:72, homeBonus:0.28 },
+    "Crystal Palace":     { type:"club", country:"Angleterre", competition:"Premier League", tier:"moyen", strength:72, attack:70, defense:72, homeBonus:0.28 },
+    "Wolves":             { type:"club", country:"Angleterre", competition:"Premier League", tier:"moyen", strength:71, attack:70, defense:72, homeBonus:0.28 },
+    "Fulham":             { type:"club", country:"Angleterre", competition:"Premier League", tier:"moyen", strength:71, attack:72, defense:70, homeBonus:0.28 },
+    "Brentford":          { type:"club", country:"Angleterre", competition:"Premier League", tier:"moyen", strength:71, attack:72, defense:68, homeBonus:0.28 },
+    "Everton":            { type:"club", country:"Angleterre", competition:"Premier League", tier:"moyen", strength:70, attack:68, defense:72, homeBonus:0.30 },
+    "Nottingham Forest":  { type:"club", country:"Angleterre", competition:"Premier League", tier:"moyen", strength:70, attack:70, defense:68, homeBonus:0.30 },
+    "Bournemouth":        { type:"club", country:"Angleterre", competition:"Premier League", tier:"moyen", strength:69, attack:70, defense:66, homeBonus:0.26 },
+    "Leicester City":     { type:"club", country:"Angleterre", competition:"Championship", tier:"faible", strength:66, attack:66, defense:64, homeBonus:0.28 },
+    "Leeds United":       { type:"club", country:"Angleterre", competition:"Championship", tier:"faible", strength:65, attack:66, defense:62, homeBonus:0.28 },
+    "Southampton":        { type:"club", country:"Angleterre", competition:"Championship", tier:"faible", strength:64, attack:64, defense:62, homeBonus:0.26 },
+    "Ipswich Town":       { type:"club", country:"Angleterre", competition:"Championship", tier:"faible", strength:62, attack:62, defense:60, homeBonus:0.26 },
+    "Sheffield United":   { type:"club", country:"Angleterre", competition:"Championship", tier:"faible", strength:62, attack:60, defense:62, homeBonus:0.26 },
+    "Burnley":            { type:"club", country:"Angleterre", competition:"Championship", tier:"faible", strength:62, attack:60, defense:62, homeBonus:0.26 },
+    "Luton Town":         { type:"club", country:"Angleterre", competition:"Championship", tier:"faible", strength:60, attack:60, defense:58, homeBonus:0.24 },
+    "West Bromwich Albion":{ type:"club", country:"Angleterre", competition:"Championship", tier:"faible", strength:62, attack:62, defense:60, homeBonus:0.26 },
+    "Norwich City":       { type:"club", country:"Angleterre", competition:"Championship", tier:"faible", strength:61, attack:62, defense:58, homeBonus:0.24 },
+
+    // ============ CLUBS — LALIGA (ESPAGNE) ============
+    "Real Madrid":        { type:"club", country:"Espagne", competition:"LaLiga", tier:"elite", strength:95, attack:94, defense:90, homeBonus:0.40 },
+    "FC Barcelone":       { type:"club", country:"Espagne", competition:"LaLiga", tier:"elite", strength:93, attack:94, defense:86, homeBonus:0.38 },
+    "Atlético Madrid":    { type:"club", country:"Espagne", competition:"LaLiga", tier:"elite", strength:87, attack:84, defense:90, homeBonus:0.38 },
+    "Real Sociedad":      { type:"club", country:"Espagne", competition:"LaLiga", tier:"fort", strength:80, attack:78, defense:80, homeBonus:0.32 },
+    "Villarreal":         { type:"club", country:"Espagne", competition:"LaLiga", tier:"fort", strength:80, attack:80, defense:78, homeBonus:0.30 },
+    "Athletic Bilbao":    { type:"club", country:"Espagne", competition:"LaLiga", tier:"fort", strength:79, attack:78, defense:80, homeBonus:0.34 },
+    "Real Betis":         { type:"club", country:"Espagne", competition:"LaLiga", tier:"fort", strength:78, attack:78, defense:76, homeBonus:0.30 },
+    "Sevilla":            { type:"club", country:"Espagne", competition:"LaLiga", tier:"fort", strength:77, attack:76, defense:78, homeBonus:0.32 },
+    "Valencia":           { type:"club", country:"Espagne", competition:"LaLiga", tier:"moyen", strength:73, attack:72, defense:72, homeBonus:0.30 },
+    "Celta Vigo":         { type:"club", country:"Espagne", competition:"LaLiga", tier:"moyen", strength:71, attack:72, defense:68, homeBonus:0.28 },
+    "Getafe":             { type:"club", country:"Espagne", competition:"LaLiga", tier:"moyen", strength:69, attack:64, defense:74, homeBonus:0.30 },
+    "Espanyol":           { type:"club", country:"Espagne", competition:"LaLiga", tier:"moyen", strength:68, attack:68, defense:68, homeBonus:0.28 },
+    "Mallorca":           { type:"club", country:"Espagne", competition:"LaLiga", tier:"moyen", strength:69, attack:66, defense:72, homeBonus:0.30 },
+    "Osasuna":            { type:"club", country:"Espagne", competition:"LaLiga", tier:"moyen", strength:70, attack:68, defense:72, homeBonus:0.32 },
+    "Deportivo Alavés":   { type:"club", country:"Espagne", competition:"LaLiga", tier:"moyen", strength:67, attack:66, defense:68, homeBonus:0.28 },
+    "Girona":             { type:"club", country:"Espagne", competition:"LaLiga", tier:"moyen", strength:76, attack:78, defense:72, homeBonus:0.28 },
+    "Rayo Vallecano":     { type:"club", country:"Espagne", competition:"LaLiga", tier:"moyen", strength:69, attack:68, defense:70, homeBonus:0.28 },
+    "Las Palmas":         { type:"club", country:"Espagne", competition:"LaLiga", tier:"moyen", strength:68, attack:68, defense:66, homeBonus:0.26 },
+    "Granada":            { type:"club", country:"Espagne", competition:"LaLiga", tier:"faible", strength:64, attack:64, defense:62, homeBonus:0.26 },
+    "Cádiz":              { type:"club", country:"Espagne", competition:"LaLiga", tier:"faible", strength:62, attack:58, defense:66, homeBonus:0.28 },
+    "Almería":            { type:"club", country:"Espagne", competition:"LaLiga", tier:"faible", strength:60, attack:60, defense:58, homeBonus:0.24 },
+    "Real Valladolid":    { type:"club", country:"Espagne", competition:"Segunda", tier:"faible", strength:62, attack:60, defense:62, homeBonus:0.26 },
+
+    // ============ CLUBS — SERIE A (ITALIE) ============
+    "Inter Milan":        { type:"club", country:"Italie", competition:"Serie A", tier:"elite", strength:91, attack:90, defense:88, homeBonus:0.36 },
+    "AC Milan":           { type:"club", country:"Italie", competition:"Serie A", tier:"fort", strength:82, attack:82, defense:80, homeBonus:0.34 },
+    "Juventus":           { type:"club", country:"Italie", competition:"Serie A", tier:"fort", strength:82, attack:78, defense:86, homeBonus:0.36 },
+    "Napoli":             { type:"club", country:"Italie", competition:"Serie A", tier:"fort", strength:84, attack:84, defense:82, homeBonus:0.36 },
+    "AS Roma":            { type:"club", country:"Italie", competition:"Serie A", tier:"fort", strength:79, attack:78, defense:78, homeBonus:0.32 },
+    "Atalanta":           { type:"club", country:"Italie", competition:"Serie A", tier:"fort", strength:81, attack:84, defense:76, homeBonus:0.32 },
+    "SS Lazio":           { type:"club", country:"Italie", competition:"Serie A", tier:"fort", strength:78, attack:78, defense:76, homeBonus:0.30 },
+    "Fiorentina":         { type:"club", country:"Italie", competition:"Serie A", tier:"moyen", strength:76, attack:76, defense:74, homeBonus:0.30 },
+    "Bologna":            { type:"club", country:"Italie", competition:"Serie A", tier:"moyen", strength:75, attack:74, defense:76, homeBonus:0.30 },
+    "Torino":             { type:"club", country:"Italie", competition:"Serie A", tier:"moyen", strength:72, attack:70, defense:74, homeBonus:0.28 },
+    "Monza":              { type:"club", country:"Italie", competition:"Serie A", tier:"moyen", strength:70, attack:68, defense:70, homeBonus:0.26 },
+    "Udinese":            { type:"club", country:"Italie", competition:"Serie A", tier:"moyen", strength:70, attack:70, defense:68, homeBonus:0.28 },
+    "Genoa":              { type:"club", country:"Italie", competition:"Serie A", tier:"moyen", strength:68, attack:66, defense:70, homeBonus:0.28 },
+    "Lecce":              { type:"club", country:"Italie", competition:"Serie A", tier:"moyen", strength:66, attack:64, defense:68, homeBonus:0.28 },
+    "Cagliari":           { type:"club", country:"Italie", competition:"Serie A", tier:"moyen", strength:66, attack:66, defense:64, homeBonus:0.28 },
+    "Hellas Verona":      { type:"club", country:"Italie", competition:"Serie A", tier:"moyen", strength:65, attack:64, defense:66, homeBonus:0.26 },
+    "Empoli":             { type:"club", country:"Italie", competition:"Serie A", tier:"moyen", strength:65, attack:62, defense:68, homeBonus:0.26 },
+    "Salernitana":        { type:"club", country:"Italie", competition:"Serie A", tier:"faible", strength:60, attack:60, defense:60, homeBonus:0.24 },
+    "Frosinone":          { type:"club", country:"Italie", competition:"Serie A", tier:"faible", strength:60, attack:60, defense:58, homeBonus:0.24 },
+    "Sassuolo":           { type:"club", country:"Italie", competition:"Serie A", tier:"faible", strength:62, attack:64, defense:58, homeBonus:0.24 },
+
+    // ============ CLUBS — BUNDESLIGA (ALLEMAGNE) ============
+    "Bayern Munich":          { type:"club", country:"Allemagne", competition:"Bundesliga", tier:"elite", strength:94, attack:96, defense:88, homeBonus:0.40 },
+    "Bayer Leverkusen":       { type:"club", country:"Allemagne", competition:"Bundesliga", tier:"elite", strength:90, attack:90, defense:86, homeBonus:0.36 },
+    "Borussia Dortmund":      { type:"club", country:"Allemagne", competition:"Bundesliga", tier:"fort", strength:84, attack:86, defense:78, homeBonus:0.36 },
+    "RB Leipzig":             { type:"club", country:"Allemagne", competition:"Bundesliga", tier:"fort", strength:82, attack:82, defense:80, homeBonus:0.32 },
+    "Eintracht Frankfurt":    { type:"club", country:"Allemagne", competition:"Bundesliga", tier:"fort", strength:79, attack:80, defense:76, homeBonus:0.32 },
+    "Borussia Mönchengladbach":{ type:"club", country:"Allemagne", competition:"Bundesliga", tier:"moyen", strength:73, attack:74, defense:70, homeBonus:0.30 },
+    "VfL Wolfsburg":          { type:"club", country:"Allemagne", competition:"Bundesliga", tier:"moyen", strength:72, attack:72, defense:72, homeBonus:0.28 },
+    "Freiburg":               { type:"club", country:"Allemagne", competition:"Bundesliga", tier:"moyen", strength:73, attack:72, defense:74, homeBonus:0.30 },
+    "Hoffenheim":             { type:"club", country:"Allemagne", competition:"Bundesliga", tier:"moyen", strength:71, attack:72, defense:68, homeBonus:0.26 },
+    "Union Berlin":           { type:"club", country:"Allemagne", competition:"Bundesliga", tier:"moyen", strength:71, attack:68, defense:74, homeBonus:0.30 },
+    "VfB Stuttgart":          { type:"club", country:"Allemagne", competition:"Bundesliga", tier:"moyen", strength:74, attack:76, defense:72, homeBonus:0.30 },
+    "Augsburg":               { type:"club", country:"Allemagne", competition:"Bundesliga", tier:"moyen", strength:68, attack:68, defense:68, homeBonus:0.28 },
+    "Mainz":                  { type:"club", country:"Allemagne", competition:"Bundesliga", tier:"moyen", strength:69, attack:68, defense:70, homeBonus:0.28 },
+    "Werder Bremen":          { type:"club", country:"Allemagne", competition:"Bundesliga", tier:"moyen", strength:70, attack:72, defense:66, homeBonus:0.28 },
+    "St. Pauli":              { type:"club", country:"Allemagne", competition:"Bundesliga", tier:"faible", strength:64, attack:62, defense:64, homeBonus:0.26 },
+    "Holstein Kiel":          { type:"club", country:"Allemagne", competition:"Bundesliga", tier:"faible", strength:62, attack:62, defense:60, homeBonus:0.24 },
+    "Schalke 04":             { type:"club", country:"Allemagne", competition:"2. Bundesliga", tier:"faible", strength:64, attack:64, defense:62, homeBonus:0.28 },
+    "Hamburger SV":           { type:"club", country:"Allemagne", competition:"2. Bundesliga", tier:"faible", strength:65, attack:66, defense:62, homeBonus:0.28 },
+
+    // ============ CLUBS — LIGUE 1 (FRANCE) ============
+    "Paris Saint-Germain": { type:"club", country:"France", competition:"Ligue 1", tier:"elite", strength:92, attack:94, defense:84, homeBonus:0.38 },
+    "Marseille":           { type:"club", country:"France", competition:"Ligue 1", tier:"fort", strength:79, attack:78, defense:78, homeBonus:0.34 },
+    "Lyon":                { type:"club", country:"France", competition:"Ligue 1", tier:"fort", strength:77, attack:78, defense:74, homeBonus:0.32 },
+    "Monaco":              { type:"club", country:"France", competition:"Ligue 1", tier:"fort", strength:78, attack:80, defense:74, homeBonus:0.30 },
+    "Lille":               { type:"club", country:"France", competition:"Ligue 1", tier:"fort", strength:77, attack:76, defense:78, homeBonus:0.30 },
+    "Rennes":              { type:"club", country:"France", competition:"Ligue 1", tier:"moyen", strength:74, attack:74, defense:72, homeBonus:0.28 },
+    "Nice":                { type:"club", country:"France", competition:"Ligue 1", tier:"moyen", strength:74, attack:72, defense:76, homeBonus:0.28 },
+    "Lens":                { type:"club", country:"France", competition:"Ligue 1", tier:"moyen", strength:74, attack:74, defense:74, homeBonus:0.30 },
+    "Strasbourg":          { type:"club", country:"France", competition:"Ligue 1", tier:"moyen", strength:70, attack:70, defense:68, homeBonus:0.26 },
+    "Toulouse":            { type:"club", country:"France", competition:"Ligue 1", tier:"moyen", strength:69, attack:68, defense:70, homeBonus:0.26 },
+    "Reims":               { type:"club", country:"France", competition:"Ligue 1", tier:"moyen", strength:69, attack:68, defense:70, homeBonus:0.26 },
+    "Montpellier":         { type:"club", country:"France", competition:"Ligue 1", tier:"moyen", strength:68, attack:68, defense:66, homeBonus:0.26 },
+    "Nantes":              { type:"club", country:"France", competition:"Ligue 1", tier:"moyen", strength:67, attack:66, defense:68, homeBonus:0.28 },
+    "Lorient":             { type:"club", country:"France", competition:"Ligue 1", tier:"faible", strength:64, attack:64, defense:62, homeBonus:0.24 },
+    "Le Havre":            { type:"club", country:"France", competition:"Ligue 1", tier:"faible", strength:64, attack:62, defense:66, homeBonus:0.26 },
+    "Clermont":            { type:"club", country:"France", competition:"Ligue 1", tier:"faible", strength:62, attack:60, defense:64, homeBonus:0.24 },
+    "Metz":                { type:"club", country:"France", competition:"Ligue 1", tier:"faible", strength:62, attack:62, defense:62, homeBonus:0.24 },
+    "Auxerre":             { type:"club", country:"France", competition:"Ligue 1", tier:"moyen", strength:66, attack:66, defense:64, homeBonus:0.26 },
+    "Saint-Étienne":       { type:"club", country:"France", competition:"Ligue 1", tier:"faible", strength:63, attack:62, defense:64, homeBonus:0.28 },
+
+    // ============ CLUBS — PRIMEIRA LIGA (PORTUGAL) ============
+    "Benfica":           { type:"club", country:"Portugal", competition:"Primeira Liga", tier:"fort", strength:82, attack:84, defense:78, homeBonus:0.34 },
+    "Porto":             { type:"club", country:"Portugal", competition:"Primeira Liga", tier:"fort", strength:82, attack:82, defense:80, homeBonus:0.36 },
+    "Sporting CP":       { type:"club", country:"Portugal", competition:"Primeira Liga", tier:"fort", strength:81, attack:82, defense:78, homeBonus:0.34 },
+    "Braga":             { type:"club", country:"Portugal", competition:"Primeira Liga", tier:"moyen", strength:74, attack:74, defense:72, homeBonus:0.28 },
+    "Vitória Guimarães": { type:"club", country:"Portugal", competition:"Primeira Liga", tier:"moyen", strength:70, attack:70, defense:68, homeBonus:0.26 },
+    "Boavista":          { type:"club", country:"Portugal", competition:"Primeira Liga", tier:"moyen", strength:66, attack:64, defense:68, homeBonus:0.24 },
+
+    // ============ CLUBS — EREDIVISIE (PAYS-BAS) ============
+    "Ajax":           { type:"club", country:"Pays-Bas", competition:"Eredivisie", tier:"fort", strength:80, attack:82, defense:76, homeBonus:0.34 },
+    "PSV Eindhoven":  { type:"club", country:"Pays-Bas", competition:"Eredivisie", tier:"fort", strength:80, attack:82, defense:76, homeBonus:0.34 },
+    "Feyenoord":      { type:"club", country:"Pays-Bas", competition:"Eredivisie", tier:"fort", strength:78, attack:80, defense:76, homeBonus:0.32 },
+    "AZ Alkmaar":     { type:"club", country:"Pays-Bas", competition:"Eredivisie", tier:"moyen", strength:73, attack:74, defense:72, homeBonus:0.28 },
+    "Twente":         { type:"club", country:"Pays-Bas", competition:"Eredivisie", tier:"moyen", strength:72, attack:72, defense:70, homeBonus:0.28 },
+
+    // ============ CLUBS — JUPILER PRO LEAGUE (BELGIQUE) ============
+    "Club Brugge":    { type:"club", country:"Belgique", competition:"Jupiler Pro League", tier:"fort", strength:78, attack:78, defense:76, homeBonus:0.32 },
+    "Anderlecht":     { type:"club", country:"Belgique", competition:"Jupiler Pro League", tier:"moyen", strength:74, attack:74, defense:72, homeBonus:0.30 },
+    "Union SG":       { type:"club", country:"Belgique", competition:"Jupiler Pro League", tier:"moyen", strength:74, attack:76, defense:72, homeBonus:0.28 },
+    "Genk":           { type:"club", country:"Belgique", competition:"Jupiler Pro League", tier:"moyen", strength:72, attack:72, defense:70, homeBonus:0.28 },
+    "Gent":           { type:"club", country:"Belgique", competition:"Jupiler Pro League", tier:"moyen", strength:71, attack:72, defense:70, homeBonus:0.26 },
+    "Antwerp":        { type:"club", country:"Belgique", competition:"Jupiler Pro League", tier:"moyen", strength:73, attack:72, defense:74, homeBonus:0.30 },
+
+    // ============ CLUBS — SÜPER LIG (TURQUIE) ============
+    "Galatasaray":    { type:"club", country:"Turquie", competition:"Süper Lig", tier:"fort", strength:78, attack:80, defense:74, homeBonus:0.36 },
+    "Fenerbahçe":     { type:"club", country:"Turquie", competition:"Süper Lig", tier:"fort", strength:78, attack:80, defense:74, homeBonus:0.36 },
+    "Beşiktaş":       { type:"club", country:"Turquie", competition:"Süper Lig", tier:"moyen", strength:73, attack:74, defense:70, homeBonus:0.32 },
+    "Trabzonspor":    { type:"club", country:"Turquie", competition:"Süper Lig", tier:"moyen", strength:72, attack:72, defense:70, homeBonus:0.30 },
+
+    // ============ CLUBS — SCOTTISH PREMIERSHIP (ÉCOSSE) ============
+    "Celtic":         { type:"club", country:"Écosse", competition:"Scottish Premiership", tier:"fort", strength:76, attack:78, defense:74, homeBonus:0.34 },
+    "Rangers":        { type:"club", country:"Écosse", competition:"Scottish Premiership", tier:"fort", strength:75, attack:76, defense:74, homeBonus:0.34 },
+
+    // ============ CLUBS — CHAMPIONNATS EUROPÉENS DIVERS ============
+    "Olympiakos":        { type:"club", country:"Grèce", competition:"Super League", tier:"moyen", strength:72, attack:72, defense:72, homeBonus:0.32 },
+    "Panathinaikos":     { type:"club", country:"Grèce", competition:"Super League", tier:"moyen", strength:70, attack:70, defense:70, homeBonus:0.30 },
+    "PAOK":              { type:"club", country:"Grèce", competition:"Super League", tier:"moyen", strength:70, attack:70, defense:68, homeBonus:0.28 },
+    "AEK Athens":        { type:"club", country:"Grèce", competition:"Super League", tier:"moyen", strength:70, attack:70, defense:70, homeBonus:0.28 },
+    "Red Bull Salzburg": { type:"club", country:"Autriche", competition:"Austrian Bundesliga", tier:"fort", strength:78, attack:80, defense:74, homeBonus:0.32 },
+    "Rapid Wien":        { type:"club", country:"Autriche", competition:"Austrian Bundesliga", tier:"moyen", strength:70, attack:70, defense:68, homeBonus:0.28 },
+    "Sturm Graz":        { type:"club", country:"Autriche", competition:"Austrian Bundesliga", tier:"moyen", strength:72, attack:72, defense:70, homeBonus:0.28 },
+    "LASK":              { type:"club", country:"Autriche", competition:"Austrian Bundesliga", tier:"moyen", strength:68, attack:68, defense:66, homeBonus:0.26 },
+    "Young Boys":        { type:"club", country:"Suisse", competition:"Super League", tier:"moyen", strength:74, attack:74, defense:72, homeBonus:0.32 },
+    "FC Bâle":           { type:"club", country:"Suisse", competition:"Super League", tier:"moyen", strength:70, attack:70, defense:68, homeBonus:0.28 },
+    "Servette":          { type:"club", country:"Suisse", competition:"Super League", tier:"moyen", strength:68, attack:68, defense:66, homeBonus:0.26 },
+    "FC Zurich":         { type:"club", country:"Suisse", competition:"Super League", tier:"moyen", strength:68, attack:68, defense:66, homeBonus:0.26 },
+    "FC Copenhagen":     { type:"club", country:"Danemark", competition:"Superliga", tier:"moyen", strength:74, attack:74, defense:72, homeBonus:0.32 },
+    "Brøndby":           { type:"club", country:"Danemark", competition:"Superliga", tier:"moyen", strength:68, attack:68, defense:66, homeBonus:0.26 },
+    "Midtjylland":       { type:"club", country:"Danemark", competition:"Superliga", tier:"moyen", strength:70, attack:72, defense:68, homeBonus:0.28 },
+    "Dinamo Zagreb":     { type:"club", country:"Croatie", competition:"HNL", tier:"moyen", strength:74, attack:76, defense:70, homeBonus:0.34 },
+    "Crvena Zvezda":     { type:"club", country:"Serbie", competition:"SuperLiga", tier:"moyen", strength:72, attack:74, defense:68, homeBonus:0.32 },
+    "Partizan":          { type:"club", country:"Serbie", competition:"SuperLiga", tier:"moyen", strength:68, attack:68, defense:66, homeBonus:0.28 },
+    "Steaua Bucarest":   { type:"club", country:"Roumanie", competition:"Liga 1", tier:"moyen", strength:70, attack:70, defense:68, homeBonus:0.30 },
+    "CFR Cluj":          { type:"club", country:"Roumanie", competition:"Liga 1", tier:"moyen", strength:68, attack:66, defense:70, homeBonus:0.28 },
+    "Legia Varsovie":    { type:"club", country:"Pologne", competition:"Ekstraklasa", tier:"moyen", strength:70, attack:70, defense:68, homeBonus:0.30 },
+    "Slavia Prague":     { type:"club", country:"Tchéquie", competition:"First League", tier:"moyen", strength:74, attack:74, defense:72, homeBonus:0.32 },
+    "Sparta Prague":     { type:"club", country:"Tchéquie", competition:"First League", tier:"moyen", strength:72, attack:72, defense:70, homeBonus:0.30 },
+    "Viktoria Plzeň":    { type:"club", country:"Tchéquie", competition:"First League", tier:"moyen", strength:70, attack:70, defense:68, homeBonus:0.28 },
+    "Ferencváros":       { type:"club", country:"Hongrie", competition:"NB I", tier:"moyen", strength:72, attack:72, defense:70, homeBonus:0.32 },
+    "Ludogorets":        { type:"club", country:"Bulgarie", competition:"First League", tier:"moyen", strength:70, attack:72, defense:66, homeBonus:0.30 },
+
+    // ============ CLUBS — MLS (USA/CANADA) ============
+    "Inter Miami":       { type:"club", country:"États-Unis", competition:"MLS", tier:"moyen", strength:72, attack:74, defense:68, homeBonus:0.26 },
+    "LA Galaxy":         { type:"club", country:"États-Unis", competition:"MLS", tier:"moyen", strength:70, attack:72, defense:66, homeBonus:0.24 },
+    "Los Angeles FC":    { type:"club", country:"États-Unis", competition:"MLS", tier:"moyen", strength:72, attack:74, defense:68, homeBonus:0.26 },
+    "Seattle Sounders":  { type:"club", country:"États-Unis", competition:"MLS", tier:"moyen", strength:70, attack:70, defense:70, homeBonus:0.26 },
+    "Atlanta United":    { type:"club", country:"États-Unis", competition:"MLS", tier:"moyen", strength:68, attack:70, defense:64, homeBonus:0.24 },
+    "Toronto FC":        { type:"club", country:"Canada", competition:"MLS", tier:"faible", strength:64, attack:64, defense:62, homeBonus:0.22 },
+
+    // ============ CLUBS — LIGA MX (MEXIQUE) ============
+    "Club América":      { type:"club", country:"Mexique", competition:"Liga MX", tier:"moyen", strength:74, attack:74, defense:72, homeBonus:0.32 },
+    "Chivas":            { type:"club", country:"Mexique", competition:"Liga MX", tier:"moyen", strength:72, attack:72, defense:70, homeBonus:0.30 },
+    "Cruz Azul":         { type:"club", country:"Mexique", competition:"Liga MX", tier:"moyen", strength:72, attack:70, defense:72, homeBonus:0.30 },
+    "Tigres UANL":       { type:"club", country:"Mexique", competition:"Liga MX", tier:"moyen", strength:74, attack:74, defense:72, homeBonus:0.32 },
+    "Monterrey":         { type:"club", country:"Mexique", competition:"Liga MX", tier:"moyen", strength:73, attack:74, defense:70, homeBonus:0.30 },
+
+    // ============ CLUBS — BRASILEIRÃO (BRÉSIL) ============
+    "Flamengo":          { type:"club", country:"Brésil", competition:"Brasileirão", tier:"fort", strength:80, attack:82, defense:76, homeBonus:0.36 },
+    "Palmeiras":         { type:"club", country:"Brésil", competition:"Brasileirão", tier:"fort", strength:80, attack:80, defense:78, homeBonus:0.36 },
+    "São Paulo":         { type:"club", country:"Brésil", competition:"Brasileirão", tier:"moyen", strength:75, attack:74, defense:74, homeBonus:0.32 },
+    "Corinthians":       { type:"club", country:"Brésil", competition:"Brasileirão", tier:"moyen", strength:73, attack:72, defense:72, homeBonus:0.30 },
+    "Fluminense":        { type:"club", country:"Brésil", competition:"Brasileirão", tier:"moyen", strength:74, attack:74, defense:72, homeBonus:0.30 },
+    "Grêmio":            { type:"club", country:"Brésil", competition:"Brasileirão", tier:"moyen", strength:73, attack:74, defense:70, homeBonus:0.30 },
+    "Internacional":     { type:"club", country:"Brésil", competition:"Brasileirão", tier:"moyen", strength:73, attack:72, defense:74, homeBonus:0.30 },
+    "Atlético Mineiro":  { type:"club", country:"Brésil", competition:"Brasileirão", tier:"moyen", strength:74, attack:74, defense:72, homeBonus:0.30 },
+    "Botafogo":          { type:"club", country:"Brésil", competition:"Brasileirão", tier:"moyen", strength:74, attack:74, defense:72, homeBonus:0.30 },
+    "Cruzeiro":          { type:"club", country:"Brésil", competition:"Brasileirão", tier:"moyen", strength:72, attack:72, defense:70, homeBonus:0.28 },
+
+    // ============ CLUBS — PRIMERA DIVISIÓN (ARGENTINE) ============
+    "River Plate":       { type:"club", country:"Argentine", competition:"Primera División", tier:"fort", strength:80, attack:82, defense:76, homeBonus:0.38 },
+    "Boca Juniors":      { type:"club", country:"Argentine", competition:"Primera División", tier:"fort", strength:78, attack:78, defense:78, homeBonus:0.38 },
+    "Racing Club":       { type:"club", country:"Argentine", competition:"Primera División", tier:"moyen", strength:73, attack:72, defense:72, homeBonus:0.30 },
+    "Independiente":     { type:"club", country:"Argentine", competition:"Primera División", tier:"moyen", strength:71, attack:70, defense:70, homeBonus:0.28 },
+    "San Lorenzo":       { type:"club", country:"Argentine", competition:"Primera División", tier:"moyen", strength:70, attack:68, defense:72, homeBonus:0.28 },
+    "Estudiantes":       { type:"club", country:"Argentine", competition:"Primera División", tier:"moyen", strength:70, attack:70, defense:70, homeBonus:0.28 },
+
+    // ============ CLUBS AFRICAINS ============
+    "Al Ahly":              { type:"club", country:"Égypte", competition:"Premier League Égypte", tier:"fort", strength:78, attack:78, defense:76, homeBonus:0.38 },
+    "Zamalek":              { type:"club", country:"Égypte", competition:"Premier League Égypte", tier:"moyen", strength:74, attack:74, defense:72, homeBonus:0.34 },
+    "Pyramids FC":          { type:"club", country:"Égypte", competition:"Premier League Égypte", tier:"moyen", strength:72, attack:74, defense:68, homeBonus:0.30 },
+    "Espérance Tunis":      { type:"club", country:"Tunisie", competition:"Ligue I Pro", tier:"fort", strength:76, attack:76, defense:74, homeBonus:0.36 },
+    "Étoile du Sahel":      { type:"club", country:"Tunisie", competition:"Ligue I Pro", tier:"moyen", strength:72, attack:72, defense:70, homeBonus:0.32 },
+    "Club Africain":        { type:"club", country:"Tunisie", competition:"Ligue I Pro", tier:"moyen", strength:68, attack:68, defense:66, homeBonus:0.30 },
+    "Wydad":                { type:"club", country:"Maroc", competition:"Botola Pro", tier:"fort", strength:76, attack:76, defense:74, homeBonus:0.36 },
+    "Raja Casablanca":      { type:"club", country:"Maroc", competition:"Botola Pro", tier:"fort", strength:76, attack:76, defense:74, homeBonus:0.36 },
+    "FAR Rabat":            { type:"club", country:"Maroc", competition:"Botola Pro", tier:"moyen", strength:70, attack:70, defense:70, homeBonus:0.30 },
+    "RS Berkane":           { type:"club", country:"Maroc", competition:"Botola Pro", tier:"moyen", strength:68, attack:68, defense:68, homeBonus:0.28 },
+    "CR Belouizdad":        { type:"club", country:"Algérie", competition:"Ligue 1 Algérie", tier:"moyen", strength:70, attack:70, defense:68, homeBonus:0.32 },
+    "JS Kabylie":           { type:"club", country:"Algérie", competition:"Ligue 1 Algérie", tier:"moyen", strength:68, attack:68, defense:68, homeBonus:0.30 },
+    "MC Alger":             { type:"club", country:"Algérie", competition:"Ligue 1 Algérie", tier:"moyen", strength:68, attack:68, defense:66, homeBonus:0.30 },
+    "USM Alger":            { type:"club", country:"Algérie", competition:"Ligue 1 Algérie", tier:"moyen", strength:68, attack:68, defense:66, homeBonus:0.30 },
+    "Mamelodi Sundowns":    { type:"club", country:"Afrique du Sud", competition:"PSL", tier:"fort", strength:76, attack:78, defense:72, homeBonus:0.34 },
+    "Orlando Pirates":      { type:"club", country:"Afrique du Sud", competition:"PSL", tier:"moyen", strength:70, attack:70, defense:68, homeBonus:0.30 },
+    "Kaizer Chiefs":        { type:"club", country:"Afrique du Sud", competition:"PSL", tier:"moyen", strength:68, attack:68, defense:66, homeBonus:0.28 },
+    "TP Mazembe":           { type:"club", country:"RD Congo", competition:"Linafoot", tier:"moyen", strength:72, attack:72, defense:70, homeBonus:0.36 },
+    "AS Vita Club":         { type:"club", country:"RD Congo", competition:"Linafoot", tier:"moyen", strength:68, attack:68, defense:66, homeBonus:0.32 },
+    "DC Motema Pembe":      { type:"club", country:"RD Congo", competition:"Linafoot", tier:"faible", strength:62, attack:62, defense:60, homeBonus:0.28 },
+    "FC Saint-Éloi Lupopo": { type:"club", country:"RD Congo", competition:"Linafoot", tier:"faible", strength:60, attack:60, defense:58, homeBonus:0.26 },
+    "AS Maniema Union":     { type:"club", country:"RD Congo", competition:"Linafoot", tier:"faible", strength:60, attack:60, defense:58, homeBonus:0.26 },
+    "Enyimba":              { type:"club", country:"Nigeria", competition:"NPFL", tier:"moyen", strength:68, attack:68, defense:66, homeBonus:0.32 },
+    "Rivers United":        { type:"club", country:"Nigeria", competition:"NPFL", tier:"moyen", strength:66, attack:66, defense:64, homeBonus:0.28 },
+    "Hearts of Oak":        { type:"club", country:"Ghana", competition:"GPL", tier:"moyen", strength:66, attack:66, defense:64, homeBonus:0.30 },
+    "Asante Kotoko":        { type:"club", country:"Ghana", competition:"GPL", tier:"moyen", strength:66, attack:66, defense:64, homeBonus:0.30 },
+    "Young Africans":       { type:"club", country:"Tanzanie", competition:"Premier League Tanzanie", tier:"moyen", strength:66, attack:66, defense:64, homeBonus:0.30 },
+    "Simba SC":             { type:"club", country:"Tanzanie", competition:"Premier League Tanzanie", tier:"moyen", strength:66, attack:66, defense:64, homeBonus:0.30 },
+    "Horoya AC":            { type:"club", country:"Guinée", competition:"Ligue 1 Guinée", tier:"faible", strength:62, attack:62, defense:60, homeBonus:0.28 },
+    "ASEC Mimosas":         { type:"club", country:"Côte d'Ivoire", competition:"Ligue 1 CI", tier:"moyen", strength:66, attack:66, defense:64, homeBonus:0.30 },
+    "Coton Sport":          { type:"club", country:"Cameroun", competition:"Elite One", tier:"faible", strength:62, attack:62, defense:60, homeBonus:0.28 },
+    "Stade Malien":         { type:"club", country:"Mali", competition:"Première Division Mali", tier:"faible", strength:60, attack:60, defense:58, homeBonus:0.26 },
+    "Teungueth FC":         { type:"club", country:"Sénégal", competition:"Ligue 1 Sénégal", tier:"faible", strength:60, attack:60, defense:58, homeBonus:0.26 },
 };
 
-function getTeamTier(team) {
-    if(teamTiers.elite.includes(team)) return { tier: "ÉLITE", strength: 10, power: 1.0 };
-    if(teamTiers.fort.includes(team)) return { tier: "FORT", strength: 8, power: 0.8 };
-    if(teamTiers.moyen.includes(team)) return { tier: "MOYEN", strength: 6, power: 0.6 };
-    if(teamTiers.faible.includes(team)) return { tier: "FAIBLE", strength: 3, power: 0.3 };
-    if(teamTiers.tresFaible.includes(team)) return { tier: "TRÈS FAIBLE", strength: 1, power: 0.15 };
-    return { tier: "STANDARD", strength: 4, power: 0.4 };
+// Construire la liste ordonnée pour le datalist
+const ALL_TEAM_NAMES = Object.keys(TEAM_DB).sort((a,b) => a.localeCompare(b));
+
+// ============================================================
+// VALIDATION D'INCOMPATIBILITÉ
+// ============================================================
+function getEntityInfo(name) {
+    return TEAM_DB[name] || null;
 }
 
-const ALL_TEAMS = [...teamTiers.elite, ...teamTiers.fort, ...teamTiers.moyen, ...teamTiers.faible, ...teamTiers.tresFaible];
-function isValidTeam(team) { return ALL_TEAMS.includes(team); }
-
-// Prediction & market (identique)
-const MARKETS_PRO = ["1","2","X","Over 1.5","Over 2.5","Under 2","Les deux équipes marquent YES","Les deux équipes marquent NO"];
-function getRealisticScore(homeTier, awayTier, market) { /* logique existante intacte, seulement raccourci pour lisibilité */ 
-    const diff = homeTier.strength - awayTier.strength;
-    let baseProb = { homeWin: 0.4, draw: 0.3, awayWin: 0.3 };
-    if (diff >= 4) baseProb = { homeWin: 0.75, draw: 0.15, awayWin: 0.10 };
-    else if (diff >= 2) baseProb = { homeWin: 0.60, draw: 0.25, awayWin: 0.15 };
-    else if (diff <= -4) baseProb = { homeWin: 0.10, draw: 0.15, awayWin: 0.75 };
-    else if (diff <= -2) baseProb = { homeWin: 0.15, draw: 0.25, awayWin: 0.60 };
-    let outcome = "X";
-    const r = Math.random();
-    if (r < baseProb.homeWin) outcome = "1";
-    else if (r < baseProb.homeWin + baseProb.draw) outcome = "X";
-    else outcome = "2";
-    if (market === "1") outcome = "1";
-    if (market === "2") outcome = "2";
-    if (market === "X") outcome = "X";
-    const homePower = homeTier.strength / 10;
-    const awayPower = awayTier.strength / 10;
-    let avgHomeGoals = 1.2 + homePower * 1.2;
-    let avgAwayGoals = 1.0 + awayPower * 0.9;
-    if (outcome === "1") avgHomeGoals += 0.8;
-    if (outcome === "2") avgAwayGoals += 0.8;
-    const homeGoals = Math.max(0, Math.floor(avgHomeGoals + (Math.random() * 1.2 - 0.6)));
-    const awayGoals = Math.max(0, Math.floor(avgAwayGoals + (Math.random() * 1.2 - 0.6)));
-    const total = homeGoals + awayGoals;
-    let marketOut = outcome;
-    if (market === "Over 1.5") marketOut = total >= 2 ? "Over 1.5 ✅" : "Under 1.5 ❌";
-    if (market === "Over 2.5") marketOut = total >= 3 ? "Over 2.5 ✅" : "Under 2.5 ❌";
-    if (market === "Under 2") marketOut = total <= 1 ? "Under 2 ✅" : "Over 2 ❌";
-    if (market === "Les deux équipes marquent YES") marketOut = (homeGoals>0 && awayGoals>0) ? "YES ✅" : "NO ❌";
-    if (market === "Les deux équipes marquent NO") marketOut = (homeGoals===0 || awayGoals===0) ? "NO ✅" : "YES ❌";
-    return { scoreFinal: `${homeGoals}-${awayGoals}`, marketFinal: marketOut, miTemps: `${Math.floor(homeGoals/2)}-${Math.floor(awayGoals/2)}` };
+function validateMatchCompatibility(home, away) {
+    const hInfo = getEntityInfo(home);
+    const aInfo = getEntityInfo(away);
+    if (!hInfo) return { valid: false, reason: `Équipe "${home}" non reconnue dans la base de données.` };
+    if (!aInfo) return { valid: false, reason: `Équipe "${away}" non reconnue dans la base de données.` };
+    if (home === away) return { valid: false, reason: "Impossible : même équipe en domicile et extérieur." };
+    if (hInfo.type !== aInfo.type) {
+        return {
+            valid: false,
+            reason: `❌ Match impossible : ${home} est un ${hInfo.type === 'club' ? 'club' : 'sélection nationale'} (${hInfo.competition}) et ${away} est un ${aInfo.type === 'club' ? 'club' : 'sélection nationale'} (${aInfo.competition}). Un club ne peut pas affronter une sélection nationale en match officiel.`,
+            suggestions: [
+                hInfo.type === 'club' ? `Essayez ${home} vs un autre club` : `Essayez ${home} vs une autre sélection`,
+                aInfo.type === 'club' ? `Essayez ${away} vs un autre club` : `Essayez ${away} vs une autre sélection`,
+                "Seuls les matchs club vs club ou nationale vs nationale sont autorisés."
+            ]
+        };
+    }
+    return { valid: true, homeInfo: hInfo, awayInfo: aInfo };
 }
+
+// ============================================================
+// CALCUL DES 23 MARCHÉS À PARTIR DES SCORES
+// ============================================================
+function calculateAllMarkets(hg1, ag1, hg2, ag2) {
+    const hgF = hg1 + hg2;  // buts domicile final
+    const agF = ag1 + ag2;  // buts extérieur final
+    const total1MT = hg1 + ag1;
+    const total2MT = hg2 + ag2;
+    const totalFinal = hgF + agF;
+
+    // Résultat 1MT
+    const result1MT = hg1 > ag1 ? "1" : (hg1 < ag1 ? "2" : "X");
+    // Résultat 2MT
+    const result2MT = hg2 > ag2 ? "1" : (hg2 < ag2 ? "2" : "X");
+    // Résultat final
+    const resultFinal = hgF > agF ? "1" : (hgF < agF ? "2" : "X");
+
+    // Résultat 2MT par rapport au score global de la 2MT
+    const homeWins2MT = hg2 > ag2;
+    const awayWins2MT = ag2 > hg2;
+    const homeWins1MT = hg1 > ag1;
+    const awayWins1MT = ag1 > hg1;
+    const draw1MT = hg1 === ag1;
+    const draw2MT = hg2 === ag2;
+
+    return {
+        // 1. Résultat final
+        "1_result": resultFinal === "1",
+        "2_result": resultFinal === "2",
+        "X_result": resultFinal === "X",
+        // 4-7. Marchés 1MT buts
+        "1MT_over_1.5": total1MT >= 2,
+        "1MT_over_2": total1MT >= 3,
+        "1MT_under_2": total1MT <= 1,
+        "1MT_under_1.5": total1MT <= 1,
+        // 8-10. Résultat 1MT
+        "1MT_home_wins": homeWins1MT,
+        "1MT_away_wins": awayWins1MT,
+        "1MT_draw": draw1MT,
+        // 11-12. Comparaison périodes
+        "more_goals_1MT": total1MT > total2MT,
+        "more_goals_2MT": total2MT > total1MT,
+        // 13-14. Résultat 2MT
+        "2MT_home_wins": homeWins2MT,
+        "2MT_away_wins": awayWins2MT,
+        // 15. Même résultat aux 2 mi-temps
+        "same_result_both_halves": result1MT === result2MT,
+        // 16-20. Over/Under global
+        "over_1.5": totalFinal >= 2,
+        "over_2": totalFinal >= 3,
+        "over_2.5": totalFinal >= 3,
+        "over_3": totalFinal >= 4,
+        "under_2": totalFinal <= 1,
+        // 21-22. Les deux équipes marquent
+        "both_teams_score_yes": hgF >= 1 && agF >= 1,
+        "both_teams_score_no": hgF === 0 || agF === 0,
+        // 23. = 18 (over 2.5 dupliqué)
+        "over_2.5_bis": totalFinal >= 3,
+        // Données brutes pour affichage
+        _raw: {
+            final: { home: hgF, away: agF },
+            firstHalf: { home: hg1, away: ag1 },
+            secondHalf: { home: hg2, away: ag2 },
+            resultFinal, result1MT, result2MT,
+            total1MT, total2MT, totalFinal
+        }
+    };
+}
+
+function formatMarketsForDisplay(markets) {
+    const labels = [
+        { key: "1_result", label: "1 (Victoire Dom)" },
+        { key: "2_result", label: "2 (Victoire Ext)" },
+        { key: "X_result", label: "X (Nul)" },
+        { key: "1MT_over_1.5", label: "1MT Over 1.5" },
+        { key: "1MT_over_2", label: "1MT Over 2" },
+        { key: "1MT_under_2", label: "1MT Under 2" },
+        { key: "1MT_under_1.5", label: "1MT Under 1.5" },
+        { key: "1MT_home_wins", label: "1MT Dom. gagne" },
+        { key: "1MT_away_wins", label: "1MT Ext. gagne" },
+        { key: "1MT_draw", label: "1MT Nul" },
+        { key: "more_goals_1MT", label: "Plus buts 1MT" },
+        { key: "more_goals_2MT", label: "Plus buts 2MT" },
+        { key: "2MT_home_wins", label: "2MT Dom. gagne" },
+        { key: "2MT_away_wins", label: "2MT Ext. gagne" },
+        { key: "same_result_both_halves", label: "Même résultat 2MT" },
+        { key: "over_1.5", label: "Over 1.5" },
+        { key: "over_2", label: "Over 2" },
+        { key: "over_2.5", label: "Over 2.5" },
+        { key: "over_3", label: "Over 3" },
+        { key: "under_2", label: "Under 2" },
+        { key: "both_teams_score_yes", label: "BTTS Oui" },
+        { key: "both_teams_score_no", label: "BTTS Non" },
+        { key: "over_2.5_bis", label: "Over 2.5 (bis)" },
+    ];
+    return labels.map(l => ({
+        label: l.label,
+        value: markets[l.key] ? "✅ OUI" : "❌ NON",
+        isYes: markets[l.key]
+    }));
+}
+
+// ============================================================
+// GÉNÉRATION DE PRÉDICTION RÉALISTE
+// ============================================================
 let matchPredictionCache = {};
+
+function generateRealisticScore(homeInfo, awayInfo) {
+    const hStr = homeInfo.strength;
+    const aStr = awayInfo.strength;
+    const hAtt = homeInfo.attack;
+    const hDef = homeInfo.defense;
+    const aAtt = awayInfo.attack;
+    const aDef = awayInfo.defense;
+    const hBonus = homeInfo.homeBonus;
+
+    // Buts attendus (Poisson-like)
+    // Attaque domicile vs défense extérieur, pondéré par force
+    const avgHomeGoals = ((hAtt / 100) * (1 - aDef / 200) * 1.8) + hBonus;
+    const avgAwayGoals = ((aAtt / 100) * (1 - hDef / 200) * 1.5);
+
+    // Simulation Poisson simplifiée
+    function poissonSample(lambda) {
+        let L = Math.exp(-lambda);
+        let k = 0;
+        let p = 1;
+        do { k++; p *= Math.random(); } while (p > L);
+        return k - 1;
+    }
+
+    // Tirer 1MT et 2MT séparément (≈40-45% des buts en 1MT)
+    const ratio1MT = 0.38 + Math.random() * 0.10; // 38-48%
+    const homeGoalsExpected1MT = avgHomeGoals * ratio1MT;
+    const awayGoalsExpected1MT = avgAwayGoals * ratio1MT;
+    const homeGoalsExpected2MT = avgHomeGoals * (1 - ratio1MT);
+    const awayGoalsExpected2MT = avgAwayGoals * (1 - ratio1MT);
+
+    let hg1 = poissonSample(Math.max(0.1, homeGoalsExpected1MT));
+    let ag1 = poissonSample(Math.max(0.1, awayGoalsExpected1MT));
+    let hg2 = poissonSample(Math.max(0.1, homeGoalsExpected2MT));
+    let ag2 = poissonSample(Math.max(0.1, awayGoalsExpected2MT));
+
+    // Limiter les scores extrêmes
+    hg1 = Math.min(hg1, 4);
+    ag1 = Math.min(ag1, 4);
+    hg2 = Math.min(hg2, 5);
+    ag2 = Math.min(ag2, 5);
+
+    return { hg1, ag1, hg2, ag2 };
+}
+
 function generatePrediction(teamH, teamA) {
     const cacheKey = `${teamH}|${teamA}`;
-    if (matchPredictionCache[cacheKey]) return JSON.parse(JSON.stringify(matchPredictionCache[cacheKey]));
-    const tierH = getTeamTier(teamH);
-    const tierA = getTeamTier(teamA);
-    const diff = tierH.strength - tierA.strength;
-    let selectedMarket = "X";
-    if (Math.abs(diff) <= 1) { const r = Math.random(); if (r < 0.34) selectedMarket = "1"; else if (r < 0.67) selectedMarket = "X"; else selectedMarket = "2"; }
-    else if (diff >= 2) selectedMarket = "1";
-    else if (diff <= -2) selectedMarket = "2";
-    else selectedMarket = "X";
-    const { scoreFinal, marketFinal, miTemps } = getRealisticScore(tierH, tierA, selectedMarket);
-    const result = { scoreFinal, market: marketFinal, miTemps, niveauH: tierH.tier, niveauA: tierA.tier, rawMarket: selectedMarket };
+    if (matchPredictionCache[cacheKey]) {
+        return JSON.parse(JSON.stringify(matchPredictionCache[cacheKey]));
+    }
+
+    const homeInfo = TEAM_DB[teamH];
+    const awayInfo = TEAM_DB[teamA];
+
+    const { hg1, ag1, hg2, ag2 } = generateRealisticScore(homeInfo, awayInfo);
+    const markets = calculateAllMarkets(hg1, ag1, hg2, ag2);
+    const r = markets._raw;
+
+    const tierLabels = { elite: "⭐ ÉLITE", fort: "💪 FORT", moyen: "📊 MOYEN", faible: "⚠️ FAIBLE" };
+
+    const result = {
+        scoreFinal: `${r.final.home}-${r.final.away}`,
+        scoreHT: `${r.firstHalf.home}-${r.firstHalf.away}`,
+        score2MT: `${r.secondHalf.home}-${r.secondHalf.away}`,
+        resultFinal: r.resultFinal,
+        market: r.resultFinal === "1" ? `${teamH} gagne` : (r.resultFinal === "2" ? `${teamA} gagne` : "Match Nul"),
+        niveauH: tierLabels[homeInfo.tier] || "📊 STANDARD",
+        niveauA: tierLabels[awayInfo.tier] || "📊 STANDARD",
+        markets: markets,
+        marketsDisplay: formatMarketsForDisplay(markets)
+    };
+
     matchPredictionCache[cacheKey] = JSON.parse(JSON.stringify(result));
     return result;
 }
 
-// === Base de Données & Logique ===
+// ============================================================
+// BASE DE DONNÉES UTILISATEURS
+// ============================================================
 let db = JSON.parse(localStorage.getItem('wise03_db')) || [];
 let currentUser = null;
 let currentTicket = [];
 let tempMatch = null;
 let selectedTicketIndex = null;
+let countdownInterval = null;
+// Stocker les codes déjà utilisés globalement
+let usedCodes = JSON.parse(localStorage.getItem('wise03_used_codes')) || [];
 
 function saveDB() { localStorage.setItem('wise03_db', JSON.stringify(db)); }
-function updateUser() { const idx = db.findIndex(u=>u.email===currentUser.email); if(idx!==-1) { db[idx]=currentUser; saveDB(); } }
+function saveUsedCodes() { localStorage.setItem('wise03_used_codes', JSON.stringify(usedCodes)); }
 
-function clearCurrentTicket() { if (currentTicket.length && confirm("Effacer tous les matchs ?")) { currentTicket = []; renderCurrentTicket(); document.getElementById('result-box').style.display = 'none'; showToast("Ticket vidé"); } }
-function deleteSavedTicket(index) { if(confirm("Supprimer ce ticket ?")) { currentUser.tickets.splice(index,1); updateUser(); renderSavedTickets(); showToast("Ticket supprimé"); } }
-
-function canAnalyzeMatch(home, away) {
-    if(!currentUser) return false;
-    const key = `${home.toLowerCase()}|${away.toLowerCase()}`;
-    const now = Date.now();
-    if(!currentUser.matchHistory) currentUser.matchHistory = [];
-    currentUser.matchHistory = currentUser.matchHistory.filter(e => (now - e.timestamp) < 48*60*60*1000);
-    if(currentUser.matchHistory.some(e => e.key === key)) return false;
-    currentUser.matchHistory.push({ key, timestamp: now });
-    updateUser();
-    return true;
+function updateUser() {
+    const idx = db.findIndex(u => u.email === currentUser.email);
+    if (idx !== -1) { db[idx] = currentUser; saveDB(); }
 }
 
+// ============================================================
+// SYSTÈME D'ABONNEMENT / ACTIVATION AVEC COMPTE À REBOURS
+// ============================================================
 function validateActivationCode() {
     const code = document.getElementById('activation-code-input').value.trim();
-    if(!/^\d{15}$/.test(code)) { showCodeStatus("15 chiffres requis", false); return; }
-    if(currentUser.activationCodeUsed) { showCodeStatus("Code déjà utilisé", false); return; }
-    const count3 = (code.match(/3/g)||[]).length;
-    const count0 = (code.match(/0/g)||[]).length;
-    if(count3 === 3) { currentUser.isVerified = true; showCodeStatus("Compte activé !", true); showToast("✅ Compte activé avec succès"); }
-    else if(count0 === 2 && count3 === 1) { currentUser.isVerified = true; currentUser.isPremium = true; const exp = new Date(); exp.setDate(exp.getDate()+7); currentUser.premiumExpiry = exp.toISOString(); showCodeStatus("Premium 7 jours activé !", true); showToast("🎉 Mode Premium 7 jours activé"); }
-    else { showCodeStatus("Code invalide. Contactez l'admin", false); showToast("Code invalide", true); return; }
+    const statusDiv = document.getElementById('code-status');
+
+    if (!/^\d{15}$/.test(code)) {
+        showCodeStatus("❌ Le code doit contenir exactement 15 chiffres", false);
+        return;
+    }
+
+    // Vérifier si ce code a déjà été utilisé globalement
+    if (usedCodes.includes(code)) {
+        showCodeStatus("❌ Ce code a déjà été utilisé. Chaque code est à usage unique.", false);
+        showToast("Code déjà utilisé", true);
+        return;
+    }
+
+    // Vérifier si l'utilisateur a déjà un abonnement actif
+    if (currentUser.premiumExpiry && new Date(currentUser.premiumExpiry) > new Date()) {
+        showCodeStatus("⚠️ Vous avez déjà un abonnement actif. Attendez l'expiration.", false);
+        showToast("Abonnement déjà actif", true);
+        return;
+    }
+
+    // Analyser le code
+    const count3 = (code.match(/3/g) || []).length;
+    const count0 = (code.match(/0/g) || []).length;
+
+    if (count3 === 3) {
+        // Code standard → activation 30 jours
+        currentUser.isVerified = true;
+        currentUser.isPremium = false;
+        const exp = new Date();
+        exp.setDate(exp.getDate() + 30);
+        currentUser.premiumExpiry = exp.toISOString();
+        currentUser.activationDate = new Date().toISOString();
+        currentUser.subscriptionType = "STANDARD (30 jours)";
+        usedCodes.push(code);
+        saveUsedCodes();
+        showCodeStatus("✅ Compte activé pour 30 jours !", true);
+        showToast("🎉 Compte activé ! 30 jours d'accès");
+    } else if (count0 === 2 && count3 === 1) {
+        // Code premium → activation 7 jours premium
+        currentUser.isVerified = true;
+        currentUser.isPremium = true;
+        const exp = new Date();
+        exp.setDate(exp.getDate() + 7);
+        currentUser.premiumExpiry = exp.toISOString();
+        currentUser.activationDate = new Date().toISOString();
+        currentUser.subscriptionType = "💎 PREMIUM (7 jours)";
+        usedCodes.push(code);
+        saveUsedCodes();
+        showCodeStatus("💎 Premium activé pour 7 jours !", true);
+        showToast("🎉 Mode Premium 7 jours activé !");
+    } else {
+        showCodeStatus("❌ Code invalide. Contactez l'admin WhatsApp.", false);
+        showToast("Code invalide", true);
+        return;
+    }
+
     currentUser.activationCodeUsed = true;
     updateUser();
     checkVerificationStatus();
     renderProfile();
+    startCountdown();
 }
-function showCodeStatus(msg, success) { const div = document.getElementById('code-status'); div.innerHTML = `<div style="color:${success?'#22c55e':'#ef4444'}; font-size:13px;">${msg}</div>`; setTimeout(()=>div.innerHTML='',3000); }
 
+function showCodeStatus(msg, success) {
+    const div = document.getElementById('code-status');
+    div.innerHTML = `<div style="color:${success ? '#22c55e' : '#ef4444'}; font-size:13px; margin-top:8px;">${msg}</div>`;
+    setTimeout(() => div.innerHTML = '', 5000);
+}
+
+function checkSubscriptionExpiry() {
+    if (!currentUser || !currentUser.premiumExpiry) return;
+    const now = new Date();
+    const expiry = new Date(currentUser.premiumExpiry);
+    if (now >= expiry) {
+        currentUser.isVerified = false;
+        currentUser.isPremium = false;
+        currentUser.premiumExpiry = null;
+        currentUser.subscriptionType = null;
+        updateUser();
+        showToast("⚠️ Votre abonnement a expiré. Renouvelez avec un nouveau code.", true);
+        checkVerificationStatus();
+        renderProfile();
+        stopCountdown();
+    }
+}
+
+function startCountdown() {
+    stopCountdown();
+    updateCountdownDisplay();
+    countdownInterval = setInterval(() => {
+        updateCountdownDisplay();
+        checkSubscriptionExpiry();
+    }, 1000);
+}
+
+function stopCountdown() {
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+    }
+}
+
+function updateCountdownDisplay() {
+    const container = document.getElementById('countdown-display');
+    if (!container || !currentUser || !currentUser.premiumExpiry) {
+        if (container) container.innerHTML = '';
+        return;
+    }
+
+    const now = new Date();
+    const expiry = new Date(currentUser.premiumExpiry);
+    const diff = expiry - now;
+
+    if (diff <= 0) {
+        container.innerHTML = `
+            <div class="countdown-timer expired">
+                <div class="countdown-value" style="color:#ef4444;">EXPIRÉ</div>
+                <div class="countdown-label">Votre abonnement a expiré</div>
+            </div>`;
+        return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const pad = n => String(n).padStart(2, '0');
+    container.innerHTML = `
+        <div class="countdown-timer">
+            <div style="font-size:12px; color:var(--gold); font-weight:700;">⏱️ TEMPS RESTANT</div>
+            <div class="countdown-value" style="color:#22c55e;">
+                ${days > 0 ? days + 'j ' : ''}${pad(hours)}:${pad(minutes)}:${pad(seconds)}
+            </div>
+            <div class="countdown-label">
+                ${currentUser.subscriptionType || 'Abonnement'}<br>
+                Expire le ${expiry.toLocaleDateString('fr-FR')} à ${expiry.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})}
+            </div>
+        </div>`;
+}
+
+// ============================================================
+// AUTHENTIFICATION
+// ============================================================
 function loginUser() {
     const email = document.getElementById('login-email').value.trim();
     const pass = document.getElementById('login-pass').value;
     const user = db.find(u => u.email === email && u.pass === pass);
-    if(user) {
-        if(user.isBlocked) { document.getElementById('login-error').innerText = "Compte bloqué"; return; }
+    if (user) {
+        if (user.isBlocked) { document.getElementById('login-error').innerText = "⛔ Compte bloqué"; return; }
         currentUser = JSON.parse(JSON.stringify(user));
-        if(currentUser.premiumExpiry && new Date(currentUser.premiumExpiry) < new Date()) { currentUser.isPremium = false; currentUser.premiumExpiry = null; updateUser(); }
+        // Vérifier expiration
+        if (currentUser.premiumExpiry && new Date(currentUser.premiumExpiry) < new Date()) {
+            currentUser.isVerified = false;
+            currentUser.isPremium = false;
+            currentUser.premiumExpiry = null;
+            currentUser.subscriptionType = null;
+            updateUser();
+        }
         showDashboard();
-        showToast(`Bienvenue ${currentUser.name}`);
-    } else { document.getElementById('login-error').innerText = "Email ou mot de passe incorrect"; showToast("Connexion échouée", true); }
+        showToast(`👋 Bienvenue ${currentUser.name}`);
+    } else {
+        document.getElementById('login-error').innerText = "Email ou mot de passe incorrect";
+        showToast("Connexion échouée", true);
+    }
 }
 
 function registerUser() {
@@ -667,110 +1342,491 @@ function registerUser() {
     const email = document.getElementById('reg-email').value.trim();
     const whatsapp = document.getElementById('reg-whatsapp').value.trim();
     const pass = document.getElementById('reg-pass').value;
-    if(!name || !email || !whatsapp || !pass) { document.getElementById('email-error').innerText = "Tous les champs requis"; showToast("Veuillez remplir tous les champs", true); return; }
-    if(pass.length<4) { document.getElementById('email-error').innerText = "Min 4 caractères"; showToast("Mot de passe trop court", true); return; }
-    if(db.find(u=>u.email===email)) { document.getElementById('email-error').innerText = "Email déjà utilisé"; showToast("Email déjà utilisé", true); return; }
-    db.push({ name, email, whatsapp, pass, isVerified: false, isPremium: false, isBlocked: false, profileImage: null, messages: [], tickets: [], matchHistory: [], unreadMessages: 0, activationCodeUsed: false, createdAt: new Date().toLocaleString() });
+    if (!name || !email || !whatsapp || !pass) {
+        document.getElementById('email-error').innerText = "Tous les champs sont requis";
+        showToast("Veuillez remplir tous les champs", true);
+        return;
+    }
+    if (pass.length < 4) {
+        document.getElementById('email-error').innerText = "Mot de passe : min 4 caractères";
+        showToast("Mot de passe trop court", true);
+        return;
+    }
+    if (db.find(u => u.email === email)) {
+        document.getElementById('email-error').innerText = "Email déjà utilisé";
+        showToast("Email déjà utilisé", true);
+        return;
+    }
+    db.push({
+        name, email, whatsapp, pass,
+        isVerified: false, isPremium: false, isBlocked: false,
+        profileImage: null, messages: [], tickets: [],
+        matchHistory: [], activationCodeUsed: false,
+        premiumExpiry: null, subscriptionType: null, activationDate: null,
+        createdAt: new Date().toLocaleString()
+    });
     saveDB();
-    showToast("Inscription réussie ! Connectez-vous");
+    showToast("✅ Inscription réussie ! Connectez-vous");
     toggleAuth(false);
     document.getElementById('login-email').value = email;
 }
 
-// Autres fonctions (showDashboard, renderProfile, runAnalysis, addToTicket, renderCurrentTicket etc) restent strictement identiques avec seulement l'UI toast.
+// ============================================================
+// DASHBOARD & VUES
+// ============================================================
 function showDashboard() {
     document.getElementById('auth-screen').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';
     const dl = document.getElementById('teams-list');
     dl.innerHTML = '';
-    ALL_TEAMS.forEach(t => { let opt = document.createElement('option'); opt.value = t; dl.appendChild(opt); });
+    ALL_TEAM_NAMES.forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t;
+        dl.appendChild(opt);
+    });
     checkVerificationStatus();
     switchView('predict');
+    // Démarrer le compte à rebours si abonnement actif
+    if (currentUser.premiumExpiry && new Date(currentUser.premiumExpiry) > new Date()) {
+        startCountdown();
+    }
 }
+
 function checkVerificationStatus() {
     const alertBox = document.getElementById('verify-alert');
     const main = document.getElementById('predict-main');
-    if(currentUser.isVerified) { alertBox.style.display='none'; main.style.display='block'; }
-    else { alertBox.style.display='block'; main.style.display='none'; }
+    if (currentUser.isVerified) {
+        alertBox.style.display = 'none';
+        main.style.display = 'block';
+    } else {
+        alertBox.style.display = 'block';
+        main.style.display = 'none';
+    }
     const hint = document.getElementById('activation-hint-profile');
-    if(hint) hint.style.display = currentUser.isVerified ? 'none' : 'block';
+    if (hint) hint.style.display = currentUser.isVerified ? 'none' : 'block';
 }
+
 function renderProfile() {
     document.getElementById('prof-name').innerText = currentUser.name;
     document.getElementById('prof-email').innerText = currentUser.email;
     document.getElementById('prof-whatsapp').innerHTML = `📱 ${currentUser.whatsapp}`;
     const pic = document.getElementById('profile-pic-container');
-    pic.innerHTML = currentUser.profileImage ? `<img src="${currentUser.profileImage}" class="profile-pic">` : `<div class="profile-pic" style="background:var(--border); display:flex; align-items:center; justify-content:center;">📷</div>`;
-    let badge = currentUser.isPremium ? '<span class="status-badge" style="background:var(--pink);">💎 PREMIUM</span>' : (currentUser.isVerified ? '<span class="status-badge" style="background:var(--green);">✅ VÉRIFIÉ</span>' : '<span class="status-badge" style="background:var(--muted);">⏳ NON ACTIVÉ</span>');
-    let daysLeftHtml = '';
-    if(currentUser.isPremium && currentUser.premiumExpiry) {
-        const expiryDate = new Date(currentUser.premiumExpiry);
-        const diffDays = Math.ceil((expiryDate - new Date()) / (1000*60*60*24));
-        if(diffDays > 0) daysLeftHtml = `<div class="expiry-card"><div>⏰ Jours restants</div><div class="expiry-days">${diffDays}</div></div>`;
-        else daysLeftHtml = `<div class="expiry-card" style="background:#7f1a1a;"><div>⚠️ Premium expiré</div></div>`;
+    pic.innerHTML = currentUser.profileImage
+        ? `<img src="${currentUser.profileImage}" class="profile-pic">`
+        : `<div class="profile-pic" style="background:var(--border); display:flex; align-items:center; justify-content:center; font-size:32px;">📷</div>`;
+
+    let badge = '';
+    if (currentUser.isPremium) {
+        badge = '<span class="status-badge" style="background:var(--pink);">💎 PREMIUM</span>';
+    } else if (currentUser.isVerified) {
+        badge = '<span class="status-badge" style="background:var(--green);">✅ ACTIVÉ</span>';
+    } else {
+        badge = '<span class="status-badge" style="background:var(--muted);">⏳ NON ACTIVÉ</span>';
     }
     document.getElementById('prof-badge').innerHTML = badge;
-    document.getElementById('premium-expiry-info').innerHTML = daysLeftHtml;
+
+    // Info expiration
+    let expiryInfo = '';
+    if (currentUser.premiumExpiry) {
+        const expiryDate = new Date(currentUser.premiumExpiry);
+        const diffDays = Math.ceil((expiryDate - new Date()) / (1000 * 60 * 60 * 24));
+        if (diffDays > 0) {
+            expiryInfo = `<div class="expiry-card">
+                <div style="color:var(--muted);">${currentUser.subscriptionType || 'Abonnement'}</div>
+                <div class="expiry-days">${diffDays}</div>
+                <div style="font-size:11px; color:var(--muted);">jour(s) restant(s)</div>
+            </div>`;
+        } else {
+            expiryInfo = `<div class="expiry-card" style="background:#7f1a1a; border-color:var(--danger);">
+                <div>⚠️ Abonnement expiré</div>
+            </div>`;
+        }
+    }
+    document.getElementById('premium-expiry-info').innerHTML = expiryInfo;
 }
-function handleProfileUpload(input) { if(input.files[0]) { const fr = new FileReader(); fr.onload = e => { currentUser.profileImage = e.target.result; updateUser(); renderProfile(); showToast("Photo mise à jour"); }; fr.readAsDataURL(input.files[0]); } }
+
+function handleProfileUpload(input) {
+    if (input.files[0]) {
+        const fr = new FileReader();
+        fr.onload = e => {
+            currentUser.profileImage = e.target.result;
+            updateUser();
+            renderProfile();
+            showToast("📸 Photo mise à jour");
+        };
+        fr.readAsDataURL(input.files[0]);
+    }
+}
+
+// ============================================================
+// ANALYSE DE MATCH
+// ============================================================
+// Afficher les infos d'entité en temps réel
+document.getElementById('team-h').addEventListener('input', function() {
+    const info = getEntityInfo(this.value.trim());
+    const div = document.getElementById('entity-info-h');
+    if (info) {
+        div.innerHTML = `<span class="entity-badge ${info.type === 'club' ? 'entity-club' : 'entity-national'}">${info.type === 'club' ? '⚽ Club' : '🏳️ Sélection'}</span> ${info.competition} | ${info.tier.toUpperCase()}`;
+    } else {
+        div.innerHTML = '';
+    }
+});
+
+document.getElementById('team-a').addEventListener('input', function() {
+    const info = getEntityInfo(this.value.trim());
+    const div = document.getElementById('entity-info-a');
+    if (info) {
+        div.innerHTML = `<span class="entity-badge ${info.type === 'club' ? 'entity-club' : 'entity-national'}">${info.type === 'club' ? '⚽ Club' : '🏳️ Sélection'}</span> ${info.competition} | ${info.tier.toUpperCase()}`;
+    } else {
+        div.innerHTML = '';
+    }
+});
+
+function canAnalyzeMatch(home, away) {
+    if (!currentUser) return false;
+    const key = `${home.toLowerCase()}|${away.toLowerCase()}`;
+    const now = Date.now();
+    if (!currentUser.matchHistory) currentUser.matchHistory = [];
+    // Nettoyer les entrées > 48h
+    currentUser.matchHistory = currentUser.matchHistory.filter(e => (now - e.timestamp) < 48 * 60 * 60 * 1000);
+    if (currentUser.matchHistory.some(e => e.key === key)) return false;
+    currentUser.matchHistory.push({ key, timestamp: now });
+    updateUser();
+    return true;
+}
+
 function runAnalysis() {
     const h = document.getElementById('team-h').value.trim();
     const a = document.getElementById('team-a').value.trim();
-    if(!isValidTeam(h) || !isValidTeam(a)) { document.getElementById('ana-error').innerHTML = `❌ Équipe non reconnue.`; showToast("Équipe invalide", true); return; }
-    if(!currentUser.isVerified) { document.getElementById('ana-error').innerHTML = "Compte non activé."; showToast("Compte non activé", true); return; }
-    if(!canAnalyzeMatch(h,a)) { document.getElementById('ana-error').innerHTML = "Match déjà analysé (48h)."; showToast("Limite d'analyse atteinte", true); return; }
-    document.getElementById('ana-loader').style.display='inline-block';
-    document.getElementById('btn-ana').disabled=true;
-    setTimeout(()=>{
-        const pred = generatePrediction(h,a);
-        tempMatch = { h, a, market: pred.market, score: pred.scoreFinal, ht: pred.miTemps, niveauH: pred.niveauH, niveauA: pred.niveauA };
+    const errorDiv = document.getElementById('ana-error');
+    const incompatDiv = document.getElementById('incompatibility-alert');
+
+    errorDiv.innerHTML = '';
+    incompatDiv.style.display = 'none';
+
+    if (!h || !a) {
+        errorDiv.innerHTML = "❌ Veuillez remplir les deux équipes.";
+        showToast("Champs requis", true);
+        return;
+    }
+
+    // Validation d'incompatibilité
+    const compat = validateMatchCompatibility(h, a);
+    if (!compat.valid) {
+        incompatDiv.innerHTML = `
+            <div class="incompatibility-alert">
+                <div style="font-size:14px; font-weight:700;">🚫 Match Impossible</div>
+                <div style="font-size:12px; margin-top:8px;">${compat.reason}</div>
+                ${compat.suggestions ? `
+                    <div style="font-size:11px; margin-top:8px; color:var(--muted);">
+                        Suggestions :<br>${compat.suggestions.map(s => '• ' + s).join('<br>')}
+                    </div>` : ''}
+            </div>`;
+        incompatDiv.style.display = 'block';
+        showToast("Match incompatible", true);
+        return;
+    }
+
+    if (!currentUser.isVerified) {
+        errorDiv.innerHTML = "⚠️ Compte non activé. Obtenez un code d'activation.";
+        showToast("Compte non activé", true);
+        return;
+    }
+
+    // Vérifier expiration
+    if (currentUser.premiumExpiry && new Date(currentUser.premiumExpiry) < new Date()) {
+        errorDiv.innerHTML = "⚠️ Abonnement expiré. Renouvelez avec un nouveau code.";
+        showToast("Abonnement expiré", true);
+        return;
+    }
+
+    if (!canAnalyzeMatch(h, a)) {
+        errorDiv.innerHTML = "⏱️ Match déjà analysé (limite 48h).";
+        showToast("Déjà analysé récemment", true);
+        return;
+    }
+
+    // Lancer l'analyse
+    document.getElementById('ana-loader').style.display = 'inline-block';
+    document.getElementById('btn-ana').disabled = true;
+
+    setTimeout(() => {
+        const pred = generatePrediction(h, a);
+        tempMatch = {
+            h, a,
+            market: pred.market,
+            score: pred.scoreFinal,
+            ht: pred.scoreHT,
+            score2MT: pred.score2MT,
+            niveauH: pred.niveauH,
+            niveauA: pred.niveauA,
+            markets: pred.markets,
+            marketsDisplay: pred.marketsDisplay
+        };
+
         document.getElementById('res-h').innerHTML = `${h}<div class="team-strength">${pred.niveauH}</div>`;
         document.getElementById('res-a').innerHTML = `${a}<div class="team-strength">${pred.niveauA}</div>`;
-        document.getElementById('res-market').innerText = tempMatch.market;
-        document.getElementById('res-ht').innerText = `Mi-temps estimée: ${tempMatch.ht}`;
-        document.getElementById('res-score').innerText = tempMatch.score;
+        document.getElementById('res-market').innerText = pred.market;
+        document.getElementById('res-ht').innerHTML = `Mi-temps: <b>${pred.scoreHT}</b> | 2ème MT: <b>${pred.score2MT}</b>`;
+        document.getElementById('res-score').innerText = pred.scoreFinal;
         document.getElementById('res-score-exact').style.display = 'block';
-        document.getElementById('result-box').style.display='block';
-        document.getElementById('ana-loader').style.display='none';
-        document.getElementById('btn-ana').disabled=false;
+
+        // Afficher les 23 marchés
+        const grid = document.getElementById('markets-grid');
+        grid.innerHTML = pred.marketsDisplay.map(m => `
+            <div class="market-item">
+                <span>${m.label}</span>
+                <span class="${m.isYes ? 'market-val-yes' : 'market-val-no'}">${m.value}</span>
+            </div>`).join('');
+        document.getElementById('markets-display').style.display = 'block';
+
+        document.getElementById('result-box').style.display = 'block';
+        document.getElementById('ana-loader').style.display = 'none';
+        document.getElementById('btn-ana').disabled = false;
         document.getElementById('ana-error').innerHTML = '';
-    }, 600);
+    }, 800);
 }
-function addToTicket() { if(tempMatch) { currentTicket.push({...tempMatch}); renderCurrentTicket(); document.getElementById('result-box').style.display='none'; showToast("Match ajouté au coupon"); } }
+
+// ============================================================
+// GESTION DU COUPON / TICKET
+// ============================================================
+function clearCurrentTicket() {
+    if (currentTicket.length && confirm("Effacer tous les matchs du coupon ?")) {
+        currentTicket = [];
+        renderCurrentTicket();
+        document.getElementById('result-box').style.display = 'none';
+        showToast("Coupon vidé");
+    }
+}
+
+function addToTicket() {
+    if (tempMatch) {
+        currentTicket.push({ ...tempMatch });
+        renderCurrentTicket();
+        document.getElementById('result-box').style.display = 'none';
+        showToast("✅ Match ajouté au coupon");
+    }
+}
+
 function renderCurrentTicket() {
     const container = document.getElementById('ticket-list');
     document.getElementById('current-ticket').style.display = currentTicket.length ? 'block' : 'none';
     document.getElementById('ticket-count').innerText = currentTicket.length;
-    container.innerHTML = currentTicket.map((m,i)=>`<div class="ticket-item"><div>${m.h} vs ${m.a}<br><b>${m.market}</b> | Score: ${m.score}<br>Mi-temps: ${m.ht}</div><span style="color:var(--danger);cursor:pointer;" onclick="removeFromTicket(${i})">✖</span></div>`).join('');
+    container.innerHTML = currentTicket.map((m, i) => `
+        <div class="ticket-item">
+            <div style="flex:1; font-size:12px;">
+                <b>${m.h}</b> vs <b>${m.a}</b><br>
+                🎯 ${m.market} | 📊 Score: ${m.score}<br>
+                ⏱️ 1MT: ${m.ht} | 2MT: ${m.score2MT}
+            </div>
+            <span style="color:var(--danger); cursor:pointer; font-size:16px;" onclick="removeFromTicket(${i})">✖</span>
+        </div>`).join('');
 }
-function removeFromTicket(i){ currentTicket.splice(i,1); renderCurrentTicket(); showToast("Match retiré"); }
-function saveTicket() { if(!currentTicket.length) return; currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:[...currentTicket]}); currentTicket = []; renderCurrentTicket(); updateUser(); showToast("Ticket enregistré !"); switchView('tickets'); }
+
+function removeFromTicket(i) {
+    currentTicket.splice(i, 1);
+    renderCurrentTicket();
+    showToast("Match retiré");
+}
+
+function saveTicket() {
+    if (!currentTicket.length) return;
+    currentUser.tickets.unshift({
+        date: new Date().toLocaleString(),
+        matches: [...currentTicket]
+    });
+    currentTicket = [];
+    renderCurrentTicket();
+    updateUser();
+    showToast("💾 Ticket enregistré !");
+    switchView('tickets');
+}
+
+// ============================================================
+// VUE TICKETS SAUVEGARDÉS
+// ============================================================
 function renderSavedTickets() {
     const container = document.getElementById('tickets-list-view');
-    if(!currentUser.tickets.length) { container.innerHTML='<p style="text-align:center; color:var(--muted);">Aucun ticket.</p>'; return; }
-    container.innerHTML = currentUser.tickets.map((t,idx)=>`<div class="card ticket-card"><div class="ticket-header"><div style="color:var(--primary);">📅 ${t.date}</div><button class="delete-ticket-btn" onclick="event.stopPropagation(); deleteSavedTicket(${idx})">🗑️ Supprimer</button></div><div onclick="viewTicketDetail(${idx})">📊 ${t.matches.length} match(s)</div></div>`).join('');
+    if (!currentUser.tickets.length) {
+        container.innerHTML = '<p style="text-align:center; color:var(--muted); padding:40px 0;">🎫 Aucun ticket sauvegardé.</p>';
+        return;
+    }
+    container.innerHTML = currentUser.tickets.map((t, idx) => `
+        <div class="card ticket-card">
+            <div class="ticket-header">
+                <div style="color:var(--primary); font-weight:700;">📅 ${t.date}</div>
+                <button class="delete-ticket-btn" onclick="event.stopPropagation(); deleteSavedTicket(${idx})">🗑️</button>
+            </div>
+            <div onclick="viewTicketDetail(${idx})" style="cursor:pointer; margin-top:8px;">
+                📊 ${t.matches.length} match(s)
+                <div style="font-size:11px; color:var(--muted); margin-top:4px;">
+                    ${t.matches.slice(0, 3).map(m => m.h + ' vs ' + m.a).join(', ')}${t.matches.length > 3 ? '...' : ''}
+                </div>
+            </div>
+        </div>`).join('');
 }
-function viewTicketDetail(idx) { selectedTicketIndex = idx; const t = currentUser.tickets[idx]; const container = document.getElementById('ticket-detail-content'); container.innerHTML = `<div class="detail-header" style="background:linear-gradient(135deg,var(--primary),#1d4ed8); padding:15px; border-radius:16px; margin-bottom:15px; text-align:center;"><h3>🎫 Détail</h3><div>${t.date}</div></div><div class="card">${t.matches.map(m=>`<div class="ticket-item"><b>${m.h} vs ${m.a}</b><br>🎯 ${m.market}<br>📊 Score: ${m.score}<br>⏱️ Mi-temps: ${m.ht}</div>`).join('')}</div><div style="display:flex; gap:10px; margin-top:10px;"><button class="btn btn-double" onclick="duplicateSavedTicket()">🔄 DOUBLER</button><button class="btn btn-gourmand" onclick="createGourmandFromTicket()">🍽️ GOURMAND</button><button class="btn btn-danger" onclick="deleteThisTicket()">🗑️ SUPPRIMER</button></div>`; document.getElementById('view-tickets').style.display = 'none'; document.getElementById('view-ticket-detail').style.display = 'block'; }
-function deleteThisTicket() { if(selectedTicketIndex!==null && confirm("Supprimer ?")) { currentUser.tickets.splice(selectedTicketIndex,1); updateUser(); backToTicketsList(); showToast("Ticket supprimé"); } }
-function duplicateSavedTicket() { if(selectedTicketIndex===null) return; const orig = currentUser.tickets[selectedTicketIndex]; const newMatches = orig.matches.slice(0,4).map(m=>{ const gen = generatePrediction(m.h,m.a); return {h:m.h, a:m.a, market:gen.market, score:gen.scoreFinal, ht:gen.miTemps}; }); currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:newMatches}); updateUser(); showToast(`Ticket doublé (${newMatches.length} matchs)`); backToTicketsList(); }
-function createGourmandFromTicket() { if(selectedTicketIndex===null) return; let allMatches = []; for(const u of db) if(u.email!==currentUser.email) for(const t of u.tickets) for(const m of t.matches) allMatches.push(m); if(!allMatches.length) allMatches = currentUser.tickets[selectedTicketIndex].matches; const gourmand = allMatches.sort(()=>0.5-Math.random()).slice(0, currentUser.isPremium ? 12 : 5).map(m=>{ const gen = generatePrediction(m.h,m.a); return {h:m.h, a:m.a, market:gen.market, score:gen.scoreFinal, ht:gen.miTemps}; }); currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:gourmand}); updateUser(); showToast(`Ticket Gourmand (${gourmand.length} matchs)`); backToTicketsList(); }
-function backToTicketsList() { document.getElementById('view-ticket-detail').style.display = 'none'; document.getElementById('view-tickets').style.display = 'block'; renderSavedTickets(); selectedTicketIndex = null; }
-function switchView(view) {
-    document.getElementById('view-predict').style.display = view==='predict'?'block':'none';
-    document.getElementById('view-tickets').style.display = view==='tickets'?'block':'none';
-    document.getElementById('view-profile').style.display = view==='profile'?'block':'none';
+
+function deleteSavedTicket(index) {
+    if (confirm("Supprimer ce ticket ?")) {
+        currentUser.tickets.splice(index, 1);
+        updateUser();
+        renderSavedTickets();
+        showToast("Ticket supprimé");
+    }
+}
+
+function viewTicketDetail(idx) {
+    selectedTicketIndex = idx;
+    const t = currentUser.tickets[idx];
+    const container = document.getElementById('ticket-detail-content');
+    container.innerHTML = `
+        <div style="background:linear-gradient(135deg,var(--primary),#1d4ed8); padding:15px; border-radius:16px; margin-bottom:15px; text-align:center;">
+            <h3>🎫 Détail du Ticket</h3>
+            <div style="font-size:12px; color:rgba(255,255,255,0.8);">${t.date}</div>
+            <div style="font-size:14px; font-weight:700; margin-top:4px;">${t.matches.length} match(s)</div>
+        </div>
+        <div class="card">
+            ${t.matches.map((m, mi) => `
+                <div class="ticket-item" style="flex-direction:column; align-items:flex-start; padding-bottom:8px; margin-bottom:8px;">
+                    <div style="font-weight:700;">${mi + 1}. ${m.h} vs ${m.a}</div>
+                    <div style="font-size:11px; margin-top:4px;">
+                        🎯 <b>${m.market}</b><br>
+                        📊 Score: <b>${m.score}</b> (1MT: ${m.ht}, 2MT: ${m.score2MT})<br>
+                        <span class="entity-badge entity-club">${m.niveauH}</span> vs <span class="entity-badge entity-national">${m.niveauA}</span>
+                    </div>
+                    ${m.marketsDisplay ? `
+                        <div class="markets-grid" style="width:100%; margin-top:6px;">
+                            ${m.marketsDisplay.slice(0, 8).map(mk => `
+                                <div class="market-item">
+                                    <span style="font-size:9px;">${mk.label}</span>
+                                    <span class="${mk.isYes ? 'market-val-yes' : 'market-val-no'}" style="font-size:9px;">${mk.value}</span>
+                                </div>`).join('')}
+                        </div>` : ''}
+                </div>`).join('')}
+        </div>
+        <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
+            <button class="btn btn-double" onclick="duplicateSavedTicket()" style="flex:1;">🔄 DOUBLER</button>
+            <button class="btn btn-gourmand" onclick="createGourmandFromTicket()" style="flex:1;">🍽️ GOURMAND</button>
+            <button class="btn btn-danger" onclick="deleteThisTicket()" style="flex:1;">🗑️ SUPPRIMER</button>
+        </div>`;
+    document.getElementById('view-tickets').style.display = 'none';
+    document.getElementById('view-ticket-detail').style.display = 'block';
+}
+
+function deleteThisTicket() {
+    if (selectedTicketIndex !== null && confirm("Supprimer ce ticket ?")) {
+        currentUser.tickets.splice(selectedTicketIndex, 1);
+        updateUser();
+        backToTicketsList();
+        showToast("Ticket supprimé");
+    }
+}
+
+function duplicateSavedTicket() {
+    if (selectedTicketIndex === null) return;
+    const orig = currentUser.tickets[selectedTicketIndex];
+    const newMatches = orig.matches.slice(0, 4).map(m => {
+        const gen = generatePrediction(m.h, m.a);
+        return {
+            h: m.h, a: m.a, market: gen.market, score: gen.scoreFinal,
+            ht: gen.scoreHT, score2MT: gen.score2MT, niveauH: gen.niveauH,
+            niveauA: gen.niveauA, markets: gen.markets, marketsDisplay: gen.marketsDisplay
+        };
+    });
+    currentUser.tickets.unshift({ date: new Date().toLocaleString(), matches: newMatches });
+    updateUser();
+    showToast(`🔄 Ticket doublé (${newMatches.length} matchs)`);
+    backToTicketsList();
+}
+
+function createGourmandFromTicket() {
+    if (selectedTicketIndex === null) return;
+    let allMatches = [];
+    for (const u of db) {
+        if (u.email !== currentUser.email) {
+            for (const t of u.tickets) {
+                for (const m of t.matches) allMatches.push(m);
+            }
+        }
+    }
+    if (!allMatches.length) allMatches = currentUser.tickets[selectedTicketIndex].matches;
+    const maxMatches = currentUser.isPremium ? 12 : 5;
+    const gourmand = allMatches.sort(() => 0.5 - Math.random()).slice(0, maxMatches).map(m => {
+        const gen = generatePrediction(m.h, m.a);
+        return {
+            h: m.h, a: m.a, market: gen.market, score: gen.scoreFinal,
+            ht: gen.scoreHT, score2MT: gen.score2MT, niveauH: gen.niveauH,
+            niveauA: gen.niveauA, markets: gen.markets, marketsDisplay: gen.marketsDisplay
+        };
+    });
+    currentUser.tickets.unshift({ date: new Date().toLocaleString(), matches: gourmand });
+    updateUser();
+    showToast(`🍽️ Ticket Gourmand (${gourmand.length} matchs)`);
+    backToTicketsList();
+}
+
+function backToTicketsList() {
     document.getElementById('view-ticket-detail').style.display = 'none';
-    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-    if(view==='predict') document.querySelector('.nav-item:first-child').classList.add('active');
-    else if(view==='tickets') document.querySelector('.nav-item:nth-child(2)').classList.add('active');
-    else document.querySelector('.nav-item:last-child').classList.add('active');
-    if(view==='tickets') renderSavedTickets();
-    if(view==='profile') renderProfile();
+    document.getElementById('view-tickets').style.display = 'block';
+    renderSavedTickets();
+    selectedTicketIndex = null;
 }
-function toggleAuth(reg) { document.getElementById('auth-screen').style.display = reg?'none':'block'; document.getElementById('register-screen').style.display = reg?'block':'none'; }
-function toggleAssistant() { const chat = document.getElementById('assistant-chat'); chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex'; }
-function askZola() { const inp=document.getElementById('assistant-input'); if(!inp.value.trim()) return; const msgDiv=document.getElementById('assistant-messages'); msgDiv.innerHTML+=`<div style="background:var(--primary); margin:5px 0 5px auto; padding:8px; border-radius:12px; max-width:85%;">${inp.value}</div>`; inp.value=''; setTimeout(()=>{ msgDiv.innerHTML+=`<div style="background:var(--border); margin:5px 0; padding:8px; border-radius:12px;">🤖 Utilisez "Doubler" ou "Gourmand" sur vos tickets pour maximiser vos gains !</div>`; msgDiv.scrollTop=msgDiv.scrollHeight; },500); }
-function logout(){ location.reload(); }
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function switchView(view) {
+    document.getElementById('view-predict').style.display = view === 'predict' ? 'block' : 'none';
+    document.getElementById('view-tickets').style.display = view === 'tickets' ? 'block' : 'none';
+    document.getElementById('view-profile').style.display = view === 'profile' ? 'block' : 'none';
+    document.getElementById('view-ticket-detail').style.display = 'none';
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    if (view === 'predict') document.querySelector('.nav-item:first-child').classList.add('active');
+    else if (view === 'tickets') document.querySelector('.nav-item:nth-child(2)').classList.add('active');
+    else document.querySelector('.nav-item:last-child').classList.add('active');
+    if (view === 'tickets') renderSavedTickets();
+    if (view === 'profile') { renderProfile(); updateCountdownDisplay(); }
+}
+
+function toggleAuth(reg) {
+    document.getElementById('auth-screen').style.display = reg ? 'none' : 'block';
+    document.getElementById('register-screen').style.display = reg ? 'block' : 'none';
+}
+
+function toggleAssistant() {
+    const chat = document.getElementById('assistant-chat');
+    chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex';
+}
+
+function askZola() {
+    const inp = document.getElementById('assistant-input');
+    if (!inp.value.trim()) return;
+    const msgDiv = document.getElementById('assistant-messages');
+    const userMsg = inp.value.trim();
+    msgDiv.innerHTML += `<div style="background:var(--primary); margin:5px 0 5px auto; padding:8px; border-radius:12px; max-width:85%; text-align:right;">${userMsg}</div>`;
+    inp.value = '';
+
+    // Réponses intelligentes de Zola
+    let response = "🤖 Posez-moi une question sur les matchs, marchés ou stratégies !";
+    const lower = userMsg.toLowerCase();
+    if (lower.includes('gourmand')) response = "🍽️ Le ticket Gourmand combine les meilleurs matchs de tous les utilisateurs. Utilisez-le pour maximiser vos chances !";
+    else if (lower.includes('doubler')) response = "🔄 L'option Doubler recrée un ticket avec les mêmes équipes mais de nouvelles prédictions IA. Parfait pour varier !";
+    else if (lower.includes('over') || lower.includes('under')) response = "📊 Over/Under : Over 2.5 = 3 buts ou plus. Under 2 = 1 but maximum. Consultez les 23 marchés pour chaque match !";
+    else if (lower.includes('premium')) response = "💎 Le Premium donne accès à des tickets Gourmand jusqu'à 12 matchs (au lieu de 5). Contactez l'admin !";
+    else if (lower.includes('code') || lower.includes('activation')) response = "🔑 Chaque code 15 chiffres est à usage UNIQUE. Contactez l'admin WhatsApp : +243 983 971 254";
+    else if (lower.includes('btts')) response = "⚽ BTTS = Both Teams To Score = Les 2 équipes marquent. Consultez le marché 'BTTS Oui/Non' dans les 23 marchés !";
+    else if (lower.includes('merci') || lower.includes('bon')) response = "😊 De rien ! Bonne chance avec vos analyses !";
+
+    setTimeout(() => {
+        msgDiv.innerHTML += `<div style="background:var(--border); margin:5px 0; padding:8px; border-radius:12px;">${response}</div>`;
+        msgDiv.scrollTop = msgDiv.scrollHeight;
+    }, 500);
+}
+
+function logout() {
+    stopCountdown();
+    location.reload();
+}
 </script>
 </body>
-                                                                                            </html>
+</html>
