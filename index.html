@@ -1221,7 +1221,7 @@ function validateActivationCode() {
         showToast("🎉 Abonnement 7 jours activé !");
     }
     // RÈGLE 3 : 2 fois le chiffre 3 ET 2 fois le chiffre 0 ET 2 fois le chiffre 2 → Abonnement 30 JOURS
-    else if (count3 === 2 && count0 === 2 && count2 === 2) {
+    else if (count3 === 2 && count0 === 2 && count3 === 7) {
         currentUser.isVerified = true;
         currentUser.isPremium = true;
         const exp = new Date();
