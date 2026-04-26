@@ -5,17 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>WISE03.BET — IA Sportive Pro</title>
     <style>
-        :root {
-            --bg: #020617; --card: #0f172a; --border: #1e293b; --text: #f1f5f9;
-            --muted: #94a3b8; --green: #22c55e; --pink: #d946ef; --cyan: #06b6d4;
-            --primary: #3b82f6; --danger: #ef4444; --gold: #eab308; --warning: #f97316;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
-        body { background: var(--bg); color: var(--text); overflow-x: hidden; touch-action: pan-y pinch-zoom; }
-        .app-shell { max-width: 480px; margin: 0 auto; padding: 15px; min-height: 100vh; padding-bottom: 120px; }
-        .card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5); }
-        input, select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: #1e293b; color: #fff; margin-bottom: 12px; font-size: 13px; }
-        .btn { padding: 12px; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; transition: 0.3s; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+
+        body {
+            background: #020617;
+            color: #f1f5f9;
+            overflow-x: hidden;
+            touch-action: pan-y pinch-zoom;
+        }
+
+        /* VARIABLES */
+        :root {
+            --bg: #020617;
+            --card: #0f172a;
+            --border: #1e293b;
+            --text: #f1f5f9;
+            --muted: #94a3b8;
+            --green: #22c55e;
+            --pink: #d946ef;
+            --cyan: #06b6d4;
+            --primary: #3b82f6;
+            --danger: #ef4444;
+            --gold: #eab308;
+            --warning: #f97316;
+        }
+
+        .app-shell {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 15px;
+            min-height: 100vh;
+            padding-bottom: 120px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: #1e293b;
+            color: #fff;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .btn {
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.2s;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
         .btn-primary { background: linear-gradient(135deg, var(--primary), #1d4ed8); color: white; flex: 1; }
         .btn-success { background: var(--green); color: #000; flex: 1; }
         .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); flex: 1; }
@@ -24,43 +85,195 @@
         .btn-gourmand { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; }
         .btn-danger { background: var(--danger); color: white; }
         .btn-warning { background: var(--warning); color: black; }
-        .nav-bar { display: flex; background: var(--card); border: 1px solid var(--border); border-radius: 18px; margin-bottom: 20px; padding: 5px; }
-        .nav-item { flex: 1; padding: 10px; text-align: center; cursor: pointer; font-size: 10px; font-weight: 800; border-radius: 12px; color: var(--muted); transition: all 0.2s; }
-        .nav-item.active { background: var(--primary); color: white; }
-        .analysis-res { font-size: 22px; font-weight: 900; color: var(--green); text-align: center; }
-        .vs-container { display: flex; align-items: center; justify-content: space-around; margin: 15px 0; }
-        .team-name { font-weight: 900; font-size: 13px; text-align: center; flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; flex-direction: column; }
-        .premium-score { background: linear-gradient(135deg, var(--pink), #a21caf); border-radius: 16px; padding: 15px; text-align: center; color: white; }
-        .loader { width: 18px; height: 18px; border: 3px solid #fff; border-bottom-color: transparent; border-radius: 50%; display: none; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .status-badge { font-size: 10px; padding: 4px 8px; border-radius: 10px; display: inline-block; }
-        .profile-pic { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 10px auto; border: 3px solid var(--primary); }
-        .ticket-item { border-left: 3px solid var(--primary); margin-bottom: 8px; padding-left: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .back-btn { margin-bottom: 15px; background: var(--border); padding: 8px 15px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 12px; }
-        .team-strength { font-size: 10px; margin-top: 4px; color: var(--gold); }
-        .detail-header { background: linear-gradient(135deg, var(--primary), #1d4ed8); padding: 15px; border-radius: 16px; margin-bottom: 15px; text-align: center; }
-        .splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #020617, #0f172a); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; }
-        .splash-logo { font-size: 42px; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 40px; }
-        .splash-loader { width: 60px; height: 60px; border: 4px solid rgba(59,130,246,0.2); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
-        .activation-hint { background: #1e2a3a; border-radius: 12px; padding: 12px; margin: 16px 0; font-size: 12px; color: var(--warning); text-align: center; }
-        .admin-contact { background: linear-gradient(135deg, #1f2937, #111827); padding: 15px; border-radius: 16px; text-align: center; margin-top: 15px; border: 1px solid var(--gold); }
-        .admin-contact a { color: var(--gold); text-decoration: none; font-weight: bold; }
-        .btn-assistant { background: linear-gradient(135deg, var(--gold), var(--warning)); color: black; border: none; border-radius: 40px; padding: 10px 15px; font-weight: bold; cursor: pointer; }
-        .ticket-card { cursor: pointer; transition: transform 0.2s; }
-        .ticket-card:hover { transform: scale(0.98); }
-        .delete-ticket-btn { background: var(--danger); border: none; color: white; padding: 4px 8px; border-radius: 8px; cursor: pointer; font-size: 10px; margin-left: 10px; }
-        .ticket-header { display: flex; justify-content: space-between; align-items: center; }
-        .clear-ticket-btn { background: var(--danger); color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 11px; margin-left: 10px; }
-        .days-left { background: var(--gold); color: black; padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-top: 8px; display: inline-block; }
-        .expiry-card { background: linear-gradient(135deg, #1e293b, #0f172a); border-radius: 16px; padding: 12px; margin-top: 10px; text-align: center; }
-        .expiry-days { font-size: 24px; font-weight: 900; color: var(--gold); }
+
+        .nav-bar {
+            display: flex;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            margin-bottom: 20px;
+            padding: 5px;
+        }
+
+        .nav-item {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 800;
+            border-radius: 12px;
+            color: var(--muted);
+            transition: all 0.2s;
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .analysis-res {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--green);
+            text-align: center;
+        }
+
+        .vs-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            margin: 15px 0;
+        }
+
+        .team-name {
+            font-weight: 900;
+            font-size: 13px;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-direction: column;
+        }
+
+        .premium-score {
+            background: linear-gradient(135deg, var(--pink), #a21caf);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            color: white;
+        }
+
+        .loader {
+            width: 18px;
+            height: 18px;
+            border: 3px solid #fff;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: none;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .status-badge {
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .profile-pic {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 10px auto;
+            border: 3px solid var(--primary);
+        }
+
+        .ticket-item {
+            border-left: 3px solid var(--primary);
+            margin-bottom: 8px;
+            padding-left: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .clear-ticket-btn, .delete-ticket-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 10px;
+        }
+
+        .expiry-card {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-radius: 16px;
+            padding: 12px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .expiry-days {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--gold);
+        }
+
+        .admin-contact {
+            background: linear-gradient(135deg, #1f2937, #111827);
+            padding: 15px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 15px;
+            border: 1px solid var(--gold);
+        }
+
+        .activation-hint {
+            background: #1e2a3a;
+            border-radius: 12px;
+            padding: 12px;
+            margin: 16px 0;
+            font-size: 12px;
+            color: var(--warning);
+            text-align: center;
+        }
+
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 10%, #020617, #030014);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            transition: opacity 0.6s ease;
+        }
+
+        .splash-logo {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 40px;
+        }
+
+        .splash-loader {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(59, 130, 246, 0.2);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
     </style>
 </head>
 <body>
 <div class="splash-screen" id="splashScreen">
     <div class="splash-logo">WISE03<span style="color:white;">.BET</span></div>
     <div class="splash-loader"></div>
-    <div style="margin-top: 20px; color: var(--muted);">Chargement...</div>
+    <div style="margin-top: 20px; color: #94a3b8;">IA Sportive Pro — Chargement...</div>
 </div>
 
 <div class="app-shell" id="appShell" style="display: none;">
@@ -134,7 +347,7 @@
         </div>
 
         <div id="view-tickets" style="display:none;"><div id="tickets-list-view"></div></div>
-        <div id="view-ticket-detail" style="display:none;"><div class="back-btn" onclick="backToTicketsList()">← Retour</div><div id="ticket-detail-content"></div></div>
+        <div id="view-ticket-detail" style="display:none;"><div class="back-btn" style="margin-bottom:15px; background:var(--border); padding:8px 15px; border-radius:20px; display:inline-flex; align-items:center; gap:8px; cursor:pointer;" onclick="backToTicketsList()">← Retour</div><div id="ticket-detail-content"></div></div>
 
         <div id="view-profile" style="display:none;">
             <div class="card" style="text-align:center;">
@@ -161,85 +374,120 @@
 
     <div id="assistant-chat" style="position:fixed; bottom:80px; right:20px; width:300px; background:var(--card); border:1px solid var(--border); border-radius:16px; display:none; flex-direction:column; z-index:999;">
         <div class="assistant-header" style="background:linear-gradient(135deg,var(--gold),var(--warning)); padding:12px; border-radius:16px 16px 0 0; display:flex; justify-content:space-between; cursor:pointer;" onclick="toggleAssistant()"><span>🤖 Zola</span><span>▼</span></div>
-        <div class="assistant-messages" id="assistant-messages" style="padding:10px; max-height:300px; overflow-y:auto; font-size:12px;"><div class="assistant-bubble assistant-bot" style="background:var(--border); margin:5px 0; padding:8px; border-radius:12px;">👋 Doublez vos tickets avec l'option gourmande !</div></div>
+        <div class="assistant-messages" id="assistant-messages" style="padding:10px; max-height:300px; overflow-y:auto; font-size:12px;"><div class="assistant-bubble" style="background:var(--border); margin:5px 0; padding:8px; border-radius:12px;">👋 Doublez vos tickets avec l'option gourmande !</div></div>
         <div class="assistant-input" style="display:flex; padding:10px; gap:5px;"><input type="text" id="assistant-input" style="flex:1; margin:0; padding:8px;" placeholder="Question..."><button class="btn btn-primary" onclick="askZola()" style="padding:8px;">➤</button></div>
     </div>
-    <button class="btn-assistant" style="position:fixed; bottom:20px; right:20px; z-index:998;" onclick="toggleAssistant()">🤖 Zola</button>
+    <button class="btn-assistant" style="position:fixed; bottom:20px; right:20px; background:linear-gradient(135deg,var(--gold),var(--warning)); color:black; border:none; border-radius:40px; padding:10px 15px; font-weight:bold; cursor:pointer; z-index:998;" onclick="toggleAssistant()">🤖 Zola</button>
 </div>
 
 <script>
-// CORRECTION SPLASH
+// ----- CORRECTION SPLASH SCREEN (fiable) -----
 (function() {
     const splash = document.getElementById('splashScreen');
     const appShell = document.getElementById('appShell');
     if (splash && appShell) {
-        setTimeout(function() {
-            splash.style.display = 'none';
-            appShell.style.display = 'block';
-        }, 800);
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                splash.style.opacity = '0';
+                setTimeout(function() {
+                    splash.style.display = 'none';
+                    appShell.style.display = 'block';
+                }, 400);
+            }, 1000);
+        });
     }
 })();
 
-// ======================= TOUS LES CLUBS (1000+ équipes) =======================
-const ALL_TEAMS = [
-    "Manchester City", "Arsenal", "Liverpool", "Aston Villa", "Tottenham", "Chelsea", "Manchester United", "Newcastle", "West Ham", "Brighton", "Wolves", "Fulham", "Bournemouth", "Crystal Palace", "Brentford", "Everton", "Nottingham Forest", "Luton Town", "Burnley", "Sheffield United",
-    "Real Madrid", "FC Barcelone", "Atlético Madrid", "Girona", "Athletic Bilbao", "Real Sociedad", "Real Betis", "Valencia", "Villarreal", "Sevilla", "Osasuna", "Getafe", "Las Palmas", "Alavés", "Rayo Vallecano", "Mallorca", "Celta Vigo", "Cádiz", "Granada", "Almería",
-    "Inter Milan", "AC Milan", "Juventus", "AS Roma", "Atalanta", "Napoli", "Lazio", "Fiorentina", "Bologna", "Torino", "Monza", "Genoa", "Lecce", "Frosinone", "Udinese", "Sassuolo", "Verona", "Cagliari", "Empoli", "Salernitana",
-    "Bayer Leverkusen", "Bayern Munich", "Stuttgart", "RB Leipzig", "Dortmund", "Eintracht Frankfurt", "Hoffenheim", "Freiburg", "Heidenheim", "Augsburg", "Werder Bremen", "Wolfsburg", "Gladbach", "Bochum", "Union Berlin", "Mainz 05", "FC Köln", "Darmstadt",
-    "Paris Saint-Germain", "AS Monaco", "Brest", "LOSC Lille", "OGC Nice", "Lyon", "Marseille", "Lens", "Reims", "Rennes", "Toulouse", "Montpellier", "Strasbourg", "Le Havre", "Nantes", "Lorient", "Clermont", "Metz",
-    "PSV Eindhoven", "Feyenoord", "Twente", "AZ Alkmaar", "Ajax", "NEC Nijmegen", "Utrecht", "Go Ahead Eagles", "Sparta Rotterdam", "Fortuna Sittard",
-    "Benfica", "Sporting CP", "FC Porto", "Braga", "Vitoria Guimaraes", "Moreirense", "Arouca", "Famalicao", "Gil Vicente", "Boavista",
-    "TP Mazembe", "AS Vita Club", "FC Saint-Éloi Lupopo", "Maniema Union", "DC Motema Pembe", "FC Lubumbashi Sport", "Don Bosco", "Sanga Balende", "JS Bazano", "Blessing Lualaba",
-    "Al Ahly", "Zamalek", "Pyramids FC", "Al Masry", "Modern Future", "Raja Casablanca", "Wydad AC", "AS FAR", "RS Berkane", "FUS Rabat",
-    "Espérance de Tunis", "Étoile du Sahel", "Club Africain", "CS Sfaxien", "Stade Tunisien", "Mamelodi Sundowns", "Orlando Pirates", "Kaizer Chiefs", "SuperSport United", "Cape Town City",
-    "Simba SC", "Young Africans", "Azam FC", "Gor Mahia", "Tusker FC", "ZESCO United", "Red Arrows", "Petro Luanda", "Sagrada Esperança", "Primeiro de Agosto"
-"Leicester City", "Leeds United", "Southampton", "Ipswich Town", "West Bromwich Albion", "Norwich City", "Hull City", "Coventry City", "Middlesbrough", "Cardiff City", "Preston North End", "Bristol City", "Sunderland", "Swansea City", "Watford", "Millwall", "Blackburn Rovers", "Plymouth Argyle", "Huddersfield Town", "Sheffield Wednesday", "Birmingham City", "Portsmouth", "Derby County", "Bolton Wanderers", "Peterborough United", "Barnsley", "Oxford United", "Lincoln City", "Leganés", "Real Valladolid", "Eibar", "Espanyol", "Real Oviedo", "Racing Santander", "Elche", "Levante", "Sporting Gijón", "Burgos CF", "Racing Ferrol", "Tenerife", "Eldense", "Huesca", "Real Zaragoza", "Mirandés", "Parma", "Como", "Venezia", "Cremonese", "Catanzaro", "Palermo", "Sampdoria", "Brescia", "Südtirol", "Reggiana", "Pisa", "Cittadella", "Modena", "Bari", "Cosenza", "Spezia", "Ternana", "Ascoli", "St. Pauli", "Holstein Kiel", "Fortuna Düsseldorf", "Hamburger SV", "Karlsruher SC", "Hannover 96", "Paderborn 07", "Greuther Fürth", "Hertha BSC", "Schalke 04", "Elversberg", "Nuremberg", "Kaiserslautern", "Magdeburg", "Braunschweig", "Hansa Rostock", "Auxerre", "Angers", "Saint-Étienne", "Rodez", "Paris FC", "Caen", "Laval", "Guingamp", "Pau FC", "Amiens", "Grenoble", "Ajaccio", "Bordeaux", "Bastia", "Annecy", "Dunkerque", "Troyes", "Quevilly-Rouen", "Concarneau", "Valenciennes", "Anderlecht", "Club Brugge", "Union SG", "Genk", "Gent", "Royal Antwerp", "Cercle Brugge", "Celtic Glasgow", "Rangers FC", "Hearts", "Aberdeen", "Galatasaray", "Fenerbahçe", "Beşiktaş", "Trabzonspor", "Olympiakos", "Panathinaikos", "PAOK Salonique", "AEK Athènes", "BSC Young Boys", "Servette FC", "FC Lugano", "FC Bâle", "FC Zurich", "Red Bull Salzburg", "Sturm Graz", "LASK", "Rapid Wien", "FC Copenhagen", "Midtjylland", "Brøndby", "Nordsjælland", "AS Dauphin Noir", "FC Simba Kamaze", "US Panda B52", "AC Kuya Sport", "Étoile de Kivu", "FC Les Aigles du Congo", "OC Renaissance du Congo", "Celeste FC", "MC Alger", "CR Belouizdad", "CS Constantine", "USM Alger", "ES Sétif", "JS Kabylie", "Paradou AC", "Al-Ahly Tripoli", "Al-Ittihad Tripoli", "Al-Nasr Benghazi", "ASC Diaraf", "Teungueth FC", "Casa Sports", "Génération Foot", "ASEC Mimosas", "San Pédro", "AFAD Djékanou", "SC Gagnoa", "Enyimba FC", "Remo Stars", "Rivers United", "Kano Pillars", "Rangers International", "Asante Kotoko", "Hearts of Oak", "Medeama SC", "Aduana Stars", "Stade Malien", "Djoliba AC", "Real Bamako", "Horoya AC", "Hafia FC", "AS Kaloum", "Coton Sport de Garoua", "Canon Yaoundé", "Union Douala", "Bamboutos FC", "AS Mangasport", "CMS Libreville", "Saint George SA", "Ethiopian Coffee", "Al-Hilal Omdurman", "Al-Merrikh", "Vipers SC", "KCCA FC", "Villa SC", "Bravos do Maquis", "Académica do Lobito", "Kabwe Warriors", "Power Dynamos", "Nkana FC", "Dynamos FC", "Highlanders FC", "Jwaneng Galaxy", "Township Rollers", "Palmeiras", "Flamengo", "Grêmio", "Atlético Mineiro", "Botafogo", "RB Bragantino", "Fluminense", "Athletico Paranaense", "Internacional", "Fortaleza", "São Paulo", "Cuiabá", "Corinthians", "Cruzeiro", "Vasco da Gama", "Bahia", "Vitória", "Juventude", "River Plate", "Boca Juniors", "Racing Club", "Independiente", "San Lorenzo", "Estudiantes La Plata", "Talleres", "Defensa y Justicia", "Lanús", "Newell’s Old Boys", "Rosario Central", "Vélez Sarsfield", "Argentinos Juniors", "Atletico Nacional", "Millonarios", "Junior FC", "Independiente Medellín", "Colo-Colo", "Universidad de Chile", "Universidad Católica", "Peñarol", "Nacional", "Defensor Sporting", "Club América", "Tigres UANL", "Monterrey", "Chivas Guadalajara", "Cruz Azul", "Inter Miami", "Columbus Crew", "LAFC", "LA Galaxy", "Seattle Sounders", "New York City FC", "Atlanta United", "Al-Hilal", "Al-Nassr", "Al-Ittihad", "Al-Ahli", "Al-Ettifaq", "Al-Shabab", "Al-Ain", "Al-Wasl", "Al-Sadd", "Al-Duhail", "Al-Rayyan", "Shanghai Port", "Shandong Taishan", "Yokohama F. Marinos", "Vissel Kobe", "Kawasaki Frontale", "Urawa Reds", "Ulsan HD", "Jeonbuk Hyundai Motors", "FC Seoul", "Stade Rennais", "Montpellier HSC", "Lorient", "Standard de Liège", "Sporting Charleroi", "KV Mechelen", "KVC Westerlo", "Kortrijk", "Eupen", "FC Emmen", "Vitesse Arnhem", "Heracles Almelo", "PEC Zwolle", "Excelsior Rotterdam", "RKC Waalwijk", "Alanyaspor", "Antalyaspor", "Gaziantep FK", "Hatayspor", "Kasımpaşa", "Konyaspor", "Sivasspor", "Ankaragücü", "Rizespor", "Samsunspor", "Pendikspor", "Fatih Karagümrük", "Aris Salonique", "Asteras Tripolis", "OFI Crète", "Lamia", "Volos", "Kifisia", "Panetolikos", "PAS Giannina", "FC Winterthur", "FC St. Gallen", "Yverdon Sport", "Lausanne-Sport", "Grasshopper Zurich", "Stade Lausanne Ouchy", "Austria Wien", "Wolfsberger AC", "Hartberg", "Austria Klagenfurt", "Blau-Weiß Linz", "WSG Tirol", "Austria Lustenau", "Silkeborg IF", "Viborg FF", "Randers FC", "Odense Boldklub", "Vejle Boldklub", "Hvidovre IF", "Molde FK", "Bodø/Glimt", "Rosenborg BK", "Brann", "Viking FK", "Lillestrøm", "Tromsø IL", "Malmö FF", "IFK Göteborg", "AIK Solna", "Djurgårdens IF", "Hammarby IF", "BK Häcken", "IF Elfsborg", "Sparta Prague", "Slavia Prague", "Viktoria Plzeň", "FK Jablonec", "Baník Ostrava", "Mladá Boleslav", "Slovan Bratislava", "Spartak Trnava", "MŠK Žilina", "Dunajská Streda", "Ferencváros", "Fehérvár FC", "Puskás Akadémia", "Debrecen", "Legia Varsovie", "Lech Poznań", "Raków Częstochowa", "Pogoń Szczecin", "Śląsk Wrocław", "Widzew Łódź", "Dinamo Zagreb", "Hajduk Split", "Rijeka", "NK Osijek", "Lokomotiva Zagreb", "Steaua Bucarest", "CFR Cluj", "Universitatea Craiova", "Rapid Bucarest", "Farul Constanța", "Sepsi OSK", "Ludogorets Razgrad", "CSKA Sofia", "Levski Sofia", "Lokomotiv Plovdiv", "Cherno More", "Sheriff Tiraspol", "Qarabağ FK", "Neftçi Bakou", "Sabah FK", "Astana FC", "Kairat Almaty", "Ordabasy", "Pyunik Erevan", "Urartu FC", "Ararat-Armenia", "Dinamo Tbilissi", "Torpedo Koutaïssi", "Dinamo Batoumi", "HJK Helsinki", "KuPS Kuopio", "SJK Seinäjoki", "Flora Tallinn", "Levadia Tallinn", "Riga FC", "RFS Riga", "FK Panevėžys", "Žalgiris Vilnius", "Partizan Belgrade", "Étoile Rouge Belgrade", "TSC Bačka Topola", "Čukarički", "Vojvodina Novi Sad", "Maribor", "Olimpija Ljubljana", "Celje", "Zrinjski Mostar", "FK Sarajevo", "Željezničar", "Borac Banja Luka", "Shakhtar Donetsk", "Dynamo Kiev", "Dnipro-1", "Zorya Louhansk", "Kryvbas", "Maccabi Tel-Aviv", "Maccabi Haïfa", "Hapoël Beer-Sheva", "Beitar Jérusalem", "Hapoël Tel-Aviv", "APOEL Nicosie", "AEK Larnaca", "Omonia Nicosie", "Aris Limassol", "Apollon Limassol", "Paphos FC", "Shamrock Rovers", "Derry City", "St Patrick's Athletic", "Dundalk FC", "The New Saints", "Connah's Quay", "Linfield FC", "Glentoran", "Larne FC", "Cliftonville", "USM Khenchela", "MC El Bayadh", "JS Saoura", "ASO Chlef", "NC Magra", "ES Ben Aknoun", "WA Tlemcen", "JSM Béjaïa", "MO Béjaïa", "CS Hammam-Lif", "CA Bizertin", "US Monastir", "AS Soliman", "Olympique de Béja", "US Tataouine", "Ben Guerdane", "Gafsa", "RSB Berkane", "Moghreb Tétouan", "Union Touarga", "Olympic Safi", "Chabab Mohammédia", "Ittihad Tanger", "Maghreb Fès", "Jeunesse Soualem", "Youssoufia Berrechid", "Mouloudia Oujda", "Al-Ahly Benghazi", "Al-Nasr", "Al-Hilal Benghazi", "Al-Akhdar", "Olympic Azzaweya", "Tusker FC", "Bandari FC", "Ulinzi Stars", "Kakamega Homeboyz", "Kenya Police", "Kigali FC", "APR FC", "Rayon Sports", "Mukura Victory", "AS Arta/Solar7", "FC Nouadhibou", "AS Douanes", "Teungueth FC", "Jaraaf", "US Gorée", "Stade de Mbour", "Guédiawaye FC", "Dakar Sacré-Cœur", "Milo FC", "SOAR", "ASM Sangarédi", "Fello Star", "Bo Rangers", "East End Lions", "Mighty Blackpool", "LPRC Oilers", "Watanga FC", "Mighty Barrolle", "LISCR FC", "FC Kallon", "Ports Authority", "Stade d'Abidjan", "Stella Club d'Adjamé", "SOA", "Racing Club d'Abidjan", "LYS Sassandra", "CO Korhogo", "Medeama", "Bechem United", "Berekum Chelsea", "Bibiani Gold Stars", "Dreams FC", "Nsoatreman", "Great Olympics", "Bendel Insurance", "Lobi Stars", "Sporting Lagos", "Abia Warriors", "Sunshine Stars", "Akwa United", "Kwara United", "Plateau United", "Doma United", "Heartland FC", "Ifeanyi Ubah", "Stade Malien", "Djoliba", "Onze Créateurs", "USC Kita", "Afrique Football Élite", "Binga FC", "AS Real", "Coton Sport", "Canon Yaoundé", "Les Astres FC", "PWD Bamenda", "Young Sports Academy", "Fovu Baham", "Avion Academy", "Stade Renard", "UMS de Loum", "Union Douala", "Gazelle FA", "Colombe du Dja", "AS Fortuna", "Eding Sport", "Victoria United", "Aigle Royal", "Dragon Yaoundé", "Tonnerre Yaoundé", "Mount Cameroon FC", "Tiko United", "Panthère du Ndé", "Unisport Bafang", "New Star de Douala", "Apejes de Mfou", "Feutcheu FC", "Renaissance de Ngoumou", "Sable de Batié", "Kumbo Strikers", "Racing de Bafoussam"];
+// ======================= CLASSIFICATION DES CLUBS EN 5 NIVEAUX RÉALISTES =======================
+const teamTiers = {
+    elite: ["Manchester City","Real Madrid","Bayern Munich","Paris Saint-Germain","Inter Milan","Liverpool","Arsenal","FC Barcelone","Bayer Leverkusen","Borussia Dortmund","RB Leipzig","Atlético Madrid"],
+    fort: ["Aston Villa","Tottenham","Chelsea","Manchester United","Newcastle","Juventus","AC Milan","AS Roma","Atalanta","Napoli","Sevilla","Villarreal","Real Sociedad","Athletic Bilbao","West Ham","Brighton","Marseille","Lyon","Benfica","Porto","Sporting CP","PSV Eindhoven","Feyenoord"],
+    moyen: ["Fulham","Wolves","Brentford","Everton","Nottingham Forest","Bournemouth","Crystal Palace","Valencia","Betis","Osasuna","Getafe","Lazio","Fiorentina","Bologna","Monza","Genoa","Lille","Nice","Monaco","Rennes","Strasbourg","Ajax","Twente","Braga","Celtic","Rangers","Galatasaray","Fenerbahçe","TP Mazembe","Al Ahly","Wydad","Espérance Tunis"],
+    faible: ["Sheffield United","Burnley","Luton Town","Cádiz","Granada","Almería","Salernitana","Frosinone","Empoli","Le Havre","Clermont","Metz","Nantes","Congo's AS Vita Club","Saint-Éloi Lupopo","Maniema Union","Zamalek","Raja Casablanca","Orlando Pirates","Kaizer Chiefs","Young Africans","Simba SC"],
+    tresFaible: ["Don Bosco","JS Bazano","Blessing Lualaba","Sanga Balende","AS Dauphin Noir","FC Simba Kamaze","US Panda B52","OC Renaissance","Stade Malien","Djoliba","Kano Pillars","Enyimba","Horoya","Coton Sport","ASEC Mimosas","Dynamos","Highlanders","Township Rollers","FC Nouadhibou","Teungueth FC","Milo FC","LPRC Oilers","Watanga FC"]
+};
 
-function getTeamLevel(team) {
-    const elite = ["Manchester City","Real Madrid","Bayern Munich","Paris Saint-Germain","Inter Milan","Liverpool","Arsenal","FC Barcelone","Bayer Leverkusen"];
-    const fort = ["Aston Villa","Tottenham","Chelsea","Manchester United","Newcastle","Atlético Madrid","Juventus","AC Milan","AS Roma","Atalanta","Napoli","Borussia Dortmund","RB Leipzig"];
-    if(elite.includes(team)) return { level: "ÉLITE", strength: 10 };
-    if(fort.includes(team)) return { level: "FORT", strength: 8 };
-    if(ALL_TEAMS.includes(team)) return { level: "PROFESSIONNEL", strength: 6 };
-    return { level: "STANDARD", strength: 5 };
+function getTeamTier(team) {
+    if(teamTiers.elite.includes(team)) return { tier: "ÉLITE", strength: 10, power: 1.0 };
+    if(teamTiers.fort.includes(team)) return { tier: "FORT", strength: 8, power: 0.8 };
+    if(teamTiers.moyen.includes(team)) return { tier: "MOYEN", strength: 6, power: 0.6 };
+    if(teamTiers.faible.includes(team)) return { tier: "FAIBLE", strength: 3, power: 0.3 };
+    if(teamTiers.tresFaible.includes(team)) return { tier: "TRÈS FAIBLE", strength: 1, power: 0.15 };
+    return { tier: "STANDARD", strength: 4, power: 0.4 };
 }
+
+const ALL_TEAMS = [...teamTiers.elite, ...teamTiers.fort, ...teamTiers.moyen, ...teamTiers.faible, ...teamTiers.tresFaible];
+
 function isValidTeam(team) { return ALL_TEAMS.includes(team); }
 
+// Market mapping + score exact réaliste basé sur la différence de force
 const MARKETS_PRO = ["1","2","X","Over 1.5","Over 2.5","Under 2","Les deux équipes marquent YES","Les deux équipes marquent NO"];
 
-function getScoresForMarket(market) {
-    const map = {"1":["1-0","2-1","2-0","3-1"],"2":["0-1","1-2","0-2","1-3"],"X":["0-0","1-1","2-2"],"Over 1.5":["2-0","1-1","2-1"],"Over 2.5":["3-0","2-2","3-1"],"Under 2":["0-0","1-0","0-1"],"Les deux équipes marquent YES":["1-1","2-1","1-2"],"Les deux équipes marquent NO":["1-0","2-0","3-0"]};
-    return map[market] || ["1-1","2-1","1-2","2-0"];
+function getRealisticScore(homeTier, awayTier, market) {
+    const diff = homeTier.strength - awayTier.strength;
+    let baseProb = { homeWin: 0.4, draw: 0.3, awayWin: 0.3 };
+    if (diff >= 4) baseProb = { homeWin: 0.75, draw: 0.15, awayWin: 0.10 };
+    else if (diff >= 2) baseProb = { homeWin: 0.60, draw: 0.25, awayWin: 0.15 };
+    else if (diff <= -4) baseProb = { homeWin: 0.10, draw: 0.15, awayWin: 0.75 };
+    else if (diff <= -2) baseProb = { homeWin: 0.15, draw: 0.25, awayWin: 0.60 };
+    
+    let outcome = "X";
+    const r = Math.random();
+    if (r < baseProb.homeWin) outcome = "1";
+    else if (r < baseProb.homeWin + baseProb.draw) outcome = "X";
+    else outcome = "2";
+    
+    if (market === "1") outcome = "1";
+    if (market === "2") outcome = "2";
+    if (market === "X") outcome = "X";
+    
+    // Scores réalistes
+    const homePower = homeTier.strength / 10;
+    const awayPower = awayTier.strength / 10;
+    let avgHomeGoals = 1.2 + homePower * 1.2;
+    let avgAwayGoals = 1.0 + awayPower * 0.9;
+    if (outcome === "1") avgHomeGoals += 0.8;
+    if (outcome === "2") avgAwayGoals += 0.8;
+    
+    const homeGoals = Math.max(0, Math.floor(avgHomeGoals + (Math.random() * 1.2 - 0.6)));
+    const awayGoals = Math.max(0, Math.floor(avgAwayGoals + (Math.random() * 1.2 - 0.6)));
+    const finalScore = `${homeGoals}-${awayGoals}`;
+    const ht_h = Math.floor(homeGoals / 2);
+    const ht_a = Math.floor(awayGoals / 2);
+    
+    // Over/under & BTTS adaptation
+    const total = homeGoals + awayGoals;
+    let marketOut = outcome;
+    if (market === "Over 1.5") marketOut = total >= 2 ? "Over 1.5 ✅" : "Under 1.5 ❌";
+    if (market === "Over 2.5") marketOut = total >= 3 ? "Over 2.5 ✅" : "Under 2.5 ❌";
+    if (market === "Under 2") marketOut = total <= 1 ? "Under 2 ✅" : "Over 2 ❌";
+    if (market === "Les deux équipes marquent YES") marketOut = (homeGoals>0 && awayGoals>0) ? "YES ✅" : "NO ❌";
+    if (market === "Les deux équipes marquent NO") marketOut = (homeGoals===0 || awayGoals===0) ? "NO ✅" : "YES ❌";
+    
+    return { scoreFinal: finalScore, marketFinal: marketOut, miTemps: `${ht_h}-${ht_a}` };
 }
 
 let matchPredictionCache = {};
 
 function generatePrediction(teamH, teamA) {
     const cacheKey = `${teamH}|${teamA}`;
-    if (matchPredictionCache[cacheKey]) {
-        return JSON.parse(JSON.stringify(matchPredictionCache[cacheKey]));
-    }
+    if (matchPredictionCache[cacheKey]) return JSON.parse(JSON.stringify(matchPredictionCache[cacheKey]));
     
-    const levelH = getTeamLevel(teamH);
-    const levelA = getTeamLevel(teamA);
-    const diff = levelH.strength - levelA.strength;
-    let market;
-    const r = Math.random();
+    const tierH = getTeamTier(teamH);
+    const tierA = getTeamTier(teamA);
+    const diff = tierH.strength - tierA.strength;
+    let selectedMarket = "X";
     if (Math.abs(diff) <= 1) {
-        if (r < 0.33) market = "1";
-        else if (r < 0.66) market = "X";
-        else market = "2";
-    } else if (diff >= 2) {
-        market = "1";
-    } else {
-        market = "2";
-    }
-    let scores = getScoresForMarket(market);
-    const scoreFinal = scores[Math.floor(Math.random() * scores.length)];
-    const [h,a] = scoreFinal.split('-').map(Number);
-    const ht_h = Math.floor(h/2);
-    const ht_a = Math.floor(a/2);
-    const result = { scoreFinal, market, miTemps: `${ht_h}-${ht_a}`, niveauH: levelH.level, niveauA: levelA.level };
+        const r = Math.random();
+        if (r < 0.34) selectedMarket = "1";
+        else if (r < 0.67) selectedMarket = "X";
+        else selectedMarket = "2";
+    } else if (diff >= 2) selectedMarket = "1";
+    else if (diff <= -2) selectedMarket = "2";
+    else selectedMarket = "X";
+    
+    const { scoreFinal, marketFinal, miTemps } = getRealisticScore(tierH, tierA, selectedMarket);
+    const result = { scoreFinal, market: marketFinal, miTemps, niveauH: tierH.tier, niveauA: tierA.tier, rawMarket: selectedMarket };
     matchPredictionCache[cacheKey] = JSON.parse(JSON.stringify(result));
     return result;
 }
@@ -254,23 +502,8 @@ let selectedTicketIndex = null;
 function saveDB() { localStorage.setItem('wise03_db', JSON.stringify(db)); }
 function updateUser() { const idx = db.findIndex(u=>u.email===currentUser.email); if(idx!==-1) { db[idx]=currentUser; saveDB(); } }
 
-function clearCurrentTicket() {
-    if (currentTicket.length > 0) {
-        if (confirm("Voulez-vous vraiment effacer tous les matchs du coupon ?")) {
-            currentTicket = [];
-            renderCurrentTicket();
-            document.getElementById('result-box').style.display = 'none';
-        }
-    }
-}
-
-function deleteSavedTicket(index) {
-    if (confirm("Voulez-vous vraiment supprimer ce ticket ?")) {
-        currentUser.tickets.splice(index, 1);
-        updateUser();
-        renderSavedTickets();
-    }
-}
+function clearCurrentTicket() { if (currentTicket.length && confirm("Effacer tous les matchs ?")) { currentTicket = []; renderCurrentTicket(); document.getElementById('result-box').style.display = 'none'; } }
+function deleteSavedTicket(index) { if(confirm("Supprimer ce ticket ?")) { currentUser.tickets.splice(index,1); updateUser(); renderSavedTickets(); } }
 
 function canAnalyzeMatch(home, away) {
     if(!currentUser) return false;
@@ -290,13 +523,11 @@ function validateActivationCode() {
     if(currentUser.activationCodeUsed) { showCodeStatus("❌ Code déjà utilisé", false); return; }
     const count3 = (code.match(/3/g)||[]).length;
     const count0 = (code.match(/0/g)||[]).length;
-    let msg = "";
-    if(count3 === 3) { currentUser.isVerified = true; msg = "✅ Compte activé !"; }
-    if(count0 === 2 && count3 === 1) { currentUser.isVerified = true; currentUser.isPremium = true; const exp = new Date(); exp.setDate(exp.getDate()+7); currentUser.premiumExpiry = exp.toISOString(); msg = "✅ Premium 7 jours activé !"; }
-    if(!msg) { showCodeStatus("⚠️ Code invalide. Contactez l'admin", false); return; }
+    if(count3 === 3) { currentUser.isVerified = true; showCodeStatus("✅ Compte activé !", true); }
+    else if(count0 === 2 && count3 === 1) { currentUser.isVerified = true; currentUser.isPremium = true; const exp = new Date(); exp.setDate(exp.getDate()+7); currentUser.premiumExpiry = exp.toISOString(); showCodeStatus("✅ Premium 7 jours activé !", true); }
+    else { showCodeStatus("⚠️ Code invalide. Contactez l'admin", false); return; }
     currentUser.activationCodeUsed = true;
     updateUser();
-    showCodeStatus(msg, true);
     checkVerificationStatus();
     renderProfile();
 }
@@ -313,6 +544,7 @@ function loginUser() {
         showDashboard();
     } else document.getElementById('login-error').innerText = "Email ou mot de passe incorrect";
 }
+
 function registerUser() {
     const name = document.getElementById('reg-name').value.trim();
     const email = document.getElementById('reg-email').value.trim();
@@ -327,6 +559,7 @@ function registerUser() {
     toggleAuth(false);
     document.getElementById('login-email').value = email;
 }
+
 function showDashboard() {
     document.getElementById('auth-screen').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';
@@ -336,6 +569,7 @@ function showDashboard() {
     checkVerificationStatus();
     switchView('predict');
 }
+
 function checkVerificationStatus() {
     const alertBox = document.getElementById('verify-alert');
     const main = document.getElementById('predict-main');
@@ -345,14 +579,6 @@ function checkVerificationStatus() {
     if(hint) hint.style.display = currentUser.isVerified ? 'none' : 'block';
 }
 
-function getDaysRemaining() {
-    if(!currentUser.premiumExpiry) return null;
-    const expiryDate = new Date(currentUser.premiumExpiry);
-    const today = new Date();
-    const diffTime = expiryDate - today;
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-}
-
 function renderProfile() {
     document.getElementById('prof-name').innerText = currentUser.name;
     document.getElementById('prof-email').innerText = currentUser.email;
@@ -360,78 +586,30 @@ function renderProfile() {
     const pic = document.getElementById('profile-pic-container');
     pic.innerHTML = currentUser.profileImage ? `<img src="${currentUser.profileImage}" class="profile-pic">` : `<div class="profile-pic" style="background:var(--border); display:flex; align-items:center; justify-content:center;">📷</div>`;
     let badge = currentUser.isPremium ? '<span class="status-badge" style="background:var(--pink);">💎 PREMIUM</span>' : (currentUser.isVerified ? '<span class="status-badge" style="background:var(--green);">✅ VÉRIFIÉ</span>' : '<span class="status-badge" style="background:var(--muted);">⏳ NON ACTIVÉ</span>');
-    
     let daysLeftHtml = '';
     if(currentUser.isPremium && currentUser.premiumExpiry) {
-        const daysRemaining = getDaysRemaining();
-        if(daysRemaining !== null && daysRemaining > 0) {
-            daysLeftHtml = `<div class="expiry-card"><div style="font-size:12px; color:var(--muted);">⏰ Jours restants avant expiration</div><div class="expiry-days">${daysRemaining} jour${daysRemaining > 1 ? 's' : ''}</div><div style="font-size:10px; color:var(--gold);">Valable jusqu'au ${new Date(currentUser.premiumExpiry).toLocaleDateString()}</div></div>`;
-        } else {
-            daysLeftHtml = `<div class="expiry-card" style="background:linear-gradient(135deg,#7f1a1a,#0f172a);"><div style="color:var(--danger);">⚠️ Premium expiré</div><div style="font-size:10px;">Contactez l'admin pour renouveler</div></div>`;
-        }
-    } else if(currentUser.isVerified) {
-        daysLeftHtml = `<div class="expiry-card" style="background:#1e293b;"><div style="color:var(--muted);">📋 Compte vérifié</div><div style="font-size:10px;">Activez le Premium pour plus de fonctionnalités</div></div>`;
+        const expiryDate = new Date(currentUser.premiumExpiry);
+        const diffDays = Math.ceil((expiryDate - new Date()) / (1000*60*60*24));
+        if(diffDays > 0) daysLeftHtml = `<div class="expiry-card"><div>⏰ Jours restants</div><div class="expiry-days">${diffDays}</div></div>`;
+        else daysLeftHtml = `<div class="expiry-card" style="background:#7f1a1a;"><div>⚠️ Premium expiré</div></div>`;
     }
-    
     document.getElementById('prof-badge').innerHTML = badge;
     document.getElementById('premium-expiry-info').innerHTML = daysLeftHtml;
 }
+
 function handleProfileUpload(input) { if(input.files[0]) { const fr = new FileReader(); fr.onload = e => { currentUser.profileImage = e.target.result; updateUser(); renderProfile(); alert("Photo mise à jour"); }; fr.readAsDataURL(input.files[0]); } }
 
 function runAnalysis() {
     const h = document.getElementById('team-h').value.trim();
     const a = document.getElementById('team-a').value.trim();
-    
-    const isHValid = isValidTeam(h);
-    const isAValid = isValidTeam(a);
-    
-    // Cas 1: Les deux ne sont pas valides
-    if(!isHValid && !isAValid) {
-        document.getElementById('ana-error').innerHTML = `❌ "${h}" et "${a}" ne sont pas reconnus. Veuillez entrer des équipes valides.`;
-        return;
-    }
-    
-    // Cas 2: Un seul est valide - on analyse mais sans donner 1,2,X
-    let useRestrictedMarkets = false;
-    if((isHValid && !isAValid) || (!isHValid && isAValid)) {
-        useRestrictedMarkets = true;
-        const validTeam = isHValid ? h : a;
-        const invalidTeam = !isHValid ? h : a;
-        document.getElementById('ana-error').innerHTML = `⚠️ "${invalidTeam}" n'est pas reconnu. Analyse limitée (pas de pari 1,2,X). Avantage à "${validTeam}".`;
-        setTimeout(() => { document.getElementById('ana-error').innerHTML = ''; }, 3000);
-    } else {
-        document.getElementById('ana-error').innerHTML = '';
-    }
-    
+    if(!isValidTeam(h) || !isValidTeam(a)) { document.getElementById('ana-error').innerHTML = `❌ Équipe non reconnue. Utilisez la liste.`; return; }
     if(!currentUser.isVerified) { document.getElementById('ana-error').innerHTML = "Compte non activé."; return; }
     if(!canAnalyzeMatch(h,a)) { document.getElementById('ana-error').innerHTML = "❌ Match déjà analysé dans les 48h."; return; }
     
     document.getElementById('ana-loader').style.display='inline-block';
     document.getElementById('btn-ana').disabled=true;
     setTimeout(()=>{
-        let pred;
-        if(useRestrictedMarkets) {
-            // Analyse restreinte: pas de 1,2,X
-            const levelH = getTeamLevel(h);
-            const levelA = getTeamLevel(a);
-            const allowedMarkets = MARKETS_PRO.filter(m => !['1','2','X'].includes(m));
-            const randomMarket = allowedMarkets[Math.floor(Math.random() * allowedMarkets.length)];
-            const scores = getScoresForMarket(randomMarket);
-            const scoreFinal = scores[Math.floor(Math.random() * scores.length)];
-            const [hGoal, aGoal] = scoreFinal.split('-').map(Number);
-            const ht_h = Math.floor(hGoal/2);
-            const ht_a = Math.floor(aGoal/2);
-            pred = { 
-                scoreFinal, 
-                market: randomMarket, 
-                miTemps: `${ht_h}-${ht_a}`, 
-                niveauH: levelH.level, 
-                niveauA: levelA.level 
-            };
-            matchPredictionCache[`${h}|${a}`] = JSON.parse(JSON.stringify(pred));
-        } else {
-            pred = generatePrediction(h,a);
-        }
+        const pred = generatePrediction(h,a);
         tempMatch = { h, a, market: pred.market, score: pred.scoreFinal, ht: pred.miTemps, niveauH: pred.niveauH, niveauA: pred.niveauA };
         document.getElementById('res-h').innerHTML = `${h}<div class="team-strength">${pred.niveauH}</div>`;
         document.getElementById('res-a').innerHTML = `${a}<div class="team-strength">${pred.niveauA}</div>`;
@@ -442,8 +620,9 @@ function runAnalysis() {
         document.getElementById('result-box').style.display='block';
         document.getElementById('ana-loader').style.display='none';
         document.getElementById('btn-ana').disabled=false;
-    }, 800);
+    }, 600);
 }
+
 function addToTicket() { if(tempMatch) { currentTicket.push({...tempMatch}); renderCurrentTicket(); document.getElementById('result-box').style.display='none'; } }
 function renderCurrentTicket() {
     const container = document.getElementById('ticket-list');
@@ -452,81 +631,32 @@ function renderCurrentTicket() {
     container.innerHTML = currentTicket.map((m,i)=>`<div class="ticket-item"><div>${m.h} vs ${m.a}<br><b>${m.market}</b> | Score: ${m.score}<br>Mi-temps: ${m.ht}</div><span style="color:var(--danger);cursor:pointer;" onclick="removeFromTicket(${i})">✖</span></div>`).join('');
 }
 function removeFromTicket(i){ currentTicket.splice(i,1); renderCurrentTicket(); }
-function saveTicket() {
-    if(!currentTicket.length) return;
-    currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:[...currentTicket]});
-    currentTicket = [];
-    renderCurrentTicket();
-    updateUser();
-    alert("Ticket enregistré !");
-    switchView('tickets');
-}
+function saveTicket() { if(!currentTicket.length) return; currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:[...currentTicket]}); currentTicket = []; renderCurrentTicket(); updateUser(); alert("Ticket enregistré !"); switchView('tickets'); }
 function renderSavedTickets() {
     const container = document.getElementById('tickets-list-view');
     if(!currentUser.tickets.length) { container.innerHTML='<p style="text-align:center; color:var(--muted);">Aucun ticket.</p>'; return; }
     container.innerHTML = currentUser.tickets.map((t,idx)=>`<div class="card ticket-card"><div class="ticket-header"><div style="color:var(--primary);">📅 ${t.date}</div><button class="delete-ticket-btn" onclick="event.stopPropagation(); deleteSavedTicket(${idx})">🗑️ Supprimer</button></div><div onclick="viewTicketDetail(${idx})">📊 ${t.matches.length} match(s)</div></div>`).join('');
 }
-function viewTicketDetail(idx) {
-    selectedTicketIndex = idx;
-    const t = currentUser.tickets[idx];
-    const container = document.getElementById('ticket-detail-content');
-    container.innerHTML = `<div class="detail-header"><h3>🎫 Détail</h3><div>${t.date}</div></div><div class="card">${t.matches.map(m=>`<div class="ticket-item"><b>${m.h} vs ${m.a}</b><br>🎯 ${m.market}<br>📊 Score: ${m.score}<br>⏱️ Mi-temps: ${m.ht}</div>`).join('')}</div><div style="display:flex; gap:10px; margin-top:10px;"><button class="btn btn-double" onclick="duplicateSavedTicket()">🔄 DOUBLER</button><button class="btn btn-gourmand" onclick="createGourmandFromTicket()">🍽️ GOURMAND</button><button class="btn btn-danger" onclick="deleteThisTicket()">🗑️ SUPPRIMER</button></div>`;
-    document.getElementById('view-tickets').style.display = 'none';
-    document.getElementById('view-ticket-detail').style.display = 'block';
-}
-function deleteThisTicket() {
-    if(selectedTicketIndex!==null && confirm("Supprimer ce ticket ?")) {
-        currentUser.tickets.splice(selectedTicketIndex, 1);
-        updateUser();
-        backToTicketsList();
-    }
-}
-function duplicateSavedTicket() {
-    if(selectedTicketIndex===null) return;
-    const orig = currentUser.tickets[selectedTicketIndex];
-    const matchCount = Math.floor(Math.random() * 3) + 3;
-    const newMatches = [];
-    for(let i = 0; i < matchCount && i < orig.matches.length; i++) {
-        const m = orig.matches[i];
-        const gen = generatePrediction(m.h, m.a);
-        newMatches.push({h:m.h, a:m.a, market:gen.market, score:gen.scoreFinal, ht:gen.miTemps});
-    }
-    currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:newMatches});
-    updateUser();
-    alert(`Ticket doublé avec ${newMatches.length} match(s) !`);
-    backToTicketsList();
-}
-function createGourmandFromTicket() {
-    if(selectedTicketIndex===null) return;
-    let allMatches = [];
-    for(const u of db) if(u.email!==currentUser.email) for(const t of u.tickets) for(const m of t.matches) allMatches.push(m);
-    if(allMatches.length===0) allMatches = currentUser.tickets[selectedTicketIndex].matches;
-    const shuffled = allMatches.sort(()=>0.5-Math.random());
-    const gourmand = shuffled.slice(0, currentUser.isPremium ? 15 : 5).map(m=>{ const gen = generatePrediction(m.h, m.a); return {h:m.h, a:m.a, market:gen.market, score:gen.scoreFinal, ht:gen.miTemps}; });
-    currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:gourmand});
-    updateUser();
-    alert(`Ticket Gourmand créé (${gourmand.length} matchs)`);
-    backToTicketsList();
-}
+function viewTicketDetail(idx) { selectedTicketIndex = idx; const t = currentUser.tickets[idx]; const container = document.getElementById('ticket-detail-content'); container.innerHTML = `<div class="detail-header" style="background:linear-gradient(135deg,var(--primary),#1d4ed8); padding:15px; border-radius:16px; margin-bottom:15px; text-align:center;"><h3>🎫 Détail</h3><div>${t.date}</div></div><div class="card">${t.matches.map(m=>`<div class="ticket-item"><b>${m.h} vs ${m.a}</b><br>🎯 ${m.market}<br>📊 Score: ${m.score}<br>⏱️ Mi-temps: ${m.ht}</div>`).join('')}</div><div style="display:flex; gap:10px; margin-top:10px;"><button class="btn btn-double" onclick="duplicateSavedTicket()">🔄 DOUBLER</button><button class="btn btn-gourmand" onclick="createGourmandFromTicket()">🍽️ GOURMAND</button><button class="btn btn-danger" onclick="deleteThisTicket()">🗑️ SUPPRIMER</button></div>`; document.getElementById('view-tickets').style.display = 'none'; document.getElementById('view-ticket-detail').style.display = 'block'; }
+function deleteThisTicket() { if(selectedTicketIndex!==null && confirm("Supprimer ?")) { currentUser.tickets.splice(selectedTicketIndex,1); updateUser(); backToTicketsList(); } }
+function duplicateSavedTicket() { if(selectedTicketIndex===null) return; const orig = currentUser.tickets[selectedTicketIndex]; const newMatches = orig.matches.slice(0,4).map(m=>{ const gen = generatePrediction(m.h,m.a); return {h:m.h, a:m.a, market:gen.market, score:gen.scoreFinal, ht:gen.miTemps}; }); currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:newMatches}); updateUser(); alert(`Ticket doublé (${newMatches.length} matchs)`); backToTicketsList(); }
+function createGourmandFromTicket() { if(selectedTicketIndex===null) return; let allMatches = []; for(const u of db) if(u.email!==currentUser.email) for(const t of u.tickets) for(const m of t.matches) allMatches.push(m); if(!allMatches.length) allMatches = currentUser.tickets[selectedTicketIndex].matches; const gourmand = allMatches.sort(()=>0.5-Math.random()).slice(0, currentUser.isPremium ? 12 : 5).map(m=>{ const gen = generatePrediction(m.h,m.a); return {h:m.h, a:m.a, market:gen.market, score:gen.scoreFinal, ht:gen.miTemps}; }); currentUser.tickets.unshift({date:new Date().toLocaleString(), matches:gourmand}); updateUser(); alert(`Ticket Gourmand (${gourmand.length} matchs)`); backToTicketsList(); }
 function backToTicketsList() { document.getElementById('view-ticket-detail').style.display = 'none'; document.getElementById('view-tickets').style.display = 'block'; renderSavedTickets(); selectedTicketIndex = null; }
 function switchView(view) {
     document.getElementById('view-predict').style.display = view==='predict'?'block':'none';
     document.getElementById('view-tickets').style.display = view==='tickets'?'block':'none';
     document.getElementById('view-profile').style.display = view==='profile'?'block':'none';
     document.getElementById('view-ticket-detail').style.display = 'none';
-    if(view==='tickets') renderSavedTickets();
-    if(view==='profile') renderProfile();
     document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
     if(view==='predict') document.querySelector('.nav-item:first-child').classList.add('active');
     else if(view==='tickets') document.querySelector('.nav-item:nth-child(2)').classList.add('active');
     else document.querySelector('.nav-item:last-child').classList.add('active');
+    if(view==='tickets') renderSavedTickets();
+    if(view==='profile') renderProfile();
 }
 function toggleAuth(reg) { document.getElementById('auth-screen').style.display = reg?'none':'block'; document.getElementById('register-screen').style.display = reg?'block':'none'; }
-function toggleAssistant() { 
-    const chat = document.getElementById('assistant-chat');
-    chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex'; 
-}
-function askZola() { const inp=document.getElementById('assistant-input'); if(!inp.value.trim()) return; const msgDiv=document.getElementById('assistant-messages'); msgDiv.innerHTML+=`<div style="background:var(--primary); margin:5px 0 5px auto; padding:8px; border-radius:12px; max-width:85%;">${inp.value}</div>`; inp.value=''; setTimeout(()=>{ msgDiv.innerHTML+=`<div style="background:var(--border); margin:5px 0; padding:8px; border-radius:12px;">🤖 Utilisez "Doubler" ou "Gourmand" sur vos tickets !</div>`; msgDiv.scrollTop=msgDiv.scrollHeight; },500); }
+function toggleAssistant() { const chat = document.getElementById('assistant-chat'); chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex'; }
+function askZola() { const inp=document.getElementById('assistant-input'); if(!inp.value.trim()) return; const msgDiv=document.getElementById('assistant-messages'); msgDiv.innerHTML+=`<div style="background:var(--primary); margin:5px 0 5px auto; padding:8px; border-radius:12px; max-width:85%;">${inp.value}</div>`; inp.value=''; setTimeout(()=>{ msgDiv.innerHTML+=`<div style="background:var(--border); margin:5px 0; padding:8px; border-radius:12px;">🤖 Utilisez "Doubler" ou "Gourmand" sur vos tickets pour maximiser vos gains !</div>`; msgDiv.scrollTop=msgDiv.scrollHeight; },500); }
 function logout(){ location.reload(); }
 </script>
 </body>
