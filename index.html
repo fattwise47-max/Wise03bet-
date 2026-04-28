@@ -208,19 +208,13 @@
                 <input type="file" id="profile-file" style="display:none" accept="image/*" onchange="handleProfileUpload(this)">
                 <div class="activation-hint" id="activation-hint-profile" style="display:none">
                     <details style="cursor:pointer; background:#1e293b; border-radius:12px; padding:10px; margin-top:8px;">
-                        <summary style="color:var(--warning); font-weight:700; font-size:12px;">🔑 Afficher/Masquer code d'activation</summary>
+                        <summary style="color:var(--warning); font-weight:700; font-size:12px;">🔑 Activer un code</summary>
                         <div style="margin-top:10px;">
-                            <div class="code-guide">
-                                <div style="font-weight:700;color:var(--cyan);margin-bottom:6px">📌 Guide des codes :</div>
-                                <div class="row"><span>✅ Vérifié</span><span>Code sans <b>1</b>, <b>6</b>, <b>9</b></span></div>
-                                <div class="row"><span>💎 6 jours</span><span>Code sans <b>7</b>, <b>2</b>, <b>8</b></span></div>
-                                <div class="row"><span>👑 15 jours</span><span>Code avec <b>3</b>,<b>0</b>,<b>5</b>,<b>4</b></span></div>
-                                <div style="margin-top:4px;font-style:italic">Chaque code = usage unique (20 chiffres)</div>
-                            </div>
                             <div style="margin-top:10px">
                                 <input type="text" id="activation-code-input" placeholder="Code 20 chiffres" maxlength="20" inputmode="numeric">
                                 <button class="btn btn-warning btn-full" onclick="validateActivationCode()">🔓 VALIDER LE CODE</button>
                                 <div id="code-status"></div>
+                                <p style="font-size:10px;color:var(--muted);margin-top:8px">Contactez l'admin WhatsApp pour obtenir votre code d'activation.</p>
                             </div>
                         </div>
                     </details>
@@ -1043,17 +1037,54 @@ function todayKey(){const d=new Date();return`${d.getFullYear()}-${String(d.getM
 function todayCount(){if(!currentUser||!currentUser.tickets)return 0;const tk=todayKey();return currentUser.tickets.filter(t=>t.dk===tk).length;}
 
 // ====================================================================
-// 🔑 ACTIVATION CODE — 20 CHIFFRES
+// 🔑 ACTIVATION CODE — 20 CHIFFRES (sans guide)
 // ====================================================================
 function validateActivationCode(){
     const code=document.getElementById('activation-code-input').value.trim();
     if(!/^\d{20}$/.test(code)){showCodeStatus("❌ Code invalide : 20 chiffres requis",false);return;}
     if(usedCodes.includes(code)){showCodeStatus("❌ Ce code a déjà été utilisé.",false);showToast("Code déjà utilisé",true);return;}
-    if(currentUser.accountType==='verified'){showCodeStatus("⚠️ Déjà vérifié. Pas besoin de nouveau code.",false);return;}
-    if(currentUser.premiumExpiry&&currentUser.accountType!=='verified'&&new Date(currentUser.premiumExpiry)>new Date()){
-        showCodeStatus("⚠️ Abonnement actif. Attendez l'expiration.",false);return;
+    
+    // Si déjà vérifié mais veut passer en premium
+    if(currentUser.accountType==='verified' && !currentUser.premiumExpiry){
+        const has3=code.includes('3'),has0=code.includes('0'),has5=code.includes('5'),has4=code.includes('4');
+        const has7=code.includes('7'),has2=code.includes('2'),has8=code.includes('8');
+        
+        if(has3&&has0&&has5&&has4){
+            const exp=new Date();exp.setDate(exp.getDate()+15);
+            currentUser.isPremium=true;
+            currentUser.accountType='sub15';
+            currentUser.premiumExpiry=exp.toISOString();
+            currentUser.subscriptionType='👑 Abonnement 15 jours';
+            currentUser.activationDate=new Date().toISOString();
+            usedCodes.push(code);saveCodes();updUser();
+            showCodeStatus("👑 Abonnement 15 jours activé ! Analyses illimitées.",true);
+            showToast("🎉 Abonnement 15 jours ! Analyses illimitées.");
+            startCountdown();
+            renderProfile();
+            return;
+        }
+        else if(!has7&&!has2&&!has8){
+            const exp=new Date();exp.setDate(exp.getDate()+6);
+            currentUser.isPremium=true;
+            currentUser.accountType='sub6';
+            currentUser.premiumExpiry=exp.toISOString();
+            currentUser.subscriptionType='💎 Abonnement 6 jours';
+            currentUser.activationDate=new Date().toISOString();
+            usedCodes.push(code);saveCodes();updUser();
+            showCodeStatus("💎 Abonnement 6 jours activé ! Analyses illimitées.",true);
+            showToast("🎉 Abonnement 6 jours ! Analyses illimitées.");
+            startCountdown();
+            renderProfile();
+            return;
+        }
+        else{
+            showCodeStatus("❌ Ce code n'est pas un code d'abonnement premium valide.",false);
+            showToast("Code premium invalide",true);
+            return;
+        }
     }
-
+    
+    // Cas normal : première activation
     const has1=code.includes('1'),has6=code.includes('6'),has9=code.includes('9');
     const has7=code.includes('7'),has2=code.includes('2'),has8=code.includes('8');
     const has3=code.includes('3'),has0=code.includes('0'),has5=code.includes('5'),has4=code.includes('4');
@@ -1438,7 +1469,7 @@ function askZola(){
     let r="🤖 Posez vos questions !";
     if(q.includes('gourmand'))r="🍽️ Ticket Gourmand = 12+ matchs. Max 20 matchs/ticket, 4 tickets/jour.";
     else if(q.includes('doubler'))r="🔄 Doubler = change 3 à 5 résultats aléatoires sur le ticket.";
-    else if(q.includes('code'))r="🔑 Codes 20 chiffres :\n• Sans 1,6,9 → Vérifié (2 analyses/jour)\n• Sans 7,2,8 → 6 jours (illimité)\n• Avec 3,0,5,4 → 15 jours (illimité)\nChaque code = usage unique.";
+    else if(q.includes('code'))r="🔑 Codes 20 chiffres. Contactez l'admin WhatsApp pour obtenir votre code d'activation.";
     else if(q.includes('limite'))r="📏 Max 4 tickets/jour, 20 matchs/ticket. Compte vérifié = 2 analyses gratuites/jour. Premium = analyses illimitées.";
     else if(q.includes('sécurité')||q.includes('securite'))r="🛡️ Vos données sont protégées par signature cryptographique. Toute modification est détectée.";
     else if(q.includes('btts'))r="⚽ BTTS = Both Teams To Score = Les 2 équipes marquent.";
@@ -1449,4 +1480,4 @@ function askZola(){
 function logout(){stopCountdown();location.reload();}
 </script>
 </body>
-        </html>
+                </html>
